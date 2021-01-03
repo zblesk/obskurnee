@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Obskurnee.ViewModels
 {
-    public record  DiscussionPosts(Discussion Discussion, IEnumerable<Post> Posts);
+    public record  DiscussionPosts(Discussion Discussion, List<Post> Posts);
 }

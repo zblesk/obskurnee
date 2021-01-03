@@ -14,6 +14,7 @@ namespace Obskurnee.Controllers
     public class DiscussionController : ControllerBase
     {
         private readonly ILogger<DiscussionController> _logger;
+        static DiscussionPosts dp = null;
 
         public DiscussionController(ILogger<DiscussionController> logger)
         {
@@ -32,10 +33,27 @@ namespace Obskurnee.Controllers
         [Route("{id:int}/posts")]
         public DiscussionPosts GetPosts(int id)
         {
-            return new(
+            if (dp == null)
+            {
+                dp = new(
                 new(id, $"Kniha {id}", $"Navrhujeme knihu #{id}!"),
                 new List<Post>(Enumerable.Range(1, 7)
-                    .Select(i => new Post(id * 11 * i, id, $"Toto je text prispevku {i} do diskusie #{id}"))));
+                    .Select(i => new Post(id * 11 * i, id, $"Kniha {id}", $"Toto je text prispevku {i} do diskusie #{id}"))));
+            }
+            return dp;
+        }
+
+        [HttpPost]
+        [Route("{id:int}/posts")]
+        public int NewPost(int id, Post post)
+        {
+            dp.Posts.Add(new Post(
+                332434 + id * 11,
+                id,
+                post.BookName,
+                post.Text
+            ));
+            return 0;
         }
     }
 }
