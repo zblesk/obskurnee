@@ -4,7 +4,7 @@
       <a href="{{ post.url }}" class="book__link"><h2 class="book__title">{{ post.bookTitle }}</h2></a>
       <p class="book__pages"><em>{{ post.pageCount }}</em></p>
       <!-- <h3 class="book__proposer">Navrhovatel: Olosta</h3> -->
-      <p class="book__pitch">{{ post.text }} Kniha Propletený život vás vezme do opomíjeného a zázračného světa hub a ukáže vám, že představují klíč k porozumění nejen planetě, na níž žijeme, ale i životu samotnému. Vydejte se na pouť, která vás změní k nepoznání. Čím více toho o houbách víme, tím méně toho bez nich dává smysl. Neřadí se ani k rostlinám, ani k živočichům. Prorůstají půdou, poletují ve vzduchu a žijí i v našem těle. Vzrůstem sahají od mikroskopických tvorečků po největší známé organismy na světě. Stály u zrodu života na souši, dokážou přežít v otevřeném kosmu a libují si v radioaktivním záření. A vlastně na nich větší či menší měrou závisí veškerý život na Zemi. Jsou to organismy, které nás nepřestávají překvapovat. Sice nemají mozek, <br />ale se šokující přesností zvládnou řešit problémy i ovlivňovat chování živočichů. Prostřednictvím chleba, alkoholu i život zachraňujících léků se nesmazatelně podepsaly na podobě lidské kultury a nedávné výzkumy potvrdily, že jejich psychoaktivní vlastnosti ulevují od řady duševních obtíží. Na jejich schopnosti rozkládat plasty, výbušniny, pesticidy i surovou ropu stavějí nejnovější průlomové technologie a objev, že pod povrchem propojují rostliny do podzemních sítí — „lesního internetu“ —, převrací naše chápání ekosystémů. Přesto více než devadesát procent druhů hub dosud nebylo zdokumentováno.</p>
+      <p class="book__pitch" v-html="post.renderedText"> </p>
     </div>
 </template>
 

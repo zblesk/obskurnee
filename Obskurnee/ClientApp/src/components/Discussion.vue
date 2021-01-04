@@ -1,7 +1,13 @@
 <template>
     <h1 id="tableLabel">{{ title }}</h1>
-    <div class="grid">
+    <span>Pridaj novú knihu!</span>
+    <input v-model="newpost.url" placeholder="Goodreads link" />
+    <input v-model="newpost.bookTitle" placeholder="Meno knihy" />
+    <textarea v-model="newpost.text" placeholder="Komentár k návrhu"></textarea>
+    <button @click="postNewBook">Pridaj</button>
 
+    <div class="grid">
+    
     <p v-if="!title"><em>Cakaj, nacitavam</em></p>
 
         <book-recommendation  v-for="post in posts" v-bind:key="post.id" v-bind:post="post"></book-recommendation>
@@ -19,7 +25,8 @@
         data() {
             return {
                 posts: [],
-                title: ""
+                title: "",
+                newpost: {}
             }
         },
         methods: {
@@ -28,6 +35,17 @@
                     .then((response) => {
                         this.posts =  response.data.posts;
                         this.title = response.data.discussion.title;
+                    })
+                    .catch(function (error) {
+                        alert(error);
+                    });
+            },
+            postNewBook() {
+                console.log(this.newpost);
+                axios.post('/api/discussions/' + this.$route.params.id + '/posts', this.newpost)
+                    .then((response) => {
+                        this.posts.push(response.data);
+                        this.newpost = {};
                     })
                     .catch(function (error) {
                         alert(error);

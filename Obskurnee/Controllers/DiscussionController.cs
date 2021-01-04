@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Markdig;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.ViewModels;
@@ -15,11 +16,19 @@ namespace Obskurnee.Controllers
     {
         private readonly ILogger<DiscussionController> _logger;
         static DiscussionPosts dp = null;
+        private static MarkdownPipeline _mdPipeline;
+
+        static DiscussionController()
+        {
+            _mdPipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+        }
 
         public DiscussionController(ILogger<DiscussionController> logger)
         {
             _logger = logger;
         }
+
+        private string RenderMarkdown(string md) => Markdown.ToHtml(md, _mdPipeline);
 
         [HttpGet]
         public IEnumerable<Discussion> Get()
@@ -37,23 +46,19 @@ namespace Obskurnee.Controllers
             {
                 dp = new(
                 new(id, $"Kniha {id} - Navrhy", $"Navrhujeme knihu #{id}!"),
-                new List<Post>(Enumerable.Range(1, 7)
-                    .Select(i => new Post(id * 11 * i, id, $"Kniha {id}", $"Toto je text prispevku {i} do diskusie #{id}"))));
+                new List<Post>(Enumerable.Range(4, 3)
+                    .Select(i => new Post(id * 11 * i, id, $"Kniha {id}", $"Toto je <b>text</b> prispevku {i} <br /> do diskusie #{id}"))));
             }
             return dp;
         }
 
         [HttpPost]
         [Route("{id:int}/posts")]
-        public int NewPost(int id, Post post)
+        public Post NewPost(int id, Post post)
         {
-            dp.Posts.Add(new Post(
-                332434 + id * 11,
-                id,
-                post.BookTitle,
-                post.Text
-            ));
-            return 0;
+            var newPost = post with { RenderedText = RenderMarkdown(post.Text), Id = id * 117 };
+            dp.Posts.Add(newPost);
+            return newPost;
         }
     }
 }
