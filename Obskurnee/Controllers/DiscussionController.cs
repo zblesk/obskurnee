@@ -24,7 +24,7 @@ namespace Obskurnee.Controllers
         [HttpGet]
         public IEnumerable<Discussion> Get()
         {
-            return Enumerable.Range(1, 5).Select(i => new Discussion(i, $"Kniha {i}", $"Navrhujeme knihu #{i}!"))
+            return Enumerable.Range(1, 5).Select(i => new Discussion(i, $"Kniha {i} - Navrhy", $"Navrhujeme knihu #{i}!"))
                 .ToArray();
         }
 
@@ -36,7 +36,7 @@ namespace Obskurnee.Controllers
             if (dp == null)
             {
                 dp = new(
-                new(id, $"Kniha {id}", $"Navrhujeme knihu #{id}!"),
+                new(id, $"Kniha {id} - Navrhy", $"Navrhujeme knihu #{id}!"),
                 new List<Post>(Enumerable.Range(1, 7)
                     .Select(i => new Post(id * 11 * i, id, $"Kniha {id}", $"Toto je text prispevku {i} do diskusie #{id}"))));
             }
@@ -50,7 +50,7 @@ namespace Obskurnee.Controllers
             dp.Posts.Add(new Post(
                 332434 + id * 11,
                 id,
-                post.BookName,
+                post.BookTitle,
                 post.Text
             ));
             return 0;
