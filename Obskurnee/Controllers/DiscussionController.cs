@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
+using Obskurnee.Services;
 using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -15,50 +16,38 @@ namespace Obskurnee.Controllers
     public class DiscussionController : ControllerBase
     {
         private readonly ILogger<DiscussionController> _logger;
-        static DiscussionPosts dp = null;
         private static MarkdownPipeline _mdPipeline;
+        private readonly Database _database;
 
         static DiscussionController()
         {
             _mdPipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
         }
 
-        public DiscussionController(ILogger<DiscussionController> logger)
+        public DiscussionController(ILogger<DiscussionController> logger, Database database)
         {
             _logger = logger;
+            _database = database ?? throw new ArgumentNullException(nameof(database));
         }
 
         private string RenderMarkdown(string md) => Markdown.ToHtml(md, _mdPipeline);
 
         [HttpGet]
-        public IEnumerable<Discussion> Get()
-        {
-            return Enumerable.Range(1, 5).Select(i => new Discussion(i, $"Kniha {i} - Navrhy", $"Navrhujeme knihu #{i}!"))
-                .ToArray();
-        }
+        public IEnumerable<Discussion> GetDiscussions() => _database.GetAllDiscussions();
 
+        [HttpPost]
+        public Discussion NewDiscussion(Discussion discussion) => _database.NewDiscussion(discussion);
 
         [HttpGet]
         [Route("{id:int}/posts")]
-        public DiscussionPosts GetPosts(int id)
-        {
-            if (dp == null)
-            {
-                dp = new(
-                new(id, $"Kniha {id} - Navrhy", $"Navrhujeme knihu #{id}!"),
-                new List<Post>(Enumerable.Range(4, 3)
-                    .Select(i => new Post(id * 11 * i, id, $"Kniha {id}", $"Toto je <b>text</b> prispevku {i} <br /> do diskusie #{id}"))));
-            }
-            return dp;
-        }
+        public DiscussionPosts GetPosts(int id) => _database.GetDiscussionPosts(id);
 
         [HttpPost]
         [Route("{id:int}/posts")]
         public Post NewPost(int id, Post post)
         {
-            var newPost = post with { RenderedText = RenderMarkdown(post.Text), Id = id * 117 };
-            dp.Posts.Add(newPost);
-            return newPost;
+            post.RenderedText = RenderMarkdown(post.Text);
+            return _database.NewPost(id, post);
         }
     }
 }

@@ -5,11 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Obskurnee.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VueCliMiddleware;
+using Serilog;
 
 namespace Obskurnee
 {
@@ -30,6 +32,7 @@ namespace Obskurnee
             {
                 configuration.RootPath = "ClientApp";
             });
+            services.AddSingleton<Database, Database>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +46,7 @@ namespace Obskurnee
             app.UseRouting();
             app.UseSpaStaticFiles();
             app.UseAuthorization();
+            app.UseSerilogRequestLogging();
 
             app.UseEndpoints(endpoints =>
             {
@@ -52,9 +56,13 @@ namespace Obskurnee
             app.UseSpa(spa =>
             {
                 if (env.IsDevelopment())
+                {
                     spa.Options.SourcePath = "ClientApp/";
+                }
                 else
+                {
                     spa.Options.SourcePath = "dist";
+                }
 
                 if (env.IsDevelopment())
                 {

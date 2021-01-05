@@ -9,6 +9,11 @@
                 <td><router-link :to="{ name: 'discussion', params: { id: discussion.id } }">{{ discussion.title }}</router-link></td>
             </tr>
         </tbody>
+        <tfoot>
+            <tr><td>
+            <input v-model="newDiscussion.title" placeholder="Nova diskusia" />
+            <button @click="postNewDiscussion">Pridaj</button></td></tr>
+        </tfoot>
     </table>
 </template>
 
@@ -19,7 +24,8 @@
         name: "Discussions",
         data() {
             return {
-                discussions: []
+                discussions: [],
+                newDiscussion: {},
             }
         },
         methods: {
@@ -27,6 +33,17 @@
                 axios.get('/api/discussions')
                     .then((response) => {
                         this.discussions =  response.data;
+                    })
+                    .catch(function (error) {
+                        alert(error);
+                    });
+            },
+            postNewDiscussion() {
+                console.log(this.newDiscussion);
+                axios.post('/api/discussions/', this.newDiscussion)
+                    .then((response) => {
+                        this.discussions.push(response.data);
+                        this.newDiscussion = {};
                     })
                     .catch(function (error) {
                         alert(error);
