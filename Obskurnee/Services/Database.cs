@@ -20,7 +20,7 @@ namespace Obskurnee.Services
         public Database(ILogger<Database> logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _db = new LiteDatabase(@"bookclub.db");
+            _db = new LiteDatabase(@"data\bookclub.db");
             _discussions = _db.GetCollection<Discussion>();
             _posts = _db.GetCollection<Post>();
             _books = _db.GetCollection<Book>();
@@ -55,6 +55,13 @@ namespace Obskurnee.Services
             var disc = _discussions.FindById(discussionId);
             var posts = _posts.Find(p => p.DiscussionId == discussionId).OrderBy(p => p.CreatedOn).ToList();
             return new(disc, posts);
+        }
+
+        public GoodreadsBookInfo StoreBookInfo(GoodreadsBookInfo book)
+        {
+            var bookInfos = _db.GetCollection<GoodreadsBookInfo>();
+            bookInfos.Insert(book);
+            return book;
         }
     }
 }

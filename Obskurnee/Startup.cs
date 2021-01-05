@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using VueCliMiddleware;
 using Serilog;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace Obskurnee
 {
@@ -33,18 +35,28 @@ namespace Obskurnee
                 configuration.RootPath = "ClientApp";
             });
             services.AddSingleton<Database, Database>();
+            services.AddTransient<GoodreadsScraper, GoodreadsScraper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            Directory.CreateDirectory("images");
+            Directory.CreateDirectory("data");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
             app.UseRouting();
             app.UseSpaStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.ContentRootPath, "images")),
+                RequestPath = "/images"
+            });
             app.UseAuthorization();
             app.UseSerilogRequestLogging();
 
