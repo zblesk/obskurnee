@@ -22,5 +22,6 @@ namespace Obskurnee.Models
         public int? PageCount { get; set; }
         public string Url { get; set; }
         public string RenderedText { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

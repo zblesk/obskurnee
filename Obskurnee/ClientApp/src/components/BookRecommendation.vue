@@ -1,6 +1,6 @@
 <template>
     <div  class="book">
-      <!-- <div class="book__cover"><img src="/images/diary.jpg" alt="The Diary of a Provincial Lady cover"></div> -->
+      <div class="book__cover" v-if="post.imageUrl"><img :src="post.imageUrl" :alt="post.bookTitle"></div>
       <a href="{{ post.url }}" class="book__link"><h2 class="book__title">{{ post.bookTitle }}</h2></a>
       <p class="book__pages"><em>{{ post.pageCount }}</em></p>
       <!-- <h3 class="book__proposer">Navrhovatel: Olosta</h3> -->

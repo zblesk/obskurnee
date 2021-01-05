@@ -76,7 +76,7 @@ namespace Obskurnee.Services
                                 relativePath);
                             _logger.LogInformation("File downloaded, saving it at {filename}", fName);
                             await File.WriteAllBytesAsync(fName, pic);
-                            result.ImagePath = relativePath;
+                            result.ImageUrl = relativePath;
                         }
                     }
                     catch (Exception ex)
