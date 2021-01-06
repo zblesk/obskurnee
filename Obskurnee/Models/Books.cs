@@ -5,5 +5,12 @@ using System.Threading.Tasks;
 
 namespace Obskurnee.Models
 {
-    public record Book(int Id, Post Post, int Order);
+    public class Book : HeaderData
+    {
+        public int BookId { get; set; }
+        public int PostId { get; set; }
+        public int Order { get; set; }
+        public int ThemeDiscussionId { get; set; }
+        public int BookDiscussionId { get; set; }
+    }
 }

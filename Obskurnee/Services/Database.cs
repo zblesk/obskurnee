@@ -10,12 +10,15 @@ using System.Threading.Tasks;
 namespace Obskurnee.Services
 {
     public class Database
-    {
+   {
+        private object @lock = new object();
         private readonly ILogger<Database> _logger;
         private readonly LiteDatabase _db;
         private readonly ILiteCollection<Discussion> _discussions;
         private readonly ILiteCollection<Post> _posts;
         private readonly ILiteCollection<Book> _books;
+        private readonly ILiteCollection<Poll> _polls;
+        private readonly ILiteCollection<Vote> _votes;
 
         public Database(ILogger<Database> logger)
         {
@@ -24,6 +27,8 @@ namespace Obskurnee.Services
             _discussions = _db.GetCollection<Discussion>();
             _posts = _db.GetCollection<Post>();
             _books = _db.GetCollection<Book>();
+            _polls = _db.GetCollection<Poll>();
+            _votes = _db.GetCollection<Vote>();
 
             _posts.EnsureIndex(p => p.DiscussionId);
         }
@@ -44,7 +49,11 @@ namespace Obskurnee.Services
 
         public Post NewPost(int discussionId, Post post)
         {
-            post.Id = 0; //ensure it wasn't sent from the client
+            if (_discussions.FindById(discussionId).IsArchived)
+            {
+                throw new Exception("Diskusia uz bola uzavreta!");
+            }
+            post.PostId = 0; //ensure it wasn't sent from the client
             post.DiscussionId = discussionId;
             _posts.Insert(post);
             return post;
@@ -57,11 +66,51 @@ namespace Obskurnee.Services
             return new(disc, posts);
         }
 
+        public Poll CloseDiscussionAndOpenPoll(int discussionId)
+        {
+            var disc = _discussions.FindById(discussionId);
+            if (disc.IsArchived)
+            {
+                throw new Exception("Diskusia uz bola uzavreta!");
+            }
+            lock (@lock)
+            {
+                disc.IsArchived = true;
+                var posts = (from post in _posts.Query()
+                               where post.DiscussionId == discussionId
+                               select new { post.BookTitle, post.Author, post.PostId })
+                              .ToList();
+                var options = posts.Select(post => new PollOption { Title = $"{post.BookTitle} - {post.Author}", PostId = post.PostId })
+                                .ToList();
+                var poll = new Poll
+                {
+                    PollId = discussionId, // let's keep them identical
+                    DiscussionId = discussionId,
+                    Title = disc.Title + " - hlasovanie",
+                    Options = options
+                };
+                _polls.Insert(poll);
+                disc.PollId = poll.PollId;
+                _discussions.Update(disc);
+                return poll;
+            }
+        }
+
         public GoodreadsBookInfo StoreBookInfo(GoodreadsBookInfo book)
         {
             var bookInfos = _db.GetCollection<GoodreadsBookInfo>();
             bookInfos.Insert(book);
             return book;
         }
+
+        public IEnumerable<Poll> GetAllPolls()
+        {
+            return (from poll in _polls.Query()
+                    orderby poll.CreatedOn descending
+                    select poll)
+                    .ToList();
+        }
+
+        public Poll GetPoll(int pollId) => _polls.FindById(pollId);
     }
 }

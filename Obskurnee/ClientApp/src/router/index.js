@@ -4,6 +4,7 @@ import Counter from "@/components/Counter.vue";
 import FetchData from "@/components/FetchData.vue";
 import DiscussionList from "@/components/DiscussionList.vue";
 import Discussion from "@/components/Discussion.vue";
+import Poll from "@/components/Poll.vue";
 
 const routes = [
     {
@@ -27,9 +28,14 @@ const routes = [
         component: DiscussionList,
     },
     {
-        path: "/diskusie/:id",
+        path: "/diskusie/:discussionId",
         name: "discussion",
         component: Discussion,
+    },
+    {
+        path: "/hlasovania/:pollId",
+        name: "poll",
+        component: Poll,
     }
 ];
 

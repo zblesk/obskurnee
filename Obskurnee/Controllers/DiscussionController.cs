@@ -39,15 +39,22 @@ namespace Obskurnee.Controllers
         public Discussion NewDiscussion(Discussion discussion) => _database.NewDiscussion(discussion);
 
         [HttpGet]
-        [Route("{id:int}/posts")]
-        public DiscussionPosts GetPosts(int id) => _database.GetDiscussionPosts(id);
+        [Route("{discussionId:int}/close-voting")]
+        public Poll CloseVoting(int discussionId)
+        {
+            return _database.CloseDiscussionAndOpenPoll(discussionId);
+        }
+
+        [HttpGet]
+        [Route("{discussionId:int}/posts")]
+        public DiscussionPosts GetPosts(int discussionId) => _database.GetDiscussionPosts(discussionId);
 
         [HttpPost]
-        [Route("{id:int}/posts")]
-        public Post NewPost(int id, Post post)
+        [Route("{discussionId:int}/posts")]
+        public Post NewPost(int discussionId, Post post)
         {
             post.RenderedText = RenderMarkdown(post.Text);
-            return _database.NewPost(id, post);
+            return _database.NewPost(discussionId, post);
         }
     }
 }

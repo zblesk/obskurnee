@@ -1,6 +1,6 @@
 <template>
-  <h1 id="tableLabel">{{ title }}</h1>
-  <div class="form">
+  <h1 id="tableLabel">{{ title }}<small v-if="isArchived">Uzavreté</small></h1>
+  <div class="form" v-if="!isArchived">
     <div>
       <span>Pridaj novú knihu!</span>
       <span style="color: cyan" v-if="fetchInProgress">Kamo pockaj, LOADUJEM</span>
@@ -11,6 +11,12 @@
     <textarea v-model="newpost.text" placeholder="Komentár k návrhu"></textarea>
     <button @click="postNewBook">Pridaj</button>
     <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />
+    <div></div>
+    <button @click="closeDiscussion">UZAVRI diskusiu a vytvor hlasovanie</button>
+  </div>
+
+  <div class="form" v-if="pollId">
+    <router-link :to="{ name: 'poll', params: { pollId: pollId } }" class="nav-item nav-link" style="color: orange;">Choď na hlasovanie</router-link>
   </div>
 
   <div class="grid">
@@ -18,7 +24,7 @@
 
     <book-recommendation
       v-for="post in posts"
-      v-bind:key="post.id"
+      v-bind:key="post.postId"
       v-bind:post="post">
     </book-recommendation>
   </div>
@@ -37,16 +43,20 @@ export default {
       posts: [],
       title: "",
       newpost: {},
-      fetchInProgress: false
+      isArchived: false,
+      fetchInProgress: false,
+      pollId: 0
     };
   },
   methods: {
     getDiscussionData() {
       axios
-        .get("/api/discussions/" + this.$route.params.id + "/posts")
+        .get("/api/discussions/" + this.$route.params.discussionId + "/posts")
         .then((response) => {
+          this.isArchived = response.data.discussion.isArchived;
           this.posts = response.data.posts;
           this.title = response.data.discussion.title;
+          this.pollId = response.data.discussion.pollId;
         })
         .catch(function (error) {
           alert(error);
@@ -55,7 +65,7 @@ export default {
     postNewBook() {
       console.log(this.newpost);
       axios.post(
-          "/api/discussions/" + this.$route.params.id + "/posts",
+          "/api/discussions/" + this.$route.params.discussionId + "/posts",
           this.newpost)
         .then((response) => {
           this.posts.push(response.data);
@@ -80,6 +90,19 @@ export default {
         .catch(function (error) {
           alert(error);
           this.fetchInProgress = false;
+        });
+    },
+    closeDiscussion() 
+    {
+      console.log(this.$route.params);
+        axios.get(
+          "/api/discussions/" + this.$route.params.discussionId + "/close-voting")
+        .then((response) => {
+            this.pollId = response.data.pollId;
+            this.isArchived = true;
+        })
+        .catch(function (error) {
+          alert(error);
         });
     }
   },
