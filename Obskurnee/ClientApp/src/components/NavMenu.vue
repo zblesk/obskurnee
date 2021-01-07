@@ -16,10 +16,12 @@
                     <ul class="navbar-nav flex-grow">
                         <li class="nav-item">
                             <router-link :to="{ name: 'Home' }" class="nav-link text-dark">Domov</router-link>
-                           
                         </li>
                         <li class="nav-item">
                             <router-link :to="{ name: 'discussionlist' }" class="nav-link text-dark">Diskusie</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link :to="{ name: 'polllist' }" class="nav-link text-dark">Hlasovania</router-link>
                         </li>
                     </ul>
                 </div>
