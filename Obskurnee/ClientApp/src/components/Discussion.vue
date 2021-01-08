@@ -5,10 +5,10 @@
       <span>Pridaj novú knihu!</span>
       <span style="color: cyan" v-if="fetchInProgress">Kamo pockaj, LOADUJEM</span>
     </div>
-    <input v-model="newpost.url" placeholder="Goodreads link" @change="linkChange"/>
-    <input v-model="newpost.bookTitle" placeholder="Meno knihy" />
+    <input v-model="newpost.url" placeholder="https://www.goodreads.com/book..." @change="linkChange"/>
+    <input v-model="newpost.bookTitle" placeholder="Meno knihy" required />
     <input v-model="newpost.author" placeholder="Autor" />
-    <textarea v-model="newpost.text" placeholder="Komentár k návrhu"></textarea>
+    <textarea v-model="newpost.text" placeholder="Komentár k návrhu" required></textarea>
     <button @click="postNewBook">Pridaj</button>
     <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />
     <div></div>
