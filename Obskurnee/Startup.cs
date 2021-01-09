@@ -80,6 +80,7 @@ namespace Obskurnee
                 RequestPath = "/images"
             });
 
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSerilogRequestLogging();
 
