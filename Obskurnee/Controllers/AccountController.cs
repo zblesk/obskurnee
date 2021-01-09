@@ -73,5 +73,16 @@ namespace Obskurnee.Controllers
             };
             return new ClaimsPrincipal(new ClaimsIdentity(claims, authScheme));
         }
+
+        [HttpGet("context")]
+        public JsonResult Context()
+        {
+            return Json(new
+            {
+                name = this.User?.Identity?.Name,
+                email = this.User?.FindFirstValue(ClaimTypes.Email),
+                role = this.User?.FindFirstValue(ClaimTypes.Role),
+            });
+        }
     }
 }

@@ -23,7 +23,7 @@
                         <li class="nav-item">
                             <router-link :to="{ name: 'polllist' }" class="nav-link text-dark">Hlasovania</router-link>
                         </li>
-                        <li><login></login></li>
+                        <li><login-control></login-control></li>
                     </ul>
                 </div>
             </div>
@@ -54,12 +54,10 @@
     }
 </style>
 <script>
-import Login from './Login.vue';
-import Login from "./Login.vue";
+import LoginControl from "./LoginControl.vue";
 export default {
-  components: { Login },
     name: "NavMenu",
-    components: Login,
+    components: { LoginControl },
     data() {
         return {
             isExpanded: false
