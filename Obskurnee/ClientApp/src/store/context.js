@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export default {
     namespaced: true,
     state: {
@@ -21,6 +23,11 @@ export default {
       logout ({ commit }) {
         return axios.post('api/ucet/logout').then(() => {
           commit('setProfile', {})
+        })
+      },
+      restoreContext ({ commit}) {
+        return axios.get('api/ucet/context').then(res => {
+          commit('setProfile', res.data)    
         })
       }
     }
