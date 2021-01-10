@@ -30,10 +30,8 @@ export default {
   methods: {
     ...mapActions("context", ["login"]),
     onSubmit() {
-        console.log('submit');
-      this.login({ authMethod: 'cookie', credentials: this.form })
+      this.login({ authMethod: 'cookie', creds: this.form })
         .then(() => {
-          console.log('loginthen', this.$refs);
         }
       );
     },

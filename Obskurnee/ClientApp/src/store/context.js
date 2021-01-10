@@ -15,7 +15,7 @@ export default {
     },
     actions: {
       login ({ commit }, credentials) {
-        return axios.post('api/ucet/login', credentials)
+        return axios.post('api/ucet/login', credentials.creds )
           .then(res => {
             commit('setProfile', res.data)
         })

@@ -6,11 +6,9 @@
 <script>
 import { mapActions } from 'vuex'
 import NavMenu from './components/NavMenu.vue'
-import store from './store'
 
 export default {
   name: 'App',
-  store: store,
   components: {
       NavMenu
   },
