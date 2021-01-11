@@ -8,7 +8,7 @@ import PollList from "@/components/PollList.vue";
 const routes = [
     {
         path: "/",
-        name: "Home",
+        name: "home",
         component: Home,
     },
     {

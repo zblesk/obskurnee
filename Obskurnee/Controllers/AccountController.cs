@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Obskurnee.Controllers
 {
-    [Route("api/ucet")]
+    [Route("api/account")]
     public class AccountController : Controller
     {
         [HttpPost("login")]
@@ -67,7 +67,7 @@ namespace Obskurnee.Controllers
             // using its email and a hardcoded “User” role
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, creds.Email),
+                new Claim(ClaimTypes.Name, "Meno tvoje kamo"),
                 new Claim(ClaimTypes.Email, creds.Email),
                 new Claim(ClaimTypes.Role, "User"),
             };

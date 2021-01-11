@@ -15,20 +15,20 @@ export default {
     },
     actions: {
       login ({ commit }, credentials) {
-        return axios.post('api/ucet/login', credentials.creds )
+        return axios.post('/api/account/login', credentials.creds )
           .then(res => {
             commit('setProfile', res.data)
-        })
+        });
       },
       logout ({ commit }) {
-        return axios.post('api/ucet/logout').then(() => {
+        return axios.post('/api/account/logout').then(() => {
           commit('setProfile', {})
-        })
+        });
       },
       restoreContext ({ commit}) {
-        return axios.get('api/ucet/context').then(res => {
+        return axios.get('/api/account/context').then(res => {
           commit('setProfile', res.data)    
-        })
+        });
       }
     }
 }

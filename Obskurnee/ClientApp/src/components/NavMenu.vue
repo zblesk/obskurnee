@@ -2,7 +2,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand">Book club!</a>
+                <a class="navbar-brand"><img src="../assets/logo.png" width="50" height="40" />Book club!</a>
                 <button class="navbar-toggler"
                         type="button"
                         data-toggle="collapse"
@@ -15,12 +15,12 @@
                      v-bind:class="{show: isExpanded}">
                     <ul class="navbar-nav flex-grow">
                         <li class="nav-item">
-                            <router-link :to="{ name: 'Home' }" class="nav-link text-dark">Domov</router-link>
+                            <router-link :to="{ name: 'home' }" class="nav-link text-dark">Domov</router-link>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" v-if="isAuthenticated">
                             <router-link :to="{ name: 'discussionlist' }" class="nav-link text-dark">Diskusie</router-link>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" v-if="isAuthenticated">
                             <router-link :to="{ name: 'polllist' }" class="nav-link text-dark">Hlasovania</router-link>
                         </li>
                         <li><login-control></login-control></li>
@@ -53,7 +53,9 @@
         box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
     }
 </style>
+
 <script>
+import { mapGetters } from "vuex";
 import LoginControl from "./LoginControl.vue";
 export default {
     name: "NavMenu",
@@ -62,6 +64,9 @@ export default {
         return {
             isExpanded: false
         }
+    },
+    computed: {
+        ...mapGetters("context", ["isAuthenticated"])
     },
     methods: {
         collapse() {
