@@ -4,12 +4,21 @@
 </template>
 
 <script>
-    import NavMenu from './components/NavMenu.vue'
+import { mapActions } from 'vuex'
+import NavMenu from './components/NavMenu.vue'
 
 export default {
   name: 'App',
   components: {
       NavMenu
+  },
+  created () {
+    this.restoreContext()
+  },
+  methods: {
+    ...mapActions('context', [
+      'restoreContext'
+    ])
   }
 }
 </script>
