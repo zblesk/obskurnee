@@ -47,7 +47,7 @@ export default {
   methods: {
     ...mapActions("context", ["login", "logout"]),
     onSubmit() {
-      this.login({ authMethod: 'cookie', creds: this.form })
+      this.login({ authMethod: 'jwt', creds: this.form })
         .then(() => {
         }
       );
@@ -58,7 +58,6 @@ export default {
     },
     onLogout(){
       this.logout();
-      this.onCancel();
       this.$router.push({ name: "home" });
     }
   },
