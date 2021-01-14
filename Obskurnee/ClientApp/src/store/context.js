@@ -25,7 +25,7 @@ export default {
     },
     actions: {
       login ({ commit }, credentials) {
-        return axios.post('/api/account/login', credentials.creds).then(res => {
+        return axios.post('/api/account/login', credentials).then(res => {
           const profile = res.data;
           const jwtToken = res.data.token;
           delete profile.token;

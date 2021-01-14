@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Obskurnee.Services
 {
-    public class Database : ILiteDbContext
+    public class Database : ILiteDbContext, IDisposable
     {
         private object @lock = new object();
         private readonly Serilog.ILogger _logger;
@@ -34,6 +34,11 @@ namespace Obskurnee.Services
             _votes = _db.GetCollection<Vote>();
 
             _posts.EnsureIndex(p => p.DiscussionId);
+        }
+
+        public void Checkpoint()
+        {
+            _db.Checkpoint();
         }
 
         public IEnumerable<Discussion> GetAllDiscussions()
@@ -87,7 +92,6 @@ namespace Obskurnee.Services
                                 .ToList();
                 var poll = new Poll
                 {
-                    PollId = discussionId, // let's keep them identical
                     DiscussionId = discussionId,
                     Title = disc.Title + " - hlasovanie",
                     Options = options
@@ -115,5 +119,10 @@ namespace Obskurnee.Services
         }
 
         public Poll GetPoll(int pollId) => _polls.FindById(pollId);
+
+        public void Dispose()
+        {
+            _db?.Dispose();
+        }
     }
 }

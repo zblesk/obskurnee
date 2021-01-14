@@ -47,7 +47,7 @@ export default {
   methods: {
     ...mapActions("context", ["login", "logout"]),
     onSubmit() {
-      this.login({ authMethod: 'jwt', creds: this.form })
+      this.login(this.form)
         .then(() => {
         }
       );

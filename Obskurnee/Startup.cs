@@ -1,38 +1,33 @@
+using AspNetCore.Identity.LiteDB;
+using AspNetCore.Identity.LiteDB.Data;
+using AspNetCore.Identity.LiteDB.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Obskurnee.Services;
+using Serilog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using VueCliMiddleware;
-using Serilog;
-using Microsoft.Extensions.FileProviders;
-using System.IO;
-using AspNetCore.Identity.LiteDB.Models;
-using AspNetCore.Identity.LiteDB;
-using Microsoft.AspNetCore.Identity;
+
 using LDM = AspNetCore.Identity.LiteDB;
-using AspNetCore.Identity.LiteDB.Data;
-using Microsoft.AspNetCore.Http;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Text;
-using System.Security.Claims;
 
 namespace Obskurnee
 {
     public class Startup
     {
-        //public const string CookieAuthScheme = "CookieAuthScheme";
-        public const string JWTAuthScheme = "JWTAuthScheme";
-
-        //readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        public static readonly SymmetricSecurityKey SecurityKey =
+            new SymmetricSecurityKey(
+                Encoding.Default.GetBytes("this would be a real secret"));
 
         public Startup(IConfiguration configuration)
         {
@@ -41,7 +36,53 @@ namespace Obskurnee
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            Directory.CreateDirectory("images");
+            Directory.CreateDirectory("data");
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseRouting();
+            app.UseSpaStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.ContentRootPath, "images")),
+                RequestPath = "/images"
+            });
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseSerilogRequestLogging();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
+            app.UseSpa(spa =>
+            {
+                if (env.IsDevelopment())
+                {
+                    spa.Options.SourcePath = "ClientApp/";
+                }
+                else
+                {
+                    spa.Options.SourcePath = "dist";
+                }
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseVueCli(npmScript: "serve");
+                }
+            });
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -96,7 +137,7 @@ namespace Obskurnee
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequiredLength = 6;
+                options.Password.RequiredLength = 15;
             })
                 .AddRoles<LDM.IdentityRole>()
                .AddUserStore<LiteDbUserStore<ApplicationUser>>()
@@ -108,58 +149,6 @@ namespace Obskurnee
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("AdminOnly", policy => policy.RequireClaim(ClaimTypes.Role, "admin"));
-            });
-        }
-
-        public static readonly SymmetricSecurityKey SecurityKey =
-            new SymmetricSecurityKey(
-                Encoding.Default.GetBytes("this would be a real secret"));
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            Directory.CreateDirectory("images");
-            Directory.CreateDirectory("data");
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseRouting();
-            app.UseSpaStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, "images")),
-                RequestPath = "/images"
-            });
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseSerilogRequestLogging();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-
-            app.UseSpa(spa =>
-            {
-                if (env.IsDevelopment())
-                {
-                    spa.Options.SourcePath = "ClientApp/";
-                }
-                else
-                {
-                    spa.Options.SourcePath = "dist";
-                }
-
-                if (env.IsDevelopment())
-                {
-                    spa.UseVueCli(npmScript: "serve");
-                }
-
             });
         }
     }

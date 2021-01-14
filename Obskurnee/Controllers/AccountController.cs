@@ -27,18 +27,22 @@ namespace Obskurnee.Controllers
 
         private static readonly SigningCredentials SigningCreds = new SigningCredentials(Startup.SecurityKey, SecurityAlgorithms.HmacSha256);
         private readonly JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
+        private readonly Database _db;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
            SignInManager<ApplicationUser> signInManager,
+           Database db,
            ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _db = db;
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Token([FromBody] LoginCredentials creds)
         {
             if (!await ValidateLogin(creds))
@@ -76,10 +80,6 @@ namespace Obskurnee.Controllers
             return signInRes.Succeeded;
         }
 
-        // On a real project, you would use the SignInManager 
-        // to locate the user by its email and build its ClaimsPrincipal:
-        //  var user = await _signInManager.UserManager.FindByEmailAsync(email);
-        //  var principal = await _signInManager.CreateUserPrincipalAsync(user)
         private async Task<ClaimsPrincipal> GetPrincipal(LoginCredentials creds)
         {
             var user = await _signInManager.UserManager.FindByEmailAsync(creds.Email);
@@ -99,22 +99,22 @@ namespace Obskurnee.Controllers
 
         [HttpPost("register")]
     //    [Authorize(Policy = "AdminOnly")]
-        public async Task<JsonResult> Register([FromBody] LoginCredentials creds)
+        public async Task<IActionResult> Register([FromBody] LoginCredentials creds)
         {
             var user = new ApplicationUser { UserName = creds.Email, Email = creds.Email };
             var result = await _userManager.CreateAsync(user, creds.Password);
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
-
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                _db.Checkpoint();
+                // var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 // var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                 // await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
                 await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "nerd"));
                 _logger.LogInformation("User created a new account with password.");
-                return Context();
+                return Json(user);
             }
-            return new JsonResult(result);
+            return ValidationProblem("Registration failed");
         }
 
         [HttpPost("makeadmin")]
