@@ -98,7 +98,7 @@ namespace Obskurnee.Controllers
         }
 
         [HttpPost("register")]
-        [Authorize(Policy = "AdminOnly")]
+    //    [Authorize(Policy = "AdminOnly")]
         public async Task<JsonResult> Register([FromBody] LoginCredentials creds)
         {
             var user = new ApplicationUser { UserName = creds.Email, Email = creds.Email };
