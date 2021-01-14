@@ -1,4 +1,5 @@
-﻿using LiteDB;
+﻿using AspNetCore.Identity.LiteDB.Data;
+using LiteDB;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.ViewModels;
@@ -9,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace Obskurnee.Services
 {
-    public class Database
-   {
+    public class Database : ILiteDbContext
+    {
         private object @lock = new object();
-        private readonly ILogger<Database> _logger;
+        private readonly Serilog.ILogger _logger;
         private readonly LiteDatabase _db;
         private readonly ILiteCollection<Discussion> _discussions;
         private readonly ILiteCollection<Post> _posts;
@@ -20,7 +21,9 @@ namespace Obskurnee.Services
         private readonly ILiteCollection<Poll> _polls;
         private readonly ILiteCollection<Vote> _votes;
 
-        public Database(ILogger<Database> logger)
+        LiteDatabase ILiteDbContext.LiteDatabase => _db;
+
+        public Database(Serilog.ILogger logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = new LiteDatabase(@"data\bookclub.db");
