@@ -12,5 +12,7 @@ namespace Obskurnee.Models
         public int Order { get; set; }
         public int ThemeDiscussionId { get; set; }
         public int BookDiscussionId { get; set; }
+
+        public Book(string ownerId) : base(ownerId) { }
     }
 }

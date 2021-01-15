@@ -13,5 +13,7 @@ namespace Obskurnee.Models
         public int? Pages { get; set; }
         public string Description { get; set; }
         public string ImageUrl { get; set; }
+
+        public GoodreadsBookInfo(string ownerId) : base(ownerId) { }
     }
 }

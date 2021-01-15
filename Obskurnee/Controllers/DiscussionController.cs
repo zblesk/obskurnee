@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace Obskurnee.Controllers
 {
@@ -20,16 +22,18 @@ namespace Obskurnee.Controllers
         private readonly ILogger<DiscussionController> _logger;
         private static MarkdownPipeline _mdPipeline;
         private readonly Database _database;
+        private readonly UserManager<Bookworm> _userManager;
 
         static DiscussionController()
         {
             _mdPipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
         }
 
-        public DiscussionController(ILogger<DiscussionController> logger, Database database)
+        public DiscussionController(ILogger<DiscussionController> logger, Database database, UserManager<Bookworm> userManager)
         {
             _logger = logger;
             _database = database ?? throw new ArgumentNullException(nameof(database));
+            _userManager = userManager;
         }
 
         private string RenderMarkdown(string md) => Markdown.ToHtml(md, _mdPipeline);
@@ -38,14 +42,12 @@ namespace Obskurnee.Controllers
         public IEnumerable<Discussion> GetDiscussions() => _database.GetAllDiscussions();
 
         [HttpPost]
-        public Discussion NewDiscussion(Discussion discussion) => _database.NewDiscussion(discussion);
+        public Discussion NewDiscussion(Discussion discussion) => _database.NewDiscussion(discussion.SetOwner(User));
 
         [HttpGet]
         [Route("{discussionId:int}/close-voting")]
-        public Poll CloseVoting(int discussionId)
-        {
-            return _database.CloseDiscussionAndOpenPoll(discussionId);
-        }
+        public Poll CloseVoting(int discussionId) => 
+            _database.CloseDiscussionAndOpenPoll(discussionId, User.GetUserId());
 
         [HttpGet]
         [Route("{discussionId:int}/posts")]
@@ -56,7 +58,7 @@ namespace Obskurnee.Controllers
         public Post NewPost(int discussionId, Post post)
         {
             post.RenderedText = RenderMarkdown(post.Text);
-            return _database.NewPost(discussionId, post);
+            return _database.NewPost(discussionId, post.SetOwner(User));
         }
     }
 }

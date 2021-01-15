@@ -33,7 +33,7 @@ namespace Obskurnee.Services
             _books = _db.GetCollection<Book>("books");
             _polls = _db.GetCollection<Poll>("polls");
             _votes = _db.GetCollection<Vote>("votes");
-
+            
             _posts.EnsureIndex(p => p.DiscussionId);
         }
 
@@ -75,7 +75,7 @@ namespace Obskurnee.Services
             return new(disc, posts);
         }
 
-        public Poll CloseDiscussionAndOpenPoll(int discussionId)
+        public Poll CloseDiscussionAndOpenPoll(int discussionId, string currentUserId)
         {
             var discussion = _discussions.FindById(discussionId);
             if (discussion.IsArchived)
@@ -90,7 +90,7 @@ namespace Obskurnee.Services
                                orderby post.PostId
                                select post)
                               .ToList();
-                var poll = new Poll
+                var poll = new Poll(currentUserId)
                 {
                     DiscussionId = discussion.DiscussionId,
                     Title = discussion.Title + " - hlasovanie",

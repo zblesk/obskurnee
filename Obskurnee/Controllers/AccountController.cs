@@ -101,7 +101,12 @@ namespace Obskurnee.Controllers
     //    [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Register([FromBody] LoginCredentials creds)
         {
-            var user = new Bookworm { UserName = creds.Email, Email = creds.Email, GoodreadsProfileUrl="poeknasjkha url kekes" };
+            var user = new Bookworm
+            {
+                UserName = creds.Email.Substring(0, creds.Email.IndexOf('@')),
+                Email = creds.Email,
+                GoodreadsProfileUrl = "https://poeknasjkha url kekes"
+            };
             var result = await _userManager.CreateAsync(user, creds.Password);
             if (result.Succeeded)
             {
@@ -110,7 +115,6 @@ namespace Obskurnee.Controllers
                 // var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 // var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                 // await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
-                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "nerd"));
                 _logger.LogInformation("User created a new account with password.");
                 return Json(user);
             }

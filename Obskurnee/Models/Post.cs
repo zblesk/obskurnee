@@ -15,5 +15,7 @@ namespace Obskurnee.Models
         public string Url { get; set; }
         public string RenderedText { get; set; }
         public string ImageUrl { get; set; }
+
+        public Post(string ownerId) : base(ownerId) { }
     }
 }

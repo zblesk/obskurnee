@@ -1,4 +1,5 @@
 <template>
+<section>
     <h1 id="tableLabel">Aktualne diskusie</h1>
 
     <p v-if="!discussions"><em>Cakaj, nacitavam</em></p>
@@ -15,6 +16,7 @@
             <button @click="postNewDiscussion">Pridaj</button></td></tr>
         </tfoot>
     </table>
+</section>
 </template>
 
 
@@ -44,6 +46,7 @@
                     .then((response) => {
                         this.discussions.push(response.data);
                         this.newDiscussion = {};
+                        this.$router.push({ name: "discussion", params: { discussionId: response.data.discussionId } });
                     })
                     .catch(function (error) {
                         alert(error);

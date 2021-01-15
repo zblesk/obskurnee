@@ -14,5 +14,7 @@ namespace Obskurnee.Models
         public string Description { get; set; }
         public bool IsArchived { get; set; }
         [BsonRef("polls")] public Poll Poll { get; set; }
+
+        public Discussion(string ownerId) : base(ownerId) { }
     }
 }

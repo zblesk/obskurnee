@@ -9,13 +9,12 @@ namespace Obskurnee.Models
 {
     public class HeaderData
     {
-        [BsonRef("user")]
-        public ApplicationUser OwnerId { get; set; }
-        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        public string OwnerId { get; set; } 
+        public DateTime CreatedOn { get; init; } = DateTime.UtcNow;
 
-        //public HeaderData(ApplicationUser owner)
-        //{
-        //    OwnerId = owner;
-        //}
+        public HeaderData(string ownerId)
+        {
+            OwnerId = ownerId;
+        }
     }
 }

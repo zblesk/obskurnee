@@ -13,5 +13,7 @@ namespace Obskurnee.Models
         /// Contains votes - IDs of posts the user voted for
         /// </summary>
         public int[] Votes { get; set; }
+
+        public Vote(string ownerId) : base(ownerId) { }
     }
 }

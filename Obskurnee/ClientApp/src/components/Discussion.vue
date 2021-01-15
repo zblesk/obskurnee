@@ -58,7 +58,8 @@ export default {
           this.isArchived = response.data.discussion.isArchived;
           this.posts = response.data.posts;
           this.title = response.data.discussion.title;
-          this.pollId = response.data.discussion.poll.pollId;
+          if (response.data.discussion.poll)
+            this.pollId = response.data.discussion.poll.pollId;
         })
         .catch(function (error) {
           alert(error);

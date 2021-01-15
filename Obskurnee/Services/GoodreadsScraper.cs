@@ -32,7 +32,7 @@ namespace Obskurnee.Services
                 throw new Exception("Invalid URL: " + goodreadsUrl);
             }
             _logger.LogInformation("Scraping {url}", goodreadsUrl);
-            var result = new GoodreadsBookInfo { Url = goodreadsUrl };
+            var result = new GoodreadsBookInfo("none") { Url = goodreadsUrl };
             try
             {
                 var converter = new ReverseMarkdown.Converter();
@@ -46,7 +46,7 @@ namespace Obskurnee.Services
 
                     result.Name = document.QuerySelector("#bookTitle")?.InnerText?.Trim();
                     result.Author = document.QuerySelector(".authorName__container > a:nth-child(1) > span:nth-child(1)")?.InnerText?.Trim();
-                    result.Description = converter.Convert(document.QuerySelector("#description.readable.stacked span:nth-child(2)").InnerHtml);
+                    result.Description = converter.Convert(document.QuerySelector("#description.readable.stacked span:nth-child(2)")?.InnerHtml);
                     var pages = document.QuerySelector("#details > div:nth-child(1) > span:nth-child(2)")?.InnerText;
                     var imgUrl = document.QuerySelector(".editionCover > img")?.Attributes["src"]?.Value;
 
