@@ -33,7 +33,15 @@ namespace Obskurnee.Controllers
         
         [HttpGet]
         [Route("{pollId:int}")]
-        public Poll GetPoll(int pollId) => _database.GetPoll(pollId);
+        public PollInfo GetPoll(int pollId) => _database.GetPoll(pollId, User.GetUserId());
 
+        [HttpPost]
+        [Route("{pollId:int}/vote")]
+        public IActionResult CastVote(int pollId, Vote vote)
+        {
+            vote.PollId = pollId;
+            _database.CastPollVote(vote.SetOwner(User));
+            return new OkResult();
+        }
     }
 }

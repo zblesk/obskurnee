@@ -15,6 +15,6 @@ namespace Obskurnee
             return data;
         }
 
-        public static string GetUserId(this ClaimsPrincipal userClaims) => ((ClaimsIdentity)userClaims.Identity).FindFirst("Id").Value;
+        public static string GetUserId(this ClaimsPrincipal userClaims) => userClaims.FindFirst(ClaimTypes.NameIdentifier).Value;
     }
 }

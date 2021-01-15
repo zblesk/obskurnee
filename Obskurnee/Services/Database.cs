@@ -37,6 +37,12 @@ namespace Obskurnee.Services
             _posts.EnsureIndex(p => p.DiscussionId);
         }
 
+        public void CastPollVote(Vote vote)
+        {
+            vote.VoteId = $"{vote.PollId}-{vote.OwnerId}";
+            _votes.Upsert(vote);
+        }
+
         public void Checkpoint()
         {
             _db.Checkpoint();
@@ -118,9 +124,16 @@ namespace Obskurnee.Services
                     .ToList();
         }
 
-        public Poll GetPoll(int pollId) => _polls
-            .Include(x => x.Options)
-            .FindById(pollId);
+        public PollInfo GetPoll(int pollId, string userId)
+        {
+            var poll = _polls
+              .Include(x => x.Options)
+              .FindById(pollId);
+            var voteId = $"{pollId}-{userId}";
+            var vote = _votes
+                .FindById(voteId);
+            return new PollInfo(poll, vote);
+        }
 
         public void Dispose()
         {

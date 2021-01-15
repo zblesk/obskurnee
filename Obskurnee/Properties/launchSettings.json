@@ -19,7 +19,7 @@
     "Obskurnee": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "hlasovania",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
