@@ -27,11 +27,12 @@ namespace Obskurnee.Services
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = new LiteDatabase(@"data\bookclub.db");
-            _discussions = _db.GetCollection<Discussion>();
-            _posts = _db.GetCollection<Post>();
-            _books = _db.GetCollection<Book>();
-            _polls = _db.GetCollection<Poll>();
-            _votes = _db.GetCollection<Vote>();
+            _db.CheckpointSize = 1;
+            _discussions = _db.GetCollection<Discussion>("discussions");
+            _posts = _db.GetCollection<Post>("posts");
+            _books = _db.GetCollection<Book>("books");
+            _polls = _db.GetCollection<Poll>("polls");
+            _votes = _db.GetCollection<Vote>("votes");
 
             _posts.EnsureIndex(p => p.DiscussionId);
         }
@@ -76,29 +77,28 @@ namespace Obskurnee.Services
 
         public Poll CloseDiscussionAndOpenPoll(int discussionId)
         {
-            var disc = _discussions.FindById(discussionId);
-            if (disc.IsArchived)
+            var discussion = _discussions.FindById(discussionId);
+            if (discussion.IsArchived)
             {
                 throw new Exception("Diskusia uz bola uzavreta!");
             }
             lock (@lock)
             {
-                disc.IsArchived = true;
+                discussion.IsArchived = true;
                 var posts = (from post in _posts.Query()
                                where post.DiscussionId == discussionId
-                               select new { post.BookTitle, post.Author, post.PostId })
+                               orderby post.PostId
+                               select post)
                               .ToList();
-                var options = posts.Select(post => new PollOption { Title = $"{post.BookTitle} - {post.Author}", PostId = post.PostId })
-                                .ToList();
                 var poll = new Poll
                 {
-                    DiscussionId = discussionId,
-                    Title = disc.Title + " - hlasovanie",
-                    Options = options
+                    DiscussionId = discussion.DiscussionId,
+                    Title = discussion.Title + " - hlasovanie",
+                    Options = posts,
                 };
                 _polls.Insert(poll);
-                disc.PollId = poll.PollId;
-                _discussions.Update(disc);
+                discussion.Poll = poll;
+                _discussions.Update(discussion);
                 return poll;
             }
         }
@@ -118,7 +118,9 @@ namespace Obskurnee.Services
                     .ToList();
         }
 
-        public Poll GetPoll(int pollId) => _polls.FindById(pollId);
+        public Poll GetPoll(int pollId) => _polls
+            .Include(x => x.Options)
+            .FindById(pollId);
 
         public void Dispose()
         {

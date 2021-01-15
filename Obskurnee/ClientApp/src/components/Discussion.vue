@@ -1,4 +1,5 @@
 <template>
+<div>
   <h1 id="tableLabel">{{ title }}<small v-if="isArchived">Uzavreté</small></h1>
   <div class="form" v-if="!isArchived">
     <div>
@@ -28,6 +29,7 @@
       v-bind:post="post">
     </book-recommendation>
   </div>
+</div>
 </template>
 
 
@@ -56,7 +58,7 @@ export default {
           this.isArchived = response.data.discussion.isArchived;
           this.posts = response.data.posts;
           this.title = response.data.discussion.title;
-          this.pollId = response.data.discussion.pollId;
+          this.pollId = response.data.discussion.poll.pollId;
         })
         .catch(function (error) {
           alert(error);

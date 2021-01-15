@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Obskurnee.Models;
 using Obskurnee.Services;
 using Serilog;
 using System;
@@ -131,7 +132,7 @@ namespace Obskurnee
                     };
                 });
 
-            services.AddIdentityCore<ApplicationUser>(options =>
+            services.AddIdentityCore<Bookworm>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireUppercase = false;
@@ -140,9 +141,9 @@ namespace Obskurnee
                 options.Password.RequiredLength = 15;
             })
                 .AddRoles<LDM.IdentityRole>()
-               .AddUserStore<LiteDbUserStore<ApplicationUser>>()
+               .AddUserStore<LiteDbUserStore<Bookworm>>()
                .AddRoleStore<LiteDbRoleStore<LDM.IdentityRole>>()
-               .AddSignInManager<SignInManager<ApplicationUser>>()
+               .AddSignInManager<SignInManager<Bookworm>>()
                .AddDefaultTokenProviders()
                ;
 

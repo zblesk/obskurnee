@@ -21,8 +21,8 @@ namespace Obskurnee.Controllers
     [Route("api/account")]
     public class AccountController : Controller
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<Bookworm> _signInManager;
+        private readonly UserManager<Bookworm> _userManager;
         private readonly ILogger _logger;
 
         private static readonly SigningCredentials SigningCreds = new SigningCredentials(Startup.SecurityKey, SecurityAlgorithms.HmacSha256);
@@ -30,8 +30,8 @@ namespace Obskurnee.Controllers
         private readonly Database _db;
 
         public AccountController(
-            UserManager<ApplicationUser> userManager,
-           SignInManager<ApplicationUser> signInManager,
+            UserManager<Bookworm> userManager,
+           SignInManager<Bookworm> signInManager,
            Database db,
            ILogger<AccountController> logger)
         {
@@ -101,7 +101,7 @@ namespace Obskurnee.Controllers
     //    [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Register([FromBody] LoginCredentials creds)
         {
-            var user = new ApplicationUser { UserName = creds.Email, Email = creds.Email };
+            var user = new Bookworm { UserName = creds.Email, Email = creds.Email, GoodreadsProfileUrl="poeknasjkha url kekes" };
             var result = await _userManager.CreateAsync(user, creds.Password);
             if (result.Succeeded)
             {
