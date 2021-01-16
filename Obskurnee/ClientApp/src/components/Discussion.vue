@@ -13,7 +13,7 @@
     <button @click="postNewBook">Pridaj</button>
     <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />
     <div></div>
-    <button @click="closeDiscussion">UZAVRI diskusiu a vytvor hlasovanie</button>
+    <button @click="closeDiscussion" v-if="isAdmin">UZAVRI diskusiu a vytvor hlasovanie</button>
   </div>
 
   <div class="form" v-if="pollId">
@@ -36,6 +36,7 @@
 <script>
 import axios from "axios";
 import BookRecommendation from "./BookRecommendation.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Discussion",
@@ -49,6 +50,9 @@ export default {
       fetchInProgress: false,
       pollId: 0
     };
+  },
+  computed: {
+    ...mapGetters("context", ["isAdmin"])
   },
   methods: {
     getDiscussionData() {
@@ -103,6 +107,7 @@ export default {
         .then((response) => {
             this.pollId = response.data.pollId;
             this.isArchived = true;
+            this.$router.push({ name: "poll", params: { pollId: this.pollId} });
         })
         .catch(function (error) {
           alert(error);

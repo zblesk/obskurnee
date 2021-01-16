@@ -43,6 +43,7 @@ namespace Obskurnee.Controllers
         public Discussion NewDiscussion(Discussion discussion) => _database.NewDiscussion(discussion.SetOwner(User));
 
         [HttpGet]
+        [Authorize(Policy = "AdminOnly")]
         [Route("{discussionId:int}/close-voting")]
         public Poll CloseVoting(int discussionId) => 
             _database.CloseDiscussionAndOpenPoll(discussionId, User.GetUserId());

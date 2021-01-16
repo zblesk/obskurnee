@@ -7,6 +7,7 @@ namespace Obskurnee.Models
 {
     public class PollResults
     {
+        public int WinnerPostId { get; set; }
         public int AlreadyVoted { get; set; }
         public int TotalVoters { get; set; }
         public bool VotingClosed { get; set; } = false;

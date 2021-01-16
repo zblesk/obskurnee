@@ -5,7 +5,7 @@
   </h1>
 
   <div v-if="poll.isClosed && poll.bookId">
-    
+    <book-preview :post="poll.options.find(o => o.postId == poll.results.winnerPostId)"  style="margin: auto;">Víťaz</book-preview>
   </div>
 
   <div v-if="!poll.isClosed && pollResults && pollResults.yetToVote" 
@@ -39,9 +39,10 @@
 <script>
 import axios from "axios";
 import BookRecommendation from './BookRecommendation.vue';
+import BookPreview from './BookPreview.vue';
 
 export default {
-  components: { BookRecommendation },
+  components: { BookRecommendation, BookPreview },
   name: "Poll",
   data() {
     return {

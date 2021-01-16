@@ -109,7 +109,7 @@ namespace Obskurnee.Services
 
             if (pollResults.AlreadyVoted == pollResults.TotalVoters)
             {
-                ClosePoll(poll, currentUser);
+                pollResults.WinnerPostId = ClosePoll(poll, currentUser);                
             }
 
             poll.Results = pollResults;
@@ -117,16 +117,19 @@ namespace Obskurnee.Services
             return pollResults;
         }
 
-        private void ClosePoll(Poll poll, string currentUser)
+        private int ClosePoll(Poll poll, string currentUser)
         {
             _logger.LogInformation("Closing poll {pollId}", poll.PollId);
             poll.IsClosed = true;
+            var winnerPostId = 0;
             if (poll.CreateBookOnClose)
             {
                 var book = _bookService.CreateBook(poll, currentUser);
                 poll.BookId = book.BookId;
+                winnerPostId = book.Post.PostId;
             }
             _db.Polls.Update(poll);
+            return winnerPostId;
         }
     }
 }

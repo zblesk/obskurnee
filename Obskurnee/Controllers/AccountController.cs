@@ -65,7 +65,7 @@ namespace Obskurnee.Controllers
                 token = _tokenHandler.WriteToken(token),
                 name = principal.Identity.Name,
                 email = principal.FindFirstValue(ClaimTypes.Email),
-                isAdmin = this.User?.FindFirstValue(BookclubClaims.Admin) ?? "false",
+                isAdmin = principal.FindFirstValue(BookclubClaims.Admin) ?? "false",
             });
         }
 

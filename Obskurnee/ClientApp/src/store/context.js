@@ -7,7 +7,8 @@ export default {
       jwtToken: null
     },
     getters: {
-      isAuthenticated: state => state.profile.name && state.profile.email
+      isAuthenticated: state => state.profile.name && state.profile.email,
+      isAdmin: state => state.profile.isAdmin == "true"
     },
     mutations: {
       setProfile (state, profile) {
