@@ -51,7 +51,7 @@ namespace Obskurnee.Services
 
         public IEnumerable<Book> GetBooksNewestFirst()
         {
-            return _db.Books.FindAll().OrderByDescending(b => b.Order);
+            return _db.Books.Include(b => b.Post).FindAll().OrderByDescending(b => b.Order);
         }
     }
 }
