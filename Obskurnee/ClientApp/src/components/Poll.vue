@@ -1,9 +1,15 @@
 <template>
 <section>
   <h1 id="tableLabel">
-    {{ poll.title }}<small v-if="poll.isClosed">Uzavreté</small>
+    {{ poll.title }}<small v-if="poll.isClosed"> Uzavreté</small>
   </h1>
-  <div v-if="pollResults.yetToVote" style="margin:1em; border-color: pink; border-style:dashed;">
+
+  <div v-if="poll.isClosed && poll.bookId">
+    
+  </div>
+
+  <div v-if="!poll.isClosed && pollResults && pollResults.yetToVote" 
+    style="margin:1em; border-color: pink; border-style:dashed;">
     Už hlasovalo {{ pollResults.alreadyVoted }} z {{ pollResults.totalVoters }}. <br />
     Ešte nehlasovali: <span v-for="person in pollResults.yetToVote" v-bind:key="person">{{ person }}</span>
   </div>
@@ -15,6 +21,16 @@
   </ol>
   <button @click="vote" :disabled="!checkedOptions.length" class="btn btn-warning">Hlasuj!</button>
   
+  <div v-if="iVoted && pollResults && pollResults.votes">
+    <h2>VÝSLEDKY:</h2>
+    <ol>
+      <li v-for="vote in pollResults.votes" v-bind:key="vote">
+         {{ poll.options.find(o => o.postId == vote.postId).bookTitle }} 
+         - {{ vote.votes }} hlasy - {{ vote.percentage }}%
+      </li>
+    </ol>
+  </div>
+
   <book-recommendation v-if="previewId" v-bind:key="previewId.postId" v-bind:post="previewId" ></book-recommendation>
 </section>
 </template>
@@ -49,6 +65,14 @@ export default {
              this.checkedOptions = response.data.myVote.postIds;
              this.iVoted = this.checkedOptions.length;
           }
+          
+      // for (let option in this.poll.options)
+      // {
+      //   console.log(option);
+      //   let opResult = this.pollResults.votes[option.postId];
+      //   console.log(opResult);
+        
+      // }
         })
         .catch(function (error) {
           alert(error);
@@ -71,8 +95,6 @@ export default {
         console.log("You must select something first");
         return;
       }
-      console.log(this.checkedOptions);
-      
       axios.post(
           "/api/polls/" + this.$route.params.pollId + "/vote",
           { postIds: this.checkedOptions })
@@ -84,7 +106,14 @@ export default {
         .catch(function (error) {
           alert(error);
         });
+    },
+    
+    orderedResults() {
+      let lst = [];
+      return lst;
     }
+  },
+  computed: {
   },
   mounted() {
     this.gePollData();

@@ -46,7 +46,15 @@ namespace Obskurnee.Services
 
                     result.Name = document.QuerySelector("#bookTitle")?.InnerText?.Trim();
                     result.Author = document.QuerySelector(".authorName__container > a:nth-child(1) > span:nth-child(1)")?.InnerText?.Trim();
-                    result.Description = converter.Convert(document.QuerySelector("#description.readable.stacked span:nth-child(2)")?.InnerHtml);
+                    var description = document.QuerySelector("#description.readable.stacked span:nth-child(2)")?.InnerHtml;
+                    if (description != null)
+                    {
+                        result.Description = converter.Convert(description);
+                    }
+                    else
+                    {
+                        _logger.LogWarning("Failed extracting Description from {url}", goodreadsUrl);
+                    }
                     var pages = document.QuerySelector("#details > div:nth-child(1) > span:nth-child(2)")?.InnerText;
                     var imgUrl = document.QuerySelector(".editionCover > img")?.Attributes["src"]?.Value;
 

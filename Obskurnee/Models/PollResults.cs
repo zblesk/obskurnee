@@ -11,6 +11,9 @@ namespace Obskurnee.Models
         public int TotalVoters { get; set; }
         public bool VotingClosed { get; set; } = false;
         public List<string> YetToVote { get; set; }
-        public Dictionary<int, int> Votes { get; set; }
+        /// <summary>
+        /// Post ID to count
+        /// </summary>
+        public IEnumerable<VoteResultItem> Votes { get; set; }
     }
 }

@@ -28,7 +28,7 @@ namespace Obskurnee
     {
         public static readonly SymmetricSecurityKey SecurityKey =
             new SymmetricSecurityKey(
-                Encoding.Default.GetBytes("this would be a real secret"));
+                Encoding.Default.GetBytes("ghf345678oikjhgfde3456789ijbvcdsw6789opkjfdeuijknbvgfdre4567uij"));
 
         public Startup(IConfiguration configuration)
         {
@@ -99,40 +99,46 @@ namespace Obskurnee
             services.AddTransient<GoodreadsScraper, GoodreadsScraper>();
             services.AddTransient<PollService, PollService>();
             services.AddSingleton<UserService, UserService>();
+            services.AddTransient<BookService>();
 
+            ConfigureAuthAndIdentity(services);
+        }
+
+        private static void ConfigureAuthAndIdentity(IServiceCollection services)
+        {
             services.AddAuthentication(cfg =>
             {
                 cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        LifetimeValidator = (before, expires, token, param) =>
-                        {
-                            return expires > DateTime.UtcNow;
-                        },
-                        ValidateAudience = false,
-                        ValidateIssuer = false,
-                        ValidateActor = false,
-                        ValidateLifetime = true,
-                        IssuerSigningKey = SecurityKey,
-                    };
+                            .AddJwtBearer(options =>
+                            {
+                                options.TokenValidationParameters = new TokenValidationParameters
+                                {
+                                    LifetimeValidator = (before, expires, token, param) =>
+                                    {
+                                        return expires > DateTime.UtcNow;
+                                    },
+                                    ValidateAudience = false,
+                                    ValidateIssuer = false,
+                                    ValidateActor = false,
+                                    ValidateLifetime = true,
+                                    IssuerSigningKey = SecurityKey,
+                                };
                     // The JwtBearer scheme knows how to extract the token from the Authorization header
                     // but we will need to manually extract it from the query string in the case of requests to the hub
                     options.Events = new JwtBearerEvents
-                    {
-                        OnMessageReceived = ctx =>
-                        {
-                            if (ctx.Request.Query.ContainsKey("access_token"))
-                            {
-                                ctx.Token = ctx.Request.Query["access_token"];
-                            }
-                            return Task.CompletedTask;
-                        }
-                    };
-                });
+                                {
+                                    OnMessageReceived = ctx =>
+                                    {
+                                        if (ctx.Request.Query.ContainsKey("access_token"))
+                                        {
+                                            ctx.Token = ctx.Request.Query["access_token"];
+                                        }
+                                        return Task.CompletedTask;
+                                    }
+                                };
+                            });
 
             services.AddIdentityCore<Bookworm>(options =>
             {
@@ -151,7 +157,7 @@ namespace Obskurnee
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AdminOnly", policy => policy.RequireClaim(ClaimTypes.Role, "admin"));
+                options.AddPolicy("AdminOnly", policy => policy.RequireClaim(BookclubClaims.Admin));
             });
         }
     }

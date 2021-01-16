@@ -15,16 +15,19 @@ namespace Obskurnee.Services
         private readonly ILogger<PollService> _logger;
         private readonly Database _db;
         private readonly UserService _users;
-        private object @lock = new object(); 
+        private readonly object @lock = new object();
+        private readonly BookService _bookService;
 
         public PollService(
             ILogger<PollService> logger,
             Database database,
+            BookService bookService,
             UserService users)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
             _users = users ?? throw new ArgumentNullException(nameof(users));
+            this._bookService = bookService ?? throw new ArgumentNullException(nameof(bookService));
         }
 
         public IEnumerable<Poll> GetAllPolls()
@@ -43,29 +46,35 @@ namespace Obskurnee.Services
             var voteId = $"{pollId}-{userId}";
             var vote = _db.Votes
                 .FindById(voteId);
-            var voteCount = _db.Votes.Find(v => v.PollId == pollId).Count();
-            if (vote == null)
+            if (vote == null 
+                && poll.Results != null)
             {
                 poll.Results.Votes = null;
             }
-            return new PollInfo(poll, vote, voteCount);
+            return new PollInfo(poll, vote);
         }
 
-        internal PollResults CastPollVote(Vote vote)
+        public PollResults CastPollVote(Vote vote)
         {
+            _logger.LogInformation("New vote: {@vote}", vote);
             Trace.Assert(!string.IsNullOrWhiteSpace(vote.OwnerId));
             Trace.Assert(vote.PollId != 0);
+            var poll = _db.Polls.FindById(vote.PollId);
+            if (poll.IsClosed)
+            {
+                throw new PermissionException("Hlasovanie uz skoncilo!");
+            }
             _db.Votes.Upsert(vote);
 
             lock (@lock)
             {
-                return UpdateVoteStats(vote.PollId);
+                return UpdateVoteStats(poll, vote.OwnerId);
             }
         }
 
-        private PollResults UpdateVoteStats(int PollId)
+        private PollResults UpdateVoteStats(Poll poll, string currentUser)
         {
-            var allVotes = _db.Votes.Find(v => v.PollId == PollId);
+            var allVotes = _db.Votes.Find(v => v.PollId == poll.PollId);
             var totals = new Dictionary<int, int>();
             foreach (var votes in allVotes)
             {
@@ -73,7 +82,7 @@ namespace Obskurnee.Services
                 {
                     if (totals.ContainsKey(vote))
                     {
-                        totals[vote]++;
+                        totals[vote] += 1;
                     }
                     else
                     {
@@ -89,14 +98,18 @@ namespace Obskurnee.Services
                              where !allVotes.Any(v => v.OwnerId == u.Key)
                              select u.Value.UserName)
                              .ToList(),
-                Votes = totals,
+                Votes = from t in totals.OrderByDescending(kvp => kvp.Value)
+                        select new VoteResultItem
+                        {
+                            PostId = t.Key,
+                            Votes = t.Value,
+                            Percentage = (int)((t.Value / (decimal)allVotes.Count()) * 100)
+                        },
             };
-
-            var poll = _db.Polls.FindById(PollId);
 
             if (pollResults.AlreadyVoted == pollResults.TotalVoters)
             {
-                ClosePoll(PollId);
+                ClosePoll(poll, currentUser);
             }
 
             poll.Results = pollResults;
@@ -104,9 +117,16 @@ namespace Obskurnee.Services
             return pollResults;
         }
 
-        private void ClosePoll(int pid)
+        private void ClosePoll(Poll poll, string currentUser)
         {
-            //throw new NotImplementedException();
+            _logger.LogInformation("Closing poll {pollId}", poll.PollId);
+            poll.IsClosed = true;
+            if (poll.CreateBookOnClose)
+            {
+                var book = _bookService.CreateBook(poll, currentUser);
+                poll.BookId = book.BookId;
+            }
+            _db.Polls.Update(poll);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Obskurnee.Controllers
         private readonly UserService _users;
 
         public AccountController(
-            UserManager<Bookworm> userManager,
+           UserManager<Bookworm> userManager,
            SignInManager<Bookworm> signInManager,
            UserService users,
            ILogger<AccountController> logger)
@@ -65,7 +65,7 @@ namespace Obskurnee.Controllers
                 token = _tokenHandler.WriteToken(token),
                 name = principal.Identity.Name,
                 email = principal.FindFirstValue(ClaimTypes.Email),
-                role = principal.FindFirstValue(ClaimTypes.Role)
+                isAdmin = this.User?.FindFirstValue(BookclubClaims.Admin) ?? "false",
             });
         }
 
@@ -93,12 +93,12 @@ namespace Obskurnee.Controllers
             {
                 name = this.User?.Identity?.Name,
                 email = this.User?.FindFirstValue(ClaimTypes.Email),
-                role = this.User?.FindFirstValue(ClaimTypes.Role),
+                isAdmin = this.User?.FindFirstValue(BookclubClaims.Admin) ?? "false",
             });
         }
 
         [HttpPost("register")]
-    //    [Authorize(Policy = "AdminOnly")]
+        //    [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> Register([FromBody] LoginCredentials creds)
         {
             var user = new Bookworm
@@ -125,7 +125,7 @@ namespace Obskurnee.Controllers
         public async Task MakeAdmin([FromBody] LoginCredentials creds)
         {
             var user = await _signInManager.UserManager.FindByEmailAsync(creds.Email);
-            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, "admin"));
+            await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Admin, "true"));
         }
 
 

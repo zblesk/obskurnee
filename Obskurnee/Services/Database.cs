@@ -12,7 +12,7 @@ namespace Obskurnee.Services
 {
     public class Database : ILiteDbContext, IDisposable
     {
-        private object @lock = new object();
+        private readonly object @lock = new object();
         private readonly Serilog.ILogger _logger;
         private readonly LiteDatabase _db;
         public readonly ILiteCollection<Discussion> Discussions;
@@ -83,7 +83,7 @@ namespace Obskurnee.Services
             var discussion = Discussions.FindById(discussionId);
             if (discussion.IsArchived)
             {
-                throw new Exception("Diskusia uz bola uzavreta!");
+                throw new PermissionException("Diskusia uz bola uzavreta!");
             }
             lock (@lock)
             {
