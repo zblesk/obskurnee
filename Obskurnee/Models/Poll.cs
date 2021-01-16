@@ -13,7 +13,7 @@ namespace Obskurnee.Models
         [BsonRef("posts")] public IList<Post> Options { get; set; }
         public string Title { get; set; }
         public bool IsClosed { get; set; }
-
+        public PollResults Results { get; set; }
         public Poll(string ownerId) : base(ownerId) { }
     }
 }

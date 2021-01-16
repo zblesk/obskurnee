@@ -97,6 +97,8 @@ namespace Obskurnee
             services.AddSingleton<Database>(databaseSingleton);
             services.AddSingleton<ILiteDbContext>((ILiteDbContext)databaseSingleton);
             services.AddTransient<GoodreadsScraper, GoodreadsScraper>();
+            services.AddTransient<PollService, PollService>();
+            services.AddSingleton<UserService, UserService>();
 
             services.AddAuthentication(cfg =>
             {

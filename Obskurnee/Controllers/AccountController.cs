@@ -27,18 +27,18 @@ namespace Obskurnee.Controllers
 
         private static readonly SigningCredentials SigningCreds = new SigningCredentials(Startup.SecurityKey, SecurityAlgorithms.HmacSha256);
         private readonly JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
-        private readonly Database _db;
+        private readonly UserService _users;
 
         public AccountController(
             UserManager<Bookworm> userManager,
            SignInManager<Bookworm> signInManager,
-           Database db,
+           UserService users,
            ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _db = db;
+            _users = users;
         }
 
         [HttpPost("login")]
@@ -111,11 +111,11 @@ namespace Obskurnee.Controllers
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
-                _db.Checkpoint();
                 // var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 // var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                 // await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
                 _logger.LogInformation("User created a new account with password.");
+                _users.ReloadCache();
                 return Json(user);
             }
             return ValidationProblem("Registration failed");

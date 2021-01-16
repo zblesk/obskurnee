@@ -3,13 +3,17 @@
   <h1 id="tableLabel">
     {{ poll.title }}<small v-if="poll.isClosed">Uzavreté</small>
   </h1>
+  <div v-if="pollResults.yetToVote" style="margin:1em; border-color: pink; border-style:dashed;">
+    Už hlasovalo {{ pollResults.alreadyVoted }} z {{ pollResults.totalVoters }}. <br />
+    Ešte nehlasovali: <span v-for="person in pollResults.yetToVote" v-bind:key="person">{{ person }}</span>
+  </div>
   <ol>
     <li v-for="option in poll.options" v-bind:key="option.postId">
       <input type="checkbox" :id="option.postId" :value="option.postId" v-model="checkedOptions" :disabled="iVoted"/>
       <label :for="option.postId" @click="toggleShow(option)"><strong>{{ option.bookTitle }}</strong> - {{ option.author }}</label>
     </li>
   </ol>
-  <button @click="vote" v-if="!iVoted" :disabled="!checkedOptions.length" class="btn btn-warning">Hlasuj!</button>
+  <button @click="vote" :disabled="!checkedOptions.length" class="btn btn-warning">Hlasuj!</button>
   
   <book-recommendation v-if="previewId" v-bind:key="previewId.postId" v-bind:post="previewId" ></book-recommendation>
 </section>
@@ -19,18 +23,17 @@
 <script>
 import axios from "axios";
 import BookRecommendation from './BookRecommendation.vue';
-//import BookRecommendation from "./BookRecommendation.vue";
 
 export default {
   components: { BookRecommendation },
   name: "Poll",
-  //components: { BookRecommendation },
   data() {
     return {
       poll: {},
       previewId: null,
       checkedOptions: [],
-      iVoted: false
+      iVoted: false,
+      pollResults: {}
     };
   },
   methods: {
@@ -40,6 +43,7 @@ export default {
         .then((response) => {
           console.log(response.data);
           this.poll = response.data.poll;
+          this.pollResults = response.data.poll.results;
           if (response.data.myVote)
           {
              this.checkedOptions = response.data.myVote.postIds;
@@ -74,7 +78,8 @@ export default {
           { postIds: this.checkedOptions })
         .then((response) => {
           this.iVoted = true;
-          console.log(response);
+          this.pollResults = response.data;
+          console.log(response.data);
         })
         .catch(function (error) {
           alert(error);

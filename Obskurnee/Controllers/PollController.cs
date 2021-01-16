@@ -9,39 +9,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Diagnostics;
 
 namespace Obskurnee.Controllers
 {
     [Authorize]
     [ApiController]
     [Route("api/polls")]
-    public class PollController : ControllerBase
+    public class PollController : Controller
     {
         private readonly ILogger<PollController> _logger;
-        private readonly Database _database;
+        private readonly PollService _polls;
 
-
-        public PollController(ILogger<PollController> logger, Database database)
+        public PollController(ILogger<PollController> logger, PollService polls)
         {
             _logger = logger;
-            _database = database ?? throw new ArgumentNullException(nameof(database));
+            _polls = polls ?? throw new ArgumentNullException(nameof(polls));
         }
 
         [HttpGet]
-        public IEnumerable<Poll> GetPolls() => _database.GetAllPolls();
+        public IEnumerable<Poll> GetPolls() => _polls.GetAllPolls();
 
         
         [HttpGet]
         [Route("{pollId:int}")]
-        public PollInfo GetPoll(int pollId) => _database.GetPoll(pollId, User.GetUserId());
+        public PollInfo GetPoll(int pollId) => _polls.GetPollInfo(pollId, User.GetUserId());
 
         [HttpPost]
         [Route("{pollId:int}/vote")]
-        public IActionResult CastVote(int pollId, Vote vote)
+        public JsonResult CastVote(int pollId, Vote vote)
         {
             vote.PollId = pollId;
-            _database.CastPollVote(vote.SetOwner(User));
-            return new OkResult();
+            var results = _polls.CastPollVote(vote.SetOwner(User));
+            return Json(results);
         }
     }
 }

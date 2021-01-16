@@ -15,11 +15,12 @@ namespace Obskurnee.Services
         private object @lock = new object();
         private readonly Serilog.ILogger _logger;
         private readonly LiteDatabase _db;
-        private readonly ILiteCollection<Discussion> _discussions;
-        private readonly ILiteCollection<Post> _posts;
-        private readonly ILiteCollection<Book> _books;
-        private readonly ILiteCollection<Poll> _polls;
-        private readonly ILiteCollection<Vote> _votes;
+        public readonly ILiteCollection<Discussion> Discussions;
+        public readonly ILiteCollection<Post> Posts;
+        public readonly ILiteCollection<Book> Books;
+        public readonly ILiteCollection<Poll> Polls;
+        public readonly ILiteCollection<Vote> Votes;
+        public readonly ILiteCollection<Bookworm> Users;
 
         LiteDatabase ILiteDbContext.LiteDatabase => _db;
 
@@ -28,19 +29,15 @@ namespace Obskurnee.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = new LiteDatabase(@"data\bookclub.db");
             _db.CheckpointSize = 1;
-            _discussions = _db.GetCollection<Discussion>("discussions");
-            _posts = _db.GetCollection<Post>("posts");
-            _books = _db.GetCollection<Book>("books");
-            _polls = _db.GetCollection<Poll>("polls");
-            _votes = _db.GetCollection<Vote>("votes");
-            
-            _posts.EnsureIndex(p => p.DiscussionId);
-        }
+            Discussions = _db.GetCollection<Discussion>("discussions");
+            Posts = _db.GetCollection<Post>("posts");
+            Books = _db.GetCollection<Book>("books");
+            Polls = _db.GetCollection<Poll>("polls");
+            Votes = _db.GetCollection<Vote>("votes");
+            Users = _db.GetCollection<Bookworm>("users");
 
-        public void CastPollVote(Vote vote)
-        {
-            vote.VoteId = $"{vote.PollId}-{vote.OwnerId}";
-            _votes.Upsert(vote);
+            Posts.EnsureIndex(p => p.DiscussionId);
+            Votes.EnsureIndex(v => v.PollId);
         }
 
         public void Checkpoint()
@@ -50,7 +47,7 @@ namespace Obskurnee.Services
 
         public IEnumerable<Discussion> GetAllDiscussions()
         {
-            return (from discussion in _discussions.Query()
+            return (from discussion in Discussions.Query()
                     orderby discussion.CreatedOn descending
                     select discussion)
                     .ToList();
@@ -58,32 +55,32 @@ namespace Obskurnee.Services
 
         public Discussion NewDiscussion(Discussion discussion)
         {
-            _discussions.Insert(discussion);
+            Discussions.Insert(discussion);
             return discussion;
         }
 
         public Post NewPost(int discussionId, Post post)
         {
-            if (_discussions.FindById(discussionId).IsArchived)
+            if (Discussions.FindById(discussionId).IsArchived)
             {
                 throw new Exception("Diskusia uz bola uzavreta!");
             }
             post.PostId = 0; //ensure it wasn't sent from the client
             post.DiscussionId = discussionId;
-            _posts.Insert(post);
+            Posts.Insert(post);
             return post;
         }
 
         public DiscussionPosts GetDiscussionPosts(int discussionId)
         {
-            var disc = _discussions.FindById(discussionId);
-            var posts = _posts.Find(p => p.DiscussionId == discussionId).OrderBy(p => p.CreatedOn).ToList();
+            var disc = Discussions.FindById(discussionId);
+            var posts = Posts.Find(p => p.DiscussionId == discussionId).OrderBy(p => p.CreatedOn).ToList();
             return new(disc, posts);
         }
 
         public Poll CloseDiscussionAndOpenPoll(int discussionId, string currentUserId)
         {
-            var discussion = _discussions.FindById(discussionId);
+            var discussion = Discussions.FindById(discussionId);
             if (discussion.IsArchived)
             {
                 throw new Exception("Diskusia uz bola uzavreta!");
@@ -91,7 +88,7 @@ namespace Obskurnee.Services
             lock (@lock)
             {
                 discussion.IsArchived = true;
-                var posts = (from post in _posts.Query()
+                var posts = (from post in Posts.Query()
                                where post.DiscussionId == discussionId
                                orderby post.PostId
                                select post)
@@ -102,9 +99,9 @@ namespace Obskurnee.Services
                     Title = discussion.Title + " - hlasovanie",
                     Options = posts,
                 };
-                _polls.Insert(poll);
+                Polls.Insert(poll);
                 discussion.Poll = poll;
-                _discussions.Update(discussion);
+                Discussions.Update(discussion);
                 return poll;
             }
         }
@@ -114,25 +111,6 @@ namespace Obskurnee.Services
             var bookInfos = _db.GetCollection<GoodreadsBookInfo>();
             bookInfos.Insert(book);
             return book;
-        }
-
-        public IEnumerable<Poll> GetAllPolls()
-        {
-            return (from poll in _polls.Query()
-                    orderby poll.CreatedOn descending
-                    select poll)
-                    .ToList();
-        }
-
-        public PollInfo GetPoll(int pollId, string userId)
-        {
-            var poll = _polls
-              .Include(x => x.Options)
-              .FindById(pollId);
-            var voteId = $"{pollId}-{userId}";
-            var vote = _votes
-                .FindById(voteId);
-            return new PollInfo(poll, vote);
         }
 
         public void Dispose()

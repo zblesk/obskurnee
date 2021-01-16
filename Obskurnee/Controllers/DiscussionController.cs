@@ -17,12 +17,11 @@ namespace Obskurnee.Controllers
     [Authorize]
     [ApiController]
     [Route("api/discussions")]
-    public class DiscussionController : ControllerBase
+    public class DiscussionController : Controller
     {
         private readonly ILogger<DiscussionController> _logger;
         private static MarkdownPipeline _mdPipeline;
         private readonly Database _database;
-        private readonly UserManager<Bookworm> _userManager;
 
         static DiscussionController()
         {
@@ -33,7 +32,6 @@ namespace Obskurnee.Controllers
         {
             _logger = logger;
             _database = database ?? throw new ArgumentNullException(nameof(database));
-            _userManager = userManager;
         }
 
         private string RenderMarkdown(string md) => Markdown.ToHtml(md, _mdPipeline);

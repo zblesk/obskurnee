@@ -9,7 +9,7 @@ namespace Obskurnee.Models
     public class Vote : HeaderData
     {
         [BsonId]
-        public string VoteId { get; set; }
+        public string VoteId => $"{PollId}-{OwnerId}";
         public int PollId { get; set; }
         /// <summary>
         /// Contains votes - IDs of posts the user voted for
