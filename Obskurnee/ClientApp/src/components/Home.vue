@@ -1,10 +1,10 @@
 <template>
 <section>
-  <book-preview :post="currentBook.post" style="margin: auto;" v-if="currentBook && currentBook.post"><h3>Teraz čítame: </h3></book-preview>
-  <div>
+  <book-large-card :post="currentBook.post" style="margin: auto;" v-if="currentBook && currentBook.post">
+      <h5><em>Momentálne čítame knihu #{{ currentBook.order }}</em></h5>
+  </book-large-card>
   <div class="grid" v-if="books">
     <book-preview v-for="book in books" v-bind:key="book.bookId" v-bind:post="book.post">Kniha #{{book.order}}</book-preview>
-  </div>
   </div>
 </section>
 </template>
@@ -12,8 +12,9 @@
 <script>
 import BookPreview from './BookPreview.vue';
 import axios from 'axios';
+import BookLargeCard from './BookLargeCard.vue';
 export default {
-  components: { BookPreview },
+  components: { BookPreview, BookLargeCard },
   name: 'Home',
   data() {
       return {
@@ -48,7 +49,6 @@ export default {
   grid-template-columns: repeat(auto-fill, minmax(100px, 220px));
   gap: 10px;
   font-family: "Raleway", sans-serif;
-  margin: auto;
   padding: 4em;
 }
 </style>

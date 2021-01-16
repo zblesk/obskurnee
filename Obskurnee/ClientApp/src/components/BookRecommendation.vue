@@ -18,10 +18,6 @@
 
 
 <style scoped>
-html {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
 
 *, :after, :before {
   -webkit-box-sizing: inherit;
@@ -32,10 +28,6 @@ body {
   margin: 0;
   background-color: whitesmoke;
   font-family: 'Raleway', sans-serif;
-}
-
-.title {
-  text-align: center;
 }
 
 .grid {
