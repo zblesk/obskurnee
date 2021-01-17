@@ -10,7 +10,6 @@ namespace Obskurnee.Models
         public int WinnerPostId { get; set; }
         public int AlreadyVoted { get; set; }
         public int TotalVoters { get; set; }
-        public bool VotingClosed { get; set; } = false;
         public List<string> YetToVote { get; set; }
         /// <summary>
         /// Post ID to count

@@ -4,14 +4,14 @@
     {{ poll.title }}<small v-if="poll.isClosed"> Uzavreté</small>
   </h1>
 
-  <div v-if="poll.isClosed && poll.bookId">
+  <div v-if="poll.isClosed && poll.results.winnerPostId">
     <book-preview :post="poll.options.find(o => o.postId == poll.results.winnerPostId)"  style="margin: auto;">Víťaz</book-preview>
   </div>
 
   <div v-if="!poll.isClosed && pollResults && pollResults.yetToVote" 
     style="margin:1em; border-color: pink; border-style:dashed;">
     Už hlasovalo {{ pollResults.alreadyVoted }} z {{ pollResults.totalVoters }}. <br />
-    Ešte nehlasovali: <span v-for="person in pollResults.yetToVote" v-bind:key="person">{{ person }}</span>
+    Ešte nehlasovala: <span v-for="person in pollResults.yetToVote" v-bind:key="person">{{ person }}</span>
   </div>
   <ol>
     <li v-for="option in poll.options" v-bind:key="option.postId">
@@ -19,7 +19,7 @@
       <label :for="option.postId" @click="toggleShow(option)"><strong>{{ option.bookTitle }}</strong> - {{ option.author }}</label>
     </li>
   </ol>
-  <button @click="vote" :disabled="!checkedOptions.length" class="btn btn-warning">Hlasuj!</button>
+  <button @click="vote" v-if="!iVoted" :disabled="!checkedOptions.length" class="btn btn-warning">Hlasuj!</button>
   
   <div v-if="iVoted && pollResults && pollResults.votes">
     <h2>VÝSLEDKY:</h2>
@@ -66,14 +66,6 @@ export default {
              this.checkedOptions = response.data.myVote.postIds;
              this.iVoted = this.checkedOptions.length;
           }
-          
-      // for (let option in this.poll.options)
-      // {
-      //   console.log(option);
-      //   let opResult = this.pollResults.votes[option.postId];
-      //   console.log(opResult);
-        
-      // }
         })
         .catch(function (error) {
           alert(error);
@@ -102,7 +94,11 @@ export default {
         .then((response) => {
           this.iVoted = true;
           this.pollResults = response.data;
-          console.log(response.data);
+          this.poll.isClosed = this.pollResults.alreadyVoted == this.poll.totalVoters;
+          this.poll.results = this.pollResults;
+          // console.log(response.data);
+          // console.log('vysledky', this.pollResults.alreadyVoted == this.poll.totalVoters, this.pollResults.alreadyVoted, this.poll.totalVoters);
+          // console.log('POLLvysledky', this.poll.isClosed, this.poll,poll.results.winnerPostId, poll.results);
         })
         .catch(function (error) {
           alert(error);

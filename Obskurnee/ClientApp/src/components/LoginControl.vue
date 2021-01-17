@@ -20,7 +20,7 @@
       </form>
     </span>
     <span v-if="isAuthenticated">
-      <em>Vitaj, {{profile.name}}</em>
+      👥 {{profile.name}}
       <button class="btn btn-primary float-right ml-2" @click="onLogout">logout</button>
     </span>
   </span>

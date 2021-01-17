@@ -1,6 +1,6 @@
 <template>
 <section>
-    <h1 id="tableLabel">Aktualne diskusie</h1>
+    <h1 id="tableLabel">Aktualne návrhy</h1>
 
     <p v-if="!discussions"><em>Cakaj, nacitavam</em></p>
 

@@ -15,13 +15,22 @@
                      v-bind:class="{show: isExpanded}">
                     <ul class="navbar-nav flex-grow">
                         <li class="nav-item">
-                            <router-link :to="{ name: 'home' }" class="nav-link text-dark">Domov</router-link>
+                            <router-link :to="{ name: 'home' }" class="nav-link text-dark">🏠 Domov</router-link>
                         </li>
                         <li class="nav-item" v-if="isAuthenticated">
-                            <router-link :to="{ name: 'discussionlist' }" class="nav-link text-dark">Diskusie</router-link>
+                            <router-link :to="{ name: 'admin' }" class="nav-link text-dark">🧛🏻‍♀️ Admin</router-link>
                         </li>
                         <li class="nav-item" v-if="isAuthenticated">
-                            <router-link :to="{ name: 'polllist' }" class="nav-link text-dark">Hlasovania</router-link>
+                            <router-link :to="{ name: 'polllist' }" class="nav-link text-dark">🗳 Hlasovania</router-link>
+                        </li>
+                        <li class="nav-item" v-if="isAuthenticated">
+                            <router-link :to="{ name: 'discussionlist' }" class="nav-link text-dark">💬 Návrhy</router-link>
+                        </li>
+                        <li class="nav-item" v-if="isAuthenticated">
+                            <router-link :to="{ name: 'recommendationlist' }" class="nav-link text-dark">👌🏻 Odporúčania</router-link>
+                        </li>
+                        <li class="nav-item" v-if="isAuthenticated">
+                            <router-link :to="{ name: 'users' }" class="nav-link text-dark">🤼 My</router-link>
                         </li>
                         <li><login-control></login-control></li>
                     </ul>
@@ -66,7 +75,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters("context", ["isAuthenticated"])
+        ...mapGetters("context", ["isAuthenticated", "isAdmin"])
     },
     methods: {
         collapse() {
