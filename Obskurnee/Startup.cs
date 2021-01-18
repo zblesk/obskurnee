@@ -27,6 +27,8 @@ namespace Obskurnee
         public static readonly SymmetricSecurityKey SecurityKey =
             new SymmetricSecurityKey(
                 Encoding.Default.GetBytes("ghf345678oikjhgfde3456789ijbvcdsw6789opkjfdeuijknbvgfdre4567uij"));
+        public const string DataFolder = "data";
+        public const string ImageFolder = "images";
 
         public Startup(IConfiguration configuration)
         {
@@ -38,8 +40,8 @@ namespace Obskurnee
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            Directory.CreateDirectory("images");
-            Directory.CreateDirectory("data");
+            Directory.CreateDirectory(DataFolder);
+            Directory.CreateDirectory(Path.Combine(DataFolder, ImageFolder));
 
             if (env.IsDevelopment())
             {
@@ -51,7 +53,7 @@ namespace Obskurnee
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, "images")),
+                    Path.Combine(env.ContentRootPath, DataFolder, ImageFolder)),
                 RequestPath = "/images"
             });
 

@@ -75,15 +75,18 @@ namespace Obskurnee.Services
                             var sanitizedName = Regex.Replace(
                                     result.Name.Replace(' ', '-'),
                                     "[^a-zA-Z0-9-]", "");
-                            var relativePath = "/images/" 
-                                + sanitizedName.Substring(0, Math.Min(90, sanitizedName.Length)) 
+                            var relativeFilename =  sanitizedName.Substring(0, Math.Min(90, sanitizedName.Length)) 
                                 + _rand.Next(10_000, 100_000).ToString()
                                 + Path.GetExtension(imgUrl) ?? ".jpg";
-                            var fName = Path.Join(_hostEnv.ContentRootPath, 
-                                relativePath);
-                            _logger.LogInformation("File downloaded, saving it at {filename}", fName);
-                            await File.WriteAllBytesAsync(fName, pic);
-                            result.ImageUrl = relativePath;
+                            var physicalPath = Path.Join(
+                                _hostEnv.ContentRootPath,
+                                Startup.DataFolder, 
+                                Startup.ImageFolder,
+                                relativeFilename);
+                            var relativeUrl = '/' + Startup.ImageFolder + '/' + relativeFilename;
+                            _logger.LogInformation("File downloaded, saving it at {filename}", physicalPath);
+                            await File.WriteAllBytesAsync(physicalPath, pic);
+                            result.ImageUrl = relativeUrl;
                         }
                     }
                     catch (Exception ex)
