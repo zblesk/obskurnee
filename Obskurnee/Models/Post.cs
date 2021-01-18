@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Obskurnee.Models
-{    public class Post : HeaderData
+﻿namespace Obskurnee.Models
+{
+    public class Post : HeaderData
     {
         public int PostId { get; set; }
         public int DiscussionId { get; set; }

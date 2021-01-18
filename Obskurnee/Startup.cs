@@ -1,6 +1,5 @@
 using AspNetCore.Identity.LiteDB;
 using AspNetCore.Identity.LiteDB.Data;
-using AspNetCore.Identity.LiteDB.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,7 +14,6 @@ using Obskurnee.Services;
 using Serilog;
 using System;
 using System.IO;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using VueCliMiddleware;

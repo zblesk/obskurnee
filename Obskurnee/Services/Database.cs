@@ -1,12 +1,10 @@
 ﻿using AspNetCore.Identity.LiteDB.Data;
 using LiteDB;
-using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Obskurnee.Services
 {

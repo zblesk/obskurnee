@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Obskurnee.Models
+﻿namespace Obskurnee.Models
 {
     public class VoteResultItem
     {
