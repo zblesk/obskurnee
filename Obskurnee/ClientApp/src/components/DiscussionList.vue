@@ -7,7 +7,8 @@
     <table class='table table-striped' aria-labelledby="tableLabel" v-if="discussions">
         <tbody>
             <tr v-for="discussion of discussions" v-bind:key="discussion"> 
-                <td><router-link :to="{ name: 'discussion', params: { discussionId: discussion.discussionId } }">{{ discussion.title }}</router-link></td>
+                <td :class="{ archived: discussion.isArchived }">
+                    <router-link :to="{ name: 'discussion', params: { discussionId: discussion.discussionId } }">{{ discussion.title }}</router-link></td>
             </tr>
         </tbody>
         <tfoot>
@@ -58,3 +59,9 @@
         }
     }
 </script>
+
+<style scoped>
+.archived a {
+    color: hotpink;
+}
+</style>
