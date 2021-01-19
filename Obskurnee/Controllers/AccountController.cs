@@ -59,7 +59,7 @@ namespace Obskurnee.Controllers
                 token = _tokenHandler.WriteToken(token),
                 name = principal.Identity.Name,
                 email = principal.FindFirstValue(ClaimTypes.Email),
-                isAdmin = principal.FindFirstValue(BookclubClaims.Admin) ?? "false",
+                isAdmin = principal.FindFirstValue(BookclubClaims.Moderator) ?? "false",
             });
         }
 
@@ -87,12 +87,12 @@ namespace Obskurnee.Controllers
             {
                 name = this.User?.Identity?.Name,
                 email = this.User?.FindFirstValue(ClaimTypes.Email),
-                isAdmin = this.User?.FindFirstValue(BookclubClaims.Admin) ?? "false",
+                isAdmin = this.User?.FindFirstValue(BookclubClaims.Moderator) ?? "false",
             });
         }
 
         [HttpPost("register")]
-        //    [Authorize(Policy = "AdminOnly")]
+        //    [Authorize(Policy = "ModOnly")]
         public async Task<IActionResult> Register([FromBody] LoginCredentials creds)
         {
             var user = new Bookworm
@@ -115,16 +115,17 @@ namespace Obskurnee.Controllers
             return ValidationProblem("Registration failed");
         }
 
-        [HttpPost("makeadmin")]
+        [HttpPost("makemoderator")]
+        [Authorize(Policy = "ModOnly")]
         public async Task MakeAdmin([FromBody] LoginCredentials creds)
         {
             var user = await _signInManager.UserManager.FindByEmailAsync(creds.Email);
-            await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Admin, "true"));
+            await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Moderator, "true"));
         }
 
 
         [HttpPost("ao")]
-        [Authorize(Policy = "AdminOnly")]
+        [Authorize(Policy = "ModOnly")]
         public async Task MakeAdminasd()
         {
             var aas = 433434;

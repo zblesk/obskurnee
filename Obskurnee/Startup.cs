@@ -157,7 +157,7 @@ namespace Obskurnee
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("AdminOnly", policy => policy.RequireClaim(BookclubClaims.Admin));
+                options.AddPolicy("ModOnly", policy => policy.RequireClaim(BookclubClaims.Moderator));
             });
         }
     }

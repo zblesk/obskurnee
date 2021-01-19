@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -49,5 +50,7 @@ namespace Obskurnee.Services
             EnsureCacheLoaded();
             return _db.Users.Query().Select(u => u.Id).ToList();
         }
+
+        public IdentityResult 
     }
 }
