@@ -3,7 +3,7 @@
   <book-large-card :post="currentBook.post" style="margin: auto;" v-if="currentBook && currentBook.post">
       <h5><em>Momentálne čítame knihu #{{ currentBook.order }}</em></h5>
   </book-large-card>
-  <div class="grid" v-if="books">
+  <div class="grid" v-if="books && isAuthenticated">
     <book-preview v-for="book in books" v-bind:key="book.bookId" v-bind:post="book.post">Kniha #{{book.order}}</book-preview>
   </div>
 </section>
@@ -13,6 +13,8 @@
 import BookPreview from './BookPreview.vue';
 import axios from 'axios';
 import BookLargeCard from './BookLargeCard.vue';
+import { mapGetters } from "vuex";
+
 export default {
   components: { BookPreview, BookLargeCard },
   name: 'Home',
@@ -36,6 +38,9 @@ export default {
                 alert(error);
             });
     },
+  },
+  computed: {
+      ...mapGetters("context", ["isAuthenticated"])
   },
   mounted() {
       this.getBooks();

@@ -43,15 +43,13 @@ export default {
         commit('setProfile', {});
       },
       restoreContext ({ commit}) {
-        console.log('restroring');
         const jwtToken = window.localStorage.getItem('jwtToken');
-        console.log('restroring tok', jwtToken);
         if (jwtToken) {
           commit('setJwtToken', jwtToken);
+          return axios.get('/api/account/context').then(res => {
+            commit('setProfile', res.data);
+          });
         }
-        return axios.get('/api/account/context').then(res => {
-          commit('setProfile', res.data);
-        });
       },
       registerFirstAdmin ({ dispatch }, credentials) {
         return axios.post('/api/account/registerfirstadmin', credentials)

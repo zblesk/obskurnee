@@ -8,6 +8,7 @@ import UserList from "@/components/UserList.vue";
 import RecommendationList from "@/components/RecommendationList.vue";
 import Admin from "@/components/Admin.vue";
 import Setup from "@/components/Setup.vue";
+import BookList from "@/components/BookList.vue";
 
 const routes = [
     {
@@ -49,6 +50,11 @@ const routes = [
         path: "/odporucania",
         name: "recommendationlist",
         component: RecommendationList,
+    },
+    {
+        path: "/knihy",
+        name: "booklist",
+        component: BookList,
     },
     {
         path: "/my",

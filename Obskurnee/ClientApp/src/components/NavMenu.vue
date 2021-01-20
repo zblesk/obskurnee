@@ -17,8 +17,11 @@
                         <li class="nav-item">
                             <router-link :to="{ name: 'home' }" class="nav-link text-dark">🏠 Domov</router-link>
                         </li>
-                        <li class="nav-item" v-if="isAuthenticated">
+                        <li class="nav-item" v-if="isMod">
                             <router-link :to="{ name: 'admin' }" class="nav-link text-dark">🧛🏻‍♀️ Admin</router-link>
+                        </li>
+                        <li class="nav-item" v-if="isAuthenticated">
+                            <router-link :to="{ name: 'booklist' }" class="nav-link text-dark">📚 Knihy</router-link>
                         </li>
                         <li class="nav-item" v-if="isAuthenticated">
                             <router-link :to="{ name: 'polllist' }" class="nav-link text-dark">🗳 Hlasovania</router-link>
