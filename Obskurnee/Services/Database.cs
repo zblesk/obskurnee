@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Obskurnee.Services
 {
-    public class Database : ILiteDbContext, IDisposable
+    public sealed class Database : ILiteDbContext, IDisposable
     {
         private readonly object @lock = new object();
         private readonly Serilog.ILogger _logger;
@@ -106,7 +106,7 @@ namespace Obskurnee.Services
 
         public GoodreadsBookInfo StoreBookInfo(GoodreadsBookInfo book)
         {
-            var bookInfos = _db.GetCollection<GoodreadsBookInfo>();
+            var bookInfos = _db.GetCollection<GoodreadsBookInfo>("goodreadsbookinfo");
             bookInfos.Insert(book);
             return book;
         }

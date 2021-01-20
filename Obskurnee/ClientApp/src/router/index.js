@@ -7,8 +7,14 @@ import PollList from "@/components/PollList.vue";
 import UserList from "@/components/UserList.vue";
 import RecommendationList from "@/components/RecommendationList.vue";
 import Admin from "@/components/Admin.vue";
+import Setup from "@/components/Setup.vue";
 
 const routes = [
+    {
+        path: "/setup",
+        name: "setup",
+        component: Setup,
+    },
     {
         path: "/",
         name: "home",

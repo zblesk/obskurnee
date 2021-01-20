@@ -11,14 +11,13 @@
                     v-model="form.password"
                     required
                     placeholder="h3sl0" />
-    <button class="btn btn-primary float-right ml-2" type="submit">Prihlás</button>
-    <button class="btn btn-secondary float-right" type="reset">Hups tak ne</button>
+    <button class="btn btn-primary ml-2" type="submit">Zaregistruj</button>
   </form>
 </div>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   name: "Setup",
@@ -31,26 +30,16 @@ export default {
     };
   },
   computed: {
-    ...mapState("context", ["profile"]),
-    ...mapGetters("context", ["isAuthenticated"])
   },
   methods: {
-    ...mapActions("context", ["login", "logout"]),
+    ...mapActions("context", ["registerFirstAdmin"]),
     onSubmit() {
-      this.login(this.form)
+      this.registerFirstAdmin(this.form)
         .then(() => {
+          
         }
       );
     },
-    onCancel() {
-      this.form = {};
-      this.showLoginForm = false;
-    },
-    onLogout(){
-      this.logout();
-      this.$router.push({ name: "home" });
-      this.showLoginForm = false;
-    }
   },
 };
 </script>

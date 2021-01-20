@@ -40,9 +40,6 @@ namespace Obskurnee
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            Directory.CreateDirectory(DataFolder);
-            Directory.CreateDirectory(Path.Combine(DataFolder, ImageFolder));
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -86,6 +83,9 @@ namespace Obskurnee
 
         public void ConfigureServices(IServiceCollection services)
         {
+            Directory.CreateDirectory(DataFolder);
+            Directory.CreateDirectory(Path.Combine(DataFolder, ImageFolder));
+
             services.AddControllers();
             services.AddSpaStaticFiles(configuration =>
             {
@@ -96,9 +96,9 @@ namespace Obskurnee
 
             services.AddSingleton<Database>(databaseSingleton);
             services.AddSingleton<ILiteDbContext>((ILiteDbContext)databaseSingleton);
-            services.AddTransient<GoodreadsScraper, GoodreadsScraper>();
-            services.AddTransient<PollService, PollService>();
-            services.AddSingleton<UserService, UserService>();
+            services.AddTransient<GoodreadsScraper>();
+            services.AddTransient<PollService>();
+            services.AddTransient<UserService>();
             services.AddTransient<BookService>();
 
             ConfigureAuthAndIdentity(services);

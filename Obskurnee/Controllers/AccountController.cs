@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Obskurnee.Models;
 using Obskurnee.Services;
+using Obskurnee.ViewModels;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -39,77 +40,30 @@ namespace Obskurnee.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Token([FromBody] LoginCredentials creds)
         {
-            if (!await ValidateLogin(creds))
+            if (!await _users.ValidateLogin(creds))
             {
                 return Unauthorized(new
                 {
                     error = "Login failed"
                 });
             }
-            var principal = await GetPrincipal(creds);
-            var token = new JwtSecurityToken(
-                "obskurnee",
-                "obskurnee",
-                principal.Claims,
-                expires: DateTime.UtcNow.AddDays(190),
-                signingCredentials: SigningCreds);
+            var principal = await _users.GetPrincipal(creds);
+            var token = _users.GetToken(principal);
 
-            return Json(new
-            {
-                token = _tokenHandler.WriteToken(token),
-                name = principal.Identity.Name,
-                email = principal.FindFirstValue(ClaimTypes.Email),
-                isAdmin = principal.FindFirstValue(BookclubClaims.Moderator) ?? "false",
-            });
+            return Json(UserInfo.FromPrincipal(principal, token));
         }
 
-        private async Task<bool> ValidateLogin(LoginCredentials creds)
-        {
-            var user = await _signInManager.UserManager.FindByEmailAsync(creds.Email);
-            if (user == null)
-            {
-                return false;
-            }
-            var signInRes = await _signInManager.CheckPasswordSignInAsync(user, creds.Password, lockoutOnFailure: false);
-            return signInRes.Succeeded;
-        }
-
-        private async Task<ClaimsPrincipal> GetPrincipal(LoginCredentials creds)
-        {
-            var user = await _signInManager.UserManager.FindByEmailAsync(creds.Email);
-            return await _signInManager.CreateUserPrincipalAsync(user);
-        }
 
         [HttpGet("context")]
-        public JsonResult Context()
-        {
-            return Json(new
-            {
-                name = this.User?.Identity?.Name,
-                email = this.User?.FindFirstValue(ClaimTypes.Email),
-                isAdmin = this.User?.FindFirstValue(BookclubClaims.Moderator) ?? "false",
-            });
-        }
+        public JsonResult Context() => Json(UserInfo.FromPrincipal(this.User));
 
         [HttpPost("register")]
         //    [Authorize(Policy = "ModOnly")]
         public async Task<IActionResult> Register([FromBody] LoginCredentials creds)
         {
-            var user = new Bookworm
+            var user = _users.Register(creds);
+            if (user != null)
             {
-                UserName = creds.Email.Substring(0, creds.Email.IndexOf('@')),
-                Email = creds.Email,
-                GoodreadsProfileUrl = "https://poeknasjkha url kekes"
-            };
-            var result = await _userManager.CreateAsync(user, creds.Password);
-            if (result.Succeeded)
-            {
-                _logger.LogInformation("User created a new account with password.");
-                // var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                // var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                // await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
-                _logger.LogInformation("User created a new account with password.");
-                _users.ReloadCache();
                 return Json(user);
             }
             return ValidationProblem("Registration failed");
@@ -117,18 +71,12 @@ namespace Obskurnee.Controllers
 
         [HttpPost("makemoderator")]
         [Authorize(Policy = "ModOnly")]
-        public async Task MakeAdmin([FromBody] LoginCredentials creds)
-        {
-            var user = await _signInManager.UserManager.FindByEmailAsync(creds.Email);
-            await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Moderator, "true"));
-        }
+        public async Task MakeModerator([FromBody] LoginCredentials creds)
+            => await _users.MakeModerator(creds.Email);
 
-
-        [HttpPost("ao")]
-        [Authorize(Policy = "ModOnly")]
-        public async Task MakeAdminasd()
-        {
-            var aas = 433434;
-        }
+        [HttpPost("registerfirstadmin")]
+        [AllowAnonymous]
+        public async Task<JsonResult> RegisterFirstAdmin([FromBody] LoginCredentials creds)
+            => Json(await _users.RegisterFirstAdmin(creds));
     }
 }

@@ -94,7 +94,7 @@ namespace Obskurnee.Services
                 TotalVoters = _users.GetAllUserIds().Count,
                 YetToVote = (from u in _users.Users
                              where !allVotes.Any(v => v.OwnerId == u.Key)
-                             select u.Value.UserName)
+                             select u.Value.Name)
                              .ToList(),
                 Votes = from t in totals.OrderByDescending(kvp => kvp.Value)
                         select new VoteResultItem

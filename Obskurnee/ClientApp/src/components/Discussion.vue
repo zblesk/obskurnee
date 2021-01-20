@@ -13,7 +13,7 @@
     <button @click="postNewBook">Pridaj</button>
     <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />
     <div></div>
-    <button @click="closeDiscussion" v-if="isAdmin">UZAVRI diskusiu a vytvor hlasovanie</button>
+    <button @click="closeDiscussion" v-if="isMod">UZAVRI diskusiu a vytvor hlasovanie</button>
   </div>
 
   <div class="form" v-if="pollId">
@@ -52,7 +52,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("context", ["isAdmin"])
+    ...mapGetters("context", ["isMod"])
   },
   methods: {
     getDiscussionData() {

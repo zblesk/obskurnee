@@ -75,7 +75,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters("context", ["isAuthenticated", "isAdmin"])
+        ...mapGetters("context", ["isAuthenticated", "isMod"])
     },
     methods: {
         collapse() {
