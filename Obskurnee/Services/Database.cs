@@ -19,6 +19,7 @@ namespace Obskurnee.Services
         public readonly ILiteCollection<Book> Books;
         public readonly ILiteCollection<Poll> Polls;
         public readonly ILiteCollection<Vote> Votes;
+        public readonly ILiteCollection<Round> Rounds;
         public readonly ILiteCollection<Bookworm> Users;
 
         LiteDatabase ILiteDbContext.LiteDatabase => _db;
@@ -34,6 +35,7 @@ namespace Obskurnee.Services
             Books = _db.GetCollection<Book>("books");
             Polls = _db.GetCollection<Poll>("polls");
             Votes = _db.GetCollection<Vote>("votes");
+            Rounds = _db.GetCollection<Round>("rounds");
             Users = _db.GetCollection<Bookworm>("users");
 
             Posts.EnsureIndex(p => p.DiscussionId);

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Obskurnee.Models
 {
-    public class VotingRound : HeaderData
+    public class Round : HeaderData
     {
+        public enum RoundKind { Topics, Books };
+
         [BsonId] public int VotingRoundId { get; set; }
         public string Title { get; set; }
         public int BookId { get; set; }
@@ -15,8 +17,9 @@ namespace Obskurnee.Models
         public int ThemePollId { get; set; }
         public int BookDiscussionId { get; set; }
         public int BookPollId { get; set; }
+        public RoundKind Kind { get; set; }
 
-        public VotingRound(string ownerId) : base(ownerId)
+        public Round(string ownerId) : base(ownerId)
         {
         }
     }
