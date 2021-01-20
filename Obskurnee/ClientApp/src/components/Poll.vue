@@ -16,7 +16,7 @@
   <ol>
     <li v-for="option in poll.options" v-bind:key="option.postId">
       <input type="checkbox" :id="option.postId" :value="option.postId" v-model="checkedOptions" :disabled="iVoted"/>
-      <label :for="option.postId" @click="toggleShow(option)"><strong>{{ option.bookTitle }}</strong> - {{ option.author }}</label>
+      <label :for="option.postId" @click="toggleShow(option)"><strong>{{ option.title }}</strong> - {{ option.author }}</label>
     </li>
   </ol>
   <button @click="vote" v-if="!iVoted" :disabled="!checkedOptions.length" class="btn btn-warning">Hlasuj!</button>
@@ -25,7 +25,7 @@
     <h2>VÝSLEDKY:</h2>
     <ol>
       <li v-for="vote in pollResults.votes" v-bind:key="vote">
-         {{ poll.options.find(o => o.postId == vote.postId).bookTitle }} 
+         {{ poll.options.find(o => o.postId == vote.postId).title }} 
          - {{ vote.votes }} hlasy - {{ vote.percentage }}%
       </li>
     </ol>

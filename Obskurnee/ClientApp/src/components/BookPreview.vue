@@ -1,9 +1,9 @@
 <template>
  <div class="card">
   <span v-if="this.$slots.default"><slot></slot></span>
-  <img :src="post.imageUrl" :alt="post.bookTitle" style="width:100%" v-if="post.imageUrl">
+  <img :src="post.imageUrl" :alt="post.title" style="width:100%" v-if="post.imageUrl">
   <div class="container">
-    <h4><b>{{ post.bookTitle }}</b></h4>
+    <h4><b>{{ post.title }}</b></h4>
     <p>{{ post.author }}</p>
   </div>
 </div> 

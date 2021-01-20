@@ -1,7 +1,7 @@
 <template>
     <div  class="book">
-      <div class="book__cover" v-if="post.imageUrl"><img :src="post.imageUrl" :alt="post.bookTitle"></div>
-      <a :href="post.url" class="book__link"><h2 class="book__title">{{ post.bookTitle }}</h2></a>
+      <div class="book__cover" v-if="post.imageUrl"><img :src="post.imageUrl" :alt="post.title"></div>
+      <a :href="post.url" class="book__link"><h2 class="book__title">{{ post.title }}</h2></a>
       <p class="book__pages"><em>{{ post.pageCount }}</em></p>
       <!-- <h3 class="book__proposer">Navrhovatel: Olosta</h3> -->
       <p class="book__pitch" v-html="post.renderedText"> </p>

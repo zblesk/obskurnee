@@ -2,12 +2,12 @@
  <div class="card">
   <div class="row no-gutters">
     <div class="col-sm-5">
-        <img class="card-img pr" :src="post.imageUrl" :alt="post.bookTitle" v-if="post.imageUrl">
+        <img class="card-img pr" :src="post.imageUrl" :alt="post.title" v-if="post.imageUrl">
     </div>
     <div class="col-sm-7">
       <div class="card-body">
         <slot></slot>
-        <h2 class="card-title">{{ post.bookTitle }} - {{ post.author }}</h2>
+        <h2 class="card-title">{{ post.title }} - {{ post.author }}</h2>
         <p class="card-text" v-html="post.renderedText"></p>
         
       </div>

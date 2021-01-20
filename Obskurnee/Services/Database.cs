@@ -15,6 +15,7 @@ namespace Obskurnee.Services
         private readonly LiteDatabase _db;
         public readonly ILiteCollection<Discussion> Discussions;
         public readonly ILiteCollection<Post> Posts;
+        public readonly ILiteCollection<Post> Recs;
         public readonly ILiteCollection<Book> Books;
         public readonly ILiteCollection<Poll> Polls;
         public readonly ILiteCollection<Vote> Votes;
@@ -29,6 +30,7 @@ namespace Obskurnee.Services
             _db.CheckpointSize = 1;
             Discussions = _db.GetCollection<Discussion>("discussions");
             Posts = _db.GetCollection<Post>("posts");
+            Recs = _db.GetCollection<Post>("personalrecs");
             Books = _db.GetCollection<Book>("books");
             Polls = _db.GetCollection<Poll>("polls");
             Votes = _db.GetCollection<Vote>("votes");
@@ -36,6 +38,7 @@ namespace Obskurnee.Services
 
             Posts.EnsureIndex(p => p.DiscussionId);
             Votes.EnsureIndex(v => v.PollId);
+            Recs.EnsureIndex(r => r.OwnerId);
         }
 
         public void Checkpoint()

@@ -7,7 +7,7 @@
       <span style="color: cyan" v-if="fetchInProgress">Kamo pockaj, LOADUJEM</span>
     </div>
     <input v-model="newpost.url" placeholder="https://www.goodreads.com/book..." @change="linkChange"/>
-    <input v-model="newpost.bookTitle" placeholder="Meno knihy" required />
+    <input v-model="newpost.title" placeholder="Meno knihy" required />
     <input v-model="newpost.author" placeholder="Autor" />
     <textarea v-model="newpost.text" placeholder="Komentár k návrhu" required></textarea>
     <button @click="postNewBook">Pridaj</button>
@@ -88,7 +88,7 @@ export default {
           "/api/scrape/?goodreadsUrl=" + this.newpost.url)
         .then((response) => {
           this.newpost.author = response.data.author;
-          this.newpost.bookTitle = response.data.name;
+          this.newpost.title = response.data.name;
           this.newpost.text = "\n\nPopis na Goodreads: \n\n" + response.data.description;
           this.newpost.imageUrl = response.data.imageUrl;
           this.fetchInProgress = false;
