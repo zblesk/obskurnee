@@ -17,21 +17,13 @@ namespace Obskurnee.Controllers
     public class DiscussionController : Controller
     {
         private readonly ILogger<DiscussionController> _logger;
-        private static MarkdownPipeline _mdPipeline;
         private readonly Database _database;
-
-        static DiscussionController()
-        {
-            _mdPipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
-        }
 
         public DiscussionController(ILogger<DiscussionController> logger, Database database, UserManager<Bookworm> userManager)
         {
             _logger = logger;
             _database = database ?? throw new ArgumentNullException(nameof(database));
         }
-
-        private string RenderMarkdown(string md) => Markdown.ToHtml(md, _mdPipeline);
 
         [HttpGet]
         public IEnumerable<Discussion> GetDiscussions() => _database.GetAllDiscussions();
@@ -53,7 +45,7 @@ namespace Obskurnee.Controllers
         [Route("{discussionId:int}/posts")]
         public Post NewPost(int discussionId, Post post)
         {
-            post.RenderedText = RenderMarkdown(post.Text);
+            // post.RenderedText = post.Text; //  RenderMarkdown(post.Text);
             return _database.NewPost(discussionId, post.SetOwner(User));
         }
     }

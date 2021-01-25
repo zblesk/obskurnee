@@ -1,4 +1,6 @@
-﻿namespace Obskurnee.Models
+﻿using LiteDB;
+
+namespace Obskurnee.Models
 {
     public class Post : HeaderData
     {
@@ -9,7 +11,7 @@
         public string Text { get; set; }
         public int? PageCount { get; set; }
         public string Url { get; set; }
-        public string RenderedText { get; set; }
+        [BsonIgnore] public string RenderedText { get => Text.RenderMarkdown(); }
         public string ImageUrl { get; set; }
 
         public Post(string ownerId) : base(ownerId) { }

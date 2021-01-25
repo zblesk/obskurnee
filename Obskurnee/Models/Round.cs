@@ -8,7 +8,7 @@ namespace Obskurnee.Models
 {
     public class Round : HeaderData
     {
-        public enum RoundKind { Topics, Books };
+        public enum RoundKind { Themes, Books };
 
         [BsonId] public int VotingRoundId { get; set; }
         public string Title { get; set; }

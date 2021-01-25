@@ -103,7 +103,7 @@ namespace Obskurnee.Services
                     Options = posts,
                 };
                 Polls.Insert(poll);
-                discussion.Poll = poll;
+                discussion.PollId = poll.PollId;
                 Discussions.Update(discussion);
                 return poll;
             }

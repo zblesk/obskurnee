@@ -88,7 +88,7 @@ namespace Obskurnee.Services
                     }
                 }
             }
-            var pollResults = new PollResults
+            poll.Results = new PollResults
             {
                 AlreadyVoted = allVotes.Count(),
                 TotalVoters = _users.GetAllUserIds().Count,
@@ -105,14 +105,13 @@ namespace Obskurnee.Services
                         },
             };
 
-            if (pollResults.AlreadyVoted == pollResults.TotalVoters)
+            if (poll.Results.AlreadyVoted == poll.Results.TotalVoters)
             {
-                pollResults.WinnerPostId = ClosePoll(poll, currentUser);                
+                poll.Results.WinnerPostId = ClosePoll(poll, currentUser);                
             }
 
-            poll.Results = pollResults;
             _db.Polls.Update(poll);
-            return pollResults;
+            return poll.Results;
         }
 
         private int ClosePoll(Poll poll, string currentUser)

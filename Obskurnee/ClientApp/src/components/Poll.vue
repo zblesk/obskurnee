@@ -19,7 +19,7 @@
       <label :for="option.postId" @click="toggleShow(option)"><strong>{{ option.title }}</strong> - {{ option.author }}</label>
     </li>
   </ol>
-  <button @click="vote" v-if="!iVoted" :disabled="!checkedOptions.length" class="btn btn-warning">Hlasuj!</button>
+  <button @click="vote" :disabled="!checkedOptions.length" class="btn btn-warning">Hlasuj!</button>
   
   <div v-if="iVoted && pollResults && pollResults.votes">
     <h2>VÝSLEDKY:</h2>
@@ -96,9 +96,6 @@ export default {
           this.pollResults = response.data;
           this.poll.isClosed = this.pollResults.alreadyVoted == this.poll.totalVoters;
           this.poll.results = this.pollResults;
-          // console.log(response.data);
-          // console.log('vysledky', this.pollResults.alreadyVoted == this.poll.totalVoters, this.pollResults.alreadyVoted, this.poll.totalVoters);
-          // console.log('POLLvysledky', this.poll.isClosed, this.poll,poll.results.winnerPostId, poll.results);
         })
         .catch(function (error) {
           alert(error);

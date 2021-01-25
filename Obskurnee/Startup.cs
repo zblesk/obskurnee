@@ -100,6 +100,8 @@ namespace Obskurnee
             services.AddTransient<PollService>();
             services.AddTransient<UserService>();
             services.AddTransient<BookService>();
+            services.AddTransient<RoundManagerService>();
+            services.AddTransient<Mailer>();
 
             ConfigureAuthAndIdentity(services);
         }
