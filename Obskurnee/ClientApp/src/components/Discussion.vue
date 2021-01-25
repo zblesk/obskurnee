@@ -1,7 +1,7 @@
 <template>
 <div>
-  <h1 id="tableLabel">{{ title }}<small v-if="isArchived">Uzavreté</small></h1>
-  <div class="form" v-if="!isArchived">
+  <h1 id="tableLabel">{{ title }}<small v-if="IsClosed">Uzavreté</small></h1>
+  <div class="form" v-if="!IsClosed">
     <div>
       <span>Pridaj novú knihu!</span>
       <span style="color: cyan" v-if="fetchInProgress">Kamo pockaj, LOADUJEM</span>
@@ -46,7 +46,7 @@ export default {
       posts: [],
       title: "",
       newpost: {},
-      isArchived: false,
+      IsClosed: false,
       fetchInProgress: false,
       pollId: 0
     };
@@ -59,7 +59,7 @@ export default {
       axios
         .get("/api/discussions/" + this.$route.params.discussionId + "/posts")
         .then((response) => {
-          this.isArchived = response.data.discussion.isArchived;
+          this.IsClosed = response.data.discussion.IsClosed;
           this.posts = response.data.posts;
           this.title = response.data.discussion.title;
           if (response.data.discussion.poll)
@@ -106,7 +106,7 @@ export default {
           "/api/discussions/" + this.$route.params.discussionId + "/close-voting")
         .then((response) => {
             this.pollId = response.data.pollId;
-            this.isArchived = true;
+            this.IsClosed = true;
             this.$router.push({ name: "poll", params: { pollId: this.pollId} });
         })
         .catch(function (error) {

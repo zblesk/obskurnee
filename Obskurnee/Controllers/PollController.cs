@@ -16,11 +16,16 @@ namespace Obskurnee.Controllers
     {
         private readonly ILogger<PollController> _logger;
         private readonly PollService _polls;
+        private readonly RoundManagerService _roundManager;
 
-        public PollController(ILogger<PollController> logger, PollService polls)
+        public PollController(
+            ILogger<PollController> logger,
+            PollService polls,
+            RoundManagerService roundManager)
         {
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _polls = polls ?? throw new ArgumentNullException(nameof(polls));
+            this._roundManager = roundManager ?? throw new ArgumentNullException(nameof(roundManager));
         }
 
         [HttpGet]
@@ -37,6 +42,10 @@ namespace Obskurnee.Controllers
         {
             vote.PollId = pollId;
             var results = _polls.CastPollVote(vote.SetOwner(User));
+            if (results.AlreadyVoted == results.TotalVoters)
+            {
+                _roundManager.ClosePoll(pollId, User.GetUserId());
+            }
             return Json(results);
         }
     }

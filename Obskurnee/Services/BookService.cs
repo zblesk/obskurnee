@@ -25,6 +25,7 @@ namespace Obskurnee.Services
 
         public Book CreateBook(Poll poll, string ownerId)
         {
+            return null; 
             _logger.LogInformation("Creating book for poll {pollId}", poll.PollId);
             Trace.Assert(poll.IsClosed);
             var previousBookNo = _db.Books.Count() == 0

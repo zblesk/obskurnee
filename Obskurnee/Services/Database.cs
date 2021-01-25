@@ -64,7 +64,7 @@ namespace Obskurnee.Services
 
         public Post NewPost(int discussionId, Post post)
         {
-            if (Discussions.FindById(discussionId).IsArchived)
+            if (Discussions.FindById(discussionId).IsClosed)
             {
                 throw new Exception("Diskusia uz bola uzavreta!");
             }
@@ -84,13 +84,13 @@ namespace Obskurnee.Services
         public Poll CloseDiscussionAndOpenPoll(int discussionId, string currentUserId)
         {
             var discussion = Discussions.FindById(discussionId);
-            if (discussion.IsArchived)
+            if (discussion.IsClosed)
             {
                 throw new PermissionException("Diskusia uz bola uzavreta!");
             }
             lock (@lock)
             {
-                discussion.IsArchived = true;
+                discussion.IsClosed = true;
                 var posts = (from post in Posts.Query()
                                where post.DiscussionId == discussionId
                                orderby post.PostId

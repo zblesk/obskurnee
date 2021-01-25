@@ -13,6 +13,7 @@ namespace Obskurnee.Models
         public string Title { get; set; }
         public bool IsClosed { get; set; }
         public bool CreateBookOnClose { get; set; } = true;
+        public Topic Topic { get; set; }
         public PollResults Results { get; set; }
         public Poll(string ownerId) : base(ownerId) { }
     }
