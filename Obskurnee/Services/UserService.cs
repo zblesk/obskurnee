@@ -144,6 +144,6 @@ namespace Obskurnee.Services
                     expires: DateTime.UtcNow.AddDays(190),
                     signingCredentials: SigningCreds));
 
-        public static string GetUserName(string userId) => (_users?.ContainsKey(userId) ?? false) ? _users[userId].Name : null;
+        public static string GetUserName(string userId) => (_users?.ContainsKey(userId ?? "") ?? false) ? _users[userId].Name : null;
     }
 }

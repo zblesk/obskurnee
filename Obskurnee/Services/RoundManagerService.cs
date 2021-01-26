@@ -105,17 +105,18 @@ namespace Obskurnee.Services
             return (discussion, round);
         }
     
-        public (Poll, Round) ClosePoll(int pollId, string currentUserId)
+        public (Poll, Round, Book) ClosePoll(int pollId, string currentUserId)
         {
             _logger.LogInformation("Closing poll {pollId}", pollId);
             var poll = _db.Polls.FindById(pollId);
             var round = _db.Rounds.FindById(poll.RoundId);
             Trace.Assert(!poll.IsClosed);
             poll.IsClosed = true;
+            Book book = null;
             switch (poll.Topic)
             {
                 case Topic.Books:
-                    var book = _bookService.CreateBook(poll, round.RoundId, currentUserId);
+                    book = _bookService.CreateBook(poll, round.RoundId, currentUserId);
                     round.BookId = book.BookId;
                     break;
                 case Topic.Themes:
@@ -125,7 +126,7 @@ namespace Obskurnee.Services
             }
             _db.Polls.Update(poll);
             _db.Rounds.Update(round);
-            return (poll, round);
+            return (poll, round, book);
         }
 
         private Discussion CreateDiscussionFromTopicPoll(string currentUserId, Poll poll, Round round)

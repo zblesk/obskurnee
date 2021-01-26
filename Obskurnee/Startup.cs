@@ -17,8 +17,8 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using VueCliMiddleware;
-
 using LDM = AspNetCore.Identity.LiteDB;
+using System.Text.Json.Serialization;
 
 namespace Obskurnee
 {
@@ -92,7 +92,8 @@ namespace Obskurnee
             Directory.CreateDirectory(DataFolder);
             Directory.CreateDirectory(Path.Combine(DataFolder, ImageFolder));
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp";

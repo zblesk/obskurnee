@@ -8,7 +8,7 @@ namespace Obskurnee.Models
     {
         public string OwnerId { get; set; } 
         public DateTime CreatedOn { get; init; } = DateTime.UtcNow;
-        [BsonIgnore] string OwnerName { get => UserService.GetUserName(OwnerId); }
+        [BsonIgnore] public string OwnerName { get => UserService.GetUserName(OwnerId); }
 
         public HeaderData(string ownerId)
         {
