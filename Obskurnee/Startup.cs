@@ -38,7 +38,10 @@ namespace Obskurnee
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            UserService userService)
         {
             if (env.IsDevelopment())
             {
@@ -79,9 +82,12 @@ namespace Obskurnee
                     spa.UseVueCli(npmScript: "serve");
                 }
             });
+
+            userService.ReloadCache();
         }
 
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(
+            IServiceCollection services)
         {
             Directory.CreateDirectory(DataFolder);
             Directory.CreateDirectory(Path.Combine(DataFolder, ImageFolder));
@@ -102,6 +108,7 @@ namespace Obskurnee
             services.AddTransient<BookService>();
             services.AddTransient<RoundManagerService>();
             services.AddTransient<Mailer>();
+            services.AddTransient<DiscussionService>();
 
             ConfigureAuthAndIdentity(services);
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
+using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,22 +24,28 @@ namespace Obskurnee.Services
             _users = users ?? throw new ArgumentNullException(nameof(users));
         }
 
-        public Book CreateBook(Poll poll, string ownerId)
+        public IEnumerable<Book> GetBooksNewestFirst()
         {
-            return null; 
+            return _db.Books.Include(b => b.Post).FindAll().OrderByDescending(b => b.Order);
+        }
+
+        public BookInfo GetBook(int bookId) => new BookInfo { Book = _db.Books.FindById(bookId) };
+
+        public Book CreateBook(Poll poll, int roundId, string ownerId)
+        {
             _logger.LogInformation("Creating book for poll {pollId}", poll.PollId);
             Trace.Assert(poll.IsClosed);
+            var winner = poll.FindWinningPost();
             var previousBookNo = _db.Books.Count() == 0
                 ? 0
-                :_db.Books.Max(b => b.Order);
+                : _db.Books.Max(b => b.Order);
             var book = new Book(ownerId)
             {
                 BookDiscussionId = poll.DiscussionId,
                 BookPollId = poll.PollId,
                 Order = previousBookNo + 1,
-                Post = new Post(null) {
-                    PostId = poll.Results.Votes.OrderByDescending(vote => vote.Votes).First().PostId
-                },
+                Round = new Round(null) { RoundId = roundId },
+                Post = new Post(null) { PostId = winner },
             };
             _db.Books.Insert(book);
             _logger.LogInformation("Book #{bookNo} created - ID {bookId}, based on post {postId}. {@book}",
@@ -47,11 +54,6 @@ namespace Obskurnee.Services
                 book.Post.PostId,
                 book);
             return book;
-        }
-
-        public IEnumerable<Book> GetBooksNewestFirst()
-        {
-            return _db.Books.Include(b => b.Post).FindAll().OrderByDescending(b => b.Order);
         }
     }
 }

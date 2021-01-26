@@ -17,36 +17,34 @@ namespace Obskurnee.Controllers
     public class DiscussionController : Controller
     {
         private readonly ILogger<DiscussionController> _logger;
-        private readonly Database _database;
+        private readonly DiscussionService _discussions;
 
-        public DiscussionController(ILogger<DiscussionController> logger, Database database, UserManager<Bookworm> userManager)
+        public DiscussionController(
+            ILogger<DiscussionController> logger,
+            DiscussionService discussions)
         {
-            _logger = logger;
-            _database = database ?? throw new ArgumentNullException(nameof(database));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _discussions = discussions ?? throw new ArgumentNullException(nameof(discussions));
         }
 
         [HttpGet]
-        public IEnumerable<Discussion> GetDiscussions() => _database.GetAllDiscussions();
+        public IEnumerable<Discussion> GetDiscussions() => _discussions.GetAll();
 
-        [HttpPost]
-        public Discussion NewDiscussion(Discussion discussion) => _database.NewDiscussion(discussion.SetOwner(User));
-
-        [HttpGet]
-        [Authorize(Policy = "ModOnly")]
-        [Route("{discussionId:int}/close-voting")]
-        public Poll CloseVoting(int discussionId) => 
-            _database.CloseDiscussionAndOpenPoll(discussionId, User.GetUserId());
+        //[HttpGet]
+        //[Authorize(Policy = "ModOnly")]
+        //[Route("{discussionId:int}/close-voting")]
+        //public Poll CloseVoting(int discussionId) => 
+        //    _database.CloseDiscussionAndOpenPoll(discussionId, User.GetUserId());
 
         [HttpGet]
         [Route("{discussionId:int}/posts")]
-        public DiscussionPosts GetPosts(int discussionId) => _database.GetDiscussionPosts(discussionId);
+        public DiscussionPosts GetPosts(int discussionId) => _discussions.GetPosts(discussionId);
 
         [HttpPost]
         [Route("{discussionId:int}/posts")]
         public Post NewPost(int discussionId, Post post)
         {
-            // post.RenderedText = post.Text; //  RenderMarkdown(post.Text);
-            return _database.NewPost(discussionId, post.SetOwner(User));
+            return _discussions.NewPost(discussionId, post.SetOwner(User));
         }
     }
 }

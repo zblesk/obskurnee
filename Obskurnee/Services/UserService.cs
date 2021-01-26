@@ -143,5 +143,7 @@ namespace Obskurnee.Services
                     principal.Claims,
                     expires: DateTime.UtcNow.AddDays(190),
                     signingCredentials: SigningCreds));
+
+        public static string GetUserName(string userId) => (_users?.ContainsKey(userId) ?? false) ? _users[userId].Name : null;
     }
 }

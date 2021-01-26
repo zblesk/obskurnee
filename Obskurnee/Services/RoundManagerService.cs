@@ -14,17 +14,20 @@ namespace Obskurnee.Services
 
         private readonly ILogger<RoundManagerService> _logger;
         private readonly Database _db;
-        private readonly UserService _users;
         private readonly object @lock = new object();
         private readonly BookService _bookService;
 
         public RoundManagerService(
             ILogger<RoundManagerService> logger,
-            Database database)
+            Database database,
+            BookService bookService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
+            _bookService = bookService ?? throw new ArgumentNullException(nameof(bookService));
         }
+
+        public IList<Round> AllRounds() => _db.Rounds.Query().OrderByDescending(r => r.CreatedOn).ToList();
 
         public Round NewRound(Topic topic, string title, string description, string ownerId)
         {
@@ -112,7 +115,7 @@ namespace Obskurnee.Services
             switch (poll.Topic)
             {
                 case Topic.Books:
-                    var book = CreateBook(poll, round, currentUserId);
+                    var book = _bookService.CreateBook(poll, round.RoundId, currentUserId);
                     round.BookId = book.BookId;
                     break;
                 case Topic.Themes:
@@ -127,7 +130,7 @@ namespace Obskurnee.Services
 
         private Discussion CreateDiscussionFromTopicPoll(string currentUserId, Poll poll, Round round)
         {
-            var winner = FindWinningPost(poll);
+            var winner = poll.FindWinningPost();
             var winnerPost = _db.Posts.FindById(winner);
             var bookDiscussion = new Discussion(currentUserId)
             {
@@ -139,36 +142,5 @@ namespace Obskurnee.Services
             _db.Discussions.Insert(bookDiscussion);
             return bookDiscussion;
         }
-
-        private int FindWinningPost(Poll poll) => poll.Results.Votes.OrderByDescending(vote => vote.Votes).First().PostId;
-
-        private Book CreateBook(Poll poll, Round round, string ownerId)
-        {
-            _logger.LogInformation("Creating book for poll {pollId}", poll.PollId);
-            Trace.Assert(poll.IsClosed);
-            var winner = FindWinningPost(poll);
-            var previousBookNo = _db.Books.Count() == 0
-                ? 0
-                : _db.Books.Max(b => b.Order);
-            var book = new Book(ownerId)
-            {
-                BookDiscussionId = poll.DiscussionId,
-                BookPollId = poll.PollId,
-                Order = previousBookNo + 1,
-                Round = round,
-                Post = new Post(ownerId)
-                {
-                    PostId = winner
-                },
-            };
-            _db.Books.Insert(book);
-            _logger.LogInformation("Book #{bookNo} created - ID {bookId}, based on post {postId}. {@book}",
-                book.Order,
-                book.BookId,
-                book.Post.PostId,
-                book);
-            return book;
-        }
-
     }
 }

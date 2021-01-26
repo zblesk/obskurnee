@@ -1,4 +1,5 @@
 ﻿using LiteDB;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Obskurnee.Models
@@ -16,5 +17,7 @@ namespace Obskurnee.Models
         public Topic Topic { get; set; }
         public PollResults Results { get; set; }
         public Poll(string ownerId) : base(ownerId) { }
+
+        public int FindWinningPost() => this.Results.Votes.OrderByDescending(vote => vote.Votes).First().PostId;
     }
 }

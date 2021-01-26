@@ -29,7 +29,7 @@ namespace Obskurnee.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Poll> GetPolls() => _polls.GetAllPolls();
+        public IEnumerable<Poll> GetPolls() => _polls.GetAll();
 
         
         [HttpGet]

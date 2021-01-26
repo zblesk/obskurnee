@@ -28,7 +28,7 @@ namespace Obskurnee.Services
             this._bookService = bookService ?? throw new ArgumentNullException(nameof(bookService));
         }
 
-        public IEnumerable<Poll> GetAllPolls()
+        public IEnumerable<Poll> GetAll()
         {
             return (from poll in _db.Polls.Query()
                     orderby poll.CreatedOn descending
@@ -44,7 +44,7 @@ namespace Obskurnee.Services
             var voteId = $"{pollId}-{userId}";
             var vote = _db.Votes
                 .FindById(voteId);
-            if (vote == null 
+            if (vote == null
                 && poll.Results != null)
             {
                 poll.Results.Votes = null;
@@ -104,29 +104,8 @@ namespace Obskurnee.Services
                             Percentage = (int)((t.Value / (decimal)allVotes.Count()) * 100)
                         },
             };
-
-            if (poll.Results.AlreadyVoted == poll.Results.TotalVoters)
-            {
-                poll.Results.WinnerPostId = ClosePoll(poll, currentUser);                
-            }
-
             _db.Polls.Update(poll);
             return poll.Results;
-        }
-
-        private int ClosePoll(Poll poll, string currentUser)
-        {
-            _logger.LogInformation("Closing poll {pollId}", poll.PollId);
-            poll.IsClosed = true;
-            var winnerPostId = 0;
-            if (poll.CreateBookOnClose)
-            {
-                var book = _bookService.CreateBook(poll, currentUser);
-                poll.BookId = book.BookId;
-                winnerPostId = book.Post.PostId;
-            }
-            _db.Polls.Update(poll);
-            return winnerPostId;
         }
     }
 }
