@@ -24,9 +24,6 @@
                             <router-link :to="{ name: 'booklist' }" class="nav-link text-dark">📚 Knihy</router-link>
                         </li>
                         <li class="nav-item" v-if="isAuthenticated">
-                            <router-link :to="{ name: 'polllist' }" class="nav-link text-dark">🗳 Hlasovania</router-link>
-                        </li>
-                        <li class="nav-item" v-if="isAuthenticated">
                             <router-link :to="{ name: 'discussionlist' }" class="nav-link text-dark">💬 Návrhy</router-link>
                         </li>
                         <li class="nav-item" v-if="isAuthenticated">

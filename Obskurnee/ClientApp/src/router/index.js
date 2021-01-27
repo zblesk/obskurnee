@@ -1,6 +1,6 @@
 ﻿import { createWebHistory, createRouter } from "vue-router";
 import Home from "@/components/Home.vue";
-import DiscussionList from "@/components/DiscussionList.vue";
+import RoundList from "@/components/RoundList.vue";
 import Discussion from "@/components/Discussion.vue";
 import Poll from "@/components/Poll.vue";
 import PollList from "@/components/PollList.vue";
@@ -24,7 +24,7 @@ const routes = [
     {
         path: "/diskusie",
         name: "discussionlist",
-        component: DiscussionList,
+        component: RoundList,
     },
     {
         path: "/navrhy/:discussionId",

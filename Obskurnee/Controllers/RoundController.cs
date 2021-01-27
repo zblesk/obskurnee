@@ -34,12 +34,12 @@ namespace Obskurnee.Controllers
         [HttpGet]
         [Authorize(Policy = "ModOnly")]
         [Route("close-poll/{pollId:int}")]
-        public (Poll, Round, Book) CloseVoting(int pollId) => _roundManager.ClosePoll(pollId, User.GetUserId());
+        public RoundUpdateResults CloseVoting(int pollId) => _roundManager.ClosePoll(pollId, User.GetUserId());
 
-        [HttpPost]
+        [HttpGet]
         [Authorize(Policy = "ModOnly")]
         [Route("close-discussion/{discussionId:int}")]
-        public (Discussion, Round) CloseDiscussion(int discussionId) => _roundManager.CloseDiscussion(discussionId, User.GetUserId());
+        public RoundUpdateResults CloseDiscussion(int discussionId) => _roundManager.CloseDiscussion(discussionId, User.GetUserId());
 
         [HttpPost]
         [Authorize(Policy = "ModOnly")]

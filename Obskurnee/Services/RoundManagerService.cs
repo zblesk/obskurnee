@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
+using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,7 +12,6 @@ namespace Obskurnee.Services
 {
     public class RoundManagerService
     {
-
         private readonly ILogger<RoundManagerService> _logger;
         private readonly Database _db;
         private readonly object @lock = new object();
@@ -64,7 +64,7 @@ namespace Obskurnee.Services
             return round;
         }
 
-        public (Discussion, Round) CloseDiscussion(int discussionId, string currentUserId)
+        public RoundUpdateResults CloseDiscussion(int discussionId, string currentUserId)
         {
             var discussion = _db.Discussions.FindById(discussionId);
             if (discussion.IsClosed)
@@ -102,10 +102,10 @@ namespace Obskurnee.Services
                 _db.Discussions.Update(discussion);
                 _db.Rounds.Update(round);
             }
-            return (discussion, round);
+            return new() { Discussion = discussion, Round = round };
         }
     
-        public (Poll, Round, Book) ClosePoll(int pollId, string currentUserId)
+        public RoundUpdateResults ClosePoll(int pollId, string currentUserId)
         {
             _logger.LogInformation("Closing poll {pollId}", pollId);
             var poll = _db.Polls.FindById(pollId);
@@ -126,7 +126,7 @@ namespace Obskurnee.Services
             }
             _db.Polls.Update(poll);
             _db.Rounds.Update(round);
-            return (poll, round, book);
+            return new() { Poll = poll, Round = round, Book = book };
         }
 
         private Discussion CreateDiscussionFromTopicPoll(string currentUserId, Poll poll, Round round)

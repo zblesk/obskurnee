@@ -103,8 +103,9 @@ export default {
     {
       console.log(this.$route.params);
         axios.get(
-          "/api/discussions/" + this.$route.params.discussionId + "/close-voting")
+          "/api/rounds/close-discussion/" + this.$route.params.discussionId)
         .then((response) => {
+          console.log(response.data);
             this.pollId = response.data.pollId;
             this.IsClosed = true;
             this.$router.push({ name: "poll", params: { pollId: this.pollId} });
