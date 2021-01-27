@@ -1,7 +1,7 @@
 <template>
 <div>
-  <h1 id="tableLabel">{{ title }}<small v-if="IsClosed">Uzavreté</small></h1>
-  <div class="form" v-if="!IsClosed">
+  <h1 id="tableLabel">{{ discussion.title }}<small v-if="discussion.isClosed">Uzavreté</small></h1>
+  <div class="form" v-if="!discussion.isClosed">
     <div>
       <span>Pridaj novú knihu!</span>
       <span style="color: cyan" v-if="fetchInProgress">Kamo pockaj, LOADUJEM</span>
@@ -16,19 +16,19 @@
     <button @click="closeDiscussion" v-if="isMod">UZAVRI diskusiu a vytvor hlasovanie</button>
   </div>
 
-  <div class="form" v-if="pollId">
-    <router-link :to="{ name: 'poll', params: { pollId: pollId } }" class="nav-item nav-link" style="color: orange;">Choď na hlasovanie</router-link>
+  <div class="form" v-if="discussion.pollId">
+    <router-link :to="{ name: 'poll', params: { pollId: discussion.pollId } }" class="nav-item nav-link" style="color: orange;">Choď na hlasovanie</router-link>
   </div>
 
   <div class="grid">
-    <p v-if="!title"><em>Cakaj, nacitavam</em></p>
+    <p v-if="!discussion.title"><em>Zatial tu nic nie je</em></p>
 
     <book-recommendation
-      v-for="post in posts"
+      v-for="post in discussion.posts"
       v-bind:key="post.postId"
       v-bind:post="post">
     </book-recommendation>
-  </div>
+  </div> 
 </div>
 </template>
 
@@ -36,53 +36,38 @@
 <script>
 import axios from "axios";
 import BookRecommendation from "./BookRecommendation.vue";
-import { mapGetters } from "vuex";
+import { mapGetters,mapActions, mapState } from "vuex";
 
 export default {
   name: "Discussion",
-  components: { BookRecommendation },
+ components: { BookRecommendation },
   data() {
     return {
-      posts: [],
-      title: "",
       newpost: {},
-      IsClosed: false,
       fetchInProgress: false,
-      pollId: 0
     };
   },
   computed: {
-    ...mapGetters("context", ["isMod"])
+    ...mapGetters("context", ["isMod"]),
+    ...mapState("discussions", ["discussions"]),
+    discussion: function () { return this.discussions.find(d => d.discussionId == this.$route.params.discussionId) ?? { posts: [] }; },
   },
   methods: {
-    getDiscussionData() {
-      axios
-        .get("/api/discussions/" + this.$route.params.discussionId + "/posts")
-        .then((response) => {
-          this.IsClosed = response.data.discussion.IsClosed;
-          this.posts = response.data.posts;
-          this.title = response.data.discussion.title;
-          if (response.data.discussion.poll)
-            this.pollId = response.data.discussion.poll.pollId;
-        })
-        .catch(function (error) {
-          alert(error);
-        });
-    },
+    ...mapActions("discussions", ["getDiscussionData", "newPost"]),
     postNewBook() {
-      console.log(this.newpost);
-      axios.post(
-          "/api/discussions/" + this.$route.params.discussionId + "/posts",
-          this.newpost)
-        .then((response) => {
-          this.posts.push(response.data);
-          this.newpost = {};
-        })
-        .catch(function (error) {
-          alert(error);
-        });
+      console.log('qwewqeqwewqe', this.newpost);
+          this.newPost({ discussionId: this.$route.params.discussionId, newPost: this.newpost })
+            .then(() => {
+              this.newpost = {};
+            });
     },
     linkChange() {
+      if (!this.newpost.url 
+        || !this.newpost.url.startsWith("https://www.goodreads.com"))
+      {
+        console.log("Not fetching ", this.newpost.url);
+        return;
+      }
       this.fetchInProgress = true;
         axios.get(
           "/api/scrape/?goodreadsUrl=" + this.newpost.url)
@@ -101,12 +86,11 @@ export default {
     },
     closeDiscussion() 
     {
-      console.log(this.$route.params);
         axios.get(
           "/api/rounds/close-discussion/" + this.$route.params.discussionId)
         .then((response) => {
           console.log(response.data);
-            this.pollId = response.data.pollId;
+            this.pollId = response.data.discussion.pollId;
             this.IsClosed = true;
             this.$router.push({ name: "poll", params: { pollId: this.pollId} });
         })
@@ -116,7 +100,7 @@ export default {
     }
   },
   mounted() {
-    this.getDiscussionData();
+    this.getDiscussionData(this.$route.params.discussionId);//.then(r => console.log(r));
   },
 };
 </script>

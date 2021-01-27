@@ -2,8 +2,16 @@
 <section>
 <h1 id="tableLabel">Kolá návrhov</h1>
 
-<p v-if="!rounds"><em>Cakaj, nacitavam</em></p>
+<div v-if="isMod">
+    Začať s: 
+    <input type="radio" id="Books" value="Books" v-model="newRound.topic"> Knihy
+    <input type="radio" id="Themes" value="Themes" v-model="newRound.topic"> Témy
+    <input v-model="newRound.title" placeholder="Názov (napr. 'Kniha IXY')" required />
+    <textarea v-model="newRound.description" placeholder="Popis / zadanie"></textarea>
+    <button @click="cNewRound">Nové kolo</button>
+</div>
 
+<p v-if="!rounds"><em>Cakaj, nacitavam</em></p>
 <div v-for="round of rounds" v-bind:key="round" style="margin:auto;"> 
     <h3>{{ round.title }}</h3>
     <table>
@@ -26,14 +34,29 @@
 
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 export default {
     name: "RoundList",
+    data() { 
+        return {
+            newRound: {
+                topic: "Books"
+            }
+        }
+    },
     computed: {
         ...mapState("rounds", ["rounds"]),
+        ...mapGetters("context", ["isMod"])
     },
     methods: {
-        ...mapActions("rounds", ["fetchRounds"]),
+        ...mapActions("rounds", ["fetchRounds", "createNewRound"]),
+        cNewRound()
+        {
+            this.createNewRound(this.newRound).then(() => 
+            {
+                this.newRound = {};
+            });
+        }
     },
     mounted() {
         this.fetchRounds();

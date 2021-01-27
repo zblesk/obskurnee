@@ -9,6 +9,7 @@ import RecommendationList from "@/components/RecommendationList.vue";
 import Admin from "@/components/Admin.vue";
 import Setup from "@/components/Setup.vue";
 import BookList from "@/components/BookList.vue";
+import DiscussionList from "@/components/DiscussionList.vue";
 
 const routes = [
     {
@@ -22,9 +23,14 @@ const routes = [
         component: Home,
     },
     {
+        path: "/navrhy",
+        name: "roundlist",
+        component: RoundList,
+    },
+    {
         path: "/diskusie",
         name: "discussionlist",
-        component: RoundList,
+        component: DiscussionList,
     },
     {
         path: "/navrhy/:discussionId",

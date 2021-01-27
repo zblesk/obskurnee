@@ -1,4 +1,5 @@
 ﻿using LiteDB;
+using System.Collections.Generic;
 
 namespace Obskurnee.Models
 {
@@ -12,6 +13,7 @@ namespace Obskurnee.Models
         public bool IsClosed { get; set; }
         public Topic Topic{ get; set; }
         [BsonIgnore] public string RenderedDescription { get => Description.RenderMarkdown(); }
+        [BsonRef("posts")] public IList<Post> Posts { get; set; }
 
         public Discussion(string ownerId) : base(ownerId) { }
     }

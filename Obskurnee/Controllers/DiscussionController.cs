@@ -30,21 +30,12 @@ namespace Obskurnee.Controllers
         [HttpGet]
         public IEnumerable<Discussion> GetDiscussions() => _discussions.GetAll();
 
-        //[HttpGet]
-        //[Authorize(Policy = "ModOnly")]
-        //[Route("{discussionId:int}/close-voting")]
-        //public Poll CloseVoting(int discussionId) => 
-        //    _database.CloseDiscussionAndOpenPoll(discussionId, User.GetUserId());
-
         [HttpGet]
-        [Route("{discussionId:int}/posts")]
-        public DiscussionPosts GetPosts(int discussionId) => _discussions.GetPosts(discussionId);
+        [Route("{discussionId:int}")]
+        public Discussion GetPosts(int discussionId) => _discussions.GetWithPosts(discussionId);
 
         [HttpPost]
-        [Route("{discussionId:int}/posts")]
-        public Post NewPost(int discussionId, Post post)
-        {
-            return _discussions.NewPost(discussionId, post.SetOwner(User));
-        }
+        [Route("{discussionId:int}")]
+        public Post NewPost(int discussionId, Post post) => _discussions.NewPost(discussionId, post.SetOwner(User));
     }
 }

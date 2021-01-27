@@ -11,51 +11,28 @@
                     <router-link :to="{ name: 'discussion', params: { discussionId: discussion.discussionId } }">{{ discussion.title }}</router-link></td>
             </tr>
         </tbody>
-        <tfoot>
-            <tr><td>
-            <input v-model="newDiscussion.title" placeholder="Nova diskusia" />
-            <button @click="postNewDiscussion">Pridaj</button></td></tr>
-        </tfoot>
     </table>
 </section>
 </template>
 
 
 <script>
-    import axios from 'axios'
+import { mapActions, mapState } from "vuex";
     export default {
         name: "Discussions",
         data() {
             return {
-                discussions: [],
                 newDiscussion: {},
             }
         },
+        computed: {
+            ...mapState("discussions", ["discussions"]),
+        },
         methods: {
-            getDiscussions() {
-                axios.get('/api/discussions')
-                    .then((response) => {
-                        this.discussions =  response.data;
-                    })
-                    .catch(function (error) {
-                        alert(error);
-                    });
-            },
-            postNewDiscussion() {
-                console.log(this.newDiscussion);
-                axios.post('/api/discussions/', this.newDiscussion)
-                    .then((response) => {
-                        this.discussions.push(response.data);
-                        this.newDiscussion = {};
-                        this.$router.push({ name: "discussion", params: { discussionId: response.data.discussionId } });
-                    })
-                    .catch(function (error) {
-                        alert(error);
-                    });
-            }
+            ...mapActions("discussions", ["fetchDiscussionList"]),
         },
         mounted() {
-            this.getDiscussions();
+            this.fetchDiscussionList();
         }
     }
 </script>

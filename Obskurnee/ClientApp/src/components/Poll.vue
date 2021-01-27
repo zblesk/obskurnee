@@ -85,13 +85,13 @@ export default {
     {
       if (!this.checkedOptions.length)
       {
-        console.log("You must select something first");
         return;
       }
       axios.post(
           "/api/polls/" + this.$route.params.pollId + "/vote",
           { postIds: this.checkedOptions })
         .then((response) => {
+          console.log(response.data);
           this.iVoted = true;
           this.pollResults = response.data;
           this.poll.isClosed = this.pollResults.alreadyVoted == this.poll.totalVoters;

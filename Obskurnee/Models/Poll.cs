@@ -6,14 +6,16 @@ namespace Obskurnee.Models
 {
     public class Poll : HeaderData
     {
+        public enum FollowupKind { Discussion, Book }
+        public record FollowupReference(FollowupKind kind, int entityId);
+
         [BsonId] public int PollId { get; set; }
         public int DiscussionId { get; set; }
-        public int BookId { get; set; }
+        public FollowupReference FollowupLink { get; set; }
         public int RoundId { get; set; }
         [BsonRef("posts")] public IList<Post> Options { get; set; }
         public string Title { get; set; }
         public bool IsClosed { get; set; }
-        public bool CreateBookOnClose { get; set; } = true;
         public Topic Topic { get; set; }
         public PollResults Results { get; set; }
         public Poll(string ownerId) : base(ownerId) { }

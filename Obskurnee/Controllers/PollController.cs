@@ -38,15 +38,15 @@ namespace Obskurnee.Controllers
 
         [HttpPost]
         [Route("{pollId:int}/vote")]
-        public JsonResult CastVote(int pollId, Vote vote)
+        public RoundUpdateResults CastVote(int pollId, Vote vote)
         {
             vote.PollId = pollId;
-            var results = _polls.CastPollVote(vote.SetOwner(User));
-            if (results.AlreadyVoted == results.TotalVoters)
+            var poll = _polls.CastPollVote(vote.SetOwner(User));
+            if (poll.Results.AlreadyVoted == poll.Results.TotalVoters)
             {
-                _roundManager.ClosePoll(pollId, User.GetUserId());
+                return _roundManager.ClosePoll(pollId, User.GetUserId());
             }
-            return Json(results);
+            return new RoundUpdateResults { Poll = poll };
         }
     }
 }
