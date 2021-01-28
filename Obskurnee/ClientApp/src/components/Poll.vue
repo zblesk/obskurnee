@@ -5,7 +5,6 @@
   </h1>
 
   <div v-if="poll.isClosed">
-  {{poll.followupLink}}
     <router-link v-if="poll.followupLink?.kind == 'Book'" :to="{ name: 'book', params: { bookId: poll.followupLink.entityId } }">
       <book-preview :post="poll.options.find(o => o.postId == poll.results.winnerPostId)"  style="margin: auto;">Víťaz</book-preview>
     </router-link>
@@ -36,46 +35,34 @@
     </ol>
   </div>
 
-  <book-recommendation v-if="previewId" v-bind:key="previewId.postId" v-bind:post="previewId" ></book-recommendation>
+  <book-post v-if="previewId" v-bind:key="previewId.postId" v-bind:post="previewId" ></book-post>
 </section>
 </template>
 
 
 <script>
-import axios from "axios";
-import BookRecommendation from './BookRecommendation.vue';
+import BookPost from './BookPost.vue';
 import BookPreview from './BookPreview.vue';
 import TextPost from './TextPost.vue';
+import { mapGetters,mapActions, mapState } from "vuex";
 
 export default {
-  components: { BookRecommendation, BookPreview, TextPost },
+  components: { BookPost, BookPreview, TextPost },
   name: "Poll",
   data() {
     return {
-      poll: {},
       previewId: null,
       checkedOptions: [],
-      iVoted: false,
     };
   },
+  computed: {
+    ...mapGetters("context", ["isMod"]),
+    ...mapState("polls", ["polls", "votes"]),
+    poll: function () { return this.polls[this.$route.params.pollId] ?? { options: [] }; },
+    iVoted: function () { return this.checkedOptions.length; },
+  },
   methods: {
-    gePollData() {
-      axios
-        .get("/api/polls/" + this.$route.params.pollId)
-        .then((response) => {
-          console.log(response.data);
-          this.poll = response.data.poll;
-          this.poll.isClosed = true;
-          if (response.data.myVote)
-          {
-             this.checkedOptions = response.data.myVote.postIds;
-             this.iVoted = this.checkedOptions.length;
-          }
-        })
-        .catch(function (error) {
-          alert(error);
-        });
-    },
+    ...mapActions("polls", ["getPollData", "sendVote"]),
     toggleShow(postId){
       if (this.previewId == postId)
       {
@@ -92,16 +79,13 @@ export default {
       {
         return;
       }
-      axios.post(
-          "/api/polls/" + this.$route.params.pollId + "/vote",
-          { postIds: this.checkedOptions })
+      this.sendVote( { pollId: this.$route.params.pollId, votes: this.checkedOptions })
         .then((response) => {
           console.log(response.data);
           this.iVoted = true;
-          this.poll = response.data.poll;
         })
         .catch(function (error) {
-          alert(error);
+          console.log('errpr', error);
         });
     },
     
@@ -110,10 +94,11 @@ export default {
       return lst;
     }
   },
-  computed: {
-  },
   mounted() {
-    this.gePollData();
+    this.getPollData(this.$route.params.pollId)
+      .then(() => {
+        this.checkedOptions = this.votes[this.$route.params.pollId];
+      });
   },
 };
 </script>

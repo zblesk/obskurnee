@@ -30,9 +30,11 @@ namespace Obskurnee
         private static void ConfigureLogging()
         {
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
                 .Enrich.FromLogContext()
-                .WriteTo.RollingFile("events.log")
+                .MinimumLevel.Verbose()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Verbose)
+                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Verbose)
+                // .WriteTo.RollingFile("events.log")
                 .WriteTo.Console()
                 .CreateLogger();
         }

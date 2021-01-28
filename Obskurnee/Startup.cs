@@ -37,7 +37,34 @@ namespace Obskurnee
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void ConfigureServices(
+            IServiceCollection services)
+        {
+            Directory.CreateDirectory(DataFolder);
+            Directory.CreateDirectory(Path.Combine(DataFolder, ImageFolder));
+
+            services.AddControllers()
+                .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp";
+            });
+
+            var databaseSingleton = new Database(Log.Logger.ForContext<Database>());
+
+            services.AddSingleton<Database>(databaseSingleton);
+            services.AddSingleton<ILiteDbContext>((ILiteDbContext)databaseSingleton);
+            services.AddTransient<GoodreadsScraper>();
+            services.AddTransient<PollService>();
+            services.AddTransient<UserService>();
+            services.AddTransient<BookService>();
+            services.AddTransient<RoundManagerService>();
+            services.AddTransient<Mailer>();
+            services.AddTransient<DiscussionService>();
+
+            ConfigureAuthAndIdentity(services);
+        }
+
         public void Configure(
             IApplicationBuilder app,
             IWebHostEnvironment env,
@@ -84,34 +111,6 @@ namespace Obskurnee
             });
 
             userService.ReloadCache();
-        }
-
-        public void ConfigureServices(
-            IServiceCollection services)
-        {
-            Directory.CreateDirectory(DataFolder);
-            Directory.CreateDirectory(Path.Combine(DataFolder, ImageFolder));
-
-            services.AddControllers()
-                .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp";
-            });
-
-            var databaseSingleton = new Database(Log.Logger.ForContext<Database>());
-
-            services.AddSingleton<Database>(databaseSingleton);
-            services.AddSingleton<ILiteDbContext>((ILiteDbContext)databaseSingleton);
-            services.AddTransient<GoodreadsScraper>();
-            services.AddTransient<PollService>();
-            services.AddTransient<UserService>();
-            services.AddTransient<BookService>();
-            services.AddTransient<RoundManagerService>();
-            services.AddTransient<Mailer>();
-            services.AddTransient<DiscussionService>();
-
-            ConfigureAuthAndIdentity(services);
         }
 
         private static void ConfigureAuthAndIdentity(IServiceCollection services)

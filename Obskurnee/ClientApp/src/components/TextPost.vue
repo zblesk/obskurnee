@@ -3,7 +3,7 @@
   <span v-if="this.$slots.default"><slot></slot></span>
   <div class="container">
     <h4><b>{{ post.title }}</b></h4>
-    <p>{{ post.renderedText }}</p>
+    <p v-html="post.renderedText"></p>
   </div>
 </div> 
 </template>

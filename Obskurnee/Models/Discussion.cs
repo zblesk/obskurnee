@@ -13,7 +13,7 @@ namespace Obskurnee.Models
         public bool IsClosed { get; set; }
         public Topic Topic{ get; set; }
         [BsonIgnore] public string RenderedDescription { get => Description.RenderMarkdown(); }
-        [BsonRef("posts")] public IList<Post> Posts { get; set; }
+        [BsonRef("posts")] public IList<Post> Posts { get; set; } = new List<Post>();
 
         public Discussion(string ownerId) : base(ownerId) { }
     }

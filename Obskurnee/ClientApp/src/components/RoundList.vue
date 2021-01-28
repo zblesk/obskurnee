@@ -25,7 +25,7 @@
             <td><router-link v-if="round.bookPollId" :to="{ name: 'poll', params: { pollId: round.bookPollId } }">Hlasovanie o knihách</router-link> </td>
         </tr>
         <tr>
-            <td><span v-if="round.bookId"> este link na knihu s ID #{{ round.bookId}}</span></td>
+            <td><router-link v-if="round.bookId" :to="{ name: 'book', params: { bookId: round.bookId } }">Kniha</router-link></td>
         </tr>
     </table>
 </div>

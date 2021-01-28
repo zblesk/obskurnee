@@ -11,7 +11,7 @@ namespace Obskurnee.ViewModels
         public string Email { get; set; }
         public string IsModerator { get; set; } = "false";
         public string IsAdmin { get; set; } = "false";
-        public string Token { get; set; } = null;
+        public string? Token { get; set; } = null;
 
         public UserInfo() { }
 
@@ -22,7 +22,7 @@ namespace Obskurnee.ViewModels
             Email = email;
         }
 
-        public static UserInfo FromPrincipal(ClaimsPrincipal principal, string token = null)
+        public static UserInfo FromPrincipal(ClaimsPrincipal principal, string? token = null)
                 => (principal?.Identity == null || !principal.Identity.IsAuthenticated)
                     ? new UserInfo()
                     : new UserInfo()

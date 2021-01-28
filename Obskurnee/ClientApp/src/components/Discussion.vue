@@ -23,11 +23,11 @@
   <div class="grid">
     <p v-if="!discussion.title"><em>Zatial tu nic nie je</em></p>
 
-    <book-recommendation
+    <book-post
       v-for="post in discussion.posts"
       v-bind:key="post.postId"
       v-bind:post="post">
-    </book-recommendation>
+    </book-post>
   </div> 
 </div>
 </template>
@@ -35,12 +35,12 @@
 
 <script>
 import axios from "axios";
-import BookRecommendation from "./BookRecommendation.vue";
+import BookPost from "./BookPost.vue";
 import { mapGetters,mapActions, mapState } from "vuex";
 
 export default {
   name: "Discussion",
- components: { BookRecommendation },
+ components: { BookPost },
   data() {
     return {
       newpost: {},
@@ -55,7 +55,6 @@ export default {
   methods: {
     ...mapActions("discussions", ["getDiscussionData", "newPost"]),
     postNewBook() {
-      console.log('qwewqeqwewqe', this.newpost);
           this.newPost({ discussionId: this.$route.params.discussionId, newPost: this.newpost })
             .then(() => {
               this.newpost = {};

@@ -2,5 +2,5 @@
 
 namespace Obskurnee.ViewModels
 {
-    public record PollInfo(Poll poll, Vote myVote);
+    public record PollInfo(Poll poll, Vote? myVote);
 }
