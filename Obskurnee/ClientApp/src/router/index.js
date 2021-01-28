@@ -10,6 +10,7 @@ import Admin from "@/components/Admin.vue";
 import Setup from "@/components/Setup.vue";
 import BookList from "@/components/BookList.vue";
 import DiscussionList from "@/components/DiscussionList.vue";
+import BookLargeCard from "@/components/BookLargeCard.vue";
 
 const routes = [
     {
@@ -61,6 +62,11 @@ const routes = [
         path: "/knihy",
         name: "booklist",
         component: BookList,
+    },
+    {
+        path: "/knihy/:bookId",
+        name: "book",
+        component: BookLargeCard,
     },
     {
         path: "/my",

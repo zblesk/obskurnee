@@ -53,9 +53,7 @@ export default {
       },
       registerFirstAdmin ({ dispatch }, credentials) {
         return axios.post('/api/account/registerfirstadmin', credentials)
-        .then(res => {
-          const profile = res.data;
-          console.log('registered! Got:', profile);
+        .then(() => {
           dispatch('login', credentials);
         })
         .catch(err => {

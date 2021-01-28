@@ -36,7 +36,7 @@ export default {
     onSubmit() {
       this.registerFirstAdmin(this.form)
         .then(() => {
-          
+            this.$router.push({ name: "home" });
         }
       );
     },

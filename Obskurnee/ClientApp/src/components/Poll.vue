@@ -4,14 +4,19 @@
     {{ poll.title }}<small v-if="poll.isClosed"> Uzavreté</small>
   </h1>
 
-  <div v-if="poll.isClosed && poll.results.winnerPostId">
-    <book-preview :post="poll.options.find(o => o.postId == poll.results.winnerPostId)"  style="margin: auto;">Víťaz</book-preview>
+  <div v-if="poll.isClosed">
+  {{poll.followupLink}}
+    <router-link v-if="poll.followupLink?.kind == 'Book'" :to="{ name: 'book', params: { bookId: poll.followupLink.entityId } }">
+      <book-preview :post="poll.options.find(o => o.postId == poll.results.winnerPostId)"  style="margin: auto;">Víťaz</book-preview>
+    </router-link>
+    <router-link v-if="poll.followupLink?.kind == 'Discussion'" :to="{ name: 'discussion', params: { discussionId: poll.followupLink.entityId } }">
+      <text-post :post="poll.options.find(o => o.postId == poll.results.winnerPostId)"  style="margin: auto;">Víťaz</text-post>
+    </router-link>
   </div>
-
-  <div v-if="!poll.isClosed && pollResults && pollResults.yetToVote" 
+  <div v-if="!poll.isClosed && poll.results && poll.results.yetToVote" 
     style="margin:1em; border-color: pink; border-style:dashed;">
-    Už hlasovalo {{ pollResults.alreadyVoted }} z {{ pollResults.totalVoters }}. <br />
-    Ešte nehlasovala: <span v-for="person in pollResults.yetToVote" v-bind:key="person">{{ person }}</span>
+    Už hlasovalo {{ poll.results.alreadyVoted }} z {{ poll.results.totalVoters }}. <br />
+    Ešte nehlasovala: <span v-for="person in poll.results.yetToVote" v-bind:key="person">{{ person }}</span>
   </div>
   <ol>
     <li v-for="option in poll.options" v-bind:key="option.postId">
@@ -21,10 +26,10 @@
   </ol>
   <button @click="vote" :disabled="!checkedOptions.length" class="btn btn-warning">Hlasuj!</button>
   
-  <div v-if="iVoted && pollResults && pollResults.votes">
+  <div v-if="iVoted && poll.results && poll.results.votes">
     <h2>VÝSLEDKY:</h2>
     <ol>
-      <li v-for="vote in pollResults.votes" v-bind:key="vote">
+      <li v-for="vote in poll.results.votes" v-bind:key="vote">
          {{ poll.options.find(o => o.postId == vote.postId).title }} 
          - {{ vote.votes }} hlasy - {{ vote.percentage }}%
       </li>
@@ -40,9 +45,10 @@
 import axios from "axios";
 import BookRecommendation from './BookRecommendation.vue';
 import BookPreview from './BookPreview.vue';
+import TextPost from './TextPost.vue';
 
 export default {
-  components: { BookRecommendation, BookPreview },
+  components: { BookRecommendation, BookPreview, TextPost },
   name: "Poll",
   data() {
     return {
@@ -50,7 +56,6 @@ export default {
       previewId: null,
       checkedOptions: [],
       iVoted: false,
-      pollResults: {}
     };
   },
   methods: {
@@ -60,7 +65,7 @@ export default {
         .then((response) => {
           console.log(response.data);
           this.poll = response.data.poll;
-          this.pollResults = response.data.poll.results;
+          this.poll.isClosed = true;
           if (response.data.myVote)
           {
              this.checkedOptions = response.data.myVote.postIds;
@@ -93,9 +98,7 @@ export default {
         .then((response) => {
           console.log(response.data);
           this.iVoted = true;
-          this.pollResults = response.data;
-          this.poll.isClosed = this.pollResults.alreadyVoted == this.poll.totalVoters;
-          this.poll.results = this.pollResults;
+          this.poll = response.data.poll;
         })
         .catch(function (error) {
           alert(error);

@@ -35,7 +35,6 @@ namespace Obskurnee.Services
         {
             _logger.LogInformation("Creating book for poll {pollId}", poll.PollId);
             Trace.Assert(poll.IsClosed);
-            var winner = poll.FindWinningPost();
             var previousBookNo = _db.Books.Count() == 0
                 ? 0
                 : _db.Books.Max(b => b.Order);
@@ -45,7 +44,7 @@ namespace Obskurnee.Services
                 BookPollId = poll.PollId,
                 Order = previousBookNo + 1,
                 Round = new Round(null) { RoundId = roundId },
-                Post = new Post(null) { PostId = winner },
+                Post = new Post(null) { PostId = poll.Results.WinnerPostId },
             };
             _db.Books.Insert(book);
             _logger.LogInformation("Book #{bookNo} created - ID {bookId}, based on post {postId}. {@book}",

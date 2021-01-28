@@ -112,27 +112,29 @@ namespace Obskurnee.Services
             var round = _db.Rounds.FindById(poll.RoundId);
             Trace.Assert(!poll.IsClosed);
             poll.IsClosed = true;
-            Book book = null;
+            poll.Results.WinnerPostId = poll.FindWinningPost();
+            var result = new RoundUpdateResults { Poll = poll, Round = round };
             switch (poll.Topic)
             {
                 case Topic.Books:
-                    book = _bookService.CreateBook(poll, round.RoundId, currentUserId);
-                    round.BookId = book.BookId;
+                    result.Book = _bookService.CreateBook(poll, round.RoundId, currentUserId);
+                    round.BookId = result.Book.BookId;
+                    poll.FollowupLink = new Poll.FollowupReference(Poll.FollowupKind.Book, result.Book.BookId);
                     break;
                 case Topic.Themes:
-                    Discussion bookDiscussion = CreateDiscussionFromTopicPoll(currentUserId, poll, round);
-                    round.BookDiscussionId = bookDiscussion.DiscussionId;
+                    result.Discussion = CreateDiscussionFromTopicPoll(currentUserId, poll, round);
+                    round.BookDiscussionId = result.Discussion.DiscussionId;
+                    poll.FollowupLink = new Poll.FollowupReference(Poll.FollowupKind.Discussion, result.Discussion.DiscussionId);
                     break;
             }
             _db.Polls.Update(poll);
             _db.Rounds.Update(round);
-            return new() { Poll = poll, Round = round, Book = book };
+            return result;
         }
 
         private Discussion CreateDiscussionFromTopicPoll(string currentUserId, Poll poll, Round round)
         {
-            var winner = poll.FindWinningPost();
-            var winnerPost = _db.Posts.FindById(winner);
+            var winnerPost = _db.Posts.FindById(poll.Results.WinnerPostId);
             var bookDiscussion = new Discussion(currentUserId)
             {
                 RoundId = round.RoundId,

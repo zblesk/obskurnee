@@ -1,14 +1,14 @@
 <template>
 <div>
   <h1 id="tableLabel">{{ discussion.title }}<small v-if="discussion.isClosed">Uzavreté</small></h1>
+  <p v-html="discussion.renderedDescription"></p>
   <div class="form" v-if="!discussion.isClosed">
-    <div>
-      <span>Pridaj novú knihu!</span>
+    <span v-if="discussion.topic == 'Books'">
+      <input v-model="newpost.url" placeholder="https://www.goodreads.com/book..." @change="linkChange"/>
       <span style="color: cyan" v-if="fetchInProgress">Kamo pockaj, LOADUJEM</span>
-    </div>
-    <input v-model="newpost.url" placeholder="https://www.goodreads.com/book..." @change="linkChange"/>
+    </span>
     <input v-model="newpost.title" placeholder="Meno knihy" required />
-    <input v-model="newpost.author" placeholder="Autor" />
+    <input v-if="discussion.topic == 'Books'" v-model="newpost.author" placeholder="Autor" />
     <textarea v-model="newpost.text" placeholder="Komentár k návrhu" required></textarea>
     <button @click="postNewBook">Pridaj</button>
     <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />

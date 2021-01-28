@@ -52,7 +52,7 @@ namespace Obskurnee.Services
             return new PollInfo(poll, vote);
         }
 
-        public PollResults CastPollVote(Vote vote)
+        public Poll CastPollVote(Vote vote)
         {
             _logger.LogInformation("New vote: {@vote}", vote);
             Trace.Assert(!string.IsNullOrWhiteSpace(vote.OwnerId));
@@ -64,48 +64,49 @@ namespace Obskurnee.Services
             }
             _db.Votes.Upsert(vote);
 
-            lock (@lock)
-            {
-                return UpdateVoteStats(poll, vote.OwnerId);
-            }
+            UpdateVoteStats(poll);
+            return poll;
         }
 
-        private PollResults UpdateVoteStats(Poll poll, string currentUser)
+        private PollResults UpdateVoteStats(Poll poll)
         {
-            var allVotes = _db.Votes.Find(v => v.PollId == poll.PollId);
-            var totals = new Dictionary<int, int>();
-            foreach (var votes in allVotes)
+            lock (@lock)
             {
-                foreach (var vote in votes.PostIds)
+                var allVotes = _db.Votes.Find(v => v.PollId == poll.PollId);
+                var totals = new Dictionary<int, int>();
+                foreach (var votes in allVotes)
                 {
-                    if (totals.ContainsKey(vote))
+                    foreach (var vote in votes.PostIds)
                     {
-                        totals[vote] += 1;
-                    }
-                    else
-                    {
-                        totals[vote] = 1;
+                        if (totals.ContainsKey(vote))
+                        {
+                            totals[vote] += 1;
+                        }
+                        else
+                        {
+                            totals[vote] = 1;
+                        }
                     }
                 }
+                poll.Results = new PollResults
+                {
+                    AlreadyVoted = allVotes.Count(),
+                    TotalVoters = _users.GetAllUserIds().Count,
+                    YetToVote = (from u in _users.Users
+                                 where !allVotes.Any(v => v.OwnerId == u.Key)
+                                 select u.Value.Name)
+                                 .ToList(),
+                    Votes = from t in totals.OrderByDescending(kvp => kvp.Value)
+                            select new VoteResultItem
+                            {
+                                PostId = t.Key,
+                                Votes = t.Value,
+                                Percentage = (int)((t.Value / (decimal)allVotes.Count()) * 100)
+                            },
+                };
+                _db.Polls.Update(poll);
+                return poll.Results;
             }
-            poll.Results = new PollResults
-            {
-                AlreadyVoted = allVotes.Count(),
-                TotalVoters = _users.GetAllUserIds().Count,
-                YetToVote = (from u in _users.Users
-                             where !allVotes.Any(v => v.OwnerId == u.Key)
-                             select u.Value.Name)
-                             .ToList(),
-                Votes = from t in totals.OrderByDescending(kvp => kvp.Value)
-                        select new VoteResultItem
-                        {
-                            PostId = t.Key,
-                            Votes = t.Value,
-                            Percentage = (int)((t.Value / (decimal)allVotes.Count()) * 100)
-                        },
-            };
-            _db.Polls.Update(poll);
-            return poll.Results;
         }
     }
 }
