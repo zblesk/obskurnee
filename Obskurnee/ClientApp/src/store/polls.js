@@ -43,16 +43,14 @@ export default {
     },
     async sendVote({ commit }, { pollId, votes })
     {
-      console.log('sadasdasdsd 33', pollId, votes);
       return axios.post(
         "/api/polls/" + pollId + "/vote",
         { postIds: votes })
         .then((response) =>
         {
-          console.log(response.data);
           commit('setPoll', response.data.poll);
           commit('setMyVote', { pollId: pollId, postIds: votes });
-          return "returnujem vole";
+          return Promise.resolve(response.data);
         })
         .catch(function (error)
         {

@@ -71,6 +71,10 @@ namespace Obskurnee.Services
             {
                 throw new PermissionException("Diskusia uz bola uzavreta!");
             }
+            if (discussion.Posts.Count < 1)
+            {
+                throw new PermissionException("Musi byt aspon jeden navrh!");
+            }
             var round = _db.Rounds.FindById(discussion.RoundId);
             lock (@lock)
             {

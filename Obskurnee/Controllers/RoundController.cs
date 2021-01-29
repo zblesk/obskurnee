@@ -46,7 +46,7 @@ namespace Obskurnee.Controllers
         public Round NewRound([FromBody] JsonElement  roundData) => _roundManager.NewRound(
             (Topic)Enum.Parse(typeof(Topic), roundData.GetProperty("topic").GetString()),
             roundData.GetProperty("title").GetString(),
-            roundData.GetProperty("description").GetString(),
+            roundData.TryGetProperty("description", out _) ? roundData.GetProperty("description").GetString() : "",
             User.GetUserId());
     }
 }

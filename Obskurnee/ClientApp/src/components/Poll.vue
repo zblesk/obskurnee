@@ -23,7 +23,7 @@
       <label :for="option.postId" @click="toggleShow(option)"><strong>{{ option.title }}</strong> - {{ option.author }}</label>
     </li>
   </ol>
-  <button @click="vote" :disabled="!checkedOptions.length" class="btn btn-warning">Hlasuj!</button>
+  <button @click="vote" :disabled="!checkedOptions?.length" class="btn btn-warning">Hlasuj!</button>
   
   <div v-if="iVoted && poll.results && poll.results.votes">
     <h2>VÝSLEDKY:</h2>
@@ -53,13 +53,13 @@ export default {
     return {
       previewId: null,
       checkedOptions: [],
+      iVoted: false,
     };
   },
   computed: {
     ...mapGetters("context", ["isMod"]),
     ...mapState("polls", ["polls", "votes"]),
     poll: function () { return this.polls[this.$route.params.pollId] ?? { options: [] }; },
-    iVoted: function () { return this.checkedOptions.length; },
   },
   methods: {
     ...mapActions("polls", ["getPollData", "sendVote"]),
@@ -75,29 +75,28 @@ export default {
     },
     vote()
     {
-      if (!this.checkedOptions.length)
+      if (!this.checkedOptions?.length)
       {
         return;
       }
       this.sendVote( { pollId: this.$route.params.pollId, votes: this.checkedOptions })
         .then((response) => {
-          console.log(response.data);
+          console.log('klientsky respons', response);
           this.iVoted = true;
         })
         .catch(function (error) {
           console.log('errpr', error);
         });
     },
-    
-    orderedResults() {
-      let lst = [];
-      return lst;
-    }
   },
   mounted() {
     this.getPollData(this.$route.params.pollId)
       .then(() => {
-        this.checkedOptions = this.votes[this.$route.params.pollId];
+        this.checkedOptions = this.votes[this.$route.params.pollId] ?? [];
+        if (this.checkedOptions?.length)
+        {
+          this.iVoted = true;
+        }
       });
   },
 };

@@ -33,7 +33,7 @@ namespace Obskurnee.Services
             Posts = _db.GetCollection<Post>("posts");
             Recs = _db.GetCollection<Post>("personalrecs");
             Books = _db.GetCollection<Book>("books");
-            Polls = _db.GetCollection<Poll>("polls");
+            Polls = _db.GetCollection<Poll>("polls").Include(p => p.Options);
             Votes = _db.GetCollection<Vote>("votes");
             Rounds = _db.GetCollection<Round>("rounds");
             Users = _db.GetCollection<Bookworm>("users");
