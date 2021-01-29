@@ -3,6 +3,7 @@ import context from './context'
 import rounds from './rounds'
 import discussions from './discussions'
 import polls from './polls'
+import users from './users'
 
 export default createStore({
   modules: {
@@ -10,5 +11,6 @@ export default createStore({
     rounds,
     discussions,
     polls,
+    users,
   }
 })

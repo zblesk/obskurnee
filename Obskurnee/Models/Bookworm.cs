@@ -6,6 +6,5 @@ namespace Obskurnee.Models
     {
         public string GoodreadsProfileUrl { get; set; }
         public string AboutMe { get; set; }
-        public string Phone { get; set; }
     }
 }

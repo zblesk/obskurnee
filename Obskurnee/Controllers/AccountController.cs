@@ -1,14 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.Services;
 using Obskurnee.ViewModels;
+using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Obskurnee.Controllers
 {
-    [Route("api/account")]
+    [Route("api/accounts")]
     public class AccountController : Controller
     {
         private readonly ILogger _logger;
@@ -39,7 +43,6 @@ namespace Obskurnee.Controllers
             return Json(UserInfo.FromPrincipal(principal, token));
         }
 
-
         [HttpGet("context")]
         public JsonResult Context() => Json(UserInfo.FromPrincipal(this.User));
 
@@ -47,7 +50,7 @@ namespace Obskurnee.Controllers
         [Authorize(Policy = "ModOnly")]
         public async Task<IActionResult> Register([FromBody] LoginCredentials creds)
         {
-            var user = _users.Register(creds);
+            var user = await _users.Register(creds);
             if (user != null)
             {
                 return Json(user);
@@ -64,5 +67,21 @@ namespace Obskurnee.Controllers
         [AllowAnonymous]
         public async Task<JsonResult> RegisterFirstAdmin([FromBody] LoginCredentials creds)
             => Json(await _users.RegisterFirstAdmin(creds));
+
+        [HttpGet]
+        [Authorize]
+        public IEnumerable<UserInfo> GetAllUsers() => _users.Users.Values;
+
+        [HttpPost("passwordreset/{userId}/{resetToken}")]
+        [AllowAnonymous]
+        public Task<IdentityResult> ResetPassword(string userId, string resetToken, [FromBody] JsonElement payload)
+            => _users.ResetPassword(
+                HttpUtility.UrlDecode(userId),
+                HttpUtility.UrlDecode(resetToken),
+                payload.GetProperty("password").GetString());
+
+        [HttpGet("passwordreset/{email}")]
+        [AllowAnonymous]
+        public Task<bool> InitiatePasswordReset(string email) => _users.InitiatePasswordReset(email);
     }
 }

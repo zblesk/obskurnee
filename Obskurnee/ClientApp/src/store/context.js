@@ -27,7 +27,7 @@ export default {
     },
     actions: {
       login ({ commit }, credentials) {
-        return axios.post('/api/account/login', credentials).then(res => {
+        return axios.post('/api/accounts/login', credentials).then(res => {
           const profile = res.data;
           const jwtToken = res.data.token;
           delete profile.token;
@@ -46,13 +46,13 @@ export default {
         const jwtToken = window.localStorage.getItem('jwtToken');
         if (jwtToken) {
           commit('setJwtToken', jwtToken);
-          return axios.get('/api/account/context').then(res => {
+          return axios.get('/api/accounts/context').then(res => {
             commit('setProfile', res.data);
           });
         }
       },
       registerFirstAdmin ({ dispatch }, credentials) {
-        return axios.post('/api/account/registerfirstadmin', credentials)
+        return axios.post('/api/accounts/registerfirstadmin', credentials)
         .then(() => {
           dispatch('login', credentials);
         })

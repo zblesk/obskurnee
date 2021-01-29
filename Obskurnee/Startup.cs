@@ -24,11 +24,13 @@ namespace Obskurnee
 {
     public class Startup
     {
+        // Configs
         public static readonly SymmetricSecurityKey SecurityKey =
             new SymmetricSecurityKey(
                 Encoding.Default.GetBytes("ghf345678oikjhgfde3456789ijbvcdsw6789opkjfdeuijknbvgfdre4567uij"));
         public const string DataFolder = "data";
         public const string ImageFolder = "images";
+        public const string BaseUrl = "http://localhost:5000";
 
         public Startup(IConfiguration configuration)
         {
@@ -59,7 +61,7 @@ namespace Obskurnee
             services.AddTransient<UserService>();
             services.AddTransient<BookService>();
             services.AddTransient<RoundManagerService>();
-            services.AddTransient<Mailer>();
+            services.AddTransient<MailerService>();
             services.AddTransient<DiscussionService>();
 
             ConfigureAuthAndIdentity(services);

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Obskurnee.Services
 {
-    public class Mailer
+    public class MailerService
     {
         public async Task SendMail(string subject, string body, params string[] recipients)
         {

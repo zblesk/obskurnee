@@ -6,7 +6,7 @@ namespace Obskurnee.ViewModels
 {
     public class UserInfo
     {
-        public string Id { get; set; }
+        public string UserId { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string IsModerator { get; set; } = "false";
@@ -17,7 +17,7 @@ namespace Obskurnee.ViewModels
 
         public UserInfo(string id, string name, string email) 
         {
-            Id = id;
+            UserId = id;
             Name = name;
             Email = email;
         }
@@ -27,7 +27,7 @@ namespace Obskurnee.ViewModels
                     ? new UserInfo()
                     : new UserInfo()
                     {
-                        Id = principal.GetUserId(),
+                        UserId = principal.GetUserId(),
                         Name = principal.Identity.Name,
                         Email = principal.FindFirstValue(ClaimTypes.Email),
                         IsModerator = principal.FindFirstValue(BookclubClaims.Moderator)?.ToString() ?? "false",

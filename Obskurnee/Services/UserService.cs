@@ -9,8 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Obskurnee.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-
-
+using System.Web;
 
 namespace Obskurnee.Services
 {
@@ -19,6 +18,13 @@ namespace Obskurnee.Services
         private readonly ILogger<UserService> _logger;
         private readonly Database _db;
         private static IReadOnlyDictionary<string, UserInfo> _users;
+
+        private readonly SignInManager<Bookworm> _signInManager;
+        private readonly UserManager<Bookworm> _userManager;
+
+        private static readonly SigningCredentials SigningCreds = new SigningCredentials(Startup.SecurityKey, SecurityAlgorithms.HmacSha256);
+        private readonly JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
+        private readonly MailerService _mailer;
 
         public IReadOnlyDictionary<string, UserInfo> Users
         {
@@ -29,22 +35,19 @@ namespace Obskurnee.Services
             }
         }
 
-        private readonly SignInManager<Bookworm> _signInManager;
-        private readonly UserManager<Bookworm> _userManager;
-
-        private static readonly SigningCredentials SigningCreds = new SigningCredentials(Startup.SecurityKey, SecurityAlgorithms.HmacSha256);
-        private readonly JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
-
         public UserService(
            UserManager<Bookworm> userManager,
            SignInManager<Bookworm> signInManager,
            Database database,
-           ILogger<UserService> logger)
+           ILogger<UserService> logger,
+           MailerService mailer)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
+            _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
+            EnsureCacheLoaded();
         }
 
         public void ReloadCache()
@@ -73,6 +76,7 @@ namespace Obskurnee.Services
                 UserName = creds.Email.Substring(0, creds.Email.IndexOf('@')),
                 Email = creds.Email,
             };
+            _logger.LogInformation("Registering user {@user}", user);
             var result = await _userManager.CreateAsync(user, creds.Password);
             if (result.Succeeded)
             {
@@ -88,12 +92,14 @@ namespace Obskurnee.Services
 
         public async Task<IdentityResult> MakeModerator(string email)
         {
+            _logger.LogInformation("Making moderator of {email}", email);
             var user = await _signInManager.UserManager.FindByEmailAsync(email);
             return await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Moderator, "true"));
         }
 
         public async Task<IdentityResult> MakeAdmin(string email)
         {
+            _logger.LogInformation("Making admin of {email}", email);
             var user = await _signInManager.UserManager.FindByEmailAsync(email);
             return await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Admin, "true"));
         }
@@ -104,15 +110,18 @@ namespace Obskurnee.Services
             {
                 throw new ForbiddenException("Users already exist");
             }
+            _logger.LogInformation("Creating first admin with {@creds}", creds);
             var newUser = await Register(creds);
             if (newUser == null)
             {
+                _logger.LogError("First admin creation failed");
                 return null;
             }
             var isMod = await MakeModerator(newUser.Email);
             var isAdmin = await MakeAdmin(newUser.Email);
             if (isMod.Succeeded && isAdmin.Succeeded)
             {
+                _logger.LogError("First admin creation failed. \nMod sucess: {@isMod} \n\nAdmin success: {@isAdmin}", isMod, isAdmin);
                 return newUser;
             }
             throw new Exception("Failed to make admin");
@@ -145,5 +154,34 @@ namespace Obskurnee.Services
                     signingCredentials: SigningCreds));
 
         public static string GetUserName(string userId) => (_users?.ContainsKey(userId ?? "") ?? false) ? _users[userId].Name : null;
+
+        public async Task<bool> InitiatePasswordReset(string email)
+        {
+            _logger.LogInformation("Initiating password reset for {email}", email);
+            var user = GetUserByEmail(email);
+            if (user == null)
+            {
+                return false;
+            }
+            var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var callbackUrl = string.Format("{0}/passwordreset/{1}/{2}",
+                                            Startup.BaseUrl,
+                                            HttpUtility.UrlEncode(user.Id),
+                                            HttpUtility.UrlEncode(resetToken));
+            var subject = "Reset hesla";
+            var body = string.Format(@"Resetni si heslo tu: <a href=""{0}"">{0}</a>", callbackUrl);
+            await _mailer.SendMail(subject, body, user.Email.Address);
+            _logger.LogWarning("reset hesla body {b}", body);
+            return true;
+        }
+
+        public async Task<IdentityResult> ResetPassword(string userId, string resetToken, string newPassword)
+        {
+            _logger.LogInformation("Resetting password for user {userId}", userId);
+            var user = await _userManager.FindByIdAsync(userId);
+            return await _userManager.ResetPasswordAsync(user, resetToken, newPassword);
+        }
+
+        private Bookworm GetUserByEmail(string email) => _db.Users.FindOne(bw => bw.Email.Address == email);
     }
 }
