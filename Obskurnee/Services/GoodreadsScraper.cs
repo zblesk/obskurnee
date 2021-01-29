@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using System;
+using System.Linq;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -54,7 +55,7 @@ namespace Obskurnee.Services
                     {
                         _logger.LogWarning("Failed extracting Description from {url}", goodreadsUrl);
                     }
-                    var pages = document.QuerySelector("#details > div:nth-child(1) > span:nth-child(2)")?.InnerText;
+                    var pages = document.QuerySelectorAll("#details > div:nth-child(1) > span").FirstOrDefault(node => node.InnerText.Contains("pages"))?.InnerText;
                     var imgUrl = document.QuerySelector(".editionCover > img")?.Attributes["src"]?.Value;
 
                     if (!string.IsNullOrWhiteSpace(pages)
@@ -62,7 +63,7 @@ namespace Obskurnee.Services
                     {
                         if (int.TryParse(pages.Substring(0, pages.IndexOf(' ')), out int pageNum))
                         {
-                            result.Pages = pageNum;
+                            result.PageCount = pageNum;
                         }
                     }
 

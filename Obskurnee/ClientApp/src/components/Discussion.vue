@@ -9,6 +9,7 @@
     </span>
     <input v-model="newpost.title" placeholder="Meno knihy" required />
     <input v-if="discussion.topic == 'Books'" v-model="newpost.author" placeholder="Autor" />
+    <input v-if="discussion.topic == 'Books'" v-model="newpost.pageCount" placeholder="Počet strán" />
     <textarea v-model="newpost.text" placeholder="Komentár k návrhu" required></textarea>
     <button @click="postNewBook">Pridaj</button>
     <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />
@@ -71,12 +72,9 @@ export default {
         axios.get(
           "/api/scrape/?goodreadsUrl=" + this.newpost.url)
         .then((response) => {
-          this.newpost.author = response.data.author;
-          this.newpost.title = response.data.name;
+          this.newpost = response.data;
           this.newpost.text = "\n\nPopis na Goodreads: \n\n" + response.data.description;
-          this.newpost.imageUrl = response.data.imageUrl;
           this.fetchInProgress = false;
-          console.log(response.data, this.newpost);
         })
         .catch(function (error) {
           alert(error);
