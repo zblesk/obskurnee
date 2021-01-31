@@ -1,15 +1,15 @@
 ﻿import { createWebHistory, createRouter } from "vue-router";
-import Home from "@/components/Home.vue";
-import RoundList from "@/components/RoundList.vue";
-import Discussion from "@/components/Discussion.vue";
-import Poll from "@/components/Poll.vue";
-import PollList from "@/components/PollList.vue";
-import UserList from "@/components/UserList.vue";
-import RecommendationList from "@/components/RecommendationList.vue";
-import Admin from "@/components/Admin.vue";
-import Setup from "@/components/Setup.vue";
-import BookList from "@/components/BookList.vue";
-import DiscussionList from "@/components/DiscussionList.vue";
+import Home from "@/components/pages/Home.vue";
+import RoundList from "@/components/pages/RoundList.vue";
+import Discussion from "@/components/pages/Discussion.vue";
+import Poll from "@/components/pages/Poll.vue";
+import PollList from "@/components/pages/PollList.vue";
+import UserList from "@/components/pages/UserList.vue";
+import RecommendationList from "@/components/pages/RecommendationList.vue";
+import Admin from "@/components/pages/Admin.vue";
+import Setup from "@/components/pages/Setup.vue";
+import BookList from "@/components/pages/BookList.vue";
+import DiscussionList from "@/components/pages/DiscussionList.vue";
 import BookLargeCard from "@/components/BookLargeCard.vue";
 
 const routes = [

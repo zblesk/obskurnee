@@ -157,7 +157,7 @@ namespace Obskurnee.Services
 
         public async Task<bool> InitiatePasswordReset(string email)
         {
-            _logger.LogInformation("Initiating password reset for {email}", email);
+            _logger.LogInformation("Initiating password reset for {email}"  , email);
             var user = GetUserByEmail(email);
             if (user == null)
             {

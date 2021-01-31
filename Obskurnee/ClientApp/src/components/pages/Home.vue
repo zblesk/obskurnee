@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import BookPreview from './BookPreview.vue';
+import BookPreview from '../BookPreview.vue';
 import axios from 'axios';
-import BookLargeCard from './BookLargeCard.vue';
+import BookLargeCard from '../BookLargeCard.vue';
 import { mapGetters } from "vuex";
 
 export default {

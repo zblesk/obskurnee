@@ -41,9 +41,9 @@
 
 
 <script>
-import BookPost from './BookPost.vue';
-import BookPreview from './BookPreview.vue';
-import TextPost from './TextPost.vue';
+import BookPost from '../BookPost.vue';
+import BookPreview from '../BookPreview.vue';
+import TextPost from '../TextPost.vue';
 import { mapGetters,mapActions, mapState } from "vuex";
 
 export default {

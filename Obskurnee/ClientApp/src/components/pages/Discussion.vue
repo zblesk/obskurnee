@@ -36,7 +36,7 @@
 
 <script>
 import axios from "axios";
-import BookPost from "./BookPost.vue";
+import BookPost from "../BookPost.vue";
 import { mapGetters,mapActions, mapState } from "vuex";
 
 export default {
