@@ -4,6 +4,7 @@ import rounds from './rounds'
 import discussions from './discussions'
 import polls from './polls'
 import users from './users'
+import books from './books'
 
 export default createStore({
   modules: {
@@ -12,5 +13,6 @@ export default createStore({
     discussions,
     polls,
     users,
+    books,
   }
 })

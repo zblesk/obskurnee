@@ -20,7 +20,7 @@
 <script>
     export default {
         name: "BookLargeCard",
-        props: ['post']
+        props: ['post'],
     }
 </script>
 

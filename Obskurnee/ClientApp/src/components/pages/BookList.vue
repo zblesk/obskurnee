@@ -1,21 +1,26 @@
 <template>
 <section>
-    <h1 id="tableLabel">BookList</h1>
+    <ul v-if="books">
+        <li v-for="book in books" v-bind:key="book.bookId">
+                  #{{book.order}}  <router-link :to="{ name: 'book', params: { bookOrder: book.order } }">{{ book.post.title }} - {{ book.post.author }}</router-link>
+        </li>
+    </ul>
 </section>
 </template>
 
 
 <script>
-    //import axios from 'axios'
-    export default {
-        name: "BookList",
-        data() {
-            return {
-            }
-        },
-        methods: {
-        },
-        mounted() {
-        }
-    }
+import { mapActions, mapState } from "vuex";
+export default {
+name: "BookList",
+computed: {
+    ...mapState("books", ["books"]),
+},
+methods: {
+...mapActions("books", ["fetchBookList"]),
+},
+mounted() {
+    this.fetchBookList();
+}
+}
 </script>
