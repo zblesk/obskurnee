@@ -63,6 +63,7 @@ namespace Obskurnee
             services.AddTransient<RoundManagerService>();
             services.AddTransient<MailerService>();
             services.AddTransient<DiscussionService>();
+            services.AddTransient<SettingsService>();
 
             ConfigureAuthAndIdentity(services);
         }

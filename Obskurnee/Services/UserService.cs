@@ -52,7 +52,7 @@ namespace Obskurnee.Services
 
         public void ReloadCache()
         {
-            _users = _db.Users.FindAll().ToDictionary(u => u.Id, u => new UserInfo(u.Id, u.UserName, u.Email.Address));
+            _users = _db.Users.FindAll().ToDictionary(u => u.Id, u => UserInfo.From(u));
         }
 
         private void EnsureCacheLoaded()
@@ -85,7 +85,7 @@ namespace Obskurnee.Services
                 // var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                 // await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
                 ReloadCache();
-                return UserInfo.FromBookworm(user);
+                return UserInfo.From(user);
             }
             return null;
         }
@@ -159,7 +159,7 @@ namespace Obskurnee.Services
         {
             _logger.LogInformation("Initiating password reset for {email}"  , email);
             var user = GetUserByEmail(email);
-            if (user == null)
+            if (user == null)   
             {
                 return false;
             }
@@ -181,7 +181,7 @@ namespace Obskurnee.Services
             var user = await _userManager.FindByIdAsync(userId);
             return await _userManager.ResetPasswordAsync(user, resetToken, newPassword);
         }
-
-        private Bookworm GetUserByEmail(string email) => _db.Users.FindOne(bw => bw.Email.Address == email);
+        
+        public Bookworm GetUserByEmail(string email) => _db.Users.FindOne(bw => bw.Email.Address == email);
     }
 }

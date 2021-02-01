@@ -8,21 +8,15 @@ namespace Obskurnee.ViewModels
     {
         public string UserId { get; set; }
         public string Name { get; set; }
+        public string Phone { get; set; }
         public string Email { get; set; }
+        public string AboutMe { get; set; }
         public string IsModerator { get; set; } = "false";
         public string IsAdmin { get; set; } = "false";
         public string? Token { get; set; } = null;
+        public string GoodreadsUrl { get; set; }
 
-        public UserInfo() { }
-
-        public UserInfo(string id, string name, string email) 
-        {
-            UserId = id;
-            Name = name;
-            Email = email;
-        }
-
-        public static UserInfo FromPrincipal(ClaimsPrincipal principal, string? token = null)
+        public static UserInfo From(ClaimsPrincipal principal, string? includeToken = null)
                 => (principal?.Identity == null || !principal.Identity.IsAuthenticated)
                     ? new UserInfo()
                     : new UserInfo()
@@ -32,13 +26,19 @@ namespace Obskurnee.ViewModels
                         Email = principal.FindFirstValue(ClaimTypes.Email),
                         IsModerator = principal.FindFirstValue(BookclubClaims.Moderator)?.ToString() ?? "false",
                         IsAdmin = principal.FindFirstValue(BookclubClaims.Admin)?.ToString() ?? "false",
-                        Token = token,
+                        Token = includeToken,
                     };
 
-        public static UserInfo FromBookworm(Bookworm user)
-            => new(
-                user.Id,
-                user.UserName,
-                user.Email.Address);
+        public static UserInfo From(Bookworm user, ClaimsPrincipal principal = null)
+            => new (){
+                UserId = user.Id,
+                Name = user.UserName,
+                Email = user.Email.Address,
+                Phone = user.PhoneNumber,
+                AboutMe = user.RenderedAboutMe,
+                GoodreadsUrl = user.GoodreadsProfileUrl,
+                IsModerator = principal?.FindFirstValue(BookclubClaims.Moderator)?.ToString() ?? "false",
+                IsAdmin = principal?.FindFirstValue(BookclubClaims.Admin)?.ToString() ?? "false",
+            };
     }
 }

@@ -40,11 +40,11 @@ namespace Obskurnee.Controllers
             var principal = await _users.GetPrincipal(creds);
             var token = _users.GetToken(principal);
 
-            return Json(UserInfo.FromPrincipal(principal, token));
+            return Json(UserInfo.From(principal, token));
         }
 
         [HttpGet("context")]
-        public JsonResult Context() => Json(UserInfo.FromPrincipal(this.User));
+        public JsonResult Context() => Json(UserInfo.From(this.User));
 
         [HttpPost("register")]
         [Authorize(Policy = "ModOnly")]

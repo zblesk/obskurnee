@@ -29,7 +29,9 @@ namespace Obskurnee.Services
             return _db.Books.Include(b => b.Post).FindAll().OrderByDescending(b => b.Order);
         }
 
-        public BookInfo GetBook(int bookId) => new BookInfo { Book = _db.Books.FindById(bookId) };
+        public Book GetBook(int bookId) =>  _db.Books.FindById(bookId);
+
+        public Book GetLatestBook() => _db.Books.Query().OrderByDescending(b => b.Order).FirstOrDefault();
 
         public Book CreateBook(Poll poll, int roundId, string ownerId)
         {

@@ -10,7 +10,6 @@ namespace Obskurnee.Services
 {
     public sealed class Database : ILiteDbContext, IDisposable
     {
-        private readonly object @lock = new object();
         private readonly Serilog.ILogger _logger;
         private readonly LiteDatabase _db;
         public readonly ILiteCollection<Discussion> Discussions;
@@ -21,6 +20,7 @@ namespace Obskurnee.Services
         public readonly ILiteCollection<Vote> Votes;
         public readonly ILiteCollection<Round> Rounds;
         public readonly ILiteCollection<Bookworm> Users;
+        public readonly ILiteCollection<Setting> Settings;
 
         LiteDatabase ILiteDbContext.LiteDatabase => _db;
 
@@ -32,12 +32,12 @@ namespace Obskurnee.Services
             Discussions = _db.GetCollection<Discussion>("discussions");
             Posts = _db.GetCollection<Post>("posts");
             Recs = _db.GetCollection<Post>("personalrecs");
-            Books = _db.GetCollection<Book>("books");
+            Books = _db.GetCollection<Book>("books").Include(b => b.Post).Include(b => b.Round);
             Polls = _db.GetCollection<Poll>("polls").Include(p => p.Options);
             Votes = _db.GetCollection<Vote>("votes");
             Rounds = _db.GetCollection<Round>("rounds");
             Users = _db.GetCollection<Bookworm>("users");
-
+            Settings = _db.GetCollection<Setting>("settings");
             Posts.EnsureIndex(p => p.DiscussionId);
             Votes.EnsureIndex(v => v.PollId);
             Recs.EnsureIndex(r => r.OwnerId);

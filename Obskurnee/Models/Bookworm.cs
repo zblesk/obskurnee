@@ -1,4 +1,5 @@
 ﻿using AspNetCore.Identity.LiteDB.Models;
+using LiteDB;
 
 namespace Obskurnee.Models
 {
@@ -6,5 +7,6 @@ namespace Obskurnee.Models
     {
         public string GoodreadsProfileUrl { get; set; }
         public string AboutMe { get; set; }
+        [BsonIgnore] public string RenderedAboutMe { get => AboutMe.RenderMarkdown(); }
     }
 }
