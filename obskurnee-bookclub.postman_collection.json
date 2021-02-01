@@ -1,0 +1,343 @@
+{
+	"info": {
+		"_postman_id": "73aa4586-f603-4a86-aac2-81a5dca94111",
+		"name": "obskurnee-bookclub",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"janka@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/accounts/register",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"accounts",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "make admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"janka@bookclub.gov\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/accounts/makeadmin",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"accounts",
+						"makeadmin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"janka@bookclub.gov\",\"password\":\"kokokokokokokokokokokoko\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/accounts/login",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"accounts",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "context",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/accounts/context",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"accounts",
+						"context"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get discussions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}api/discussions/",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"discussions",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get discussions Copy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}api/rounds",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"rounds"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get books",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}api/books",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get poll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}api/polls/1",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"polls",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Round",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"topic\": \"Books\",\r\n    \"title\": \"tit le\",\r\n    \"description\": \"jaj sak mega popisok nie\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/rounds",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"rounds"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Request pwd reset",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}api/accounts/passwordreset/janka@bookclub.gov",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"accounts",
+						"passwordreset",
+						"janka@bookclub.gov"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset pwd",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"password\":\"kokokokokokokokokokokoko\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/accounts/passwordreset/6011d40a19901d0335d46e1d/CfDJ8Id7Ea6mKDBNkxa8ptv8Et0uC%2f07rWJ0vscuPnCSMSCrzyvsN8p4PNp5voM9MJ72tz4WcM1O9nJ%2f7gRZ1JMqWRf7kkqI9iSjLcS6AFhooKzJlo5AyouCIZ6QnGJYUw7gf7WfLyicQNpiOvCvvjMRODbfw2CKtDRDVa4a%2fQlui0BmFTQDXinbMiTYwLbc0PMTT0NJTsYHQwxiy7Ub2p7V3ccv0udYuj3C81rlgPJHrFxy",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"accounts",
+						"passwordreset",
+						"6011d40a19901d0335d46e1d",
+						"CfDJ8Id7Ea6mKDBNkxa8ptv8Et0uC%2f07rWJ0vscuPnCSMSCrzyvsN8p4PNp5voM9MJ72tz4WcM1O9nJ%2f7gRZ1JMqWRf7kkqI9iSjLcS6AFhooKzJlo5AyouCIZ6QnGJYUw7gf7WfLyicQNpiOvCvvjMRODbfw2CKtDRDVa4a%2fQlui0BmFTQDXinbMiTYwLbc0PMTT0NJTsYHQwxiy7Ub2p7V3ccv0udYuj3C81rlgPJHrFxy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dashboard - Logged In",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}api/home",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"home"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dashboard - Anon",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}api/home",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"home"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjYwMDg0MjEwZTdmZDg2MGVjNmE2YWVmOCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJqYW5rYSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImphbmthQGJvb2tjbHViLmdvdiIsIkFzcE5ldC5JZGVudGl0eS5TZWN1cml0eVN0YW1wIjoiV01ZUlhZSlhIMkdaRTJEN0NIRk9VQ1RZN01TVktRQ1oiLCJtb2RlcmF0b3IiOiJ0cnVlIiwiYWRtaW4iOiJ0cnVlIiwiZXhwIjoxNjI4MDI1ODc3LCJpc3MiOiJvYnNrdXJuZWUiLCJhdWQiOiJvYnNrdXJuZWUifQ.-l6Mz0K1TgVfSLribOl2_a1KH42rO1dBx1BwlFD3f8A",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000/"
+		}
+	]
+}
