@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
-using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

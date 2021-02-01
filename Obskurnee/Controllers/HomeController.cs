@@ -3,14 +3,13 @@ using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.Services;
 using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Obskurnee.ViewModels;
 using System.Security.Claims;
 
 namespace Obskurnee.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     [ApiController]
     [Route("api/home")]
     public class HomeController : Controller
@@ -34,20 +33,18 @@ namespace Obskurnee.Controllers
 
 
         [HttpGet]
-        [AllowAnonymous]
-        public async Task<JsonResult> DefaultDashboard()
+        public JsonResult LandingPage()
         {
-            var book = _bookService.GetLatestBook();
             if (!User.Identity.IsAuthenticated)
             {
-               return Json(new { Book = book });
+               return Json(new { Books = new[] { _bookService.GetLatestBook() } });
             }
             var us = _userService.GetUserByEmail(User.FindFirstValue(ClaimTypes.Email));
             return Json(new
             {
-                Book = book,
+                Books = _bookService.GetBooksNewestFirst(),
                 Notice = _settingsService.GetSettingValue<string>(Setting.Keys.ModNoticeboard)?.RenderMarkdown(),
-                UserInfo = UserInfo.From(us, User),
+                MyProfile = UserInfo.From(us, User),
             });
         }
     }

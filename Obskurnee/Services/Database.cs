@@ -1,10 +1,7 @@
 ﻿using AspNetCore.Identity.LiteDB.Data;
 using LiteDB;
 using Obskurnee.Models;
-using Obskurnee.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Obskurnee.Services
 {

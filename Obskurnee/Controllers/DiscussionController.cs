@@ -1,13 +1,10 @@
-﻿using Markdig;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.Services;
-using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 
 namespace Obskurnee.Controllers
 {
