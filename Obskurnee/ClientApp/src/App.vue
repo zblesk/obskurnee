@@ -24,6 +24,11 @@ export default {
 </script>
 
 <style>
+.todo {
+  margin: 2em;
+  color: orangered;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

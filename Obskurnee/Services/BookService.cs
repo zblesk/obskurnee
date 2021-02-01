@@ -24,11 +24,9 @@ namespace Obskurnee.Services
         }
 
         public IEnumerable<Book> GetBooksNewestFirst()
-        {
-            return _db.Books.Include(b => b.Post).FindAll().OrderByDescending(b => b.Order);
-        }
+            => _db.Books.Include(b => b.Reviews).FindAll().OrderByDescending(b => b.Order);
 
-        public Book GetBook(int bookId) =>  _db.Books.FindById(bookId);
+        public Book GetBook(int bookId) =>  _db.Books.Include(b => b.Reviews).FindById(bookId);
 
         public Book GetLatestBook() => _db.Books.Query().OrderByDescending(b => b.Order).FirstOrDefault();
 

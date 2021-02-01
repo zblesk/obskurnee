@@ -24,7 +24,9 @@ export default {
           });
       },
       async getBookByOrder({ dispatch, state }, bookOrder) {
-        if (!state.books.length || !state.books.some(b => b.order == bookOrder))
+        if (!state.books
+          || !state.books.length 
+          || !state.books.some(b => b.order == bookOrder))
         {
           await dispatch('fetchBookList');
         }

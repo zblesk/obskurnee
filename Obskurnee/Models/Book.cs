@@ -1,4 +1,5 @@
 ﻿using LiteDB;
+using System.Collections.Generic;
 
 namespace Obskurnee.Models
 {
@@ -7,6 +8,7 @@ namespace Obskurnee.Models
         public int BookId { get; set; }
         [BsonRef("posts")] public Post Post { get; set; }
         [BsonRef("rounds")] public Round Round { get; set; }
+        [BsonRef("reviews")] public IList<Review> Reviews { get; set; }
         public int Order { get; set; }
         public int BookDiscussionId { get; set; }
         public int BookPollId { get; set; }

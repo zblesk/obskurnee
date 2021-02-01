@@ -8,7 +8,8 @@
         <tbody>
             <tr v-for="discussion of discussions" v-bind:key="discussion"> 
                 <td :class="{ archived: discussion.IsClosed }">
-                    <router-link :to="{ name: 'discussion', params: { discussionId: discussion.discussionId } }">{{ discussion.title }}</router-link></td>
+                    <router-link :to="{ name: 'discussion', params: { discussionId: discussion.discussionId } }">{{ discussion.title }}</router-link>
+                </td>
             </tr>
         </tbody>
     </table>

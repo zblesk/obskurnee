@@ -18,6 +18,7 @@ namespace Obskurnee.Services
         public readonly ILiteCollection<Round> Rounds;
         public readonly ILiteCollection<Bookworm> Users;
         public readonly ILiteCollection<Setting> Settings;
+        public readonly ILiteCollection<Review> Reviews;
 
         LiteDatabase ILiteDbContext.LiteDatabase => _db;
 
@@ -35,6 +36,8 @@ namespace Obskurnee.Services
             Rounds = _db.GetCollection<Round>("rounds");
             Users = _db.GetCollection<Bookworm>("users");
             Settings = _db.GetCollection<Setting>("settings");
+            Reviews = _db.GetCollection<Review>("reviews");
+
             Posts.EnsureIndex(p => p.DiscussionId);
             Votes.EnsureIndex(v => v.PollId);
             Recs.EnsureIndex(r => r.OwnerId);

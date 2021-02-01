@@ -1,8 +1,21 @@
 <template>
 <section>
+  <div class="grid2">
   <book-large-card :post="currentBook.post" style="margin: auto;" v-if="currentBook && currentBook.post">
       <h5><em>Momentálne čítame knihu #{{ currentBook.order }}</em></h5>
   </book-large-card>
+  <div v-if="isAuthenticated && noticeboardHtml" v-html="noticeboardHtml"></div>
+  <div v-if="isAuthenticated && userProfileIncomplete" style="border-color: yellow; border-style: dotted dashed solid double;">
+    Este nemas vyplneny profil. 
+    <router-link :to="{ name: 'user', params: { email: myProfile.email, mode: 'edit' } }">Prosím doplň ho.</router-link> <br />
+    Zatiaľ máme: <br />
+    <p v-if="myProfile.name">{{ myProfile.name }}</p>
+    <p v-if="myProfile.phone">{{ myProfile.phone }}</p>
+    <p v-if="myProfile.aboutMe">{{ myProfile.aboutMe }}</p>
+    <p v-if="myProfile.goodreadsUrl">{{ myProfile.goodreadsUrl }}</p>
+  </div>
+  </div>
+  
   <div class="grid" v-if="books && isAuthenticated">
     <book-preview v-for="book in books" v-bind:key="book.bookId" v-bind:post="book.post">Kniha #{{book.order}}</book-preview>
   </div>
@@ -22,25 +35,30 @@ export default {
       return {
         books: [],
         currentBook: {},
+        myProfile: {},
+        noticeboardHtml: "",
       }
   },
   methods: {
     getBooks() {
-        axios.get('/api/books')
+        axios.get('/api/home')
             .then((response) => {
-              if (response.data.length)
+              if (response.data.books.length)
               {
-                this.books = response.data;
+                this.books = response.data.books;
                 this.currentBook = this.books.shift();
               }
+              this.noticeboardHtml = response.data.notice;
+              this.myProfile = response.data.myProfile;
             })
             .catch(function (error) {
-                alert(error);
+                console.log(error);
             });
     },
   },
   computed: {
-      ...mapGetters("context", ["isAuthenticated"])
+      ...mapGetters("context", ["isAuthenticated"]),
+      userProfileIncomplete: function() { return this.myProfile && !(this.myProfile.name && this.myProfile.phone && this.myProfile.aboutMe && this.myProfile.goodreadsUrl); },
   },
   mounted() {
       this.getBooks();
@@ -52,6 +70,13 @@ export default {
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 220px));
+  gap: 10px;
+  font-family: "Raleway", sans-serif;
+  padding: 4em;
+}
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 660px));
   gap: 10px;
   font-family: "Raleway", sans-serif;
   padding: 4em;

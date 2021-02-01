@@ -30,7 +30,7 @@
                             <router-link :to="{ name: 'recommendationlist' }" class="nav-link text-dark">👌🏻 Odporúčania</router-link>
                         </li>
                         <li class="nav-item" v-if="isAuthenticated">
-                            <router-link :to="{ name: 'users' }" class="nav-link text-dark">🤼 My</router-link>
+                            <router-link :to="{ name: 'userlist' }" class="nav-link text-dark">🤼 My</router-link>
                         </li>
                         <li><login-control></login-control></li>
                     </ul>

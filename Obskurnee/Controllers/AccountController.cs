@@ -68,10 +68,6 @@ namespace Obskurnee.Controllers
         public async Task<JsonResult> RegisterFirstAdmin([FromBody] LoginCredentials creds)
             => Json(await _users.RegisterFirstAdmin(creds));
 
-        [HttpGet]
-        [Authorize]
-        public IEnumerable<UserInfo> GetAllUsers() => _users.Users.Values;
-
         [HttpPost("passwordreset/{userId}/{resetToken}")]
         [AllowAnonymous]
         public Task<IdentityResult> ResetPassword(string userId, string resetToken, [FromBody] JsonElement payload)

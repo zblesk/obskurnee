@@ -20,7 +20,7 @@
       </form>
     </span>
     <span v-if="isAuthenticated">
-      👥 {{profile.name}}
+      <router-link :to="{ name: 'user', params: { email: profile.email } }">👥 {{profile.name}}</router-link>
       <button class="btn btn-primary float-right ml-2" @click="onLogout">logout</button>
     </span>
   </span>

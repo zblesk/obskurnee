@@ -4,6 +4,7 @@ import RoundList from "@/components/pages/RoundList.vue";
 import Discussion from "@/components/pages/Discussion.vue";
 import Poll from "@/components/pages/Poll.vue";
 import PollList from "@/components/pages/PollList.vue";
+import User from "@/components/pages/User.vue";
 import UserList from "@/components/pages/UserList.vue";
 import RecommendationList from "@/components/pages/RecommendationList.vue";
 import Admin from "@/components/pages/Admin.vue";
@@ -70,8 +71,13 @@ const routes = [
     },
     {
         path: "/my",
-        name: "users",
+        name: "userlist",
         component: UserList,
+    },
+    {
+        path: "/my/:email/:mode?",
+        name: "user",
+        component: User,
     }
 ];
 

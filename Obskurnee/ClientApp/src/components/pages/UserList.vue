@@ -1,6 +1,8 @@
 <template>
 <section>
     <h1 id="tableLabel">UserList</h1>
+    <p class="todo">Karticky so zakladnym info?</p>
+    
     <div v-for="user in users" v-bind:key="user.userId">
         {{ user }}
     </div>
