@@ -6,6 +6,7 @@ using System;
 using Microsoft.AspNetCore.Authorization;
 using Obskurnee.ViewModels;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Obskurnee.Controllers
 {
@@ -33,18 +34,17 @@ namespace Obskurnee.Controllers
 
 
         [HttpGet]
-        public JsonResult LandingPage()
+        public async Task<JsonResult> LandingPage()
         {
             if (!User.Identity.IsAuthenticated)
             {
                return Json(new { Books = new[] { _bookService.GetLatestBook() } });
             }
-            var us = _userService.GetUserByEmail(User.FindFirstValue(ClaimTypes.Email));
             return Json(new
             {
                 Books = _bookService.GetBooksNewestFirst(),
                 Notice = _settingsService.GetSettingValue<string>(Setting.Keys.ModNoticeboard)?.RenderMarkdown(),
-             //   MyProfile = UserInfo.From(us, User),
+                MyProfile = await _userService.GetUserByEmail(User.FindFirstValue(ClaimTypes.Email)),
             });
         }
     }

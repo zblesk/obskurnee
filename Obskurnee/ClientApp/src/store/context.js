@@ -8,8 +8,8 @@ export default {
     },
     getters: {
       isAuthenticated: state => state.profile.name && state.profile.email,
-      isMod: state => state.profile.isModerator == "true",
-      isAdmin: state => state.profile.isAdmin == "true",
+      isMod: (state, getters) => state.profile.isModerator || getters.isAdmin,
+      isAdmin: state => state.profile.isAdmin,
     },
     mutations: {
       setProfile (state, profile) {

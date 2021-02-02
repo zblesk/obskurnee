@@ -50,7 +50,7 @@ namespace Obskurnee.Services
             EnsureCacheLoaded();
         }
 
-        public async Task ReloadCache()
+        public void ReloadCache()
         {
             _users = _db.Users
                 .FindAll()
@@ -95,14 +95,18 @@ namespace Obskurnee.Services
         {
             _logger.LogInformation("Making moderator of {email}", email);
             var user = await _signInManager.UserManager.FindByEmailAsync(email);
-            return await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Moderator, "true"));
+            var identityResult = await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Moderator, "true"));
+            ReloadCache();
+            return identityResult;
         }
 
         public async Task<IdentityResult> MakeAdmin(string email)
         {
             _logger.LogInformation("Making admin of {email}", email);
             var user = await _signInManager.UserManager.FindByEmailAsync(email);
-            return await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Admin, "true"));
+            var identityResult = await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Admin, "true"));
+            ReloadCache();
+            return identityResult;
         }
 
         public async Task<UserInfo> RegisterFirstAdmin(LoginCredentials creds)
@@ -122,9 +126,10 @@ namespace Obskurnee.Services
             var isAdmin = await MakeAdmin(newUser.Email);
             if (isMod.Succeeded && isAdmin.Succeeded)
             {
-                _logger.LogError("First admin creation failed. \nMod sucess: {@isMod} \n\nAdmin success: {@isAdmin}", isMod, isAdmin);
+                ReloadCache();
                 return newUser;
             }
+            _logger.LogError("First admin creation failed. \nMod sucess: {@isMod} \n\nAdmin success: {@isAdmin}", isMod, isAdmin);
             throw new Exception("Failed to make admin");
         }
 

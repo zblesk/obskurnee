@@ -6,6 +6,8 @@ export default {
     users: [],
   },
   getters: {
+    nonMods: state => state.users?.filter(u => !u.isModerator),
+    mods: state => state.users?.filter(u => u.isModerator),
   },
   mutations: {
     setUsers(state, users)

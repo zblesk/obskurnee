@@ -93,9 +93,8 @@ namespace Obskurnee.Controllers
             return ValidationProblem("Registration failed");
         }
 
-        [HttpPost("makemod")]
-        [Authorize(Policy = "ModOnly")]
-        public async Task MakeModerator([FromBody] LoginCredentials creds)
-            => await _users.MakeModerator(creds.Email);
+        [HttpGet("makemod/{email}")]
+        public async Task MakeModerator(string email)
+            => await _users.MakeModerator(email);
     }
 }

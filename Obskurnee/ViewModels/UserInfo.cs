@@ -12,8 +12,8 @@ namespace Obskurnee.ViewModels
         public string Phone { get; set; }
         public string Email { get; set; }
         public string AboutMe { get; set; }
-        public string IsModerator { get; set; } = "false";
-        public string IsAdmin { get; set; } = "false";
+        public bool IsModerator { get; set; } = false;
+        public bool IsAdmin { get; set; } = false;
         public string? Token { get; set; } = null;
         public string GoodreadsUrl { get; set; }
 
@@ -25,8 +25,8 @@ namespace Obskurnee.ViewModels
                         UserId = principal.GetUserId(),
                         Name = principal.Identity.Name,
                         Email = principal.FindFirstValue(ClaimTypes.Email),
-                        IsModerator = principal.FindFirstValue(BookclubClaims.Moderator)?.ToString() ?? "false",
-                        IsAdmin = principal.FindFirstValue(BookclubClaims.Admin)?.ToString() ?? "false",
+                        IsModerator = principal.FindFirstValue(BookclubClaims.Moderator) != null,
+                        IsAdmin = principal.FindFirstValue(BookclubClaims.Admin) != null,
                         Token = includeToken,
                     };
 
@@ -38,8 +38,8 @@ namespace Obskurnee.ViewModels
                 Phone = user.PhoneNumber,
                 AboutMe = user.RenderedAboutMe,
                 GoodreadsUrl = user.GoodreadsProfileUrl,
-                IsModerator = principal?.FindFirstValue(BookclubClaims.Moderator)?.ToString() ?? "false",
-                IsAdmin = principal?.FindFirstValue(BookclubClaims.Admin)?.ToString() ?? "false",
+                IsModerator = principal?.FindFirstValue(BookclubClaims.Moderator) != null,
+                IsAdmin = principal?.FindFirstValue(BookclubClaims.Admin) != null,
             };
 
 
@@ -52,8 +52,8 @@ namespace Obskurnee.ViewModels
                 Phone = user.PhoneNumber,
                 AboutMe = user.RenderedAboutMe,
                 GoodreadsUrl = user.GoodreadsProfileUrl,
-                IsModerator = claims.Any(claim => claim.Type == BookclubClaims.Moderator).ToString(),
-                IsAdmin = claims.Any(claim => claim.Type == BookclubClaims.Admin).ToString(),
+                IsModerator = claims.Any(claim => claim.Type == BookclubClaims.Moderator),
+                IsAdmin = claims.Any(claim => claim.Type == BookclubClaims.Admin),
             };
     }
 }

@@ -4,8 +4,8 @@
   <book-large-card :post="currentBook.post" style="margin: auto;" v-if="currentBook && currentBook.post">
       <h5><em>Momentálne čítame knihu #{{ currentBook.order }}</em></h5>
   </book-large-card>
-  <div v-if="isAuthenticated && noticeboardHtml" v-html="noticeboardHtml"></div>
-  <div v-if="isAuthenticated && userProfileIncomplete" style="border-color: yellow; border-style: dotted dashed solid double;">
+  <div v-if="isAuthenticated && noticeboardHtml" style="border-color: navy; border-style: dotted dashed solid double;" v-html="noticeboardHtml"></div>
+  <div v-if="isAuthenticated && userProfileIncomplete" style="border-color: navy; border-style: dotted dashed solid double;">
     Este nemas vyplneny profil. 
     <router-link :to="{ name: 'user', params: { email: myProfile.email, mode: 'edit' } }">Prosím doplň ho.</router-link> <br />
     Zatiaľ máme: <br />
@@ -43,6 +43,7 @@ export default {
     getBooks() {
         axios.get('/api/home')
             .then((response) => {
+              console.log(response.data);
               if (response.data.books.length)
               {
                 this.books = response.data.books;
@@ -76,7 +77,7 @@ export default {
 }
 .grid2 {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 660px));
+  grid-template-columns: repeat(auto-fill, minmax(100px, 500px));
   gap: 10px;
   font-family: "Raleway", sans-serif;
   padding: 4em;
