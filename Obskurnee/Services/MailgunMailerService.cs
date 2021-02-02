@@ -4,16 +4,17 @@ using System.Threading.Tasks;
 
 namespace Obskurnee.Services
 {
-    public class MailerService
+    public class MailgunMailerService : IMailerService
     {
-        private readonly ILogger<MailerService> _logger;
+        private readonly ILogger<MailgunMailerService> _logger;
         private readonly SettingsService _settings;
 
-        public MailerService(
-            ILogger<MailerService> logger,
+        public MailgunMailerService(
+            ILogger<MailgunMailerService> logger,
             SettingsService settings)
         {
-            _settings = settings;
+            _settings = settings ?? throw new System.ArgumentNullException(nameof(settings));
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
         }
 
         public async Task SendMail(string subject, string body, params string[] recipients)

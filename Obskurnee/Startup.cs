@@ -31,6 +31,8 @@ namespace Obskurnee
         public const string DataFolder = "data";
         public const string ImageFolder = "images";
         public const string BaseUrl = "http://localhost:5000";
+        public const int DefaultPasswordMinLength = 13;
+        public const string PasswordGenerationChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
         public Startup(IConfiguration configuration)
         {
@@ -61,7 +63,7 @@ namespace Obskurnee
             services.AddTransient<UserService>();
             services.AddTransient<BookService>();
             services.AddTransient<RoundManagerService>();
-            services.AddTransient<MailerService>();
+            services.AddTransient<IMailerService, FakeMailerService>();
             services.AddTransient<DiscussionService>();
             services.AddTransient<SettingsService>();
 
@@ -170,6 +172,7 @@ namespace Obskurnee
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("ModOnly", policy => policy.RequireClaim(BookclubClaims.Moderator));
+                options.AddPolicy("AdminOnly", policy => policy.RequireClaim(BookclubClaims.Admin));
             });
         }
     }
