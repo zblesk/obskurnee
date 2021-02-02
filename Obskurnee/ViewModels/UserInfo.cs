@@ -1,5 +1,7 @@
 ﻿using Obskurnee.Models;
+using System.Collections.Generic;
 using System.Security.Claims;
+using System.Linq;
 
 namespace Obskurnee.ViewModels
 {
@@ -38,6 +40,20 @@ namespace Obskurnee.ViewModels
                 GoodreadsUrl = user.GoodreadsProfileUrl,
                 IsModerator = principal?.FindFirstValue(BookclubClaims.Moderator)?.ToString() ?? "false",
                 IsAdmin = principal?.FindFirstValue(BookclubClaims.Admin)?.ToString() ?? "false",
+            };
+
+
+        public static UserInfo From(Bookworm user, IList<Claim> claims)
+            => new()
+            {
+                UserId = user.Id,
+                Name = user.UserName,
+                Email = user.Email.Address,
+                Phone = user.PhoneNumber,
+                AboutMe = user.RenderedAboutMe,
+                GoodreadsUrl = user.GoodreadsProfileUrl,
+                IsModerator = claims.Any(claim => claim.Type == BookclubClaims.Moderator).ToString(),
+                IsAdmin = claims.Any(claim => claim.Type == BookclubClaims.Admin).ToString(),
             };
     }
 }

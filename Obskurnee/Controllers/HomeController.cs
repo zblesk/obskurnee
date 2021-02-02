@@ -44,7 +44,7 @@ namespace Obskurnee.Controllers
             {
                 Books = _bookService.GetBooksNewestFirst(),
                 Notice = _settingsService.GetSettingValue<string>(Setting.Keys.ModNoticeboard)?.RenderMarkdown(),
-                MyProfile = UserInfo.From(us, User),
+             //   MyProfile = UserInfo.From(us, User),
             });
         }
     }

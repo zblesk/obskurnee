@@ -18,13 +18,16 @@ namespace Obskurnee.Controllers
     {
         private readonly ILogger _logger;
         private readonly UserService _users;
+        private readonly UserManager<Bookworm> _userManager;
 
         public UserController(
            UserService users,
-           ILogger<UserController> logger)
+           ILogger<UserController> logger,
+           UserManager<Bookworm> userManager)
         {
-            _logger = logger;
-            _users = users;
+            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+            _users = users ?? throw new System.ArgumentNullException(nameof(users));
+            _userManager = userManager ?? throw new System.ArgumentNullException(nameof(userManager));
         }
 
         [HttpGet]
@@ -32,6 +35,6 @@ namespace Obskurnee.Controllers
 
         [HttpGet]
         [Route("{email}")]
-        public UserInfo GetUser(string email) => UserInfo.From(_users.GetUserByEmail(email));
+        public async Task<UserInfo> GetUser(string email) => await _users.GetUserByEmail(email);
     }
 }

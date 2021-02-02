@@ -13,6 +13,8 @@
   <ItemGroup>
     <PackageReference Include="Fizzler" Version="1.2.0" />
     <PackageReference Include="Fizzler.Systems.HtmlAgilityPack" Version="1.2.1" />
+    <PackageReference Include="Flurl" Version="3.0.1" />
+    <PackageReference Include="Flurl.Http" Version="3.0.1" />
     <PackageReference Include="LiteDB" Version="5.0.10" />
     <PackageReference Include="Markdig" Version="0.22.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.2" />

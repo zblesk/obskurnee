@@ -17,7 +17,13 @@ namespace Obskurnee.Services
             _db = database ?? throw new ArgumentNullException(nameof(database));
         }
 
-        public bool UpsertSetting(Setting setting) => _db.Settings.Upsert(setting);
+        public bool UpsertSetting(string key, string value) 
+            => _db.Settings.Upsert(new Setting
+                {
+                    Key = key,
+                    Value = value,
+                    LastChange = DateTime.UtcNow
+                });
 
         public dynamic GetSetting(string key) => _db.Settings.FindById(key)?.Value;
 

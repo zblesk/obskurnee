@@ -58,11 +58,6 @@ namespace Obskurnee.Controllers
             return ValidationProblem("Registration failed");
         }
 
-        [HttpPost("makemoderator")]
-        [Authorize(Policy = "ModOnly")]
-        public async Task MakeModerator([FromBody] LoginCredentials creds)
-            => await _users.MakeModerator(creds.Email);
-
         [HttpPost("registerfirstadmin")]
         [AllowAnonymous]
         public async Task<JsonResult> RegisterFirstAdmin([FromBody] LoginCredentials creds)

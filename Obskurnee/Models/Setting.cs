@@ -1,4 +1,5 @@
 ﻿using LiteDB;
+using System;
 
 namespace Obskurnee.Models
 {
@@ -13,5 +14,6 @@ namespace Obskurnee.Models
         [BsonId]
         public string Key { get; set; }
         public dynamic Value { get; set; }
+        public DateTime LastChange { get; set; } = DateTime.UtcNow;
     }
 }

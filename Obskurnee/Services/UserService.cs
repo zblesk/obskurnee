@@ -24,7 +24,7 @@ namespace Obskurnee.Services
 
         private static readonly SigningCredentials SigningCreds = new SigningCredentials(Startup.SecurityKey, SecurityAlgorithms.HmacSha256);
         private readonly JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
-        private readonly MailerService _mailer;
+        private readonly IMailerService _mailer;
 
         public IReadOnlyDictionary<string, UserInfo> Users
         {
@@ -40,7 +40,7 @@ namespace Obskurnee.Services
            SignInManager<Bookworm> signInManager,
            Database database,
            ILogger<UserService> logger,
-           MailerService mailer)
+           IMailerService mailer)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
@@ -50,9 +50,13 @@ namespace Obskurnee.Services
             EnsureCacheLoaded();
         }
 
-        public void ReloadCache()
+        public async Task ReloadCache()
         {
-            _users = _db.Users.FindAll().ToDictionary(u => u.Id, u => UserInfo.From(u));
+            _users = _db.Users
+                .FindAll()
+                .Select(async u => UserInfo.From(u, await _userManager.GetClaimsAsync(u)))
+                .Select(t => t.Result)
+                .ToDictionary(u => u.UserId);
         }
 
         private void EnsureCacheLoaded()
@@ -81,9 +85,6 @@ namespace Obskurnee.Services
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created a new account with password.");
-                // var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                // var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                // await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
                 ReloadCache();
                 return UserInfo.From(user);
             }
@@ -158,7 +159,7 @@ namespace Obskurnee.Services
         public async Task<bool> InitiatePasswordReset(string email)
         {
             _logger.LogInformation("Initiating password reset for {email}"  , email);
-            var user = GetUserByEmail(email);
+            var user = await _userManager.FindByEmailAsync(email);
             if (user == null)   
             {
                 return false;
@@ -181,7 +182,11 @@ namespace Obskurnee.Services
             var user = await _userManager.FindByIdAsync(userId);
             return await _userManager.ResetPasswordAsync(user, resetToken, newPassword);
         }
-        
-        public Bookworm GetUserByEmail(string email) => _db.Users.FindOne(bw => bw.Email.Address == email);
+
+        public async Task<UserInfo> GetUserByEmail(string email)
+        {
+            var user = _db.Users.FindOne(bw => bw.Email.Address == email);
+            return UserInfo.From(user, await _userManager.GetClaimsAsync(user));
+        }
     }
 }
