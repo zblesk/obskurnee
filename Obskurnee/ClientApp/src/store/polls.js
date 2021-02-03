@@ -54,7 +54,21 @@ export default {
         })
         .catch(function (error)
         {
-          alert(error);
+          console.log(error);
+        });
+    },
+    async closePoll({ commit }, pollId)
+    {
+      return axios.post(
+        "/api/rounds/close-poll/" + pollId)
+        .then((response) =>
+        {
+          commit('setPoll', response.data.poll);
+          return Promise.resolve(response.data);
+        })
+        .catch(function (error)
+        {
+          console.log(error);
         });
     }
   }

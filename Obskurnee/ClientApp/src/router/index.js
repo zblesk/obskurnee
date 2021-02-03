@@ -65,7 +65,7 @@ const routes = [
         component: BookList,
     },
     {
-        path: "/knihy/:bookOrder",
+        path: "/knihy/:bookId",
         name: "book",
         component: Book,
     },

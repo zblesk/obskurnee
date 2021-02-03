@@ -36,6 +36,7 @@
   </div>
 
   <book-post v-if="previewId" v-bind:key="previewId.postId" v-bind:post="previewId" ></book-post>
+  <a v-if="isMod" @click="closePoll(poll.pollId)" class="button">Zavri hlasovanie hned</a>
 </section>
 </template>
 
@@ -62,7 +63,7 @@ export default {
     poll: function () { return this.polls[this.$route.params.pollId] ?? { options: [] }; },
   },
   methods: {
-    ...mapActions("polls", ["getPollData", "sendVote"]),
+    ...mapActions("polls", ["getPollData", "sendVote", "closePoll"]),
     toggleShow(postId){
       if (this.previewId == postId)
       {

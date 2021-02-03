@@ -29,15 +29,23 @@ namespace Obskurnee.Controllers
         [HttpGet]
         public IList<Round> GetRounds() => _roundManager.AllRounds();
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Policy = "ModOnly")]
         [Route("close-poll/{pollId:int}")]
-        public RoundUpdateResults CloseVoting(int pollId) => _roundManager.ClosePoll(pollId, User.GetUserId());
+        public RoundUpdateResults ClosePoll(int pollId)
+        {
+            _logger.LogInformation("Moderator {userId} closing poll {pollId}", User.GetUserId(), pollId);
+            return _roundManager.ClosePoll(pollId, User.GetUserId());
+        }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize(Policy = "ModOnly")]
         [Route("close-discussion/{discussionId:int}")]
-        public RoundUpdateResults CloseDiscussion(int discussionId) => _roundManager.CloseDiscussion(discussionId, User.GetUserId());
+        public RoundUpdateResults CloseDiscussion(int discussionId)
+        {
+            _logger.LogInformation("Moderator {userId} closing discussion {discussionId}", User.GetUserId(), discussionId);
+            return _roundManager.CloseDiscussion(discussionId, User.GetUserId());
+        }
 
         [HttpPost]
         [Authorize(Policy = "ModOnly")]

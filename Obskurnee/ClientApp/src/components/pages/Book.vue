@@ -21,12 +21,12 @@ export default {
       }
   },
   methods: {
-    ...mapActions("books", ["getBookByOrder"]),
+    ...mapActions("books", ["getBookById"]),
   },
   computed: {
   },
   mounted() {
-      this.getBookByOrder(this.$route.params.bookOrder)
+      this.getBookById(this.$route.params.bookId)
         .then(book => this.book = book);
   }
 }

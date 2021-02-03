@@ -49,14 +49,5 @@ namespace Obskurnee.Controllers
             }
             return new RoundUpdateResults { Poll = poll };
         }
-
-        [HttpPost]
-        [Authorize(Policy = "ModOnly")]
-        [Route("{pollId:int}/close")]
-        public RoundUpdateResults ClosePoll(int pollId)
-        {
-            _logger.LogInformation("Moderator {userId} closing poll {pollId}", User.GetUserId(), pollId);
-            return _roundManager.ClosePoll(pollId, User.GetUserId());
-        }
     }
 }

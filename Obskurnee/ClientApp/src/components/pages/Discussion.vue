@@ -83,7 +83,7 @@ export default {
     },
     closeDiscussion() 
     {
-        axios.get(
+        axios.post(
           "/api/rounds/close-discussion/" + this.$route.params.discussionId)
         .then((response) => {
           console.log(response.data);

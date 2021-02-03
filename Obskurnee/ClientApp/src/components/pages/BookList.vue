@@ -2,7 +2,7 @@
 <section>
     <ul v-if="books">
         <li v-for="book in books" v-bind:key="book.bookId">
-                  #{{book.order}}  <router-link :to="{ name: 'book', params: { bookOrder: book.order } }">{{ book.post.title }} - {{ book.post.author }}</router-link>
+                  #{{book.order}}  <router-link :to="{ name: 'book', params: { bookId: book.bookId } }">{{ book.post.title }} - {{ book.post.author }}</router-link>
         </li>
     </ul>
 </section>

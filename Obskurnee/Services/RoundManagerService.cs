@@ -114,6 +114,7 @@ namespace Obskurnee.Services
             Trace.Assert(!poll.IsClosed);
             poll.IsClosed = true;
             poll.Results.WinnerPostId = poll.FindWinningPost();
+            Trace.Assert(poll.Results.WinnerPostId != 0);
             var result = new RoundUpdateResults { Poll = poll, Round = round };
             switch (poll.Topic)
             {

@@ -32,5 +32,14 @@ export default {
         }
         return Promise.resolve(state.books.find(b => b.order == bookOrder));
       },
+      async getBookById({ dispatch, state }, bookId) {
+        if (!state.books
+          || !state.books.length 
+          || !state.books.some(b => b.bookId == bookId))
+        {
+          await dispatch('fetchBookList');
+        }
+        return Promise.resolve(state.books.find(b => b.bookId == bookId));
+      },
   }
 }
