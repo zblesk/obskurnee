@@ -58,6 +58,7 @@ namespace Obskurnee.Services
             Trace.Assert(!string.IsNullOrWhiteSpace(vote.OwnerId));
             Trace.Assert(vote.PollId != 0);
             var poll = _db.Polls.FindById(vote.PollId);
+            Trace.Assert(poll != null);
             if (poll.IsClosed)
             {
                 throw new PermissionException("Hlasovanie uz skoncilo!");

@@ -11,15 +11,15 @@
     "axios": "^0.20.0-0",
     "bootstrap": "^4.5.3",
     "core-js": "^3.7.0",
-    "vue": "^3.0.2",
+    "vue": "^3.0.5",
     "vue-loader-v16": "npm:vue-loader@^16.0.0-alpha.3",
-    "vue-router": "^4.0.0-rc.5",
-    "vuex": "^4.0.0-rc.2"
+    "vue-router": "^4.0.3",
+    "vuex": "^4.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.9",
+    "@vue/cli-plugin-babel": "^4.5.11",
     "@vue/cli-plugin-eslint": "^4.5.9",
-    "@vue/cli-service": "^4.5.9",
+    "@vue/cli-service": "^4.5.11",
     "@vue/compiler-sfc": "^3.0.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",

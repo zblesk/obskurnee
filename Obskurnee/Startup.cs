@@ -164,9 +164,7 @@ namespace Obskurnee
                 options.Password.RequiredLength = 15;
                 options.ClaimsIdentity.UserIdClaimType = BookclubClaims.UserId;
             })
-                .AddRoles<LDM.IdentityRole>()
                .AddUserStore<LiteDbUserStore<Bookworm>>()
-               .AddRoleStore<LiteDbRoleStore<LDM.IdentityRole>>()
                .AddSignInManager<SignInManager<Bookworm>>()
                .AddDefaultTokenProviders();
 

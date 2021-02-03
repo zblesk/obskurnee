@@ -34,15 +34,12 @@ namespace Obskurnee.Controllers
         [HttpGet]
         [Authorize(Policy = "ModOnly")]
         [Route("all")]
-        public JsonResult GetAdminInfo() => Json(_newsletter.GetAllNewsletterSubscribers());
+        public JsonResult GetAllSubscriptionInfo() => Json(_newsletter.GetAllNewsletterSubscribers());
 
         [HttpGet]
-        public JsonResult GetSubscribtions()
-        {
-            return Json(_newsletter.GetSubscriptions(User.GetUserId()));
-        }
+        public JsonResult GetSubscribtions() => Json(_newsletter.GetSubscriptions(User.GetUserId()));
 
-        [HttpGet]
+        [HttpPost]
         [Route("{newsletterName}/subscribe")]
         public IActionResult Subscribe(string newsletterName)
         {
@@ -50,7 +47,7 @@ namespace Obskurnee.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("{newsletterName}/unsubscribe")]
         public IActionResult Unsubscribe(string newsletterName)
         {

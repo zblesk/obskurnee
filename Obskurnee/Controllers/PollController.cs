@@ -6,6 +6,7 @@ using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using System.Diagnostics;
 
 namespace Obskurnee.Controllers
 {
@@ -30,7 +31,6 @@ namespace Obskurnee.Controllers
 
         [HttpGet]
         public IEnumerable<Poll> GetPolls() => _polls.GetAll();
-
         
         [HttpGet]
         [Route("{pollId:int}")]
@@ -42,11 +42,21 @@ namespace Obskurnee.Controllers
         {
             vote.PollId = pollId;
             var poll = _polls.CastPollVote(vote.SetOwner(User));
+            _logger.LogInformation("User {userId} voted in poll {pollId}", User.GetUserId(), pollId);
             if (poll.Results.AlreadyVoted == poll.Results.TotalVoters)
             {
                 return _roundManager.ClosePoll(pollId, User.GetUserId());
             }
             return new RoundUpdateResults { Poll = poll };
+        }
+
+        [HttpPost]
+        [Authorize(Policy = "ModOnly")]
+        [Route("{pollId:int}/close")]
+        public RoundUpdateResults ClosePoll(int pollId)
+        {
+            _logger.LogInformation("Moderator {userId} closing poll {pollId}", User.GetUserId(), pollId);
+            return _roundManager.ClosePoll(pollId, User.GetUserId());
         }
     }
 }
