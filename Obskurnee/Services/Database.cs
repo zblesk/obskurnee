@@ -19,6 +19,7 @@ namespace Obskurnee.Services
         public readonly ILiteCollection<Bookworm> Users;
         public readonly ILiteCollection<Setting> Settings;
         public readonly ILiteCollection<Review> Reviews;
+        public readonly ILiteCollection<NewsletterSubscription> NewsletterSubscriptions;
 
         LiteDatabase ILiteDbContext.LiteDatabase => _db;
 
@@ -37,10 +38,13 @@ namespace Obskurnee.Services
             Users = _db.GetCollection<Bookworm>("users");
             Settings = _db.GetCollection<Setting>("settings");
             Reviews = _db.GetCollection<Review>("reviews");
+            NewsletterSubscriptions = _db.GetCollection<NewsletterSubscription>("newslettersubscriptions");
 
             Posts.EnsureIndex(p => p.DiscussionId);
             Votes.EnsureIndex(v => v.PollId);
             Recs.EnsureIndex(r => r.OwnerId);
+            NewsletterSubscriptions.EnsureIndex(ns => ns.UserId);
+            NewsletterSubscriptions.EnsureIndex(ns => ns.NewsletterName);
         }
 
         public GoodreadsBookInfo StoreBookInfo(GoodreadsBookInfo book)

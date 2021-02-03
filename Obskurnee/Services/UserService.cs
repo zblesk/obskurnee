@@ -193,5 +193,11 @@ namespace Obskurnee.Services
             var user = _db.Users.FindOne(bw => bw.Email.Address == email);
             return UserInfo.From(user, await _userManager.GetClaimsAsync(user));
         }
+     
+        public async Task<UserInfo> GetUserById(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            return UserInfo.From(user, await _userManager.GetClaimsAsync(user));
+        }
     }
 }
