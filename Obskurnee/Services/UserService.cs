@@ -80,11 +80,11 @@ namespace Obskurnee.Services
                 UserName = creds.Email.Substring(0, creds.Email.IndexOf('@')),
                 Email = creds.Email,
             };
-            _logger.LogInformation("Registering user {@user}", user);
+            _logger.LogInformation("Registering user {email}", user.Email);
             var result = await _userManager.CreateAsync(user, creds.Password);
             if (result.Succeeded)
             {
-                _logger.LogInformation("User created a new account with password.");
+                _logger.LogInformation("User created");
                 ReloadCache();
                 return UserInfo.From(user);
             }
@@ -115,7 +115,7 @@ namespace Obskurnee.Services
             {
                 throw new ForbiddenException("Users already exist");
             }
-            _logger.LogInformation("Creating first admin with {@creds}", creds);
+            _logger.LogInformation("Creating first admin with {email}", creds.Email);
             var newUser = await Register(creds);
             if (newUser == null)
             {

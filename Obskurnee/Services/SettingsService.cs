@@ -30,6 +30,10 @@ namespace Obskurnee.Services
         public T GetSettingValue<T>(string key)
         {
             var setting = _db.Settings.FindById(key);
+            if (setting == null)
+            {
+                return default(T);
+            }
             return (T)Convert.ChangeType(setting.Value, typeof(T));
         }
     }

@@ -56,7 +56,8 @@ namespace Obskurnee.Controllers
         }
 
         [HttpPost]
-        [Route("mail")]
+        [Route("mailconfig")]
+        [Authorize(Policy = "AdminOnly")]
         public IActionResult UpdateMailConfig([FromBody] JsonElement mailConfig) => Ok();
 
         [HttpPost]
@@ -68,7 +69,7 @@ namespace Obskurnee.Controllers
             var password = Enumerable.Range(1, Startup.DefaultPasswordMinLength)
                 .Aggregate(
                 "", 
-                (pwd, i) => $"{pwd}{Startup.PasswordGenerationChars[_random.Next(Startup.PasswordGenerationChars.Length)]}");
+                (pwd, _) => $"{pwd}{Startup.PasswordGenerationChars[_random.Next(Startup.PasswordGenerationChars.Length)]}");
             try
             {
                 var passwordSrc = await "https://zble.sk/api/password-gen/"

@@ -66,6 +66,7 @@ namespace Obskurnee
             services.AddTransient<IMailerService, FakeMailerService>();
             services.AddTransient<DiscussionService>();
             services.AddTransient<SettingsService>();
+            services.AddTransient<NewsletterService>();
 
             ConfigureAuthAndIdentity(services);
         }
@@ -161,13 +162,13 @@ namespace Obskurnee
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 15;
+                options.ClaimsIdentity.UserIdClaimType = BookclubClaims.UserId;
             })
                 .AddRoles<LDM.IdentityRole>()
                .AddUserStore<LiteDbUserStore<Bookworm>>()
                .AddRoleStore<LiteDbRoleStore<LDM.IdentityRole>>()
                .AddSignInManager<SignInManager<Bookworm>>()
-               .AddDefaultTokenProviders()
-               ;
+               .AddDefaultTokenProviders();
 
             services.AddAuthorization(options =>
             {
