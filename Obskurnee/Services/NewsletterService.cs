@@ -1,19 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace Obskurnee.Services
 {
     public class NewsletterService
     {
-        private readonly ILogger<NewsletterService> logger;
-        private readonly IMailerService mailer;
+        private readonly ILogger<NewsletterService> _logger;
+        private readonly IMailerService _mailer;
         private readonly Database _db;
         private readonly UserService _userService;
 
@@ -23,25 +20,31 @@ namespace Obskurnee.Services
             UserService userService,
             Database db)
         {
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
-            this._db = db ?? throw new ArgumentNullException(nameof(db));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
         public void Subscribe(string userId, string newsletterName)
-            => _db.NewsletterSubscriptions.Upsert(new NewsletterSubscription
+        {
+            _logger.LogInformation("Subscribing {userId} to {newsletter}", userId, newsletterName);
+            _db.NewsletterSubscriptions.Upsert(new NewsletterSubscription
             {
                 NewsletterName = newsletterName,
                 UserId = userId,
             });
+        }
 
         public void Unsubscribe(string userId, string newsletterName)
-            => _db.NewsletterSubscriptions.Delete(new NewsletterSubscription
+        {
+            _logger.LogInformation("Unsubscribing {userId} from {newsletter}", userId, newsletterName);
+            _db.NewsletterSubscriptions.Delete(new NewsletterSubscription
             {
                 NewsletterName = newsletterName,
                 UserId = userId,
             }.NewsletterSubscriptionId);
+        }
 
         public Dictionary<string, IEnumerable<UserInfo>> GetAllNewsletterSubscribers()
             => _db.NewsletterSubscriptions.FindAll()
@@ -53,23 +56,21 @@ namespace Obskurnee.Services
 
         public void SendNewsletter(string newsletterName, string subject, string body)
         {
-
+            var subscribers = GetSubscribers(newsletterName);
+            _logger.LogInformation("Sending newsletter {newsletter} with subject {subject} to {count} subscribers.", newsletterName, subject, subscribers.Count);
+            _mailer.SendMail(subject, body, subscribers.ToArray());
         }
 
         public IList<string> GetSubscriptions(string userId)
-        {
-            return (from ns in _db.NewsletterSubscriptions.Query()
-                    where ns.UserId == userId
-                    select ns.NewsletterName)
-                   .ToList();
-        }
+            => (from ns in _db.NewsletterSubscriptions.Query()
+                where ns.UserId == userId
+                select ns.NewsletterName)
+                .ToList();
 
         public IList<string> GetSubscribers(string newsletterName)
-        {
-            return (from ns in _db.NewsletterSubscriptions.Query()
-                    where ns.NewsletterName == newsletterName
-                    select ns.NewsletterName)
-                   .ToList();
-        }
+            => (from ns in _db.NewsletterSubscriptions.Query()
+                where ns.NewsletterName == newsletterName
+                select ns.NewsletterName)
+                .ToList();
     }
 }

@@ -4,7 +4,6 @@ using Obskurnee.Models;
 using Obskurnee.Services;
 using System;
 using Microsoft.AspNetCore.Authorization;
-using Obskurnee.ViewModels;
 using System.Security.Claims;
 using System.Threading.Tasks;
 

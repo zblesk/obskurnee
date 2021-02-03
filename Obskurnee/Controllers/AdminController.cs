@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.Services;
-using Obskurnee.ViewModels;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Web;
-using Flurl;
 using Flurl.Http;
 using System;
 using System.Linq;
