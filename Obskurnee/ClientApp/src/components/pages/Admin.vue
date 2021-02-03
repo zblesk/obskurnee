@@ -27,6 +27,10 @@
             </table>
         </div>
     </div>
+    <div>
+        Newsletter subscribers: <br />
+        {{ newsletterInfo }}
+    </div>
 </div>
 </section>
 </template>
@@ -41,6 +45,7 @@ export default {
         return {
             newUserEmal: "",
             notice: "",
+            newsletterInfo: {},
         }
     },
     computed: {
@@ -50,7 +55,7 @@ export default {
     },
     methods: {
         ...mapActions("users", ["getUsers"]),
-        loadInfo()
+        getInfo()
         {
             axios.get("/api/admin")
                 .then(response => 
@@ -73,26 +78,31 @@ export default {
             axios.post("/api/admin/createuser", { email: this.newUserEmal})
             .then(() => 
                 {
-                    console.log("succ ess");
                     this.getUsers();
                 })
             .catch(err => console.log(err));
         },
         makeMod(email)
         {
-            console.log(email);
-            axios.get("/api/admin/makemod/" + email)
+            axios.post("/api/admin/makemod/" + email)
             .then(() => 
                 {
                     console.log("succ ess");
                     this.getUsers();
                 })
             .catch(err => console.log(err));
+        },
+        getNewsletterInfo()
+        {
+            axios.get("/api/newsletters/all")
+            .then(response => this.newsletterInfo = response.data )
+            .catch(err => console.log(err));
         }
     },
     mounted() {
         this.getUsers();
-        this.loadInfo();
+        this.getInfo();
+        this.getNewsletterInfo();
     }
 }
 </script>

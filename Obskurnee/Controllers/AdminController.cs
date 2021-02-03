@@ -58,7 +58,7 @@ namespace Obskurnee.Controllers
 
         [HttpPost]
         [Route("createuser")]
-        public async Task<IActionResult> AddUser([FromBody] JsonElement payload)
+        public async Task<IActionResult> CreateUser([FromBody] JsonElement payload)
         {
             var email = payload.GetProperty("email").GetString();
             _logger.LogInformation("Adding user {email}", email);
@@ -90,7 +90,7 @@ namespace Obskurnee.Controllers
             return ValidationProblem("Registration failed");
         }
 
-        [HttpGet("makemod/{email}")]
+        [HttpPost("makemod/{email}")]
         public async Task MakeModerator(string email)
             => await _users.MakeModerator(email);
     }
