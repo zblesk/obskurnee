@@ -13,15 +13,18 @@ namespace Obskurnee.Services
         private readonly Database _db;
         private readonly object @lock = new object();
         private readonly BookService _bookService;
+        private readonly NewsletterService _newsletter;
 
         public RoundManagerService(
             ILogger<RoundManagerService> logger,
             Database database,
-            BookService bookService)
+            BookService bookService,
+            NewsletterService newsletter)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
             _bookService = bookService ?? throw new ArgumentNullException(nameof(bookService));
+            _newsletter = newsletter;
         }
 
         public IList<Round> AllRounds() => _db.Rounds.Query().OrderByDescending(r => r.CreatedOn).ToList();
@@ -50,7 +53,7 @@ namespace Obskurnee.Services
                     break;
                 case Topic.Themes:
                     discussion.Title = $"{title} - návrhy tém";
-                    discussion.RoundId = round.RoundId; 
+                    discussion.RoundId = round.RoundId;
                     _db.Discussions.Insert(discussion);
                     round.ThemeDiscussionId = discussion.DiscussionId;
                     break;
@@ -58,9 +61,9 @@ namespace Obskurnee.Services
                     throw new Exception($"Invalid Topic: {topic}");
             }
             _db.Rounds.Update(round);
+            SendNewDiscussionNotification(discussion);
             return round;
         }
-
         public RoundUpdateResults CloseDiscussion(int discussionId, string currentUserId)
         {
             var discussion = _db.Discussions.FindById(discussionId);
@@ -102,10 +105,11 @@ namespace Obskurnee.Services
                 }
                 _db.Discussions.Update(discussion);
                 _db.Rounds.Update(round);
+
+                SendNewPollNotification(poll);
             }
             return new() { Discussion = discussion, Round = round };
         }
-    
         public RoundUpdateResults ClosePoll(int pollId, string currentUserId)
         {
             _logger.LogInformation("Closing poll {pollId}", pollId);
@@ -122,11 +126,13 @@ namespace Obskurnee.Services
                     result.Book = _bookService.CreateBook(poll, round.RoundId, currentUserId);
                     round.BookId = result.Book.BookId;
                     poll.FollowupLink = new Poll.FollowupReference(Poll.FollowupKind.Book, result.Book.BookId);
+                    SendNewBookNotification(result);
                     break;
                 case Topic.Themes:
                     result.Discussion = CreateDiscussionFromTopicPoll(currentUserId, poll, round);
                     round.BookDiscussionId = result.Discussion.DiscussionId;
                     poll.FollowupLink = new Poll.FollowupReference(Poll.FollowupKind.Discussion, result.Discussion.DiscussionId);
+                    SendNewDiscussionNotification(result.Discussion);
                     break;
             }
             _db.Polls.Update(poll);
@@ -146,6 +152,35 @@ namespace Obskurnee.Services
             };
             _db.Discussions.Insert(bookDiscussion);
             return bookDiscussion;
+        }
+
+        private void SendNewDiscussionNotification(Discussion discussion)
+        {
+            var link = $"{Startup.BaseUrl}/navrhy/{discussion.DiscussionId}";
+            _newsletter.SendNewsletter(
+                Newsletters.BasicEvents,
+                $"Začalo nové kolo - {discussion.Title}!",
+                $"Pridaj svoje! Cim viac, tym vacsia knizna sranda! <a href='{link}'>{link}</a>");
+        }
+
+        private void SendNewPollNotification(Poll poll)
+        {
+            var link = $"{Startup.BaseUrl}/hlasovania/{poll.PollId}";
+            _newsletter.SendNewsletter(
+                Newsletters.BasicEvents,
+                $"Začalo nové hlasovanie - {poll.Title}!",
+                $"Pod hlasovat pls! <a href='{link}'>{link}</a>");
+        }
+
+        private void SendNewBookNotification(RoundUpdateResults result)
+        {
+            var link = $"{Startup.BaseUrl}/knihy/{result.Book.BookId}";
+            _newsletter.SendNewsletter(
+                Newsletters.BasicEvents,
+                $"A víťazom sa stáva...",
+                @$"<h1>{result.Book.Post.Title} - {result.Book.Post.Author}!
+
+<a href='{link}'>{link}</a>");
         }
     }
 }

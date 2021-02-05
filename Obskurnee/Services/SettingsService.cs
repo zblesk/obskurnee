@@ -34,6 +34,10 @@ namespace Obskurnee.Services
             {
                 return default(T);
             }
+            if (typeof(T).IsEnum)
+            {
+                return (T)Enum.Parse(typeof(T), setting.Value);
+            }
             return (T)Convert.ChangeType(setting.Value, typeof(T));
         }
     }
