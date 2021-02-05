@@ -1,6 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using System.Threading.Tasks;
+using Flurl;
+using Flurl.Http;
+using Flurl.Util;
+using Microsoft.Extensions.Configuration;
 
 namespace Obskurnee.Services
 {
@@ -8,43 +12,44 @@ namespace Obskurnee.Services
     {
         private readonly ILogger<MailgunMailerService> _logger;
         private readonly SettingsService _settings;
+        private readonly IConfiguration _config;
 
         public MailgunMailerService(
             ILogger<MailgunMailerService> logger,
-            SettingsService settings)
+            SettingsService settings,
+            IConfiguration config)
         {
             _settings = settings ?? throw new System.ArgumentNullException(nameof(settings));
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+            _config = config ?? throw new System.ArgumentNullException(nameof(config));
         }
 
         public async Task SendMail(string subject, string body, params string[] recipients)
         {
             _logger.LogInformation("Sending mail '{subject}' to {@recipients}", subject, recipients);
-
-            var settings = _settings.GetSetting(Setting.Keys.MailgunSettings);
-            if (settings == null)
-            {
-                _logger.LogError("Attempting to send mail; mail settings not found!");
-                return;
-            }
-
-
-            //RestClient client = new RestClient();
-            //client.BaseUrl = new Uri("https://api.mailgun.net/v3");
-            //client.Authenticator =
-            //    new HttpBasicAuthenticator("api",
-            //                                "YOUR_API_KEY");
-            //RestRequest request = new RestRequest();
-            //request.AddParameter("domain", "YOUR_DOMAIN_NAME", ParameterType.UrlSegment);
-            //request.Resource = "{domain}/messages";
-            //request.AddParameter("from", "Excited User <mailgun@YOUR_DOMAIN_NAME>");
-            //request.AddParameter("to", "bar@example.com");
-            //request.AddParameter("to", "YOU@YOUR_DOMAIN_NAME");
-            //request.AddParameter("subject", "Hello");
-            //request.AddParameter("text", "Testing some Mailgun awesomness!");
-            //request.Method = Method.POST;
-            //return client.Execute(request);
-
+            var mailConfig = _config
+                .GetSection(MailgunConfig.ConfigName)
+                .Get<MailgunConfig>();
+            var response = await mailConfig.EndpointUri
+                .AppendPathSegments(mailConfig.SenderDomainName, "messages")
+                .WithBasicAuth(mailConfig.ApiUsername, mailConfig.ApiKey)
+                .PostMultipartAsync(mp =>
+                {
+                    mp.AddStringParts(new
+                    {
+                        from = mailConfig.SenderEmail,
+                        subject = subject,
+                        text = body,
+                    });
+                    foreach (var mail in recipients)
+                    {
+                        mp.AddString("to", mail);
+                    }
+                });
+            _logger.Log(
+                response.StatusCode == 200 ? LogLevel.Information : LogLevel.Error,
+                "Mail sending status: {status}",
+                response.StatusCode);
         }
     }
 }

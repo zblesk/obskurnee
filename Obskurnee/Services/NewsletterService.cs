@@ -26,7 +26,7 @@ namespace Obskurnee.Services
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
-        public void Subscribe(string userId, string newsletterName)
+        public IList<string> Subscribe(string userId, string newsletterName)
         {
             _logger.LogInformation("Subscribing {userId} to {newsletter}", userId, newsletterName);
             _db.NewsletterSubscriptions.Upsert(new NewsletterSubscription
@@ -34,9 +34,10 @@ namespace Obskurnee.Services
                 NewsletterName = newsletterName,
                 UserId = userId,
             });
+            return GetSubscriptions(userId);
         }
 
-        public void Unsubscribe(string userId, string newsletterName)
+        public IList<string> Unsubscribe(string userId, string newsletterName)
         {
             _logger.LogInformation("Unsubscribing {userId} from {newsletter}", userId, newsletterName);
             _db.NewsletterSubscriptions.Delete(new NewsletterSubscription
@@ -44,6 +45,7 @@ namespace Obskurnee.Services
                 NewsletterName = newsletterName,
                 UserId = userId,
             }.NewsletterSubscriptionId);
+            return GetSubscriptions(userId);
         }
 
         public Dictionary<string, IEnumerable<UserInfo>> GetAllNewsletterSubscribers()

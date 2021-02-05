@@ -11,24 +11,14 @@ namespace Obskurnee.Controllers
     public class NewsletterController : Controller
     {
         private readonly ILogger _logger;
-        private readonly SettingsService _settings;
-        private readonly UserService _users;
         private readonly NewsletterService _newsletter;
-        private static readonly Random _random = new Random();
-        private readonly IAuthorizationService _authorizationService;
 
         public NewsletterController(
            ILogger<NewsletterController> logger,
-           SettingsService settings,
-           UserService users,
-           NewsletterService newsletter,
-           IAuthorizationService authorizationService)
+           NewsletterService newsletter)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            _users = users ?? throw new ArgumentNullException(nameof(users));
             _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
-            _authorizationService = authorizationService ?? throw new ArgumentNullException(nameof(authorizationService));
         }
 
         [HttpGet]
@@ -41,19 +31,10 @@ namespace Obskurnee.Controllers
 
         [HttpPost]
         [Route("{newsletterName}/subscribe")]
-        public IActionResult Subscribe(string newsletterName)
-        {
-            _newsletter.Subscribe(User.GetUserId(), newsletterName);
-            return Ok();
-        }
+        public JsonResult Subscribe(string newsletterName) => Json(_newsletter.Subscribe(User.GetUserId(), newsletterName));
 
         [HttpPost]
         [Route("{newsletterName}/unsubscribe")]
-        public IActionResult Unsubscribe(string newsletterName)
-        {
-            _newsletter.Unsubscribe(User.GetUserId(), newsletterName);
-            return Ok();
-        }
-
+        public JsonResult Unsubscribe(string newsletterName) => Json(_newsletter.Unsubscribe(User.GetUserId(), newsletterName));
     }
 }

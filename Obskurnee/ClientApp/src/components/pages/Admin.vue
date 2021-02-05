@@ -11,7 +11,8 @@
     <div style="margin:auto;">
         <div>
             Novy user: 
-            <input v-model="newUserEmal" placeholder="mail" /><button @click="addUser()">Vytvor</button>
+            <input v-model="newUserEmal" placeholder="mail" /><button @click="addUser()">Vytvor</button> <br />
+            Povedz novemu kamosovi nech pre istotu pozrie aj do spamu, ak neuvidi ziadnu spravu v inboxe.
         </div>
         <div>
             Moderatori: <span v-for="mod in mods" v-bind:key="mod.userId"><router-link :to="{ name: 'user', params: { email: mod.email } }">{{mod.name}}</router-link>, </span>

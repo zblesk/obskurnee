@@ -17,8 +17,8 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using VueCliMiddleware;
-using LDM = AspNetCore.Identity.LiteDB;
 using System.Text.Json.Serialization;
+using System.Configuration;
 
 namespace Obskurnee
 {
@@ -63,10 +63,21 @@ namespace Obskurnee
             services.AddTransient<UserService>();
             services.AddTransient<BookService>();
             services.AddTransient<RoundManagerService>();
-            services.AddTransient<IMailerService, FakeMailerService>();
             services.AddTransient<DiscussionService>();
             services.AddTransient<SettingsService>();
             services.AddTransient<NewsletterService>();
+
+            switch (Configuration["MailerType"])
+            {
+                case "mailgun":
+                    services.AddTransient<IMailerService, MailgunMailerService>();
+                    break;
+                case "log-only":
+                    services.AddTransient<IMailerService, FakeMailerService>();
+                    break;
+                default:
+                    throw new ConfigurationErrorsException($"Invalid mailer type: {Configuration["MailerType"]}");
+            }
 
             ConfigureAuthAndIdentity(services);
         }

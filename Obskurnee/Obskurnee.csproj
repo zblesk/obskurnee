@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Obskurnee</RootNamespace>
+    <UserSecretsId>efac8292-c0d4-4e78-b2e5-6e78415a844b</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -23,6 +24,7 @@
     <PackageReference Include="Serilog" Version="2.10.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
     <PackageReference Include="VueCliMiddleware" Version="3.0.0" />
   </ItemGroup>
 
