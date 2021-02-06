@@ -3,16 +3,7 @@
   <h1 id="tableLabel">{{ discussion.title }}<small v-if="discussion.isClosed">Uzavreté</small></h1>
   <p v-html="discussion.renderedDescription"></p>
   <div class="form" v-if="!discussion.isClosed">
-    <span v-if="discussion.topic == 'Books'">
-      <input v-model="newpost.url" placeholder="https://www.goodreads.com/book..." @change="linkChange"/>
-      <span style="color: cyan" v-if="fetchInProgress">Kamo pockaj, LOADUJEM</span>
-    </span>
-    <input v-model="newpost.title" placeholder="Meno knihy" required />
-    <input v-if="discussion.topic == 'Books'" v-model="newpost.author" placeholder="Autor" />
-    <input v-if="discussion.topic == 'Books'" v-model="newpost.pageCount" placeholder="Počet strán" />
-    <textarea v-model="newpost.text" placeholder="Komentár k návrhu" required></textarea>
-    <button @click="postNewBook">Pridaj</button>
-    <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />
+    <new-post :mode="discussion.topic" :discussionId="discussion.discussionId"></new-post>
     <div></div>
     <button @click="closeDiscussion" v-if="isMod && discussion.posts?.length">UZAVRI diskusiu a vytvor hlasovanie</button>
   </div>
@@ -38,49 +29,18 @@
 import axios from "axios";
 import BookPost from "../BookPost.vue";
 import { mapGetters,mapActions, mapState } from "vuex";
+import NewPost from '../NewPost.vue';
 
 export default {
   name: "Discussion",
- components: { BookPost },
-  data() {
-    return {
-      newpost: {},
-      fetchInProgress: false,
-    };
-  },
+ components: { BookPost, NewPost },
   computed: {
     ...mapGetters("context", ["isMod"]),
     ...mapState("discussions", ["discussions"]),
     discussion: function () { return this.discussions.find(d => d.discussionId == this.$route.params.discussionId) ?? { posts: [] }; },
   },
   methods: {
-    ...mapActions("discussions", ["getDiscussionData", "newPost"]),
-    postNewBook() {
-          this.newPost({ discussionId: this.$route.params.discussionId, newPost: this.newpost })
-            .then(() => {
-              this.newpost = {};
-            });
-    },
-    linkChange() {
-      if (!this.newpost.url 
-        || !this.newpost.url.startsWith("https://www.goodreads.com"))
-      {
-        console.log("Not fetching ", this.newpost.url);
-        return;
-      }
-      this.fetchInProgress = true;
-        axios.get(
-          "/api/scrape/?goodreadsUrl=" + this.newpost.url)
-        .then((response) => {
-          this.newpost = response.data;
-          this.newpost.text = "\n\nPopis na Goodreads: \n\n" + response.data.description;
-          this.fetchInProgress = false;
-        })
-        .catch(function (error) {
-          alert(error);
-          this.fetchInProgress = false;
-        });
-    },
+    ...mapActions("discussions", ["getDiscussionData"]),
     closeDiscussion() 
     {
         axios.post(

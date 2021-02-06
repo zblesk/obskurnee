@@ -59,6 +59,11 @@ namespace Obskurnee.Services
         public void SendNewsletter(string newsletterName, string subject, string body)
         {
             var subscribers = GetSubscribers(newsletterName);
+            if (subscribers.Count == 0)
+            {
+                _logger.LogInformation("Not sending {newsletter} with {subject}, because there are no subscribers.", newsletterName, subject);
+                return;
+            }
             _logger.LogInformation("Sending newsletter {newsletter} with subject {subject} to {count} subscribers.", newsletterName, subject, subscribers.Count);
             _mailer.SendMail(subject, body, subscribers.ToArray());
         }

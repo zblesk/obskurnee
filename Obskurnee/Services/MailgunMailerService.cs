@@ -11,15 +11,12 @@ namespace Obskurnee.Services
     public class MailgunMailerService : IMailerService
     {
         private readonly ILogger<MailgunMailerService> _logger;
-        private readonly SettingsService _settings;
         private readonly IConfiguration _config;
 
         public MailgunMailerService(
             ILogger<MailgunMailerService> logger,
-            SettingsService settings,
             IConfiguration config)
         {
-            _settings = settings ?? throw new System.ArgumentNullException(nameof(settings));
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             _config = config ?? throw new System.ArgumentNullException(nameof(config));
         }
