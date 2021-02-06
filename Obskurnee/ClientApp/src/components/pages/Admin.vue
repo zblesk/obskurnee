@@ -7,7 +7,6 @@
         <textarea placeholder="Text noticky" v-model="notice"></textarea>
         <a @click="updateNoticeboard()" class="button">uloz</a>
     </div>
-    <p class="todo">mailer</p>
     <div style="margin:auto;">
         <div>
             Novy user: 
