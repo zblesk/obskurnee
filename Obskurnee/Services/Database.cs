@@ -11,7 +11,8 @@ namespace Obskurnee.Services
         private readonly LiteDatabase _db;
         public readonly ILiteCollection<Discussion> Discussions;
         public readonly ILiteCollection<Post> Posts;
-        public readonly ILiteCollection<Post> Recs;
+        public readonly ILiteCollection<Discussion> RecThreads;
+        public readonly ILiteCollection<Post> RecPosts;
         public readonly ILiteCollection<Book> Books;
         public readonly ILiteCollection<Poll> Polls;
         public readonly ILiteCollection<Vote> Votes;
@@ -30,7 +31,8 @@ namespace Obskurnee.Services
             _db.CheckpointSize = 1;
             Discussions = _db.GetCollection<Discussion>("discussions");
             Posts = _db.GetCollection<Post>("posts");
-            Recs = _db.GetCollection<Post>("personalrecs");
+            RecThreads = _db.GetCollection<Discussion>("recthreads");
+            RecPosts = _db.GetCollection<Post>("recposts");
             Books = _db.GetCollection<Book>("books").Include(b => b.Post).Include(b => b.Round);
             Polls = _db.GetCollection<Poll>("polls").Include(p => p.Options);
             Votes = _db.GetCollection<Vote>("votes");
@@ -42,7 +44,7 @@ namespace Obskurnee.Services
 
             Posts.EnsureIndex(p => p.DiscussionId);
             Votes.EnsureIndex(v => v.PollId);
-            Recs.EnsureIndex(r => r.OwnerId);
+            RecPosts.EnsureIndex(r => r.OwnerId);
             NewsletterSubscriptions.EnsureIndex(ns => ns.UserId);
             NewsletterSubscriptions.EnsureIndex(ns => ns.NewsletterName);
         }

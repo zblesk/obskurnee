@@ -11,7 +11,7 @@ namespace Obskurnee.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public bool IsClosed { get; set; }
-        public Topic Topic{ get; set; }
+        virtual public Topic Topic{ get; set; }
         [BsonIgnore] public string RenderedDescription { get => Description.RenderMarkdown(); }
         [BsonRef("posts")] public IList<Post> Posts { get; set; } = new List<Post>();
 
