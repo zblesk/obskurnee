@@ -3,7 +3,7 @@
     public class GoodreadsBookInfo : HeaderData
     {
         public string Url { get; set; }
-        public string Name { get; set; }
+        public string Title { get; set; }
         public string Author { get; set; }
         public int? PageCount { get; set; }
         public string Description { get; set; }

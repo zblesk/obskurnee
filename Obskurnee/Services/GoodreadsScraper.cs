@@ -44,7 +44,7 @@ namespace Obskurnee.Services
 
                     var document = html.DocumentNode;
 
-                    result.Name = document.QuerySelector("#bookTitle")?.InnerText?.Trim();
+                    result.Title = document.QuerySelector("#bookTitle")?.InnerText?.Trim();
                     result.Author = document.QuerySelector(".authorName__container > a:nth-child(1) > span:nth-child(1)")?.InnerText?.Trim();
                     var description = document.QuerySelector("#description.readable.stacked span:nth-child(2)")?.InnerHtml;
                     if (description != null)
@@ -71,10 +71,10 @@ namespace Obskurnee.Services
                     {
                         if (!string.IsNullOrWhiteSpace(imgUrl))
                         {
-                            _logger.LogInformation("Downloading image for {bookname} at {url}", result.Name, imgUrl);
+                            _logger.LogInformation("Downloading image for {bookname} at {url}", result.Title, imgUrl);
                             var pic = await client.DownloadDataTaskAsync(imgUrl);
                             var sanitizedName = Regex.Replace(
-                                    result.Name.Replace(' ', '-'),
+                                    result.Title.Replace(' ', '-'),
                                     "[^a-zA-Z0-9-]", "");
                             var relativeFilename =  sanitizedName.Substring(0, Math.Min(90, sanitizedName.Length)) 
                                 + _rand.Next(10_000, 100_000).ToString()
