@@ -4,7 +4,7 @@
     <p class="todo">Karticky so zakladnym info?</p>
     
     <div v-for="user in users" v-bind:key="user.userId">
-        {{ user }}
+      <router-link :to="{ name: 'user', params: { email: user.email } }"> {{ user }} </router-link>
     </div>
 </section>
 </template>

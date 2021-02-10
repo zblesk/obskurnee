@@ -11,7 +11,7 @@
     Zatiaľ máme: <br />
     <p v-if="myProfile.name">{{ myProfile.name }}</p>
     <p v-if="myProfile.phone">{{ myProfile.phone }}</p>
-    <p v-if="myProfile.aboutMe">{{ myProfile.aboutMe }}</p>
+    <p v-if="myProfile.aboutMe" :v-html="myProfile.aboutMeHtml"></p>
     <p v-if="myProfile.goodreadsUrl">{{ myProfile.goodreadsUrl }}</p>
   </div>
   </div>

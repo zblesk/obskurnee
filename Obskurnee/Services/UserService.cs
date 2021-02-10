@@ -199,5 +199,34 @@ namespace Obskurnee.Services
             var user = await _userManager.FindByIdAsync(userId);
             return UserInfo.From(user, await _userManager.GetClaimsAsync(user));
         }
+
+        public async Task<UserInfo> UpdateUserProfile(
+            string email,
+            string name,
+            string phone,
+            string goodreadsUrl,
+            string aboutMe)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            _logger.LogInformation("Updating user profile for {userId} ({email})", user.Id, user.Email.Address);
+            user.UserName = name;
+            user.GoodreadsProfileUrl = goodreadsUrl;
+            user.AboutMe = aboutMe;
+            var identityResult = await _userManager.UpdateAsync(user);
+            if (!identityResult.Succeeded)
+            {
+                _logger.LogError("User update failed. IdentityResult: {@identityResult}", identityResult);
+                throw new DatastoreException("User update failed");
+            }
+            if (!(await _userManager.SetPhoneNumberAsync(user, phone)).Succeeded)
+            {
+                _logger.LogError(
+                    "User update succeeded, but phone number update failed. IdentityResult: {@identityResult}",
+                    identityResult);
+                throw new DatastoreException("User update succeeded, but phone number update failed.");
+            }
+            _logger.LogInformation("User profile for {userId} ({email}) updated.", user.Id, user.Email.Address);
+            return await GetUserByEmail(email);
+        }
     }
 }

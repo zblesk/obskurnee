@@ -31,4 +31,19 @@ namespace Obskurnee
         {
         }
     }
+
+    public class DatastoreException : Exception
+    {
+        public DatastoreException() : base()
+        {
+        }
+
+        public DatastoreException(string message) : base(message)
+        {
+        }
+
+        public DatastoreException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+    }
 }

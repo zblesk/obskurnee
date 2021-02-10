@@ -12,6 +12,7 @@ namespace Obskurnee.ViewModels
         public string Phone { get; set; }
         public string Email { get; set; }
         public string AboutMe { get; set; }
+        public string AboutMeHtml { get; set; }
         public bool IsModerator { get; set; } = false;
         public bool IsAdmin { get; set; } = false;
         public string? Token { get; set; } = null;
@@ -35,8 +36,9 @@ namespace Obskurnee.ViewModels
                 UserId = user.Id,
                 Name = user.UserName,
                 Email = user.Email.Address,
-                Phone = user.PhoneNumber,
-                AboutMe = user.RenderedAboutMe,
+                Phone = user.Phone.Number,
+                AboutMe = user.AboutMe,
+                AboutMeHtml = user.RenderedAboutMe,
                 GoodreadsUrl = user.GoodreadsProfileUrl,
                 IsModerator = principal?.FindFirstValue(BookclubClaims.Moderator) != null,
                 IsAdmin = principal?.FindFirstValue(BookclubClaims.Admin) != null,
@@ -49,8 +51,9 @@ namespace Obskurnee.ViewModels
                 UserId = user.Id,
                 Name = user.UserName,
                 Email = user.Email.Address,
-                Phone = user.PhoneNumber,
-                AboutMe = user.RenderedAboutMe,
+                Phone = user.Phone.Number,
+                AboutMe = user.AboutMe,
+                AboutMeHtml = user.RenderedAboutMe,
                 GoodreadsUrl = user.GoodreadsProfileUrl,
                 IsModerator = claims.Any(claim => claim.Type == BookclubClaims.Moderator),
                 IsAdmin = claims.Any(claim => claim.Type == BookclubClaims.Admin),

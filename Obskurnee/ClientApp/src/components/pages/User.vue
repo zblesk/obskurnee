@@ -1,10 +1,19 @@
 <template>
 <section>
   <div v-if="user">
-  {{ user }}
+  
+  <p v-if="mode == 'edit'">
+    <input v-model="user.name" placeholder="meno" /><br />
+    <input v-model="user.phone" placeholder="whatsapp telefon" /><br />
+    <input v-model="user.goodreadsUrl" placeholder="goodreads Url profilu" /><br />
+    <textarea v-model="user.aboutMe" placeholder="napis nieco o sebe _(markdown supported)_"></textarea><br />
+    <button @click="updateProfile" class="button">Aktualizuj</button>
+  </p>
 
-  <p v-if="mode == 'edit'" class="todo">Som v EDITACNOM MODE!</p>
-  <div v-if="mode != 'edit'" class="todo"><a @click="mode = 'edit'">Editkuj - KLIKNI NA MNA </a></div>
+  <div v-if="mode != 'edit'" class="todo">
+    {{ user }}
+    <a @click="mode = 'edit'" class="button" :v-if="isMod || user.userId == myUserId">EDITUJ</a>
+  </div>
 
 
   <p class="todo">sem co este? Chceme tu naprikald userove reviews, recs?</p>
@@ -13,7 +22,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: 'User',
@@ -23,8 +32,16 @@ export default {
         mode: "default",
       }
   },
+  computed: {
+    ...mapGetters("context", ["myUserId", "isMod"]),
+  },
   methods: {
-    ...mapActions("users", ["getUser"]),
+    ...mapActions("users", ["getUser", "updateUser"]),
+    updateProfile() {
+      console.log(this.user);
+      this.updateUser(this.user);
+      this.mode = "default";
+    }
   },
   mounted() {
     this.getUser(this.$route.params.email)

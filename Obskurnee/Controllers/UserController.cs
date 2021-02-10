@@ -34,5 +34,18 @@ namespace Obskurnee.Controllers
         [HttpGet]
         [Route("{email}")]
         public async Task<UserInfo> GetUser(string email) => await _users.GetUserByEmail(email);
+
+        [HttpPost]
+        [Route("{email}")]
+        public Task<UserInfo> UpdateUser(string email, [FromBody] UserInfo updateInfo)
+        {
+            // todo: auth
+            return _users.UpdateUserProfile(
+                email,
+                updateInfo.Name,
+                updateInfo.Phone,
+                updateInfo.GoodreadsUrl,
+                updateInfo.AboutMe);
+        }
     }
 }

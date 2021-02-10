@@ -40,11 +40,19 @@ export default {
       }
       return Promise.resolve(state.users.find(u => u.email == email));
     },
-    async updateUser({ dispatch })//, userInfo)
+    async updateUser({ dispatch }, userData)
     {
-      /// post data
-      // reload everything 
-      
+      await axios.post("/api/users/" + userData.email, userData)
+        .then((response) =>
+        {
+          console.log(response.data);
+          return Promise.resolve();
+        })
+        .catch(function (error)
+        {
+          console.log(error);
+          return Promise.resolve(error);
+        });
       return dispatch('getUsers');
     }
   }

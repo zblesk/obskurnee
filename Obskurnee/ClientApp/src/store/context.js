@@ -10,6 +10,7 @@ export default {
       isAuthenticated: state => state.profile.name && state.profile.email,
       isMod: (state, getters) => state.profile.isModerator || getters.isAdmin,
       isAdmin: state => state.profile.isAdmin,
+      myUserId: state => state.profile.userId,
     },
     mutations: {
       setProfile (state, profile) {
