@@ -9,6 +9,10 @@ using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Xml.Linq;
+using System.ServiceModel.Syndication;
+using System.Xml;
 
 namespace Obskurnee.Services
 {
@@ -24,7 +28,7 @@ namespace Obskurnee.Services
             _hostEnv = hostEnv ?? throw new ArgumentNullException(nameof(hostEnv));
         }
 
-        public async Task<GoodreadsBookInfo> Scrape(string goodreadsUrl)
+        public async Task<GoodreadsBookInfo> ScrapeBookInfo(string goodreadsUrl)
         {
             if (string.IsNullOrWhiteSpace(goodreadsUrl)
                 || !goodreadsUrl.StartsWith("https://www.goodreads.com"))
@@ -101,6 +105,45 @@ namespace Obskurnee.Services
                 _logger.LogError(ex, "GR extraction failed for {url}", goodreadsUrl);
             }
             return result;
+        }
+
+        public async Task<IEnumerable<Review>> GetCurrentlyReadingBooks(Bookworm user)
+        {
+            if (string.IsNullOrWhiteSpace(user.GoodreadsUserId))
+            {
+                _logger.LogWarning("Triggered RSS feed fetch for user {userId}, but no Goodreads User ID is available. Exitting.", user.Id);
+                return Enumerable.Empty<Review>();
+            }
+
+            var rss_url = $"{Startup.GoodreadsRssBaseUrl}{user.GoodreadsUserId}?currently-reading";
+            return GetReviewsFromFeed(user.Id, rss_url);
+        }
+
+        private IEnumerable<Review> GetReviewsFromFeed(string userId, string rss_url)
+        {
+            var reader = XmlReader.Create(rss_url);
+            var feed = SyndicationFeed.Load(reader);
+            var reviews = from item in feed.Items
+                          let rating = GetElementExtensionValueByOuterName(item, "user_rating")
+                          let bookId = GetElementExtensionValueByOuterName(item, "book_id")
+                          select new Review(userId)
+                          {
+                              ReviewId = $"{userId}-{bookId}",
+                              BookTitle = item.Title.Text.Trim(),
+                              ImageUrl = GetElementExtensionValueByOuterName(item, "book_large_image_url"),
+                              Author = GetElementExtensionValueByOuterName(item, "author_name"),
+                              Rating = ushort.Parse(rating),
+                              ReviewText = GetElementExtensionValueByOuterName(item, "user_review"),
+                              BookId = bookId,
+                              ReviewUrl = GetElementExtensionValueByOuterName(item, "book_id"),
+                          };
+            return reviews;
+        }
+
+        private string GetElementExtensionValueByOuterName(SyndicationItem item, string outerName)
+        {
+            if (item.ElementExtensions.All(x => x.OuterName != outerName)) return null;
+            return item.ElementExtensions.Single(x => x.OuterName == outerName).GetObject<XElement>().Value;
         }
     }
 }

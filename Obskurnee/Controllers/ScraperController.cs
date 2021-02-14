@@ -27,7 +27,7 @@ namespace Obskurnee.Controllers
         [HttpGet]
         public async Task<GoodreadsBookInfo> ScrapeUrl(string goodreadsUrl)
         {
-            var bookInfo = await _scraper.Scrape(goodreadsUrl);
+            var bookInfo = await _scraper.ScrapeBookInfo(goodreadsUrl);
             return _database.StoreBookInfo(bookInfo);
         }
     }
