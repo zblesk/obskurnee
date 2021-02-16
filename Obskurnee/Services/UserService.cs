@@ -21,6 +21,7 @@ namespace Obskurnee.Services
 
         private readonly SignInManager<Bookworm> _signInManager;
         private readonly UserManager<Bookworm> _userManager;
+        private readonly GoodreadsScraper _scraper;
 
         private static readonly SigningCredentials SigningCreds = new SigningCredentials(Startup.SecurityKey, SecurityAlgorithms.HmacSha256);
         private readonly JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
@@ -40,13 +41,15 @@ namespace Obskurnee.Services
            SignInManager<Bookworm> signInManager,
            Database database,
            ILogger<UserService> logger,
-           IMailerService mailer)
+           IMailerService mailer,
+           GoodreadsScraper scraper)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
             _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
+            _scraper = scraper ?? throw new System.ArgumentNullException(nameof(scraper));
             EnsureCacheLoaded();
         }
 
@@ -226,7 +229,19 @@ namespace Obskurnee.Services
                 throw new DatastoreException("User update succeeded, but phone number update failed.");
             }
             _logger.LogInformation("User profile for {userId} ({email}) updated.", user.Id, user.Email.Address);
+            Task.Run(() => UpdateReviews(user));
             return await GetUserByEmail(email);
+        }
+
+        public void UpdateReviews(Bookworm user)
+        {
+            _logger.LogInformation("Updating GR review from shelf RSS for {userId}", user.Id);
+            _db.CurrentlyReadings.DeleteMany(r => r.OwnerId == user.Id);
+            _db.CurrentlyReadings.InsertBulk(_scraper.GetCurrentlyReadingBooks(user));
+            foreach (var review in _scraper.GetReadBooks(user))
+            {
+                _db.Reviews.Upsert(review);
+            }
         }
     }
 }

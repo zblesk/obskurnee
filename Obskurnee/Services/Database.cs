@@ -60,6 +60,7 @@ namespace Obskurnee.Services
 
         public void Dispose()
         {
+            _db?.Checkpoint();
             _db?.Dispose();
         }
     }

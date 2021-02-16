@@ -107,7 +107,7 @@ namespace Obskurnee.Services
             return result;
         }
 
-        public async Task<IEnumerable<Review>> GetCurrentlyReadingBooks(Bookworm user)
+        public IEnumerable<Review> GetCurrentlyReadingBooks(Bookworm user)
         {
             if (string.IsNullOrWhiteSpace(user.GoodreadsUserId))
             {
@@ -115,28 +115,45 @@ namespace Obskurnee.Services
                 return Enumerable.Empty<Review>();
             }
 
-            var rss_url = $"{Startup.GoodreadsRssBaseUrl}{user.GoodreadsUserId}?currently-reading";
-            return GetReviewsFromFeed(user.Id, rss_url);
+            var rssUrl = $"{Startup.GoodreadsRssBaseUrl}{user.GoodreadsUserId}?shelf=currently-reading";
+            return GetReviewsFromFeed(user.Id, rssUrl);
         }
 
-        private IEnumerable<Review> GetReviewsFromFeed(string userId, string rss_url)
+        public IEnumerable<Review> GetReadBooks(Bookworm user)
         {
-            var reader = XmlReader.Create(rss_url);
+            if (string.IsNullOrWhiteSpace(user.GoodreadsUserId))
+            {
+                _logger.LogWarning("Triggered RSS feed fetch for user {userId}, but no Goodreads User ID is available. Exitting.", user.Id);
+                return Enumerable.Empty<Review>();
+            }
+
+            var rssUrl = $"{Startup.GoodreadsRssBaseUrl}{user.GoodreadsUserId}?shelf=read";
+            return GetReviewsFromFeed(user.Id, rssUrl);
+        }
+
+        private List<Review> GetReviewsFromFeed(string userId, string rssUrl)
+        {
+            var reader = XmlReader.Create(rssUrl);
             var feed = SyndicationFeed.Load(reader);
-            var reviews = from item in feed.Items
-                          let rating = GetElementExtensionValueByOuterName(item, "user_rating")
-                          let bookId = GetElementExtensionValueByOuterName(item, "book_id")
-                          select new Review(userId)
-                          {
-                              ReviewId = $"{userId}-{bookId}",
-                              BookTitle = item.Title.Text.Trim(),
-                              ImageUrl = GetElementExtensionValueByOuterName(item, "book_large_image_url"),
-                              Author = GetElementExtensionValueByOuterName(item, "author_name"),
-                              Rating = ushort.Parse(rating),
-                              ReviewText = GetElementExtensionValueByOuterName(item, "user_review"),
-                              BookId = bookId,
-                              ReviewUrl = GetElementExtensionValueByOuterName(item, "book_id"),
-                          };
+            var reviews = (from item in feed.Items
+                           let rating = GetElementExtensionValueByOuterName(item, "user_rating")
+                           let bookId = GetElementExtensionValueByOuterName(item, "book_id")
+                           select new Review(userId)
+                           {
+                               ReviewId = $"{userId}-{bookId}",
+                               BookTitle = item.Title.Text.Trim(),
+                               ImageUrl = GetElementExtensionValueByOuterName(item, "book_large_image_url"),
+                               Author = GetElementExtensionValueByOuterName(item, "author_name"),
+                               Rating = TryGetUshort(rating),
+                               ReviewText = GetElementExtensionValueByOuterName(item, "user_review"),
+                               BookId = bookId,
+                               ReviewUrl = GetElementExtensionValueByOuterName(item, "book_id"),
+                           })
+                           .ToList();
+            _logger.LogDebug("Loaded {count} items for user {userId} from RSS {rssUrl}",
+                reviews.Count,
+                userId,
+                rssUrl);
             return reviews;
         }
 
@@ -144,6 +161,12 @@ namespace Obskurnee.Services
         {
             if (item.ElementExtensions.All(x => x.OuterName != outerName)) return null;
             return item.ElementExtensions.Single(x => x.OuterName == outerName).GetObject<XElement>().Value;
+        }
+
+        private ushort TryGetUshort(string number)
+        {
+            ushort.TryParse(number, out ushort result);
+            return result;
         }
     }
 }
