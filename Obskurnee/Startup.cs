@@ -33,6 +33,8 @@ namespace Obskurnee
         public const string BaseUrl = "http://localhost:5000";
         public const int DefaultPasswordMinLength = 13;
         public const string PasswordGenerationChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        public const string GoodreadsRssBaseUrl = "https://www.goodreads.com/review/list_rss/";
+        public const string GoodreadsProfielUrlPrevix = "https://www.goodreads.com/user/";
 
         public Startup(IConfiguration configuration)
         {
