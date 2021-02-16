@@ -146,8 +146,8 @@ namespace Obskurnee.Services
                                Author = GetElementExtensionValueByOuterName(item, "author_name"),
                                Rating = TryGetUshort(rating),
                                ReviewText = GetElementExtensionValueByOuterName(item, "user_review"),
-                               BookId = bookId,
-                               ReviewUrl = GetElementExtensionValueByOuterName(item, "book_id"),
+                               GoodreadsBookId = bookId,
+                               ReviewUrl = item.Id,
                            })
                            .ToList();
             _logger.LogDebug("Loaded {count} items for user {userId} from RSS {rssUrl}",
