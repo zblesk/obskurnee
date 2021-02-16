@@ -46,7 +46,9 @@ namespace Obskurnee.ViewModels
 
 
         public static UserInfo From(Bookworm user, IList<Claim> claims)
-            => new()
+            => user == null 
+            ? new()
+            : new()
             {
                 UserId = user.Id,
                 Name = user.UserName,
@@ -55,8 +57,8 @@ namespace Obskurnee.ViewModels
                 AboutMe = user.AboutMe,
                 AboutMeHtml = user.RenderedAboutMe,
                 GoodreadsUrl = user.GoodreadsProfileUrl,
-                IsModerator = claims.Any(claim => claim.Type == BookclubClaims.Moderator),
-                IsAdmin = claims.Any(claim => claim.Type == BookclubClaims.Admin),
+                IsModerator = claims?.Any(claim => claim.Type == BookclubClaims.Moderator) ?? false,
+                IsAdmin = claims?.Any(claim => claim.Type == BookclubClaims.Admin) ?? false,
             };
     }
 }
