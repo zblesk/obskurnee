@@ -31,6 +31,12 @@ export default {
   text-align: center;
 }
 
+.todo-l {
+  margin: 2em;
+  color: darkred;
+  text-align: center;
+}
+
 /* variables */
 :root {
   --spacer: 20px;
