@@ -1,5 +1,7 @@
 # Obskurnee Book Club
 
+[![Build Status](https://bzzz.zble.sk/api/badges/zblesk/Obskurnee/status.svg)](https://bzzz.zble.sk/zblesk/Obskurnee)
+
 ## Installation 
 
 1. Clone repo

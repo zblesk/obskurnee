@@ -3,7 +3,7 @@ type: docker
 name: default
 
 steps:
-- name: node
+- name: node build
   image: node:8
   commands:
   - cd Obskurnee
@@ -11,7 +11,7 @@ steps:
   - npm install
   - npm run build -- --prod
 
-- name: build
+- name: dotnet build
   image: mcr.microsoft.com/dotnet/sdk:5.0
   commands:
   - dotnet publish -c ReleaseNoNode -o published
@@ -24,3 +24,6 @@ steps:
   - echo $PWD
   - cd Obskurnee
   - ls -R
+  - echo ' '
+  - echo 'src'
+  - ls -R /drone/src/published/
