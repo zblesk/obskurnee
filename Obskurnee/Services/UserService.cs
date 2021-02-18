@@ -229,7 +229,9 @@ namespace Obskurnee.Services
                 throw new DatastoreException("User update succeeded, but phone number update failed.");
             }
             _logger.LogInformation("User profile for {userId} ({email}) updated.", user.Id, user.Email.Address);
+            ReloadCache();
             Task.Run(() => UpdateReviews(user));
+
             return await GetUserByEmail(email);
         }
 
