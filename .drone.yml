@@ -21,10 +21,6 @@ steps:
 - name: seeFiles
   image: alpine
   commands:
-  - echo 'Root'
-  - ls /
-  - echo ' '
-  - echo ' '
-  - echo 'Home'
-  - ls ~
-  
+  - echo $PWD
+  - cd Obskurnee
+  - ls -R
