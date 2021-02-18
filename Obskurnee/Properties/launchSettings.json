@@ -19,7 +19,6 @@
     "Obskurnee": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "hlasovania",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
