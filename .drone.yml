@@ -9,10 +9,22 @@ steps:
   - cd Obskurnee
   - cd ClientApp
   - npm install
+  - npm run build -- --prod
 
 - name: build
   image: mcr.microsoft.com/dotnet/sdk:5.0
   commands:
-  - dotnet publish -c release -o out
+  - dotnet publish -c ReleaseNoNode -o published
   when:
     branch: master
+
+- name: seeFiles
+  image: alpine
+  commands:
+  - echo 'Root'
+  - ls /
+  - echo ' '
+  - echo ' '
+  - echo 'Home'
+  - ls ~
+  
