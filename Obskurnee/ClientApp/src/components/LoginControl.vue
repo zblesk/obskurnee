@@ -19,7 +19,7 @@
     </div>
     <div v-if="isAuthenticated" class="is-auth">
       <div class="menu-item">
-        <router-link :to="{ name: 'user', params: { email: profile.email } }">{{profile.name}}</router-link>
+        <router-link :to="{ name: 'user', params: { email: profile.email } }">Já</router-link>
       </div>
       <div class="menu-logout">
         <button class="button-logout" @click="onLogout">Odhlásit</button>
