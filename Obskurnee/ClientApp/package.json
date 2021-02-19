@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "axios": "^0.20.0-0",
-    "bootstrap": "^4.5.3",
     "core-js": "^3.7.0",
     "vue": "^3.0.5",
     "vue-loader-v16": "npm:vue-loader@^16.0.0-alpha.3",

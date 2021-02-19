@@ -72,7 +72,6 @@ body {
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  margin-top: 60px;
 }
 
 .page-title {
@@ -86,9 +85,9 @@ body {
 .button-primary,
 .button-secondary {
   border-radius: 4px;
-  font-size: 1em;
+  font-size: 0.875em;
   font-weight: bold;
-  padding: 0.625em 1.25em;
+  padding: 5px 11px;
   cursor: pointer;
   display: inline-block;
 }
