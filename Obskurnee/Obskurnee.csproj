@@ -4,11 +4,14 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Obskurnee</RootNamespace>
     <UserSecretsId>efac8292-c0d4-4e78-b2e5-6e78415a844b</UserSecretsId>
+    <Configurations>Debug;Release;ReleaseNoNode</Configurations>
   </PropertyGroup>
 
   <PropertyGroup>
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+    <Authors>zblesk</Authors>
+    <Description>Book club software!</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -52,7 +55,7 @@
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
   </Target>
 
-  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish" Condition=" '$(Configuration)' != 'ReleaseNoNode'">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
