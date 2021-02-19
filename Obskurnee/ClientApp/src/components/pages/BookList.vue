@@ -9,9 +9,7 @@
                 </div>
                 <div class="book-description">
                     <h2 class="book-order">Kniha #{{book.order}}</h2>
-                    <router-link :to="{ name: 'book', params: { bookId: book.bookId } }">
-                        <p class="book-text">{{ book.post.author }}: {{ book.post.title }}</p>
-                    </router-link>
+                    <p class="book-text">{{ book.post.author }}: {{ book.post.title }}</p>
                 </div>
             </router-link>
         </div>
