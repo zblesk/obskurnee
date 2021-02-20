@@ -1,12 +1,16 @@
 <template>
 <section>
-  <book-large-card :post="book.post" v-if="book && book.post" style="margin: auto;">
+  <book-large-card :post="book.post" v-if="book && book.post">
   </book-large-card>
-  <div>
-    <h2>sem este recenzie</h2>
-  </div>
+
+    <h2 class="todo-l">sem este recenzie</h2>
+
 </section>
 </template>
+
+<style scoped>
+
+</style>
 
 <script>
 import BookLargeCard from '../BookLargeCard.vue';
