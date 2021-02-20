@@ -85,9 +85,9 @@ body {
 .button-primary,
 .button-secondary {
   border-radius: 4px;
-  font-size: 0.875em;
+  font-size: 1em;
   font-weight: bold;
-  padding: 5px 11px;
+  padding: 0.625em 1.25em;
   cursor: pointer;
   display: inline-block;
 }
@@ -177,6 +177,13 @@ a {
 
 a:hover {
   color: var(--c-accent-darker);
+}
+
+textarea,
+input {
+  font-size: 14px;
+  padding: calc(var(--spacer) / 2);
+  outline: none;
 }
 
 </style>

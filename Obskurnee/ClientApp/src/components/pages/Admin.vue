@@ -1,37 +1,63 @@
 <template>
 <section>
-<div v-if="!isMod">Nie si mod ani admin, naco sa sem trepes?!</div>
-<div v-if="isMod">
-    <h1 id="tableLabel">Admin</h1>
-    <div>
-        <textarea placeholder="Text noticky" v-model="notice"></textarea>
-        <a @click="updateNoticeboard()" class="button">uloz</a>
+    <h1 id="tableLabel" class="page-title">Admin</h1>
+    <div v-if="!isMod" class="main">
+        <h2 class="not-mod-text">Je mi líto, sem má přístup pouze moderátor.</h2>
+        <div class="not-mod-pic">
+            <img src="../../assets/cry.jpg" alt="woman crying" />
+        </div>
     </div>
-    <div style="margin:auto;">
-        <div>
-            Novy user: 
-            <input v-model="newUserEmal" placeholder="mail" /><button @click="addUser()">Vytvor</button> <br />
-            Povedz novemu kamosovi nech pre istotu pozrie aj do spamu, ak neuvidi ziadnu spravu v inboxe.
+    
+    <div v-if="isMod" class="main">
+    
+        <div class="section">
+            <h2 class="section-title">Oznámení na hlavní stránce</h2>
+            <div class="form-field">
+                <label for="notice">Text oznámení</label>
+                <textarea v-model="notice" id="notice"></textarea>
+            </div>
+            <button @click="updateNoticeboard()" class="button-primary">Uložit</button>
         </div>
-        <div>
-            Moderatori: <span v-for="mod in mods" v-bind:key="mod.userId"><router-link :to="{ name: 'user', params: { email: mod.email } }">{{mod.name}}</router-link>, </span>
+
+        <div class="section">
+            <h2 class="section-title">Založení nového uživatele</h2>
+            <div class="form-field">
+                <label for="new-user">E-mailová adresa nového uživatele</label>
+                <input type="email" v-model="newUserEmal" id="new-user" />
+            </div>
+            <button @click="addUser()" class="button-primary">Vytvořit</button>
+            <div class="note">
+                <div class="note-pic">
+                    <img src="../../assets/lamp.svg" alt="lamp icon" />
+                </div>
+                <p class="note-text">Pro jistotu dej vědět novému čtenáři, ať zkontroluje spam, pokud nenajde registrační email v inboxu.</p>
+            </div>
         </div>
-        <div>
-            Urob moderatora:
+
+        <div class="section">
+            <h2 class="section-title">Moderátoři</h2>
+            <p>Aktuální moderátoři: <span v-for="mod in mods" v-bind:key="mod.userId"><router-link :to="{ name: 'user', params: { email: mod.email } }">{{mod.name}}</router-link>, </span></p>
+            <p>Přidej uživatele k moderátorům:</p>
+            <p class="todo">Dodělat styling tabulky, až budu mít založených víc uživatelů</p>
             <table>
                 <tr v-for="user in nonMods" v-bind:key="user.userId">
                     <td>{{ user.name }}</td>
-                    <td>{{user.email}}</td>
-                    <td><a @click="makeMod(user.email)" class="button">Urob moda</a></td>
+                    <td>{{ user.email }}</td>
+                    <td><button @click="makeMod(user.email)" class="button-primary">Přidej</button></td>
                 </tr>
             </table>
+
+            <p class="todo"><strong>Rozárka: </strong>Budeš přidávat i funkci na odebrání moderátorské funkce?</p>
         </div>
+
+        <div class="section">
+            <h2 class="section-title">Newsletter</h2>
+            <p>Uživatelé přihlášení k odběru newsletteru:</p>
+            <p class="todo">dodělat</p>
+            {{ newsletterInfo }}
+        </div>
+
     </div>
-    <div>
-        Newsletter subscribers: <br />
-        {{ newsletterInfo }}
-    </div>
-</div>
 </section>
 </template>
 
@@ -108,7 +134,81 @@ export default {
 </script>
 
 <style scoped>
-table, th, td {
-  border: 1px solid darkgreen;
-}
+
+    .main {
+        padding: var(--spacer);
+        background-color: var(--c-bckgr-primary);
+        max-width: 800px;
+        margin: 0 var(--spacer) calc(var(--spacer) * 2) var(--spacer);
+    }
+
+    @media screen and (min-width: 840px) {
+        .main {
+            margin: 0 auto var(--spacer) auto;
+        }
+    }
+
+    .not-mod-text {
+        font-size: 1.5em;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .not-mod-pic {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .not-mod img {
+        width: 100%;
+    }
+
+    .section {
+        margin-bottom: calc(2* var(--spacer));
+    }
+
+    .section-title {
+        margin-top: 0;
+        margin-bottom: 0.5em;
+    }
+
+    .form-field label {
+        display: block;
+        margin-bottom: calc(var(--spacer) / 2);
+    }
+
+    .form-field textarea {
+        width: 100%;
+        height: 15em;
+        margin-bottom: calc(var(--spacer) / 2);
+    }
+
+    .form-field input {
+        width: 100%;
+        max-width: 380px;
+        margin-bottom: calc(var(--spacer) / 2);
+    }
+
+    .note {
+        display: flex;
+        align-items: center;
+        margin-top: var(--spacer);
+        padding: 0 calc(var(--spacer) / 2);
+    }
+
+    .note-pic {
+        width: 20px;
+        flex-shrink: 0;
+    }
+
+    .note-pic img {
+        width: 100%;
+    }
+
+    .note-text {
+        font-size: 0.875em;
+        opacity: 0.8;
+        margin: 0 0 0 calc(var(--spacer) / 2);
+    }
+
 </style>
