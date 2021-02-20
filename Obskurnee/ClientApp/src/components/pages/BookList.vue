@@ -1,18 +1,8 @@
 <template>
 <section>
-    <h1 class="page-title">Přečtené knihy</h1>
+    <h1 class="page-title">Knihy</h1>
     <div class="books-grid" v-if="books">
-        <div class="book-card" v-for="book in books" v-bind:key="book.bookId">
-            <router-link :to="{ name: 'book', params: { bookId: book.bookId } }">
-                <div class="book-cover">
-                    <img :src="book.post.imageUrl" :alt="book.post.title" v-if="book.post.imageUrl">
-                </div>
-                <div class="book-description">
-                    <h2 class="book-order">Kniha #{{book.order}}</h2>
-                    <p class="book-text">{{ book.post.author }}: {{ book.post.title }}</p>
-                </div>
-            </router-link>
-        </div>
+        <book-preview v-bind:post="book.post" v-for="book in books" v-bind:key="book.bookId">Kniha {{ book.order }}</book-preview>
     </div>
 </section>
 </template>
@@ -61,7 +51,9 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import BookPreview from '../BookPreview.vue';
 export default {
+  components: { BookPreview },
 name: "BookList",
 computed: {
     ...mapState("books", ["books"]),

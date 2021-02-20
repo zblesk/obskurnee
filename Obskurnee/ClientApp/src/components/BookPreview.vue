@@ -1,11 +1,13 @@
 <template>
  <div class="card">
   <span v-if="this.$slots.default"><slot></slot></span>
-  <img :src="post.imageUrl" :alt="post.title" style="width:100%" v-if="post.imageUrl">
-  <div class="container">
-    <h4><b>{{ post.title }}</b></h4>
-    <p>{{ post.author }}</p>
-  </div>
+  <router-link :to="{ name: 'book', params: { bookId: post.bookId } }">
+    <img :src="post.imageUrl" :alt="post.title" style="width:100%" v-if="post.imageUrl">
+    <div class="container">
+      <h4><b>{{ post.title }}</b></h4>
+      <p>{{ post.author }}</p>
+    </div>
+  </router-link>
 </div> 
 </template>
 
