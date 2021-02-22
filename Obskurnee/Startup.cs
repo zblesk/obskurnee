@@ -68,6 +68,7 @@ namespace Obskurnee
             services.AddTransient<DiscussionService>();
             services.AddTransient<SettingsService>();
             services.AddTransient<NewsletterService>();
+            services.AddTransient<RecommendationService>();
 
             switch (Configuration["MailerType"])
             {
