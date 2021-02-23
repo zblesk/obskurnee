@@ -17,7 +17,7 @@
   </div>
   
   <div class="grid" v-if="books && isAuthenticated">
-    <book-preview v-for="book in books" v-bind:key="book.bookId" v-bind:post="book.post">Kniha #{{book.order}}</book-preview>
+    <book-preview v-for="book in books" v-bind:key="book.bookId" v-bind:book="book">Kniha #{{book.order}}</book-preview>
   </div>
 </section>
 </template>
@@ -43,7 +43,6 @@ export default {
     getBooks() {
         axios.get('/api/home')
             .then((response) => {
-              console.log(response.data);
               if (response.data.books.length)
               {
                 this.books = response.data.books;
