@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace Obskurnee.Services
@@ -10,7 +11,7 @@ namespace Obskurnee.Services
         public FakeMailerService(
             ILogger<FakeMailerService> logger)
         {
-            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public Task SendMail(string subject, string body, params string[] recipients)

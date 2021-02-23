@@ -28,10 +28,10 @@ namespace Obskurnee.Controllers
            UserService users,
            IMailerService mailer)
         {
-            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
-            _settings = settings ?? throw new System.ArgumentNullException(nameof(settings));
-            _users = users ?? throw new System.ArgumentNullException(nameof(users));
-            _mailer = mailer ?? throw new System.ArgumentNullException(nameof(mailer));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            _users = users ?? throw new ArgumentNullException(nameof(users));
+            _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
         }
 
         [HttpGet]

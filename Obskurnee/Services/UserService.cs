@@ -49,7 +49,7 @@ namespace Obskurnee.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
             _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
-            _scraper = scraper ?? throw new System.ArgumentNullException(nameof(scraper));
+            _scraper = scraper ?? throw new ArgumentNullException(nameof(scraper));
             EnsureCacheLoaded();
         }
 

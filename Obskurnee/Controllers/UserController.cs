@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.Services;
 using Obskurnee.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,16 +17,13 @@ namespace Obskurnee.Controllers
     {
         private readonly ILogger _logger;
         private readonly UserService _users;
-        private readonly UserManager<Bookworm> _userManager;
 
         public UserController(
            UserService users,
-           ILogger<UserController> logger,
-           UserManager<Bookworm> userManager)
+           ILogger<UserController> logger)
         {
-            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
-            _users = users ?? throw new System.ArgumentNullException(nameof(users));
-            _userManager = userManager ?? throw new System.ArgumentNullException(nameof(userManager));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _users = users ?? throw new ArgumentNullException(nameof(users));
         }
 
         [HttpGet]
