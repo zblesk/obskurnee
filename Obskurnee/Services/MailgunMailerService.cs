@@ -5,6 +5,7 @@ using Flurl;
 using Flurl.Http;
 using Flurl.Util;
 using Microsoft.Extensions.Configuration;
+using System;
 
 namespace Obskurnee.Services
 {
@@ -17,8 +18,8 @@ namespace Obskurnee.Services
             ILogger<MailgunMailerService> logger,
             IConfiguration config)
         {
-            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
-            _config = config ?? throw new System.ArgumentNullException(nameof(config));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         public async Task SendMail(string subject, string body, params string[] recipients)

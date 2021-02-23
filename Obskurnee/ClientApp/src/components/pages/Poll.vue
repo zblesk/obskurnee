@@ -5,9 +5,8 @@
   </h1>
 
   <div v-if="poll.isClosed">
-    <router-link v-if="poll.followupLink?.kind == 'Book'" :to="{ name: 'book', params: { bookId: poll.followupLink.entityId } }">
-      <book-preview :post="poll.options.find(o => o.postId == poll.results.winnerPostId)"  style="margin: auto;">Víťaz</book-preview>
-    </router-link>
+    <book-preview :book="{ bookId: poll.followupLink.entityId, post: poll.options.find(o => o.postId == poll.results.winnerPostId) }" 
+      style="margin: auto;">Víťaz</book-preview>
     <router-link v-if="poll.followupLink?.kind == 'Discussion'" :to="{ name: 'discussion', params: { discussionId: poll.followupLink.entityId } }">
       <text-post :post="poll.options.find(o => o.postId == poll.results.winnerPostId)"  style="margin: auto;">Víťaz</text-post>
     </router-link>
@@ -48,7 +47,7 @@ import TextPost from '../TextPost.vue';
 import { mapGetters,mapActions, mapState } from "vuex";
 
 export default {
-  components: { BookPost, BookPreview, TextPost },
+  components: { BookPost, TextPost, BookPreview },
   name: "Poll",
   data() {
     return {
@@ -86,7 +85,7 @@ export default {
           this.iVoted = true;
         })
         .catch(function (error) {
-          console.log('errpr', error);
+          console.log(error);
         });
     },
   },

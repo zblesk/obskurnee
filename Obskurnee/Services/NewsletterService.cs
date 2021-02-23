@@ -13,10 +13,12 @@ namespace Obskurnee.Services
         private readonly IMailerService _mailer;
         private readonly Database _db;
         private readonly UserService _userService;
+        private readonly MatrixService _matrix;
 
         public NewsletterService(
             ILogger<NewsletterService> logger,
             IMailerService mailer,
+            MatrixService matrix,
             UserService userService,
             Database db)
         {
@@ -24,6 +26,7 @@ namespace Obskurnee.Services
             _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _db = db ?? throw new ArgumentNullException(nameof(db));
+            _matrix = matrix ?? throw new ArgumentNullException(nameof(matrix));
         }
 
         public IList<string> Subscribe(string userId, string newsletterName)
@@ -59,6 +62,7 @@ namespace Obskurnee.Services
         public void SendNewsletter(string newsletterName, string subject, string body)
         {
             var subscribers = GetSubscribers(newsletterName);
+            _matrix.SendMessage($"{subject} \n{body}").Wait();
             if (subscribers.Count == 0)
             {
                 _logger.LogInformation("Not sending {newsletter} with {subject}, because there are no subscribers.", newsletterName, subject);

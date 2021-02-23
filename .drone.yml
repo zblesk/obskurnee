@@ -30,7 +30,7 @@ steps:
   image: plugins/matrix
   settings:
     homeserver: https://matrix.zble.sk
-    roomid: '#obskurnee:zble.sk'
+    roomid: '!natRBEGfTHBIwfWmtk:zble.sk'
     username:
       from_secret: matrix_username
     password:

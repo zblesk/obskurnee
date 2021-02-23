@@ -1,12 +1,12 @@
 <template>
   <div class="book-card">
-    <router-link :to="{ name: 'book', params: { bookId: post.bookId } }">
+    <router-link :to="{ name: 'book', params: { bookId: book.bookId } }">
       <div class="book-cover">
-        <img :src="post.imageUrl" :alt="post.title" v-if="post.imageUrl">
+        <img :src="book.post.imageUrl" :alt="book.post.title" v-if="book.post.imageUrl">
       </div>
       <div class="book-description">
         <h2 class="book-order" v-if="this.$slots.default"><slot></slot></h2>
-        <p class="book-text">{{ post.author }}: {{ post.title }}</p>
+        <p class="book-text">{{ book.post.author }}: {{ book.post.title }}</p>
       </div>
     </router-link>
   </div> 
@@ -15,7 +15,7 @@
 <script>
 export default {
     name: "BookPreview",
-    props: ['post']
+    props: ['book'],
 }
 </script>
 
