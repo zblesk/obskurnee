@@ -1,16 +1,16 @@
 <template>
- <div class="card">
-  <span v-if="this.$slots.default"><slot></slot></span>
-  <router-link :to="{ name: 'book', params: { bookId: post.bookId } }">
-    <img :src="post.imageUrl" :alt="post.title" style="width:100%" v-if="post.imageUrl">
-    <div class="container">
-      <h4><b>{{ post.title }}</b></h4>
-      <p>{{ post.author }}</p>
-    </div>
-  </router-link>
-</div> 
+  <div class="book-card">
+    <router-link :to="{ name: 'book', params: { bookId: post.bookId } }">
+      <div class="book-cover">
+        <img :src="post.imageUrl" :alt="post.title" v-if="post.imageUrl">
+      </div>
+      <div class="book-description">
+        <h2 class="book-order" v-if="this.$slots.default"><slot></slot></h2>
+        <p class="book-text">{{ post.author }}: {{ post.title }}</p>
+      </div>
+    </router-link>
+  </div> 
 </template>
-
 
 <script>
 export default {
@@ -20,19 +20,36 @@ export default {
 </script>
 
 <style scoped>
-.card {
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-  max-width:  220px;
-  padding: 0 1ex 0 1ex;
-}
 
-.card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
+  .book-card {
+    background-color: var(--c-bckgr-primary);
+    padding: var(--spacer);
+  }
 
-.container {
-  padding: 2px 16px;
-}
+  .book-cover img {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    max-height: 250px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .book-order {
+    font-weight: bold;
+    margin-top: var(--spacer);
+    margin-bottom: var(--spacer);
+  }
+
+  .book-order,
+  .book-text {
+    font-size: 1em;
+    text-align: center;
+  }
+
+  .book-card a {
+    text-decoration: none;
+  }
+
 </style>
 
