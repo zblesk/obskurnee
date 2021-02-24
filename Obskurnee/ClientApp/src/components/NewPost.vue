@@ -171,7 +171,7 @@ export default {
           "/api/scrape/?goodreadsUrl=" + this.newpost.url)
         .then((response) => {
           this.newpost = response.data;
-          this.newpost.text = "\n\nPopis na Goodreads: \n\n" + response.data.description;
+          this.newpost.text = "\n\n## Popis na Goodreads: \n\n" + response.data.description;
           this.fetchInProgress = false;
         })
         .catch(function (error) {
