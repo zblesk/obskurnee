@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "73aa4586-f603-4a86-aac2-81a5dca94111",
 		"name": "obskurnee-bookclub",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
@@ -12,50 +12,35 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"email\":\"janka@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
+					"raw": "{\"email\":\"ferko3@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": {
-					"raw": "{{base_url}}api/accounts/register",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"accounts",
-						"register"
-					]
-				}
+				"url": "{{base_url}}api/accounts/register"
 			},
 			"response": []
 		},
 		{
-			"name": "make admin",
+			"name": "make mod",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
-				"method": "POST",
+				"method": "GET",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"email\":\"janka@bookclub.gov\"}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": {
-					"raw": "{{base_url}}api/accounts/makeadmin",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"accounts",
-						"makeadmin"
-					]
-				}
+				"url": "{{base_url}}api/admin/makemod/dva@dfdf.xx"
 			},
 			"response": []
 		},
@@ -66,23 +51,14 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"email\":\"janka@bookclub.gov\",\"password\":\"kokokokokokokokokokokoko\"}",
+					"raw": "{\"email\":\"ferko@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": {
-					"raw": "{{base_url}}api/accounts/login",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"accounts",
-						"login"
-					]
-				}
+				"url": "{{base_url}}api/accounts/login"
 			},
 			"response": []
 		},
@@ -103,16 +79,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{base_url}}api/accounts/context",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"accounts",
-						"context"
-					]
-				}
+				"url": "{{base_url}}api/accounts/context"
 			},
 			"response": []
 		},
@@ -121,16 +88,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/discussions/",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"discussions",
-						""
-					]
-				}
+				"url": "{{base_url}}api/discussions/"
 			},
 			"response": []
 		},
@@ -139,15 +97,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/rounds",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"rounds"
-					]
-				}
+				"url": "{{base_url}}api/rounds"
 			},
 			"response": []
 		},
@@ -156,15 +106,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/books",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"books"
-					]
-				}
+				"url": "{{base_url}}api/books"
 			},
 			"response": []
 		},
@@ -173,16 +115,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/polls/1",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"polls",
-						"1"
-					]
-				}
+				"url": "{{base_url}}api/polls/1"
 			},
 			"response": []
 		},
@@ -200,15 +133,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{base_url}}api/rounds",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"rounds"
-					]
-				}
+				"url": "{{base_url}}api/rounds"
 			},
 			"response": []
 		},
@@ -220,17 +145,7 @@
 				},
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/accounts/passwordreset/janka@bookclub.gov",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"accounts",
-						"passwordreset",
-						"janka@bookclub.gov"
-					]
-				}
+				"url": "{{base_url}}api/accounts/passwordreset/janka@bookclub.gov"
 			},
 			"response": []
 		},
@@ -251,18 +166,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{base_url}}api/accounts/passwordreset/6011d40a19901d0335d46e1d/CfDJ8Id7Ea6mKDBNkxa8ptv8Et0uC%2f07rWJ0vscuPnCSMSCrzyvsN8p4PNp5voM9MJ72tz4WcM1O9nJ%2f7gRZ1JMqWRf7kkqI9iSjLcS6AFhooKzJlo5AyouCIZ6QnGJYUw7gf7WfLyicQNpiOvCvvjMRODbfw2CKtDRDVa4a%2fQlui0BmFTQDXinbMiTYwLbc0PMTT0NJTsYHQwxiy7Ub2p7V3ccv0udYuj3C81rlgPJHrFxy",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"accounts",
-						"passwordreset",
-						"6011d40a19901d0335d46e1d",
-						"CfDJ8Id7Ea6mKDBNkxa8ptv8Et0uC%2f07rWJ0vscuPnCSMSCrzyvsN8p4PNp5voM9MJ72tz4WcM1O9nJ%2f7gRZ1JMqWRf7kkqI9iSjLcS6AFhooKzJlo5AyouCIZ6QnGJYUw7gf7WfLyicQNpiOvCvvjMRODbfw2CKtDRDVa4a%2fQlui0BmFTQDXinbMiTYwLbc0PMTT0NJTsYHQwxiy7Ub2p7V3ccv0udYuj3C81rlgPJHrFxy"
-					]
-				}
+				"url": "{{base_url}}api/accounts/passwordreset/6011d40a19901d0335d46e1d/CfDJ8Id7Ea6mKDBNkxa8ptv8Et0uC%2f07rWJ0vscuPnCSMSCrzyvsN8p4PNp5voM9MJ72tz4WcM1O9nJ%2f7gRZ1JMqWRf7kkqI9iSjLcS6AFhooKzJlo5AyouCIZ6QnGJYUw7gf7WfLyicQNpiOvCvvjMRODbfw2CKtDRDVa4a%2fQlui0BmFTQDXinbMiTYwLbc0PMTT0NJTsYHQwxiy7Ub2p7V3ccv0udYuj3C81rlgPJHrFxy"
 			},
 			"response": []
 		},
@@ -271,15 +175,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/home",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"home"
-					]
-				}
+				"url": "{{base_url}}api/home"
 			},
 			"response": []
 		},
@@ -291,28 +187,103 @@
 				},
 				"method": "GET",
 				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/home",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"home"
-					]
-				}
+				"url": "{{base_url}}api/home"
+			},
+			"response": []
+		},
+		{
+			"name": "Get users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{base_url}}api/users"
+			},
+			"response": []
+		},
+		{
+			"name": "Get user by email",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{base_url}}api/users/"
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjYwMTg0Zjc2MmRlNDBjMGQxNDVkMjY3YyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJmZXJrbyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImZlcmtvQGJvb2tjbHViLmdvdiIsIkFzcE5ldC5JZGVudGl0eS5TZWN1cml0eVN0YW1wIjoiQTJMMkNERUVSMkxCS01IRE9CQlNWWkdJWElUUFdDQVYiLCJtb2RlcmF0b3IiOiJ0cnVlIiwiZXhwIjoxNjI4NjIyMDU5LCJpc3MiOiJvYnNrdXJuZWUiLCJhdWQiOiJvYnNrdXJuZWUifQ.tRJ-BX-hgtfUcpWT-K3ilKAbTlFMH8g9wINPOGw8nVE"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"email\": \"dva@sdasdasd.xx \"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{base_url}}api/admin/createuser"
+			},
+			"response": []
+		},
+		{
+			"name": "Get my newsletters",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{base_url}}api/newsletters/"
+			},
+			"response": []
+		},
+		{
+			"name": "Newsletter subscribe",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "{{base_url}}api/newsletters/ahoje1/subscribe"
+			},
+			"response": []
+		},
+		{
+			"name": "Newsletter unsubscribe",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "{{base_url}}api/newsletters/ahoj1/unsubscribe"
+			},
+			"response": []
+		},
+		{
+			"name": "Get ALL newsletters",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{base_url}}api/newsletters/all"
+			},
+			"response": []
+		},
+		{
+			"name": "Get ALL recs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{base_url}}api/recommendations"
 			},
 			"response": []
 		}
 	],
 	"auth": {
 		"type": "bearer",
-		"bearer": [
-			{
-				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjYwMDg0MjEwZTdmZDg2MGVjNmE2YWVmOCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJqYW5rYSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImphbmthQGJvb2tjbHViLmdvdiIsIkFzcE5ldC5JZGVudGl0eS5TZWN1cml0eVN0YW1wIjoiV01ZUlhZSlhIMkdaRTJEN0NIRk9VQ1RZN01TVktRQ1oiLCJtb2RlcmF0b3IiOiJ0cnVlIiwiYWRtaW4iOiJ0cnVlIiwiZXhwIjoxNjI4MDI1ODc3LCJpc3MiOiJvYnNrdXJuZWUiLCJhdWQiOiJvYnNrdXJuZWUifQ.-l6Mz0K1TgVfSLribOl2_a1KH42rO1dBx1BwlFD3f8A",
-				"type": "string"
-			}
-		]
+		"bearer": {
+			"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2MDE5Yzk4MGE2NmZiZjAwMzljNjgyOGUiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiamFua2EiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJqYW5rYUBib29rY2x1Yi5nb3YiLCJBc3BOZXQuSWRlbnRpdHkuU2VjdXJpdHlTdGFtcCI6IlhMSlo3RVBRWTdBQVlYWEhGRVhXU1VVWDNIN1VGSzRXIiwibW9kZXJhdG9yIjoidHJ1ZSIsImFkbWluIjoidHJ1ZSIsImV4cCI6MTYyODcxODcyMCwiaXNzIjoib2Jza3VybmVlIiwiYXVkIjoib2Jza3VybmVlIn0.ht4NbiIhSoVCjCFAoiIbtKSiEToMSnuaROs6pZl6uII"
+		}
 	},
 	"event": [
 		{
