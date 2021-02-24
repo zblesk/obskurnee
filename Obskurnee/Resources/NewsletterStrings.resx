@@ -125,14 +125,11 @@
   <data name="newBookBodyMarkdown" xml:space="preserve">
     <value># [{1:title} - {2:author}]({0:link})
 
-![]({4:imgUrl})
-
 &gt; {3:description}</value>
   </data>
   <data name="newBookPostBodyMarkdown" xml:space="preserve">
     <value>## {0:title} - {1:author}
 
-![obalka]({5:imgUrl})
 &gt; {2:text}
 
 _{4} strán | [link na knihu]({6:url})_
