@@ -32,11 +32,6 @@ namespace Obskurnee.Controllers
         public IList<Post> GetRecs(string userId) => _recommendations.GetRecs(userId);
 
         [HttpPost]
-        public Post AddRec()
-        {
-            // auth? 
-            // param with target book? 
-            return _recommendations.AddRec(null, User.GetUserId());
-        }
+        public Post AddRec([FromBody] Post post) => _recommendations.AddRec(post, User.GetUserId());
     }
 }

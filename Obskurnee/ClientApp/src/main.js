@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from "axios";
+import Toaster from '@meforma/vue-toaster';
 
 axios.interceptors.request.use(request => {
     if (store.state.context.jwtToken) {
@@ -14,4 +15,12 @@ axios.interceptors.request.use(request => {
 createApp(App)
   .use(router)
   .use(store)
+  .use(Toaster)
+  .mixin({
+    created(){
+      let opts = { position: "bottom-right" };
+      this.$onError = (text) => this.$toast.error(text, opts);
+      this.$onSuccess = (text) => this.$toast.success(text, opts);
+    }
+  })
   .mount('#app');
