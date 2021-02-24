@@ -129,6 +129,16 @@
 
 &gt; {3:description}</value>
   </data>
+  <data name="newBookPostBodyMarkdown" xml:space="preserve">
+    <value>## {0:title} - {1:author}
+
+![obalka]({5:imgUrl})
+&gt; {2:text}
+
+_{4} strán | [link na knihu]({6:url})_
+
+[Návrhy]({3:link})</value>
+  </data>
   <data name="newBookSubject" xml:space="preserve">
     <value>A víťazom sa stáva...</value>
   </data>
@@ -140,6 +150,9 @@ Hlasovanie [je tu]({0:link}).</value>
   <data name="newPollSubject" xml:space="preserve">
     <value>Začalo nové hlasovanie - {0:title}</value>
   </data>
+  <data name="newPostSubject" xml:space="preserve">
+    <value>{0:name} pridala nový návrh</value>
+  </data>
   <data name="newRoundBodyMarkdown" xml:space="preserve">
     <value>Pridaj svoje návrhy! **Nemáme obmedzenia na počty - čím viac, tým väčšia sranda!"**  
 
@@ -147,5 +160,12 @@ Návrhy [pridávaj tu]({0:link}).</value>
   </data>
   <data name="newRoundSubject" xml:space="preserve">
     <value>Začalo nové kolo - {0:title}</value>
+  </data>
+  <data name="newThemePostBodyMarkdown" xml:space="preserve">
+    <value>## {0:title} 
+
+&gt; {1:text}
+
+[link]({2:link})</value>
   </data>
 </root>

@@ -14,15 +14,21 @@ namespace Obskurnee.Services
         private readonly Database _db;
         private static readonly object @lock = new object();
         private readonly IStringLocalizer<Strings> _localizer;
+        private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
+        private readonly NewsletterService _newsletter;
 
         public DiscussionService(
             ILogger<DiscussionService> logger,
             Database database,
-            IStringLocalizer<Strings> localizer)
+            IStringLocalizer<Strings> localizer,
+            IStringLocalizer<NewsletterStrings> newsletterLocalizer,
+            NewsletterService newsletter)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
             _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
+            _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
+            _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
         }
 
 
@@ -48,7 +54,38 @@ namespace Obskurnee.Services
                 discussion.Posts = _db.Posts.Find(p => p.DiscussionId == discussionId).OrderBy(p => p.CreatedOn).ToList();
                 _db.Discussions.Update(discussion);
             }
+            SendNewPostNotification(discussion, post);
             return post;
+        }
+
+        private void SendNewPostNotification(Discussion discussion, Post post)
+        {
+            var link = $"{Startup.BaseUrl}/navrhy/{discussion.DiscussionId}";
+            var body = "";
+            if (discussion.Topic == Topic.Books)
+            {
+                body = _newsletterLocalizer.FormatAndRender(
+                    "newBookPostBodyMarkdown",
+                    post.Title,
+                    post.Author,
+                    post.Text.AddMarkdownQuote(),
+                    link,
+                    post.PageCount,
+                    post.ImageUrl,
+                    post.Url);
+            }
+            else if (discussion.Topic == Topic.Themes)
+            {
+                body = _newsletterLocalizer.FormatAndRender(
+                    "newThemePostBodyMarkdown",
+                    post.Title,
+                    post.Text,
+                    link);
+            }
+            _newsletter.SendNewsletter(
+                Newsletters.AllEvents,
+                _newsletterLocalizer.Format("newPostSubject", post.OwnerName),
+                body);
         }
 
         internal Discussion GetWithPosts(int discussionId) => _db.Discussions.Include(d => d.Posts).FindById(discussionId);

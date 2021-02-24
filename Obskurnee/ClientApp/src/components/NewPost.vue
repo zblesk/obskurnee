@@ -30,7 +30,26 @@
     </div>
     <div class="form-field">
       <label for="text">Komentár k návrhu (podporuje markdown)</label>
-      <textarea v-model="newpost.text" id="text" required></textarea>
+      <textarea v-model="newpost.text" id="text" required placeholder="Markdown umoznuje jednoduche formatovanie textu. Medzi zaklady patri napriklad: 
+
+# Najvacsi nadpis
+## mensi nadpis 
+
+**tucny textt** alebo _kurziva_ 
+
+- necislovany
+- zoznam
+- je 
+- jednoduchy
+
+1. cislovany
+2. tiez
+3. lahky
+
+> takto sa pise citat
+> **moze** obsahovat aj _**formatovanie**_
+
+Mozes lahko pridat aj [link](https://google.sk)"></textarea>
     </div>
     <button @click="postNewBook" class="button-primary">Pridaj</button>
   </div>

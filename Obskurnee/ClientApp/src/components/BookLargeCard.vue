@@ -4,7 +4,6 @@
       <img :src="post.imageUrl" :alt="post.title" v-if="post.imageUrl">
     </div>
     <h1 class="title">{{ post.author }}: {{ post.title }}</h1>
-    <h2 class="heading">Prvotní návrh:</h2>
     <p class="summary" v-html="post.renderedText"></p>
   </div>
 </template>

@@ -58,10 +58,14 @@ namespace Obskurnee.Services
                                 grouping => grouping.Select(async ns => await _userService.GetUserById(ns.UserId))
                                                     .Select(task => task.Result));
 
-        public void SendNewsletter(string newsletterName, string subject, string body)
+        public void SendNewsletter(string newsletterName, string subject, string body, bool forwardSubjectToMatrix = true)
         {
             var subscribers = GetSubscribers(newsletterName);
-            _matrix.SendMessage($"{subject} \n{body}").Wait();
+            _matrix.SendMessage(
+                (forwardSubjectToMatrix 
+                ? $"# {subject} \n".RenderMarkdown()
+                : "")
+                + body).Wait();
             if (subscribers.Count == 0)
             {
                 _logger.LogInformation("Not sending {newsletter} with {subject}, because there are no subscribers.", newsletterName, subject);
