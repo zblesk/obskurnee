@@ -16,7 +16,8 @@
       <div v-if="fetchInProgress" class="alert">Kamo počkaj, LOADUJEM</div>
     </div>
     <div class="form-field">
-      <label for="name">Název knihy nebo tématu</label>
+      <label for="name" v-if="mode == 'Books'">Název knihy</label>
+      <label for="name" v-if="mode != 'Books'">Název tématu</label>
       <input v-model="newpost.title" id="name" required />
     </div>
     <div class="form-field" v-if="mode == 'Books'">
