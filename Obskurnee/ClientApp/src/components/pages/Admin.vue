@@ -94,7 +94,7 @@ export default {
             axios.post("/api/admin/noticeboard", { text: this.notice })
             .then(() => 
                 {
-                    console.log("updated");
+                    this.$onSuccess(`Aktualizovane`);
                 })
             .catch(err => console.log(err));
             
@@ -105,6 +105,7 @@ export default {
             .then(() => 
                 {
                     this.getUsers();
+                    this.$onSuccess(`Pouzivatel vytvoreny`);
                 })
             .catch(err => console.log(err));
         },
@@ -113,7 +114,7 @@ export default {
             axios.post("/api/admin/makemod/" + email)
             .then(() => 
                 {
-                    console.log("succ ess");
+                    this.$onSuccess(`${email} povyseny na moderatora`);
                     this.getUsers();
                 })
             .catch(err => console.log(err));
