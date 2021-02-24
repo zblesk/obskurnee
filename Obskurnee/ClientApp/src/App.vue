@@ -87,6 +87,7 @@ body {
   border-radius: 4px;
   font-size: 1em;
   font-weight: bold;
+  text-decoration: none;
   padding: 0.625em 1.25em;
   cursor: pointer;
   display: inline-block;

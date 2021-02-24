@@ -1,15 +1,17 @@
 <template>
 <div>
-  <h1 id="tableLabel">{{ discussion.title }}<small v-if="discussion.isClosed">Uzavreté</small></h1>
-  <p v-html="discussion.renderedDescription"></p>
-  <div class="form" v-if="!discussion.isClosed">
-    <new-post :mode="discussion.topic" :discussionId="discussion.discussionId"></new-post>
-    <div></div>
-    <button @click="closeDiscussion" v-if="isMod && discussion.posts?.length">UZAVRI diskusiu a vytvor hlasovanie</button>
-  </div>
+  <h1 id="tableLabel" class="page-title">{{ discussion.title }}<span class="disc-closed" v-if="discussion.isClosed">&nbsp;Uzavreté</span></h1>
+  <div class="page">
+    <p v-html="discussion.renderedDescription" class="disc-desc"></p>
+    <div class="form" v-if="!discussion.isClosed">
+      <new-post :mode="discussion.topic" :discussionId="discussion.discussionId"></new-post>
+      <div></div>
+    </div>
+    <button @click="closeDiscussion" v-if="isMod && discussion.posts?.length" class="button-primary">Uzavri diskusiu a vytvor hlasovanie</button>
 
-  <div class="form" v-if="discussion.pollId">
-    <router-link :to="{ name: 'poll', params: { pollId: discussion.pollId } }" class="nav-item nav-link" style="color: orange;">Choď na hlasovanie</router-link>
+    <div class="form" v-if="discussion.pollId">
+      <router-link :to="{ name: 'poll', params: { pollId: discussion.pollId } }" class="button-primary">Choď na hlasovanie</router-link>
+    </div>
   </div>
 
   <div class="grid">
@@ -62,38 +64,36 @@ export default {
 };
 </script>
 
-<style>
-html {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
+<style scoped>
+  .disc-closed {
+    font-size: 0.65em;
+    color: var(--c-accent);
+    text-transform: uppercase;
+    vertical-align: super;
+  }
 
-*,
-:after,
-:before {
-  -webkit-box-sizing: inherit;
-  box-sizing: inherit;
-}
+  .disc-desc {
+    font-size: 1.2em;
+    margin-bottom: var(--spacer);
+  }
 
-body {
-  margin: 0;
-  background-color: whitesmoke;
-  font-family: "Raleway", sans-serif;
-}
+  .page {
+    max-width: 800px;
+    background-color: var(--c-bckgr-primary);
+    margin: var(--spacer);
+    padding: calc(2* var(--spacer));
+  }
 
-.title {
-  text-align: center;
-}
+  @media screen and (min-width: 840px) {
+    .page {
+      margin: var(--spacer) auto;
+    }
+  }
 
 
-.form {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 400px));
-  gap: 10px;
-  margin: 0;
-  background-color: gray;
-  font-family: "Raleway", sans-serif;
-}
+  .form {
+    margin-bottom: var(--spacer);
+  }
 
 
 .grid {
