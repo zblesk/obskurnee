@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.ViewModels;
 using System;
@@ -13,19 +14,19 @@ namespace Obskurnee.Services
         private readonly ILogger<PollService> _logger;
         private readonly Database _db;
         private readonly UserService _users;
+        private readonly IStringLocalizer<Strings> _localizer;
         private readonly object @lock = new object();
-        private readonly BookService _bookService;
 
         public PollService(
             ILogger<PollService> logger,
             Database database,
-            BookService bookService,
-            UserService users)
+            UserService users,
+            IStringLocalizer<Strings> localizer)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
             _users = users ?? throw new ArgumentNullException(nameof(users));
-            this._bookService = bookService ?? throw new ArgumentNullException(nameof(bookService));
+            _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
         }
 
         public IEnumerable<Poll> GetAll()
@@ -61,7 +62,7 @@ namespace Obskurnee.Services
             Trace.Assert(poll != null);
             if (poll.IsClosed)
             {
-                throw new PermissionException("Hlasovanie uz skoncilo!");
+                throw new PermissionException(_localizer["votingClosed"]);
             }
             _db.Votes.Upsert(vote);
 

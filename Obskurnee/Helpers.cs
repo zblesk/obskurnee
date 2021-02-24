@@ -1,4 +1,5 @@
 ﻿using Markdig;
+using Microsoft.Extensions.Localization;
 using Obskurnee.Models;
 using System.Security.Claims;
 
@@ -22,5 +23,12 @@ namespace Obskurnee
         public static string GetUserId(this ClaimsPrincipal userClaims) => userClaims.FindFirst(BookclubClaims.UserId).Value;
         
         public static string RenderMarkdown(this string md) => string.IsNullOrWhiteSpace(md) ? "" : Markdown.ToHtml(md, _mdPipeline);
+
+        public static string Format(this IStringLocalizer localizer, string name, params object[] args)
+            => string.Format(localizer[name], args);
+
+        public static string FormatAndRender(this IStringLocalizer localizer, string name, params object[] args)
+            => localizer.Format(name, args)
+                .RenderMarkdown();
     }
 }

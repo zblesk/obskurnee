@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.ViewModels;
 using System;
@@ -14,17 +15,23 @@ namespace Obskurnee.Services
         private readonly object @lock = new object();
         private readonly BookService _bookService;
         private readonly NewsletterService _newsletter;
+        private readonly IStringLocalizer<Strings> _localizer;
+        private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
 
         public RoundManagerService(
             ILogger<RoundManagerService> logger,
             Database database,
             BookService bookService,
-            NewsletterService newsletter)
+            NewsletterService newsletter,
+            IStringLocalizer<Strings> localizer,
+            IStringLocalizer<NewsletterStrings> newsletterLocalizer)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
             _bookService = bookService ?? throw new ArgumentNullException(nameof(bookService));
             _newsletter = newsletter;
+            _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
+            _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
         }
 
         public IList<Round> AllRounds() => _db.Rounds.Query().OrderByDescending(r => r.CreatedOn).ToList();
@@ -46,13 +53,13 @@ namespace Obskurnee.Services
             switch (topic)
             {
                 case Topic.Books:
-                    discussion.Title = $"{title} - návrhy kníh";
+                    discussion.Title = _localizer.Format("bookDiscussionTitle", title);
                     discussion.RoundId = round.RoundId;
                     _db.Discussions.Insert(discussion);
                     round.BookDiscussionId = discussion.DiscussionId;
                     break;
                 case Topic.Themes:
-                    discussion.Title = $"{title} - návrhy tém";
+                    discussion.Title = _localizer.Format("topicDiscussionTitle", title);
                     discussion.RoundId = round.RoundId;
                     _db.Discussions.Insert(discussion);
                     round.ThemeDiscussionId = discussion.DiscussionId;
@@ -69,11 +76,11 @@ namespace Obskurnee.Services
             var discussion = _db.Discussions.FindById(discussionId);
             if (discussion.IsClosed)
             {
-                throw new PermissionException("Diskusia uz bola uzavreta!");
+                throw new PermissionException(_localizer["discussionClosed"]);
             }
             if (discussion.Posts.Count < 1)
             {
-                throw new PermissionException("Musi byt aspon jeden navrh!");
+                throw new PermissionException(_localizer["atLeastOneProposalRequired"]);
             }
             var round = _db.Rounds.FindById(discussion.RoundId);
             lock (@lock)
@@ -87,7 +94,7 @@ namespace Obskurnee.Services
                 var poll = new Poll(currentUserId)
                 {
                     DiscussionId = discussion.DiscussionId,
-                    Title = discussion.Title + " - hlasovanie",
+                    Title = _localizer.Format("pollTitle", discussion.Title),
                     Options = posts,
                     Topic = discussion.Topic,
                     RoundId = round.RoundId,
@@ -147,7 +154,7 @@ namespace Obskurnee.Services
             {
                 RoundId = round.RoundId,
                 Topic = Topic.Books,
-                Title = $"{round.Title} - návrhy kníh",
+                Title = _localizer.Format("bookDiscussionTitle", round.Title),
                 Description = $"**{winnerPost.Title}** - {winnerPost.Text}",
             };
             _db.Discussions.Insert(bookDiscussion);
@@ -159,8 +166,11 @@ namespace Obskurnee.Services
             var link = $"{Startup.BaseUrl}/navrhy/{discussion.DiscussionId}";
             _newsletter.SendNewsletter(
                 Newsletters.BasicEvents,
-                $"Začalo nové kolo - {discussion.Title}!",
-                $"Pridaj svoje! Cim viac, tym vacsia knizna sranda! <a href='{link}'>{link}</a>");
+                _newsletterLocalizer.Format("newRoundSubject", discussion.Title),
+                _newsletterLocalizer.FormatAndRender("newRoundBodyMarkdown", link)
+                    + (string.IsNullOrWhiteSpace(discussion.Description)
+                        ? ""
+                        : _newsletterLocalizer.FormatAndRender("additionalDescriptionMarkdown", discussion.Description)));
         }
 
         private void SendNewPollNotification(Poll poll)
@@ -168,8 +178,8 @@ namespace Obskurnee.Services
             var link = $"{Startup.BaseUrl}/hlasovania/{poll.PollId}";
             _newsletter.SendNewsletter(
                 Newsletters.BasicEvents,
-                $"Začalo nové hlasovanie - {poll.Title}!",
-                $"Pod hlasovat pls! <a href='{link}'>{link}</a>");
+                _newsletterLocalizer.Format("newPollSubject", poll.Title),
+                _newsletterLocalizer.FormatAndRender("newPollBodyMarkdown", link));
         }
 
         private void SendNewBookNotification(RoundUpdateResults result)
@@ -177,10 +187,13 @@ namespace Obskurnee.Services
             var link = $"{Startup.BaseUrl}/knihy/{result.Book.BookId}";
             _newsletter.SendNewsletter(
                 Newsletters.BasicEvents,
-                $"A víťazom sa stáva...",
-                @$"<h1>{result.Book.Post.Title} - {result.Book.Post.Author}!
-
-<a href='{link}'>{link}</a>");
+                _newsletterLocalizer["newBookSubject"],
+                _newsletterLocalizer.FormatAndRender("newBookBodyMarkdown", 
+                    link, 
+                    result.Book.Post.Title,
+                    result.Book.Post.Author,
+                    result.Book.Post.Text,
+                    result.Book.Post.ImageUrl));
         }
     }
 }

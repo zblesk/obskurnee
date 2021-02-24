@@ -58,7 +58,6 @@ namespace Obskurnee.Services
                                 grouping => grouping.Select(async ns => await _userService.GetUserById(ns.UserId))
                                                     .Select(task => task.Result));
 
-
         public void SendNewsletter(string newsletterName, string subject, string body)
         {
             var subscribers = GetSubscribers(newsletterName);

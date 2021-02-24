@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
+using Microsoft.Extensions.Localization;
 
 namespace Obskurnee.Controllers
 {
@@ -26,7 +27,7 @@ namespace Obskurnee.Controllers
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _polls = polls ?? throw new ArgumentNullException(nameof(polls));
-            this._roundManager = roundManager ?? throw new ArgumentNullException(nameof(roundManager));
+            _roundManager = roundManager ?? throw new ArgumentNullException(nameof(roundManager));
         }
 
         [HttpGet]

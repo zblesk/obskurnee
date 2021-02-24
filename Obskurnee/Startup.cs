@@ -19,6 +19,8 @@ using System.Threading.Tasks;
 using VueCliMiddleware;
 using System.Text.Json.Serialization;
 using System.Configuration;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace Obskurnee
 {
@@ -35,6 +37,7 @@ namespace Obskurnee
         public const string PasswordGenerationChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         public const string GoodreadsRssBaseUrl = "https://www.goodreads.com/review/list_rss/";
         public const string GoodreadsProfielUrlPrevix = "https://www.goodreads.com/user/";
+        public const string GlobalCulture = "sk";
 
         public Startup(IConfiguration configuration)
         {
@@ -141,34 +144,53 @@ namespace Obskurnee
                 cfg.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 cfg.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                            .AddJwtBearer(options =>
-                            {
-                                options.TokenValidationParameters = new TokenValidationParameters
-                                {
-                                    LifetimeValidator = (before, expires, token, param) =>
-                                    {
-                                        return expires > DateTime.UtcNow;
-                                    },
-                                    ValidateAudience = false,
-                                    ValidateIssuer = false,
-                                    ValidateActor = false,
-                                    ValidateLifetime = true,
-                                    IssuerSigningKey = SecurityKey,
-                                };
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        LifetimeValidator = (before, expires, token, param) =>
+                        {
+                            return expires > DateTime.UtcNow;
+                        },
+                        ValidateAudience = false,
+                        ValidateIssuer = false,
+                        ValidateActor = false,
+                        ValidateLifetime = true,
+                        IssuerSigningKey = SecurityKey,
+                    };
                     // The JwtBearer scheme knows how to extract the token from the Authorization header
                     // but we will need to manually extract it from the query string in the case of requests to the hub
                     options.Events = new JwtBearerEvents
-                                {
-                                    OnMessageReceived = ctx =>
-                                    {
-                                        if (ctx.Request.Query.ContainsKey("access_token"))
-                                        {
-                                            ctx.Token = ctx.Request.Query["access_token"];
-                                        }
-                                        return Task.CompletedTask;
-                                    }
-                                };
-                            });
+                    {
+                        OnMessageReceived = ctx =>
+                        {
+                            if (ctx.Request.Query.ContainsKey("access_token"))
+                            {
+                                ctx.Token = ctx.Request.Query["access_token"];
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.Configure<RequestLocalizationOptions>(
+                options =>
+                {
+                    var supportedCultures = new[]
+                    {
+                        new CultureInfo(GlobalCulture)
+                    };
+
+                    options.DefaultRequestCulture = new RequestCulture(culture: GlobalCulture, uiCulture: GlobalCulture);
+                    options.SupportedCultures = supportedCultures;
+                    options.SupportedUICultures = supportedCultures;
+
+                    options.AddInitialRequestCultureProvider(new CustomRequestCultureProvider(async context =>
+                    {
+                        return new ProviderCultureResult(GlobalCulture);
+                    }));
+                });
 
             services.AddIdentityCore<Bookworm>(options =>
             {

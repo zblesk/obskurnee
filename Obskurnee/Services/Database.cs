@@ -2,6 +2,7 @@
 using LiteDB;
 using Obskurnee.Models;
 using System;
+using System.IO;
 
 namespace Obskurnee.Services
 {
@@ -28,7 +29,7 @@ namespace Obskurnee.Services
         public Database(Serilog.ILogger logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _db = new LiteDatabase(@"data\bookclub.db");
+            _db = new LiteDatabase(Path.Combine(Startup.DataFolder, "bookclub.db"));
             _db.CheckpointSize = 1;
             Discussions = _db.GetCollection<Discussion>("discussions");
             Posts = _db.GetCollection<Post>("posts");

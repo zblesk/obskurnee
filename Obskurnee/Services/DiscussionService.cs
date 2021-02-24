@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,16 @@ namespace Obskurnee.Services
         private readonly ILogger<DiscussionService> _logger;
         private readonly Database _db;
         private static readonly object @lock = new object();
+        private readonly IStringLocalizer<Strings> _localizer;
 
         public DiscussionService(
             ILogger<DiscussionService> logger,
-            Database database)
+            Database database,
+            IStringLocalizer<Strings> localizer)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
+            _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
         }
 
 
@@ -33,7 +37,7 @@ namespace Obskurnee.Services
             var discussion = _db.Discussions.FindById(discussionId);
             if (discussion.IsClosed)
             {
-                throw new Exception("Diskusia uz bola uzavreta!");
+                throw new Exception(_localizer["discussionClosed"]);
             }
             post.PostId = 0; //ensure it wasn't sent from the client
             post.DiscussionId = discussionId;
