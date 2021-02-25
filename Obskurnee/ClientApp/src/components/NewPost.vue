@@ -15,6 +15,9 @@
       <input v-model="newpost.url" placeholder="https://www.goodreads.com/book..." @change="linkChange" id="grlink" />
       <div v-if="fetchInProgress" class="alert">Kamo počkaj, LOADUJEM</div>
     </div>
+    <div class="cover-mobile">
+      <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />
+    </div>
     <div class="form-field">
       <label for="name" v-if="mode == 'Books'">Název knihy</label>
       <label for="name" v-if="mode != 'Books'">Název tématu</label>
@@ -58,12 +61,18 @@ Mozes lahko pridat aj [link](https://google.sk)"></textarea>
 
 <style scoped>
 
-  .cover {
-    max-width: 250px;
+  .cover-mobile {
+    max-width: 240px;
     margin: 0 auto var(--spacer) auto;
   }
 
-  .cover img {
+  .cover {
+    max-width: 240px;
+    display: none;
+  }
+
+  .cover img,
+  .cover-mobile img {
     width: 100%;
   }
 
@@ -77,7 +86,12 @@ Mozes lahko pridat aj [link](https://google.sk)"></textarea>
       flex-grow: 1;
     }
 
+    .cover-mobile {
+      display: none;
+    }
+
     .cover {
+      display: block;
       margin: 0 0 0 var(--spacer);
     }
   }

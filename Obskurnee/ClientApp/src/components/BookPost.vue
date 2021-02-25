@@ -1,10 +1,14 @@
 <template>
     <div  class="book">
-      <div class="book__cover" v-if="post.imageUrl"><img :src="post.imageUrl" :alt="post.title"></div>
+      <div class="book__cover" v-if="post.imageUrl">
+        <a :href="post.url" class="book__link">
+          <img :src="post.imageUrl" :alt="post.title">
+        </a>
+      </div>
       <a :href="post.url" class="book__link"><h2 class="book__title">{{ post.title }}</h2></a>
-      <p class="book__pages" v-if="post.pageCount"><em>{{ post.pageCount }} strán</em></p>
-      <p><em>Navrhla {{ post.ownerName }}</em></p>
-      <p class="book__pitch" v-html="post.renderedText"> </p>
+      <p class="book__pages" v-if="post.pageCount">{{ post.pageCount }} strán</p>
+      <p class="book__owner">Navrhl(a) {{ post.ownerName }}</p>
+      <div class="book__pitch" v-html="post.renderedText"> </div>
     </div>
 </template>
 
@@ -19,78 +23,69 @@
 
 <style scoped>
 
-*, :after, :before {
-  -webkit-box-sizing: inherit;
-          box-sizing: inherit;
-}
-
-body {
-  margin: 0;
-  background-color: whitesmoke;
-  font-family: 'Raleway', sans-serif;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 450px));
-  gap: 20px;
-}
-
-.book {
-  padding: 15px;
-  background-color: white;
-}
-
-.book__cover {
-  width: 100%;
-  max-width: 150px;
-  margin: 0 auto;
-}
-
-@media screen and (min-width: 400px) {
-  .book__cover {
-    float: left;
-    margin: 0 15px 15px 0;
+  .book {
+    padding: var(--spacer);
+    background-color: var(--c-bckgr-primary);
   }
-}
 
-.book__cover img {
-  width: 150px;
-  height: auto;
-}
+  .book__cover {
+    width: 100%;
+    max-width: 150px;
+    margin: 0 auto;
+  }
 
-.book__link {
-  text-decoration: none;
-}
+  @media screen and (min-width: 400px) {
+    .book__cover {
+      float: left;
+      margin: 0 var(--spacer) var(--spacer) 0;
+    }
+  }
 
-.book__title {
-  font-size: 20px;
-}
+  .book__cover img {
+    width: 100%;
+  }
 
-.book__pitch,
-.book__pages {
-  line-height: 1.5;
-}
+  .book__link {
+    text-decoration: none;
+  }
 
-.book__grtitle {
-  font-size: 16px;
-}
+  .book__title {
+    font-size: 1.25em;
+    color: var(--c-accent);
+    margin: var(--spacer) 0 calc(var(--spacer)/2) 0;
+  }
 
-.book__grblurb {
-  font-size: 14px;
-  line-height: 1.5;
-}
+  @media screen and (min-width: 400px) {
+    .book__title {
+      margin-top: 0;
+    }
+  }
 
-.book__quote {
-  font-size: 14px;
-  font-style: italic;
-}
+  .book__pages {
+    margin-bottom: calc(var(--spacer) / 2);
+    font-size: 0.875em;
+  }
 
-#HCB_comment_box {
-  max-width: 800px;
-  width: 100%;
-  margin: 30px auto;
-  padding-left: 30px;
-  padding-right: 30px;
-}
+  .book__owner {
+    margin-bottom: var(--spacer);
+    font-size: 0.875em;
+  }
+
+</style>
+
+<style>
+
+  .book__pitch {
+    line-height: 1.5;
+  }
+
+  .book__pitch p:last-child {
+    margin-bottom: 0;
+  }
+
+  .book__pitch h2 {
+    font-size: 1em;
+    margin: 0 0 0.5em 0;
+  }
+
 </style>

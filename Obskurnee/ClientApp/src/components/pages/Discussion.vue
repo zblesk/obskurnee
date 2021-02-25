@@ -7,7 +7,7 @@
       <new-post :mode="discussion.topic" :discussionId="discussion.discussionId"></new-post>
       <div></div>
     </div>
-    <button @click="closeDiscussion" v-if="isMod && discussion.posts?.length" class="button-primary">Uzavri diskusiu a vytvor hlasovanie</button>
+    <button @click="closeDiscussion" v-if="isMod && discussion.posts?.length && !discussion.isClosed" class="button-primary">Uzavri diskusiu a vytvor hlasovanie</button>
 
     <div class="form" v-if="discussion.pollId">
       <router-link :to="{ name: 'poll', params: { pollId: discussion.pollId } }" class="button-primary">Choď na hlasovanie</router-link>
@@ -96,70 +96,12 @@ export default {
   }
 
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 450px));
-  gap: 20px;
-  margin: 0;
-  background-color: whitesmoke;
-  font-family: "Raleway", sans-serif;
-}
-
-.book {
-  padding: 15px;
-  background-color: white;
-}
-
-.book__cover {
-  width: 100%;
-  max-width: 150px;
-  margin: 0 auto;
-}
-
-@media screen and (min-width: 400px) {
-  .book__cover {
-    float: left;
-    margin: 0 15px 15px 0;
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 450px));
+    gap: var(--spacer);
+    margin: 0;
+    padding: var(--spacer);
   }
-}
 
-.book__cover img {
-  width: 150px;
-  height: auto;
-}
-
-.book__link {
-  text-decoration: none;
-}
-
-.book__title {
-  font-size: 20px;
-}
-
-.book__pitch,
-.book__pages {
-  line-height: 1.5;
-}
-
-.book__grtitle {
-  font-size: 16px;
-}
-
-.book__grblurb {
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.book__quote {
-  font-size: 14px;
-  font-style: italic;
-}
-
-#HCB_comment_box {
-  max-width: 800px;
-  width: 100%;
-  margin: 30px auto;
-  padding-left: 30px;
-  padding-right: 30px;
-}
 </style>
