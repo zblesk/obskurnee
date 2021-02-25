@@ -185,15 +185,18 @@ namespace Obskurnee.Services
         private void SendNewBookNotification(RoundUpdateResults result)
         {
             var link = $"{Startup.BaseUrl}/knihy/{result.Book.BookId}";
+            var post = _db.Posts.FindById(result.Book.Post.PostId);
             _newsletter.SendNewsletter(
                 Newsletters.BasicEvents,
                 _newsletterLocalizer["newBookSubject"],
-                _newsletterLocalizer.FormatAndRender("newBookBodyMarkdown", 
-                    link, 
-                    result.Book.Post.Title,
-                    result.Book.Post.Author,
-                    result.Book.Post.Text,
-                    result.Book.Post.ImageUrl));
+                _newsletterLocalizer.FormatAndRender("newBookVotedBodyMarkdown", 
+                    link,
+                    post.Title,
+                    post.Author,
+                    post.Text.AddMarkdownQuote(),
+                    post.PageCount,
+                    post.OwnerName,
+                    post.Url));
         }
     }
 }

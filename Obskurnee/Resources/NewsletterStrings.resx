@@ -122,22 +122,24 @@
 
 &gt; {0:description}</value>
   </data>
-  <data name="newBookBodyMarkdown" xml:space="preserve">
-    <value># [{1:title} - {2:author}]({0:link})
-
-&gt; {3:description}</value>
-  </data>
   <data name="newBookPostBodyMarkdown" xml:space="preserve">
     <value>## {0:title} - {1:author}
 
 &gt; {2:text}
 
-_{4} strán | [link na knihu]({6:url})_
+_{4} strán | [link na GR]({6:url})_
 
 [Návrhy]({3:link})</value>
   </data>
   <data name="newBookSubject" xml:space="preserve">
     <value>A víťazom sa stáva...</value>
+  </data>
+  <data name="newBookVotedBodyMarkdown" xml:space="preserve">
+    <value># [{1:title} - {2:author}]({0:link})
+
+&gt; {3:description}
+
+_{4} strán | [link na GR]({6:url}) | navrhla {5:suggestedby}_</value>
   </data>
   <data name="newPollBodyMarkdown" xml:space="preserve">
     <value>Začalo nové hlasovanie! **Môžeš hlasovať za ľubovoľný počet možností, pokojne aj všetky.**
@@ -149,6 +151,18 @@ Hlasovanie [je tu]({0:link}).</value>
   </data>
   <data name="newPostSubject" xml:space="preserve">
     <value>{0:name} pridala nový návrh</value>
+  </data>
+  <data name="newRecBodyMarkdown" xml:space="preserve">
+    <value>## {0:title} - {1:author}
+
+&gt; {2:text}
+
+_{3} strán | [link na GR]({4:url})_
+
+[Odporúčania]({5:link})</value>
+  </data>
+  <data name="newRecSubject" xml:space="preserve">
+    <value>{0:name} odporučila knihu</value>
   </data>
   <data name="newRoundBodyMarkdown" xml:space="preserve">
     <value>Pridaj svoje návrhy! **Nemáme obmedzenia na počty - čím viac, tým väčšia sranda!"**  

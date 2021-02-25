@@ -4,7 +4,7 @@
   <div class="page">
     <p v-html="discussion.renderedDescription" class="disc-desc"></p>
     <div class="form" v-if="!discussion.isClosed">
-      <new-post :mode="discussion.topic" :discussionId="discussion.discussionId"></new-post>
+      <new-post :mode="discussion.topic" @new-post="onNewPost"></new-post>
       <div></div>
     </div>
     <button @click="closeDiscussion" v-if="isMod && discussion.posts?.length && !discussion.isClosed" class="button-primary">Uzavri diskusiu a vytvor hlasovanie</button>
@@ -35,14 +35,14 @@ import NewPost from '../NewPost.vue';
 
 export default {
   name: "Discussion",
- components: { BookPost, NewPost },
+  components: { BookPost, NewPost },
   computed: {
     ...mapGetters("context", ["isMod"]),
     ...mapState("discussions", ["discussions"]),
     discussion: function () { return this.discussions.find(d => d.discussionId == this.$route.params.discussionId) ?? { posts: [] }; },
   },
   methods: {
-    ...mapActions("discussions", ["getDiscussionData"]),
+    ...mapActions("discussions", ["getDiscussionData", "newPost"]),
     closeDiscussion() 
     {
         axios.post(
@@ -56,7 +56,11 @@ export default {
         .catch(function (error) {
           alert(error);
         });
-    }
+    },
+    onNewPost(post)
+    {
+      this.newPost({ discussionId: this.discussion.discussionId, newPost: post });
+    },
   },
   mounted() {
     this.getDiscussionData(this.$route.params.discussionId);//.then(r => console.log(r));

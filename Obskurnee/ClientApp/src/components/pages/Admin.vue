@@ -48,6 +48,7 @@
             </table>
 
             <p class="todo"><strong>Rozárka: </strong>Budeš přidávat i funkci na odebrání moderátorské funkce?</p>
+            <p class="todo-l">Zatim ne</p>
         </div>
 
         <div class="section">
@@ -94,7 +95,7 @@ export default {
             axios.post("/api/admin/noticeboard", { text: this.notice })
             .then(() => 
                 {
-                    this.$onSuccess(`Aktualizovane`);
+                    this.$notifySuccess(`Aktualizovane`);
                 })
             .catch(err => console.log(err));
             
@@ -105,7 +106,7 @@ export default {
             .then(() => 
                 {
                     this.getUsers();
-                    this.$onSuccess(`Pouzivatel vytvoreny`);
+                    this.$notifySuccess(`Pouzivatel vytvoreny`);
                 })
             .catch(err => console.log(err));
         },
@@ -114,7 +115,7 @@ export default {
             axios.post("/api/admin/makemod/" + email)
             .then(() => 
                 {
-                    this.$onSuccess(`${email} povyseny na moderatora`);
+                    this.$notifySuccess(`${email} povyseny na moderatora`);
                     this.getUsers();
                 })
             .catch(err => console.log(err));

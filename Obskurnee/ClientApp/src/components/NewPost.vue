@@ -4,7 +4,7 @@
     <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />
   </div>
   <div class="form-text">
-    <div v-if="mode == 'Books'" class="form-field">
+    <div v-if="mode != 'Themes'" class="form-field">
       <label for="grlink">Odkaz na Goodreads</label>
       <div class="note">
         <div class="note-pic">
@@ -19,15 +19,15 @@
       <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />
     </div>
     <div class="form-field">
-      <label for="name" v-if="mode == 'Books'">Název knihy</label>
-      <label for="name" v-if="mode != 'Books'">Název tématu</label>
+      <label for="name" v-if="mode == 'Books' || mode == 'Recommendations'">Název knihy</label>
+      <label for="name" v-if="mode == 'Themes'">Název tématu</label>
       <input v-model="newpost.title" id="name" required />
     </div>
-    <div class="form-field" v-if="mode == 'Books'">
+    <div class="form-field" v-if="mode != 'Themes'">
       <label for="author">Jméno autora</label>
       <input v-model="newpost.author" id="autor" />
     </div>
-    <div class="form-field" v-if="mode == 'Books'">
+    <div class="form-field" v-if="mode != 'Themes'">
       <label for="pages">Počet stran</label>
       <input v-model="newpost.pageCount" id="pages" />
     </div>
@@ -54,7 +54,7 @@
 
 Mozes lahko pridat aj [link](https://google.sk)"></textarea>
     </div>
-    <button @click="postNewBook" class="button-primary">Pridaj</button>
+    <button @click="addPost" class="button-primary">Pridaj</button>
   </div>
 </div>
 </template>
@@ -157,10 +157,10 @@ Mozes lahko pridat aj [link](https://google.sk)"></textarea>
 
 <script>
 import axios from "axios";
-import { mapActions } from "vuex";
 export default {
   name: "BookPost",
-  props: ['mode', "discussionId"],
+  props: ['mode'],
+  emits: ['new-post'],
   data() {
     return {
       newpost: {},
@@ -168,10 +168,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions("discussions", ["newPost"]),
-    postNewBook() {
-        this.newPost({ discussionId: this.discussionId, newPost: this.newpost })
-          .then(() => this.newpost = {} );
+    addPost() {
+      this.$emit('new-post', this.newpost);
+      this.newpost = {};
     },
     linkChange() {
       if (!this.newpost.url 
@@ -181,15 +180,17 @@ export default {
         return;
       }
       this.fetchInProgress = true;
+      this.$notifyNormal("Nacitavam data");
         axios.get(
           "/api/scrape/?goodreadsUrl=" + this.newpost.url)
         .then((response) => {
           this.newpost = response.data;
           this.newpost.text = "\n\n## Popis na Goodreads: \n\n" + response.data.description;
           this.fetchInProgress = false;
+          this.$notifyInfo("Nacitane");
         })
         .catch(function (error) {
-          alert(error);
+          this.$notifyError(error);
           this.fetchInProgress = false;
         });
     },
