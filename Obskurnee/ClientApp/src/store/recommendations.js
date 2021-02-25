@@ -31,7 +31,7 @@ export default {
             "/api/recommendations/",
             newPost)
           .then((response) => {
-            commit('addPost', { recommendationId: recommendationId, post: response.data });
+            commit('addPost', response.data);
           })
           .catch(function (error) {
             console.log(error);

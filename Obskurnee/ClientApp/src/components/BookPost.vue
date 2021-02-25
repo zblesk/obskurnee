@@ -1,11 +1,11 @@
 <template>
-    <div  class="book">
-      <div class="book__cover" v-if="post.imageUrl"><img :src="post.imageUrl" :alt="post.title"></div>
-      <a :href="post.url" class="book__link"><h2 class="book__title">{{ post.title }}</h2></a>
-      <p class="book__pages" v-if="post.pageCount"><em>{{ post.pageCount }} strán</em></p>
-      <p><em>Navrhla {{ post.ownerName }}</em></p>
-      <p class="book__pitch" v-html="post.renderedText"> </p>
-    </div>
+  <div  class="book">
+    <div class="book__cover" v-if="post.imageUrl"><img :src="post.imageUrl" :alt="post.title"></div>
+    <a :href="post.url" class="book__link"><h2 class="book__title">{{ post.title }}</h2></a>
+    <p class="book__pages" v-if="post.pageCount"><em>{{ post.pageCount }} strán</em></p>
+    <p><em>Navrhla {{ post.ownerName }}</em></p>
+    <p class="book__pitch" v-html="post.renderedText"> </p>
+  </div>
 </template>
 
 

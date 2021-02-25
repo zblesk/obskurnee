@@ -55,8 +55,7 @@ namespace Obskurnee.Services
             => _db.NewsletterSubscriptions.FindAll()
                 .GroupBy(ns => ns.NewsletterName)
                 .ToDictionary(grouping => grouping.Key,
-                                grouping => grouping.Select(async ns => await _userService.GetUserById(ns.UserId))
-                                                    .Select(task => task.Result));
+                                grouping => grouping.Select(ns => _userService.Users[ns.UserId]));
 
         public void SendNewsletter(string newsletterName, string subject, string body, bool forwardSubjectToMatrix = true)
         {
