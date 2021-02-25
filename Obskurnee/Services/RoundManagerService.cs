@@ -193,7 +193,7 @@ namespace Obskurnee.Services
                     link,
                     post.Title,
                     post.Author,
-                    post.Text,
+                    post.Text.AddMarkdownQuote(),
                     post.PageCount,
                     post.OwnerName,
                     post.Url));
