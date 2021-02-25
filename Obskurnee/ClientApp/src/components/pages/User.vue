@@ -16,10 +16,12 @@
         <input type="url" class="input" id="usergr" v-model="editingUser.goodreadsUrl" />
       </div>
       <div class="form-field">
-        <label for="userbio" class="label">Bio:</label>
+        <label for="userbio" class="label">O mne:</label> 
         <textarea class="textarea" id="userbio" v-model="editingUser.aboutMe" placeholder="Napis sem nieco o sebe! Ake mas rada zanre? Co su Tvoje oblubene knihy? Co naopak nemas rada? Nieco ine, co nam o sebe povies?
 
-Mozes pouzit Markdown na jednoduche formatovanie textu. Medzi zaklady patri napriklad: 
+Mozes pouzit Markdown na jednoduche formatovanie textu. 
+Ak by si sa stratila, klikni na help ikonku nizsie.
+Medzi zaklady patri napriklad: 
 
 # Najvacsi nadpis
 ## mensi nadpis 
@@ -39,6 +41,12 @@ Mozes pouzit Markdown na jednoduche formatovanie textu. Medzi zaklady patri napr
 > **moze** obsahovat aj _**formatovanie**_
 
 Mozes lahko pridat aj [link](https://google.sk)"></textarea>
+        <div>
+          <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank">
+            <img src="../../assets/markdown-logo.svg" width="25" height="25"/>
+              Pomoc s Markdownom
+            </a>
+        </div>
       </div>
     </div>
     <div class="profile-button">
