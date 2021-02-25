@@ -1,18 +1,11 @@
 <template>
 <section>
   <div v-if="user">
-
-    <h1 class="page-title">Uživatelské údaje</h1>
-
   <div v-if="mode == 'edit'">
     <div class="profile">
       <div class="form-field">
         <label for="username" class="label">Jméno (povinné):</label>
         <input type="text" class="input" id="username" required v-model="editingUser.name" />
-      </div>
-      <div class="form-field">
-        <label for="useremail" class="label">E-mail (nelze změnit):</label>
-        <input type="email" readonly class="input readonly" id="useremail" v-model="editingUser.email" />
       </div>
       <div class="form-field">
         <label for="userphone" class="label">Telefon:</label>
@@ -24,7 +17,28 @@
       </div>
       <div class="form-field">
         <label for="userbio" class="label">Bio:</label>
-        <textarea class="textarea" id="userbio" v-model="editingUser.aboutMe"></textarea>
+        <textarea class="textarea" id="userbio" v-model="editingUser.aboutMe" placeholder="Napis sem nieco o sebe! Ake mas rada zanre? Co su Tvoje oblubene knihy? Co naopak nemas rada? Nieco ine, co nam o sebe povies?
+
+Mozes pouzit Markdown na jednoduche formatovanie textu. Medzi zaklady patri napriklad: 
+
+# Najvacsi nadpis
+## mensi nadpis 
+
+**tucny textt** alebo _kurziva_ 
+
+- necislovany
+- zoznam
+- je 
+- jednoduchy
+
+1. cislovany
+2. tiez
+3. lahky
+
+> takto sa pise citat
+> **moze** obsahovat aj _**formatovanie**_
+
+Mozes lahko pridat aj [link](https://google.sk)"></textarea>
       </div>
     </div>
     <div class="profile-button">
@@ -35,27 +49,36 @@
 
   <div v-if="mode != 'edit'">
     <div class="profile">
-      <div class="profil-row">
-        <div class="profile-cat">Jméno:</div>
-        <div class="profile-val">{{ user.name }}</div>
+      <div class="profil-row" style="font-size: 2em; font-weight: bold; text-align: center;">
+        <h1>{{ user.name }}</h1>
       </div>
       <div class="profile-row">
-        <div class="profile-cat">E-mail:</div>
-        <div class="profile-val">{{ user.email }}</div>
-      </div>
-      <div class="profile-row">
-        <div class="profile-cat">Telefon:</div>
-        <div class="profile-val">{{ user.phone }}</div>
-      </div>
-      <div class="profile-row">
-        <div class="profile-cat">Profil na Goodreads:</div>
-        <div class="profile-val">
-          <a :href="user.goodreadsUrl">{{ user.goodreadsUrl }}</a>
-        </div>
-      </div>
-      <div class="profile-row">
-        <div class="profile-cat">Bio:</div>
         <div class="profile-val" v-html="user.aboutMeHtml"></div>
+      </div>
+      <div class="profile-row">
+        <table style="width: 100%">
+          <tr>
+            <td>
+              <div class="profile-val"><a :href="'mailto:' + user.email">📧 {{ user.email }}</a></div>
+            </td>
+            <td>
+              <div class="profile-val">
+                <a :href="'tel:' + user.phone">
+                  <img src="../../assets/whatsapp-logo.png" width="25" height="25"/>
+                    {{ user.phone }}
+                  </a>
+                </div>
+            </td>
+            <td>
+              <div class="profile -val">
+                <a :href="user.goodreadsUrl">
+                  <img src="../../assets/goodreads-logo.svg" width="25" height="25"/>
+                    Goodreads
+                </a>
+              </div>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
     <div class="profile-button">
@@ -110,16 +133,19 @@ export default {
     },
     fetchProfile()
     {
-      this.getUser(this.$route.params.email)
+      return this.getUser(this.$route.params.email)
         .then(data => this.user = data);
     }
   },
   mounted() {
-    this.fetchProfile();
-    if (this.$route.params.mode)
-    {
-      this.mode = this.$route.params.mode;
-    }
+    this.fetchProfile()
+      .then(() =>
+      {
+        if (this.$route.params.mode == "edit")
+        {
+          this.startEditing();
+        }
+      });
   }
 }
 </script>
