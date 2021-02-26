@@ -94,6 +94,37 @@ Mozes lahko pridat aj [link](https://google.sk)"></textarea>
     </div>
   </div>
 
+  <div>
+    Newslettery: 
+    <table>
+      <tr>
+        <td>Základné udalosti</td>
+        <td>{{ subscribedBasic ? 'Prihlásené' : 'Neprihlásené' }}</td>
+        <td>
+          <a 
+            @click="toggleSubscription('basicevents', !subscribedBasic)" 
+            class="button-primary">
+            {{ subscribedBasic ? 'Odhlásiť' : 'Prihlásiť' }}
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td>Všetky udalosti</td>
+        <td>{{ subscribedAll ? 'Prihlásené' : 'Neprihlásené' }}</td>
+        <td>
+          <a 
+            @click="toggleSubscription('allevents', !subscribedAll)" 
+            class="button-primary">
+            {{ subscribedAll ? 'Odhlásiť' : 'Prihlásiť' }}
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td>Všetky notifikácie tiež budú zaslané do chatroomu <a href="https://matrix.to/#/#bookclub:zble.sk">#bookclub:zble.sk</a></td>
+        <td><span class="todo-l">ale zatial idu do inej, testovacej miestnosti nech v tej 'ostrej' nie je vyvojovy spam :D </span></td>
+      </tr>
+    </table>
+  </div>
 
   <p class="todo-l"><strong>Laci:</strong>sem co este? Chceme tu naprikald userove reviews, recs?</p>
   <p class="todo"><strong>Rozárka:</strong>To bych nedávala do profilu, ten bych nechala čistě jako přehled osobních údajů určených k editaci. Review a recs bych nechala do sekce My.</p>
@@ -107,7 +138,7 @@ Mozes lahko pridat aj [link](https://google.sk)"></textarea>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-
+import axios from 'axios';
 export default {
   name: 'User',
   data() {
@@ -115,10 +146,13 @@ export default {
         user: {},
         mode: "default",
         editingUser: {},
+        subscriptions: [],
       }
   },
   computed: {
     ...mapGetters("context", ["myUserId", "isMod"]),
+    subscribedBasic: function () { return this.subscriptions.includes('basicevents'); },
+    subscribedAll: function () { return this.subscriptions.includes('allevents'); },
   },
   methods: {
     ...mapActions("users", ["getUser", "updateUser"]),
@@ -143,7 +177,29 @@ export default {
     {
       return this.getUser(this.$route.params.email)
         .then(data => this.user = data);
-    }
+    },
+    async fetchNewsletterSubsciptions()
+    {
+      return axios.get("/api/newsletters")
+        .then((response) =>
+        {
+          this.subscriptions = response.data;
+        })
+        .catch(function (error)
+        {
+          this.$notifyError(error);
+        });
+    },
+    async toggleSubscription(newsletter, subscribe)
+    {
+      let action = subscribe ? "subscribe" : "unsubscribe";
+        axios.post(`/api/newsletters/${newsletter}/${action}`)
+          .then((response) =>
+          {
+            this.subscriptions = response.data;
+          })
+          .catch((err) => this.$$notifyError(err));
+    },
   },
   mounted() {
     this.fetchProfile()
@@ -154,6 +210,7 @@ export default {
           this.startEditing();
         }
       });
+    this.fetchNewsletterSubsciptions();
   }
 }
 </script>

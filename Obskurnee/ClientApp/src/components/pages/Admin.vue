@@ -97,7 +97,7 @@ export default {
                 {
                     this.$notifySuccess(`Aktualizovane`);
                 })
-            .catch(err => console.log(err));
+            .catch(err => this.$notifyError(err));
             
         },
         addUser()
@@ -108,7 +108,7 @@ export default {
                     this.getUsers();
                     this.$notifySuccess(`Pouzivatel vytvoreny`);
                 })
-            .catch(err => console.log(err));
+            .catch(err => this.$notifyError(err));
         },
         makeMod(email)
         {
@@ -118,13 +118,13 @@ export default {
                     this.$notifySuccess(`${email} povyseny na moderatora`);
                     this.getUsers();
                 })
-            .catch(err => console.log(err));
+            .catch(err => this.$notifyError(err));
         },
         getNewsletterInfo()
         {
             axios.get("/api/newsletters/all")
             .then(response => this.newsletterInfo = response.data )
-            .catch(err => console.log(err));
+            .catch(err => this.$notifyError(err));
         }
     },
     mounted() {
@@ -136,7 +136,6 @@ export default {
 </script>
 
 <style scoped>
-
     .main {
         padding: var(--spacer);
         background-color: var(--c-bckgr-primary);
