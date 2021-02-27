@@ -92,6 +92,7 @@ namespace Obskurnee
         public void Configure(
             IApplicationBuilder app,
             IWebHostEnvironment env,
+            IHostApplicationLifetime lifetime,
             UserService userService)
         {
             if (env.IsDevelopment())
@@ -116,18 +117,10 @@ namespace Obskurnee
             {
                 endpoints.MapControllers();
             });
-
+            Log.Information("Setting up for environment {env}", env.EnvironmentName);
             app.UseSpa(spa =>
             {
-                if (env.IsDevelopment())
-                {
-                    spa.Options.SourcePath = "ClientApp/";
-                }
-                else
-                {
-                    spa.Options.SourcePath = "dist";
-                }
-
+                spa.Options.SourcePath = "ClientApp/";
                 if (env.IsDevelopment())
                 {
                     spa.UseVueCli(npmScript: "serve");
@@ -135,6 +128,9 @@ namespace Obskurnee
             });
 
             userService.ReloadCache();
+            lifetime.ApplicationStarted.Register(() => Log.Information("Application started"));
+            lifetime.ApplicationStopping.Register(() => Log.Information("Application stopping"));
+            lifetime.ApplicationStopped.Register(() => Log.Information("Application stopped"));
         }
 
         private static void ConfigureAuthAndIdentity(IServiceCollection services)
@@ -211,5 +207,6 @@ namespace Obskurnee
                 options.AddPolicy("AdminOnly", policy => policy.RequireClaim(BookclubClaims.Admin));
             });
         }
+
     }
 }
