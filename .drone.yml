@@ -3,6 +3,17 @@ type: docker
 name: default
 
 steps:
+
+- name: notify 1
+  image: plugins/matrix
+  settings:
+    homeserver: https://matrix.zble.sk
+    roomid: '!natRBEGfTHBIwfWmtk:zble.sk'
+    username:
+      from_secret: matrix_username
+    password:
+      from_secret: matrix_password
+
 - name: node build
   image: node:14
   commands:
@@ -16,15 +27,8 @@ steps:
   commands:
   - dotnet publish -c ReleaseNoNode -o published
 
-# - name: seeFiles
-#   image: alpine
-#   commands:
-#   - echo $PWD
-#   - cd Obskurnee
-#   - ls -R
-#   - echo ' '
-#   - echo 'src'
-#   - ls -R /drone/src/published/
+- name: docker build
+  image: plugins/docker
 
 - name: notify
   image: plugins/matrix

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using System;
+using System.IO;
 
 namespace Obskurnee
 {
@@ -34,7 +35,7 @@ namespace Obskurnee
                 .MinimumLevel.Verbose()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
                 .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
-                // .WriteTo.RollingFile("events.log")
+                .WriteTo.RollingFile(Path.Join("logs", "events.log"))
                 .WriteTo.Console()
                 .CreateLogger();
         }
