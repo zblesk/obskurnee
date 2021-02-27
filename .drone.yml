@@ -3,17 +3,6 @@ type: docker
 name: default
 
 steps:
-
-- name: notify 1
-  image: plugins/matrix
-  settings:
-    homeserver: https://matrix.zble.sk
-    roomid: '!natRBEGfTHBIwfWmtk:zble.sk'
-    username:
-      from_secret: matrix_username
-    password:
-      from_secret: matrix_password
-
 - name: node build
   image: node:14
   commands:
@@ -29,6 +18,11 @@ steps:
 
 - name: docker build
   image: plugins/docker
+  settings:
+    username: docker_username
+    password: docker_password
+    repo: docker_reponame
+    tags: latest
 
 - name: notify
   image: plugins/matrix
