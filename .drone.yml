@@ -4,7 +4,7 @@ name: default
 
 steps:
 - name: node build
-  image: node:8
+  image: node:14
   commands:
   - cd Obskurnee
   - cd ClientApp
