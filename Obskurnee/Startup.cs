@@ -21,6 +21,7 @@ using System.Text.Json.Serialization;
 using System.Configuration;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace Obskurnee
 {
@@ -95,6 +96,12 @@ namespace Obskurnee
             IHostApplicationLifetime lifetime,
             UserService userService)
         {
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
+            app.UseAuthentication();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
