@@ -189,6 +189,11 @@ export default {
     onSubmit() {
       this.login(this.form)
         .then(() => {
+          this.$notifySuccess("Vitaj späť");
+        }
+      )
+      .catch((err) => {
+          this.$notifyError("Prihlásenie zlyhalo :( " + err);
         }
       );
     },

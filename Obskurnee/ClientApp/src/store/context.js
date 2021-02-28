@@ -34,9 +34,6 @@ export default {
           delete profile.token;
           commit('setProfile', profile);
           commit('setJwtToken', jwtToken);
-        })
-        .catch(err => {
-          console.log(err);
         });
       },
       logout ({ commit }) {
