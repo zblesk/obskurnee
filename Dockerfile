@@ -26,4 +26,4 @@ FROM mcr.microsoft.com/dotnet/runtime-deps:5.0-focal-amd64
 WORKDIR /obskurnee
 COPY --from=dotnetbuild /app ./
 COPY --from=nodebuild /frontend/dist ./ClientApp
-ENTRYPOINT ["./obskurnee/Obskurnee.dll"]
+ENTRYPOINT ["./Obskurnee"]
