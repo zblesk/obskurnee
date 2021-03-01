@@ -26,4 +26,4 @@ FROM mcr.microsoft.com/dotnet/runtime:5.0
 WORKDIR /obskurnee
 COPY --from=dotnetbuild /app ./
 COPY --from=nodebuild /frontend/dist ./ClientApp
-ENTRYPOINT ["./Obskurnee"]
+ENTRYPOINT ["dotnet", "Obskurnee.dll"]
