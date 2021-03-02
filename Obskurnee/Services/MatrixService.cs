@@ -28,7 +28,7 @@ namespace Obskurnee.Services
 
         public async Task SendMessage(string message)
         {
-            if (_config == null)
+            if (_config == null || !_config.Enabled)
             {
                 _logger.LogInformation("Matrix notification not configured; not sending");
                 return;
