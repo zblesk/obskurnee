@@ -26,6 +26,9 @@ namespace Obskurnee.Services
         private static readonly SigningCredentials SigningCreds = new SigningCredentials(Startup.SecurityKey, SecurityAlgorithms.HmacSha256);
         private readonly JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
         private readonly IMailerService _mailer;
+        private readonly IServiceProvider _serviceProvider;
+
+        private NewsletterService Newsletter { get => (NewsletterService)_serviceProvider.GetService(typeof(NewsletterService)); }
 
         public IReadOnlyDictionary<string, UserInfo> Users
         {
@@ -42,7 +45,8 @@ namespace Obskurnee.Services
            Database database,
            ILogger<UserService> logger,
            IMailerService mailer,
-           GoodreadsScraper scraper)
+           GoodreadsScraper scraper,
+           IServiceProvider serviceProvider)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
@@ -51,6 +55,7 @@ namespace Obskurnee.Services
             _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
             _scraper = scraper ?? throw new ArgumentNullException(nameof(scraper));
             EnsureCacheLoaded();
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
         public void ReloadCache()
@@ -83,12 +88,13 @@ namespace Obskurnee.Services
                 UserName = creds.Email.Substring(0, creds.Email.IndexOf('@')),
                 Email = creds.Email,
             };
-            _logger.LogInformation("Registering user {email}", user.Email);
+            _logger.LogInformation("Registering user {email}", user.Email.Address);
             var result = await _userManager.CreateAsync(user, creds.Password);
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created");
                 ReloadCache();
+                Newsletter.Subscribe(user.Id, Newsletters.BasicEvents);
                 return UserInfo.From(user);
             }
             return null;

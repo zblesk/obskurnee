@@ -30,7 +30,7 @@ namespace Obskurnee.Services
         {
             if (_config == null || !_config.Enabled)
             {
-                _logger.LogInformation("Matrix notification not configured; not sending");
+                _logger.LogInformation("Matrix notification disabled or not configured; not sending");
                 return;
             }    
             try
