@@ -12,6 +12,9 @@
                     <h2 class="user-name">{{ user.name }}</h2>
                     <div class="user-bio" v-html="user.aboutMeHtml"></div>
                 </div>
+                <div v-for="review in user.currentlyReading" v-bind:key="review.ReviewId">
+                    {{ review }} <hr />
+                </div>
             </router-link>
         </div>
     </div>

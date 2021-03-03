@@ -93,6 +93,10 @@ Mozes lahko pridat aj [link](https://google.sk)"></textarea>
       <a @click="startEditing" class="button-primary" :v-if="isMod || user.userId == myUserId">Upravit údaje</a>
     </div>
   </div>
+  
+  <div v-if="user.currentlyReading">
+    <review-card v-for="review in user.currentlyReading" v-bind:key="review.ReviewId" :review="review" />
+  </div>
 
   <div>
     Newslettery: 
@@ -139,7 +143,9 @@ Mozes lahko pridat aj [link](https://google.sk)"></textarea>
 <script>
 import { mapActions, mapGetters } from "vuex";
 import axios from 'axios';
+import ReviewCard from '../ReviewCard.vue';
 export default {
+  components: { ReviewCard },
   name: 'User',
   data() {
       return {
