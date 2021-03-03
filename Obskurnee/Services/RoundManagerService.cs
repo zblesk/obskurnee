@@ -17,6 +17,7 @@ namespace Obskurnee.Services
         private readonly NewsletterService _newsletter;
         private readonly IStringLocalizer<Strings> _localizer;
         private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
+        private readonly Config _config;
 
         public RoundManagerService(
             ILogger<RoundManagerService> logger,
@@ -24,7 +25,8 @@ namespace Obskurnee.Services
             BookService bookService,
             NewsletterService newsletter,
             IStringLocalizer<Strings> localizer,
-            IStringLocalizer<NewsletterStrings> newsletterLocalizer)
+            IStringLocalizer<NewsletterStrings> newsletterLocalizer,
+            Config config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
@@ -32,6 +34,7 @@ namespace Obskurnee.Services
             _newsletter = newsletter;
             _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
             _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
+            _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         public IList<Round> AllRounds() => _db.Rounds.Query().OrderByDescending(r => r.CreatedOn).ToList();
@@ -163,7 +166,7 @@ namespace Obskurnee.Services
 
         private void SendNewDiscussionNotification(Discussion discussion)
         {
-            var link = $"{Startup.BaseUrl}/navrhy/{discussion.DiscussionId}";
+            var link = $"{_config.BaseUrl}/navrhy/{discussion.DiscussionId}";
             _newsletter.SendNewsletter(
                 Newsletters.BasicEvents,
                 _newsletterLocalizer.Format("newRoundSubject", discussion.Title),
@@ -175,7 +178,7 @@ namespace Obskurnee.Services
 
         private void SendNewPollNotification(Poll poll)
         {
-            var link = $"{Startup.BaseUrl}/hlasovania/{poll.PollId}";
+            var link = $"{_config.BaseUrl}/hlasovania/{poll.PollId}";
             _newsletter.SendNewsletter(
                 Newsletters.BasicEvents,
                 _newsletterLocalizer.Format("newPollSubject", poll.Title),
@@ -184,7 +187,7 @@ namespace Obskurnee.Services
 
         private void SendNewBookNotification(RoundUpdateResults result)
         {
-            var link = $"{Startup.BaseUrl}/knihy/{result.Book.BookId}";
+            var link = $"{_config.BaseUrl}/knihy/{result.Book.BookId}";
             var post = _db.Posts.FindById(result.Book.Post.PostId);
             _newsletter.SendNewsletter(
                 Newsletters.BasicEvents,

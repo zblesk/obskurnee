@@ -21,17 +21,20 @@ namespace Obskurnee.Controllers
         private readonly UserService _users;
         private readonly IMailerService _mailer;
         private static readonly Random _random = new Random();
+        private readonly Config _config;
 
         public AdminController(
-           ILogger<AdminController> logger,
-           SettingsService settings,
-           UserService users,
-           IMailerService mailer)
+            ILogger<AdminController> logger,
+            SettingsService settings,
+            UserService users,
+            IMailerService mailer,
+            Config config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
             _users = users ?? throw new ArgumentNullException(nameof(users));
             _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
+            _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         [HttpGet]
@@ -62,10 +65,10 @@ namespace Obskurnee.Controllers
         {
             var email = payload.GetProperty("email").GetString();
             _logger.LogInformation("Adding user {email}", email);
-            var password = Enumerable.Range(1, Startup.DefaultPasswordMinLength)
+            var password = Enumerable.Range(1, _config.DefaultPasswordMinLength)
                 .Aggregate(
                 "", 
-                (pwd, _) => $"{pwd}{Startup.PasswordGenerationChars[_random.Next(Startup.PasswordGenerationChars.Length)]}");
+                (pwd, _) => $"{pwd}{_config.PasswordGenerationChars[_random.Next(_config.PasswordGenerationChars.Length)]}");
             try
             {
                 var passwordSrc = await "https://zble.sk/api/password-gen/"
@@ -83,7 +86,7 @@ namespace Obskurnee.Controllers
             {
                 await _mailer.SendMail(
                     $"Vitaj, {user.Name}", 
-                    $"Bola si uspesne zaregistrovana.\nPrihlas sa na <a href='{Startup.BaseUrl}'>{Startup.BaseUrl}</a>\n\nTvoj prihlasovaci mail: {user.Email}\nDefault heslo: {password}\n\nAsi by bolo najlepsie si to heslo zmenit.", 
+                    $"Bola si uspesne zaregistrovana.\nPrihlas sa na <a href='{_config.BaseUrl}'>{_config.BaseUrl}</a>\n\nTvoj prihlasovaci mail: {user.Email}\nDefault heslo: {password}\n\nAsi by bolo najlepsie si to heslo zmenit.", 
                     email);
                 return Json(user);
             }

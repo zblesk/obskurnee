@@ -27,31 +27,19 @@ namespace Obskurnee
 {
     public class Startup
     {
-        // Configs
-        public static readonly SymmetricSecurityKey SecurityKey =
-            new SymmetricSecurityKey(
-                Encoding.Default.GetBytes("ghf345678oikjhgfde3456789ijbvcdsw6789opkjfdeuijknbvgfdre4567uij"));
-        public const string DataFolder = "data";
-        public const string ImageFolder = "images";
-        public const string BaseUrl = "http://localhost:5000";
-        public const int DefaultPasswordMinLength = 13;
-        public const string PasswordGenerationChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        public const string GoodreadsRssBaseUrl = "https://www.goodreads.com/review/list_rss/";
-        public const string GoodreadsProfielUrlPrevix = "https://www.goodreads.com/user/";
-        public const string GlobalCulture = "sk";
+        public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
         public void ConfigureServices(
             IServiceCollection services)
         {
-            Directory.CreateDirectory(DataFolder);
-            Directory.CreateDirectory(Path.Combine(DataFolder, ImageFolder));
+            Config.Current = new Config();
+            Directory.CreateDirectory(Config.Current.DataFolder);
+            Directory.CreateDirectory(Path.Combine(Config.Current.DataFolder, Config.Current.ImageFolder));
 
             services.AddControllers()
                 .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
@@ -60,10 +48,12 @@ namespace Obskurnee
                 configuration.RootPath = "ClientApp";
             });
 
-            var databaseSingleton = new Database(Log.Logger.ForContext<Database>());
+            Configuration.Bind(Config.Current);
+            var databaseSingleton = new Database(Log.Logger.ForContext<Database>(), Config.Current);
 
             services.AddSingleton<Database>(databaseSingleton);
             services.AddSingleton<ILiteDbContext>((ILiteDbContext)databaseSingleton);
+            services.AddSingleton(Config.Current);
             services.AddTransient<GoodreadsScraper>();
             services.AddTransient<PollService>();
             services.AddTransient<UserService>();
@@ -87,6 +77,26 @@ namespace Obskurnee
                 default:
                     throw new ConfigurationErrorsException($"Invalid mailer type: {Configuration["MailerType"]}");
             }
+
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.Configure<RequestLocalizationOptions>(
+                options =>
+                {
+                    var supportedCultures = new[]
+                    {
+                        new CultureInfo(Config.Current.GlobalCulture)
+                    };
+
+                    options.DefaultRequestCulture = new RequestCulture(culture: Config.Current.GlobalCulture, uiCulture: Config.Current.GlobalCulture);
+                    options.SupportedCultures = supportedCultures;
+                    options.SupportedUICultures = supportedCultures;
+
+                    options.AddInitialRequestCultureProvider(new CustomRequestCultureProvider(async context =>
+                    {
+                        return new ProviderCultureResult(Config.Current.GlobalCulture);
+                    }));
+                });
+
 
             ConfigureAuthAndIdentity(services);
         }
@@ -113,7 +123,7 @@ namespace Obskurnee
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, DataFolder, ImageFolder)),
+                    Path.Combine(env.ContentRootPath, Config.Current.DataFolder, Config.Current.ImageFolder)),
                 RequestPath = "/images"
             });
 
@@ -160,7 +170,7 @@ namespace Obskurnee
                         ValidateIssuer = false,
                         ValidateActor = false,
                         ValidateLifetime = true,
-                        IssuerSigningKey = SecurityKey,
+                        IssuerSigningKey = Config.Current.SecurityKey,
                     };
                     // The JwtBearer scheme knows how to extract the token from the Authorization header
                     // but we will need to manually extract it from the query string in the case of requests to the hub
@@ -175,25 +185,6 @@ namespace Obskurnee
                             return Task.CompletedTask;
                         }
                     };
-                });
-
-            services.AddLocalization(options => options.ResourcesPath = "Resources");
-            services.Configure<RequestLocalizationOptions>(
-                options =>
-                {
-                    var supportedCultures = new[]
-                    {
-                        new CultureInfo(GlobalCulture)
-                    };
-
-                    options.DefaultRequestCulture = new RequestCulture(culture: GlobalCulture, uiCulture: GlobalCulture);
-                    options.SupportedCultures = supportedCultures;
-                    options.SupportedUICultures = supportedCultures;
-
-                    options.AddInitialRequestCultureProvider(new CustomRequestCultureProvider(async context =>
-                    {
-                        return new ProviderCultureResult(GlobalCulture);
-                    }));
                 });
 
             services.AddIdentityCore<Bookworm>(options =>
@@ -215,6 +206,5 @@ namespace Obskurnee
                 options.AddPolicy("AdminOnly", policy => policy.RequireClaim(BookclubClaims.Admin));
             });
         }
-
     }
 }

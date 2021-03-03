@@ -26,10 +26,12 @@ namespace Obskurnee.Services
 
         LiteDatabase ILiteDbContext.LiteDatabase => _db;
 
-        public Database(Serilog.ILogger logger)
+        public Database(
+            Serilog.ILogger logger,
+            Config config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _db = new LiteDatabase(Path.Combine(Startup.DataFolder, "bookclub.db"));
+            _db = new LiteDatabase(Path.Combine(config.DataFolder, "bookclub.db"));
             _db.CheckpointSize = 1;
             Discussions = _db.GetCollection<Discussion>("discussions");
             Posts = _db.GetCollection<Post>("posts");

@@ -16,19 +16,22 @@ namespace Obskurnee.Services
         private readonly IStringLocalizer<Strings> _localizer;
         private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
         private readonly NewsletterService _newsletter;
+        private readonly Config _config;
 
         public DiscussionService(
             ILogger<DiscussionService> logger,
             Database database,
             IStringLocalizer<Strings> localizer,
             IStringLocalizer<NewsletterStrings> newsletterLocalizer,
-            NewsletterService newsletter)
+            NewsletterService newsletter,
+            Config config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
             _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
             _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
             _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
+            _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
 
@@ -60,7 +63,7 @@ namespace Obskurnee.Services
 
         private void SendNewPostNotification(Discussion discussion, Post post)
         {
-            var link = $"{Startup.BaseUrl}/navrhy/{discussion.DiscussionId}";
+            var link = $"{_config.BaseUrl}/navrhy/{discussion.DiscussionId}";
             var body = "";
             if (discussion.Topic == Topic.Books)
             {

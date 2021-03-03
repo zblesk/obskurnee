@@ -21,11 +21,16 @@ namespace Obskurnee.Services
         private static Random _rand = new Random();
         private readonly ILogger<GoodreadsScraper> _logger;
         private readonly IWebHostEnvironment _hostEnv;
+        private readonly Config _config;
 
-        public GoodreadsScraper(ILogger<GoodreadsScraper> logger, IWebHostEnvironment hostEnv)
+        public GoodreadsScraper(
+            ILogger<GoodreadsScraper> logger,
+            IWebHostEnvironment hostEnv,
+            Config config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _hostEnv = hostEnv ?? throw new ArgumentNullException(nameof(hostEnv));
+            _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         public async Task<GoodreadsBookInfo> ScrapeBookInfo(string goodreadsUrl)
@@ -85,10 +90,10 @@ namespace Obskurnee.Services
                                 + Path.GetExtension(imgUrl) ?? ".jpg";
                             var physicalPath = Path.Join(
                                 _hostEnv.ContentRootPath,
-                                Startup.DataFolder, 
-                                Startup.ImageFolder,
+                                _config.DataFolder,
+                                _config.ImageFolder,
                                 relativeFilename);
-                            var relativeUrl = '/' + Startup.ImageFolder + '/' + relativeFilename;
+                            var relativeUrl = '/' + _config.ImageFolder + '/' + relativeFilename;
                             _logger.LogInformation("File downloaded, saving it at {filename}", physicalPath);
                             await File.WriteAllBytesAsync(physicalPath, pic);
                             result.ImageUrl = relativeUrl;
@@ -115,7 +120,7 @@ namespace Obskurnee.Services
                 return Enumerable.Empty<Review>();
             }
 
-            var rssUrl = $"{Startup.GoodreadsRssBaseUrl}{user.GoodreadsUserId}?shelf=currently-reading";
+            var rssUrl = $"{_config.GoodreadsRssBaseUrl}{user.GoodreadsUserId}?shelf=currently-reading";
             return GetReviewsFromFeed(user.Id, rssUrl);
         }
 
@@ -127,7 +132,7 @@ namespace Obskurnee.Services
                 return Enumerable.Empty<Review>();
             }
 
-            var rssUrl = $"{Startup.GoodreadsRssBaseUrl}{user.GoodreadsUserId}?shelf=read";
+            var rssUrl = $"{_config.GoodreadsRssBaseUrl}{user.GoodreadsUserId}?shelf=read";
             return GetReviewsFromFeed(user.Id, rssUrl);
         }
 

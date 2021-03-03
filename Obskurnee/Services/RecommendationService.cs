@@ -13,17 +13,20 @@ namespace Obskurnee.Services
         private readonly Database _db;
         private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
         private readonly NewsletterService _newsletter;
+        private readonly Config _config;
 
         public RecommendationService(
             ILogger<RecommendationService> logger,
             Database database,
             IStringLocalizer<NewsletterStrings> newsletterLocalizer,
-            NewsletterService newsletter)
+            NewsletterService newsletter,
+            Config config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
             _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
             _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
+            _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         public IList<Post> GetAllRecs() => _db.RecPosts.FindAll().ToList();
@@ -52,7 +55,7 @@ namespace Obskurnee.Services
 
         private void SendNewRecNotification(Post rec)
         {
-            var link = $"{Startup.BaseUrl}/odporucania/";
+            var link = $"{_config.BaseUrl}/odporucania/";
             _newsletter.SendNewsletter(
                 Newsletters.AllEvents,
                 _newsletterLocalizer.Format("newRecSubject", rec.OwnerName),
