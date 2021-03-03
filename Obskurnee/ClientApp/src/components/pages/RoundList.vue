@@ -1,14 +1,26 @@
 <template>
 <section>
-<h1 id="tableLabel">Kolá návrhov</h1>
+<h1 id="tableLabel" class="page-title">Kolá návrhov</h1>
 
-<div v-if="isMod">
-    Začať s: 
-    <input type="radio" id="Books" value="Books" v-model="newRound.topic"> Knihy
-    <input type="radio" id="Themes" value="Themes" v-model="newRound.topic"> Témy
-    <input v-model="newRound.title" placeholder="Názov (napr. 'Kniha IXY')" required />
-    <textarea v-model="newRound.description" placeholder="Popis / zadanie"></textarea>
-    <button @click="cNewRound">Nové kolo</button>
+<div v-if="isMod" class="page">
+    <h2 class="form-heading">Založení nového kola</h2>
+    <div class="form-field">
+        <span>Začít s </span>
+        <input type="radio" id="Books" value="Books" v-model="newRound.topic">
+        <label for="Books" class="label-radio">knihami</label>
+        <span class="radio-between">nebo</span>
+        <input type="radio" id="Themes" value="Themes" v-model="newRound.topic">
+        <label for="Themes" class="label-radio">tématy</label>
+    </div>
+    <div class="form-field">
+        <label for="name" class="label">Názov (napr. 'Kniha IXY')</label>
+        <input v-model="newRound.title" id="name" required />
+    </div>
+    <div class="form-field">
+        <label for="description" class="label">Popis</label>
+        <textarea v-model="newRound.description" id="description"></textarea>
+    </div>
+    <button @click="cNewRound" class="button-primary">Nové kolo</button>
 </div>
 
 <p v-if="!rounds"><em>Cakaj, nacitavam</em></p>
@@ -65,6 +77,69 @@ export default {
 </script>
 
 <style scoped>
+    .page {
+        max-width: 800px;
+        background-color: var(--c-bckgr-primary);
+        margin: var(--spacer);
+        padding: calc(2* var(--spacer));
+    }
+
+    @media screen and (min-width: 840px) {
+        .page {
+            margin: var(--spacer) auto;
+        }
+    }
+
+    .form-heading {
+        font-size: 1.5em;
+        padding: 0;
+        margin-top: 0;
+        margin-bottom: var(--spacer);
+    }
+
+    .form-field {
+        margin-bottom: var(--spacer);
+    }
+
+    .label {
+        display: block;
+        font-size: 1em;
+        margin-bottom: calc(var(--spacer) / 3);
+    }
+
+    .label-radio {
+        display: inline-block;
+    }
+
+    .form-field input[type="radio"] {
+        display: inline-block;
+        width: auto;
+        margin-left: calc(var(--spacer) / 2);
+        margin-right: calc(var(--spacer) / 4);
+    }
+
+    .radio-between {
+        margin-left: calc(var(--spacer) / 2);
+        margin-right: calc(var(--spacer) / 4); 
+    }
+
+    .form-field input {
+        width: 100%;
+        border: 0;
+        background-color: var(--c-bckgr-secondary);
+        padding: 0.5em;
+    }
+
+    .form-field textarea {
+        font-size: 1em;
+        border: 0;
+        background-color: var(--c-bckgr-secondary);
+        padding: 0.5em 1em;
+        width: 100%;
+        height: 5em;
+    }
+
+
 .archived a {
     color: hotpink;
 }
