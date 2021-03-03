@@ -2,8 +2,10 @@
 <section>
 <h1 id="tableLabel" class="page-title">Kolá návrhov</h1>
 
-<div v-if="isMod" class="page">
+<a @click="toggleVisibility">Ukaz/skry</a>
+<div v-if="isMod && !hide" class="page">
     <h2 class="form-heading">Založení nového kola</h2>
+    <span class="todo-l">toto mozno skor na spodok pod zoznam, nech to nezabera miesto. User sem castejsie bude chodit pozerat nez zakladat nove kola. Update: ako pozeram, mozno ak by sa to zakamuflovalo aby to nebolo moc vyrazne, moze ostat hore... nuz,. necham na Teba, posud ako to bude vyzerat so stylmi zvysku stranky.</span>
     <div class="form-field">
         <span>Začít s </span>
         <input type="radio" id="Books" value="Books" v-model="newRound.topic">
@@ -52,8 +54,9 @@ export default {
     data() { 
         return {
             newRound: {
-                topic: "Books"
-            }
+                topic: "Books",
+            },
+            hide: true,
         }
     },
     computed: {
@@ -68,6 +71,10 @@ export default {
             {
                 this.newRound = {};
             });
+        },
+        toggleVisibility()
+        {
+            this.hide = !this.hide;
         }
     },
     mounted() {

@@ -1,60 +1,67 @@
 <template>
-<div class="form">
-  <div class="cover">
-    <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />
+<div>
+  <div v-if="hide">
+    <a @click="toggleVisibility" class="button-primary">Ukaz</a>
+    <span class="todo-l">Davam button aby si si lahsie vsimla, ale mozno by stacil aj nejaky text link? Nemusi nutne byt, neviem co je lepsie - idealne nech sa to da lahko vsimnut, ale nie je to ako past na oko. :) </span>
   </div>
-  <div class="form-text">
-    <div v-if="mode != 'Themes'" class="form-field">
-      <label for="grlink">Odkaz na Goodreads</label>
-      <div class="note">
-        <div class="note-pic">
-            <img src="../assets/lamp.svg" alt="lamp icon" />
-        </div>
-        <p class="note-text">Vlož odkaz, zmáčkni enter nebo tabulátor a chvíli počkej.</p>
-      </div>
-      <input v-model="newpost.url" placeholder="https://www.goodreads.com/book..." @change="linkChange" id="grlink" />
-      <div v-if="fetchInProgress" class="alert">Kamo počkaj, LOADUJEM</div>
-    </div>
-    <div class="cover-mobile">
+  <div v-else class="form">
+    <a @click="toggleVisibility" class="button-primary">Skry</a>
+    <div class="cover">
       <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />
     </div>
-    <div class="form-field">
-      <label for="name" v-if="mode == 'Books' || mode == 'Recommendations'">Název knihy</label>
-      <label for="name" v-if="mode == 'Themes'">Název tématu</label>
-      <input v-model="newpost.title" id="name" required />
+    <div class="form-text">
+      <div v-if="mode != 'Themes'" class="form-field">
+        <label for="grlink">Odkaz na Goodreads</label>
+        <div class="note">
+          <div class="note-pic">
+              <img src="../assets/lamp.svg" alt="lamp icon" />
+          </div>
+          <p class="note-text">Vlož odkaz, zmáčkni enter nebo tabulátor a chvíli počkej.</p>
+        </div>
+        <input v-model="newpost.url" placeholder="https://www.goodreads.com/book..." @change="linkChange" id="grlink" />
+        <div v-if="fetchInProgress" class="alert">Kamo počkaj, LOADUJEM</div>
+      </div>
+      <div class="cover-mobile">
+        <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />
+      </div>
+      <div class="form-field">
+        <label for="name" v-if="mode == 'Books' || mode == 'Recommendations'">Název knihy</label>
+        <label for="name" v-if="mode == 'Themes'">Název tématu</label>
+        <input v-model="newpost.title" id="name" required />
+      </div>
+      <div class="form-field" v-if="mode != 'Themes'">
+        <label for="author">Jméno autora</label>
+        <input v-model="newpost.author" id="autor" />
+      </div>
+      <div class="form-field" v-if="mode != 'Themes'">
+        <label for="pages">Počet stran</label>
+        <input v-model="newpost.pageCount" id="pages" />
+      </div>
+      <div class="form-field">
+        <label for="text">Komentár k návrhu (podporuje markdown)</label>
+        <textarea v-model="newpost.text" id="text" required placeholder="Markdown umoznuje jednoduche formatovanie textu. Medzi zaklady patri napriklad: 
+
+  # Najvacsi nadpis
+  ## mensi nadpis 
+
+  **tucny textt** alebo _kurziva_ 
+
+  - necislovany
+  - zoznam
+  - je 
+  - jednoduchy
+
+  1. cislovany
+  2. tiez
+  3. lahky
+
+  > takto sa pise citat
+  > **moze** obsahovat aj _**formatovanie**_
+
+  Mozes lahko pridat aj [link](https://google.sk)"></textarea>
+      </div>
+      <button @click="addPost" class="button-primary">Pridaj</button>
     </div>
-    <div class="form-field" v-if="mode != 'Themes'">
-      <label for="author">Jméno autora</label>
-      <input v-model="newpost.author" id="autor" />
-    </div>
-    <div class="form-field" v-if="mode != 'Themes'">
-      <label for="pages">Počet stran</label>
-      <input v-model="newpost.pageCount" id="pages" />
-    </div>
-    <div class="form-field">
-      <label for="text">Komentár k návrhu (podporuje markdown)</label>
-      <textarea v-model="newpost.text" id="text" required placeholder="Markdown umoznuje jednoduche formatovanie textu. Medzi zaklady patri napriklad: 
-
-# Najvacsi nadpis
-## mensi nadpis 
-
-**tucny textt** alebo _kurziva_ 
-
-- necislovany
-- zoznam
-- je 
-- jednoduchy
-
-1. cislovany
-2. tiez
-3. lahky
-
-> takto sa pise citat
-> **moze** obsahovat aj _**formatovanie**_
-
-Mozes lahko pridat aj [link](https://google.sk)"></textarea>
-    </div>
-    <button @click="addPost" class="button-primary">Pridaj</button>
   </div>
 </div>
 </template>
@@ -165,6 +172,7 @@ export default {
     return {
       newpost: {},
       fetchInProgress: false,
+      hide: true,
     };
   },
   methods: {
@@ -194,6 +202,10 @@ export default {
           this.fetchInProgress = false;
         });
     },
+    toggleVisibility()
+    {
+      this.hide = !this.hide;
+    }
   }
 }
 </script>
