@@ -22,7 +22,7 @@ COPY Obskurnee/ClientApp/ .
 RUN npm run build -- --prod
 
 # final image
-FROM mcr.microsoft.com/dotnet/runtime:5.0-focal-amd64
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-focal-amd64
 WORKDIR /obskurnee
 COPY --from=dotnetbuild /app ./
 COPY --from=nodebuild /frontend/dist ./ClientApp
