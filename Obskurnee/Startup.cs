@@ -74,6 +74,7 @@ namespace Obskurnee
             services.AddTransient<NewsletterService>();
             services.AddTransient<RecommendationService>();
             services.AddSingleton<MatrixService>();
+            services.AddTransient<ReviewService>();
 
             switch (Configuration["MailerType"])
             {

@@ -6,6 +6,7 @@ using Obskurnee.Models;
 using Obskurnee.Services;
 using Obskurnee.ViewModels;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -27,7 +28,7 @@ namespace Obskurnee.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<UserInfo> GetAllUsers() => _users.Users.Values;
+        public JsonResult GetAllUsers() => Json(_users.GetAllUsers(true));
 
         [HttpGet]
         [Route("{email}")]

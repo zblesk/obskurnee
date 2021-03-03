@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Linq;
+using System.Dynamic;
 
 namespace Obskurnee.ViewModels
 {
@@ -17,6 +18,7 @@ namespace Obskurnee.ViewModels
         public bool IsAdmin { get; set; } = false;
         public string? Token { get; set; } = null;
         public string GoodreadsUrl { get; set; }
+        public IList<Review> CurrentlyReading { get; set; }
 
         public static UserInfo From(ClaimsPrincipal principal, string? includeToken = null)
                 => (principal?.Identity == null || !principal.Identity.IsAuthenticated)

@@ -27,6 +27,7 @@ namespace Obskurnee.Services
         private readonly JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
         private readonly IMailerService _mailer;
         private readonly IServiceProvider _serviceProvider;
+        private readonly ReviewService _reviews;
 
         private NewsletterService Newsletter { get => (NewsletterService)_serviceProvider.GetService(typeof(NewsletterService)); }
 
@@ -46,7 +47,8 @@ namespace Obskurnee.Services
            ILogger<UserService> logger,
            IMailerService mailer,
            GoodreadsScraper scraper,
-           IServiceProvider serviceProvider)
+           IServiceProvider serviceProvider,
+           ReviewService reviews)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
@@ -56,6 +58,7 @@ namespace Obskurnee.Services
             _scraper = scraper ?? throw new ArgumentNullException(nameof(scraper));
             EnsureCacheLoaded();
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _reviews = reviews ?? throw new ArgumentNullException(nameof(reviews));
         }
 
         public void ReloadCache()
@@ -72,6 +75,15 @@ namespace Obskurnee.Services
             if (_users == null)
             {
                 ReloadCache();
+            }
+        }
+
+        public IEnumerable<UserInfo> GetAllUsers(bool includeCurrentlyReading = false)
+        {
+            foreach (var user in Users.Values)
+            {
+                user.CurrentlyReading = _reviews.GetCurrentlyReading(user.UserId);
+                yield return user;
             }
         }
 
