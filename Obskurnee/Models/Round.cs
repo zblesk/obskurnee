@@ -14,6 +14,9 @@ namespace Obskurnee.Models
         public int BookPollId { get; set; }
         public Topic Kind { get; set; }
 
+        ///<remarks>Will not be auto-loaded from DB.</remarks>
+        [BsonIgnore] public Book Book { get; set; }
+
         public Round(string ownerId) : base(ownerId)
         {
         }

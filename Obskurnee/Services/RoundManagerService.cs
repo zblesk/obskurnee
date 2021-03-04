@@ -5,6 +5,7 @@ using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Obskurnee.Services
 {
@@ -37,7 +38,15 @@ namespace Obskurnee.Services
             _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
-        public IList<Round> AllRounds() => _db.Rounds.Query().OrderByDescending(r => r.CreatedOn).ToList();
+        public IList<Round> AllRounds()
+        {
+            var rounds = _db.Rounds.Query().OrderByDescending(r => r.CreatedOn).ToList();
+            foreach (var round in rounds.Where(r => r.BookId > 0))
+            {
+                round.Book = _db.Books.FindById(round.BookId);
+            }
+            return rounds;
+        }
 
         public Round NewRound(Topic topic, string title, string description, string ownerId)
         {

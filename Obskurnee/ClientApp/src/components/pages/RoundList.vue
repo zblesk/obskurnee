@@ -68,7 +68,12 @@
                 <h3 class="winner-title">Vítěz kola</h3>
                 <div class="winner-cover">
                     <router-link v-if="round.bookId" :to="{ name: 'book', params: { bookId: round.bookId } }">
-                        <img src="../../assets/book.svg" alt="kniha">
+                        <img v-if="round.book?.post?.imageUrl"
+                            :src="round.book?.post?.imageUrl" :alt="round.book.post.title" :title="round.book.post.title">
+                        <img v-else 
+                            src="../../assets/book.svg" :alt="round.book?.post?.title" :title="round.book?.post?.title">
+                        <b>{{ round.book?.post?.title }}</b><br />
+                        <span>{{ round.book?.post?.author }}</span>
                     </router-link>
                 </div>
             </div>
