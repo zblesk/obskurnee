@@ -1,18 +1,21 @@
 <template>
 <section>
 <h1 id="tableLabel" class="page-title">Kolá návrhov</h1>
+<button v-if="isMod && hide" class="button-primary new-round" @click="toggleVisibility">Založit nové kolo</button>
 
-<a @click="toggleVisibility">Ukaz/skry</a>
 <div v-if="isMod && !hide" class="page">
     <h2 class="form-heading">Založení nového kola</h2>
-    <span class="todo-l">toto mozno skor na spodok pod zoznam, nech to nezabera miesto. User sem castejsie bude chodit pozerat nez zakladat nove kola. Update: ako pozeram, mozno ak by sa to zakamuflovalo aby to nebolo moc vyrazne, moze ostat hore... nuz,. necham na Teba, posud ako to bude vyzerat so stylmi zvysku stranky.</span>
-    <div class="form-field">
+    <div class="form-field form-flex">
         <span>Začít s </span>
-        <input type="radio" id="Books" value="Books" v-model="newRound.topic">
-        <label for="Books" class="label-radio">knihami</label>
+        <div class="form-field-radios">
+            <input type="radio" id="Books" value="Books" v-model="newRound.topic">
+            <label for="Books" class="label-radio">knihami</label>
+        </div>
         <span class="radio-between">nebo</span>
-        <input type="radio" id="Themes" value="Themes" v-model="newRound.topic">
-        <label for="Themes" class="label-radio">tématy</label>
+        <div class="form-field-radios">
+            <input type="radio" id="Themes" value="Themes" v-model="newRound.topic">
+            <label for="Themes" class="label-radio">tématy</label>
+        </div>
     </div>
     <div class="form-field">
         <label for="name" class="label">Názov (napr. 'Kniha IXY')</label>
@@ -22,26 +25,55 @@
         <label for="description" class="label">Popis</label>
         <textarea v-model="newRound.description" id="description"></textarea>
     </div>
-    <button @click="cNewRound" class="button-primary">Nové kolo</button>
+    <div class="buttons">
+        <button @click="cNewRound" class="button-primary">Nové kolo</button>
+        <button class="button-secondary hide-form" @click="toggleVisibility">Schovej formulář</button>
+    </div>
 </div>
 
 <p v-if="!rounds"><em>Cakaj, nacitavam</em></p>
-<div v-for="round of rounds" v-bind:key="round" style="margin:auto;"> 
-    <h3>{{ round.title }}</h3>
-    <table>
-        <tr>
-            <td><router-link v-if="round.themeDiscussionId" :to="{ name: 'discussion', params: { discussionId: round.themeDiscussionId } }">Návrhy tém</router-link></td>
-            <td>
-                <router-link v-if="round.themePollId" :to="{ name: 'poll', params: { pollId: round.themePollId } }">Hlasovanie o témach</router-link> 
-            </td>
-        </tr><tr>
-            <td><router-link v-if="round.bookDiscussionId" :to="{ name: 'discussion', params: { discussionId: round.bookDiscussionId } }">Návrhy kníh</router-link> </td>
-            <td><router-link v-if="round.bookPollId" :to="{ name: 'poll', params: { pollId: round.bookPollId } }">Hlasovanie o knihách</router-link> </td>
-        </tr>
-        <tr>
-            <td><router-link v-if="round.bookId" :to="{ name: 'book', params: { bookId: round.bookId } }">Kniha</router-link></td>
-        </tr>
-    </table>
+<div v-for="round of rounds" v-bind:key="round" class="round">
+    <div class="round-inner">
+        <h2 class="round-title">{{ round.title }}</h2>
+        <div class="round-mo">
+            <div class="mo-wrapper">
+                <div class="mo mo-theme" v-if="round.themeDiscussionId">
+                    <div class="mo-icon">
+                        <img src="../../assets/book-shelves.svg" alt="stack of papers">
+                    </div>
+                    <div class="mo-text">
+                        <p class="mo-link">
+                            <router-link v-if="round.themeDiscussionId" :to="{ name: 'discussion', params: { discussionId: round.themeDiscussionId } }">Návrhy tém</router-link>
+                        </p>
+                        <p class="mo-link">
+                            <router-link v-if="round.themePollId" :to="{ name: 'poll', params: { pollId: round.themePollId } }">Hlasovanie o témach</router-link>
+                        </p>
+                    </div>
+                </div>
+                <div class="mo" v-if="round.bookDiscussionId">
+                    <div class="mo-icon">
+                        <img src="../../assets/magic-book.svg">
+                    </div>
+                    <div class="mo-text">
+                        <p class="mo-link">
+                            <router-link v-if="round.bookDiscussionId" :to="{ name: 'discussion', params: { discussionId: round.bookDiscussionId } }">Návrhy kníh</router-link>
+                        </p>
+                        <p class="mo-link">
+                            <router-link v-if="round.bookPollId" :to="{ name: 'poll', params: { pollId: round.bookPollId } }">Hlasovanie o knihách</router-link>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="winner" v-if="round.bookId">
+                <h3 class="winner-title">Vítěz kola</h3>
+                <div class="winner-cover">
+                    <router-link v-if="round.bookId" :to="{ name: 'book', params: { bookId: round.bookId } }">
+                        <img src="../../assets/book.svg" alt="kniha">
+                    </router-link>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </section>
 </template>
@@ -84,6 +116,7 @@ export default {
 </script>
 
 <style scoped>
+    /* Form */
     .page {
         max-width: 800px;
         background-color: var(--c-bckgr-primary);
@@ -96,6 +129,32 @@ export default {
             margin: var(--spacer) auto;
         }
     }
+
+    .new-round {
+        display: block;
+        margin: 0 auto;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hide-form {
+        margin-top: var(--spacer);
+    }
+
+    @media screen and (min-width: 576px) {
+        .buttons {
+            flex-direction: row;
+        }
+
+        .hide-form {
+            margin-top: 0;
+            margin-left: var(--spacer);
+        }
+    }
+
 
     .form-heading {
         font-size: 1.5em;
@@ -118,16 +177,41 @@ export default {
         display: inline-block;
     }
 
+    .form-flex {
+        display: flex;
+        flex-direction: column;
+    }
+
     .form-field input[type="radio"] {
         display: inline-block;
         width: auto;
-        margin-left: calc(var(--spacer) / 2);
+        margin-left: 0;
         margin-right: calc(var(--spacer) / 4);
     }
 
     .radio-between {
         margin-left: calc(var(--spacer) / 2);
         margin-right: calc(var(--spacer) / 4); 
+    }
+
+    .form-field-radios {
+        margin-top: calc(var(--spacer) / 2);
+        margin-bottom: calc(var(--spacer) / 2);
+    }
+
+    @media screen and (min-width: 450px) {
+        .form-flex {
+            flex-direction: row;
+        }
+
+        .form-field input[type="radio"] {
+            margin-left: calc(var(--spacer) / 2);
+        }
+
+        .form-field-radios {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
     }
 
     .form-field input {
@@ -146,13 +230,140 @@ export default {
         height: 5em;
     }
 
+    /* List of rounds */
 
-.archived a {
-    color: hotpink;
-}
+    /* fonts */
 
-td {
-    border-color: pink;
-    padding: 1em;
-}
+    .round-title {
+        margin-top: 0;
+        margin-bottom: calc(var(--spacer) * 2);
+    }
+
+    .mo-link a {
+        color: var(c-accent);
+    }
+
+    /* basic layout */
+    .round {
+        background-color: var(--c-bckgr-primary);
+        padding: var(--spacer);
+        margin-top: calc(var(--spacer) * 2);
+        margin-bottom: calc(var(--spacer) * 2);
+    }
+
+    .round-inner {
+        max-width: 1200px; /* to change later */
+        margin: 0 auto;
+    }
+
+    /* pictures */
+    .mo-icon {
+        width: 80px;
+        height: auto;
+    }
+
+    .mo-icon img {
+        width: 100%;
+    }
+
+    .winner-cover {
+        width: 100px;
+        height: auto;
+    }
+
+    .winner-cover img {
+        width: 100%;
+    }
+
+    /* round layout */
+    .round-title,
+    .winner-title {
+        text-align: center;
+    }
+
+    .mo {
+        text-align: center;
+        margin-bottom: calc(var(--spacer) * 2);
+    }
+
+    .mo-icon {
+        margin: 0 auto calc(var(--spacer) / 2) auto;
+    }
+
+    .mo-link {
+        margin: 0;
+    }
+
+    .mo-link:first-child {
+        margin-bottom: var(--spacer);
+    }
+
+    .winner-cover {
+        margin: 0 auto;
+    }
+
+    @media screen and (min-width: 576px) {
+        .mo {
+            display: flex;
+            justify-items: flex-start;
+
+            text-align: left;
+            align-items: center;
+            margin-bottom: 0;
+            min-width: 255px;
+        }
+
+        .mo-theme {
+            margin-bottom: var(--spacer);
+        }
+
+        .mo-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .mo-icon {
+            margin: 0 var(--spacer) 0 0;
+        }
+
+        .mo-link:first-child {
+            margin-bottom: 0;
+        }
+
+        .mo-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 55px;
+        }
+
+        .round-mo {
+            display: flex;
+            justify-content: center;
+        }
+
+        .winner {
+            margin: 0 0 0 calc(var(--spacer) * 2);
+        
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
+        }
+    }
+
+    @media screen and (min-width: 900px) {
+        .mo-wrapper {
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .mo-theme {
+            margin-right: calc(var(--spacer) * 2);
+            margin-bottom: 0;
+        }
+
+        
+    }
+
 </style>
