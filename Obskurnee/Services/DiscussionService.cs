@@ -91,6 +91,8 @@ namespace Obskurnee.Services
                 body);
         }
 
-        internal Discussion GetWithPosts(int discussionId) => _db.Discussions.Include(d => d.Posts).FindById(discussionId);
+        public Discussion GetWithPosts(int discussionId) => _db.Discussions.Include(d => d.Posts).FindById(discussionId);
+
+        public Discussion GetLatestOpen() => _db.Discussions.Find(d => !d.IsClosed).OrderByDescending(d => d.DiscussionId).FirstOrDefault();
     }
 }

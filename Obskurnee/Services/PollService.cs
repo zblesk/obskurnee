@@ -110,5 +110,7 @@ namespace Obskurnee.Services
                 return poll.Results;
             }
         }
+
+        public Poll GetLatestOpen() => _db.Polls.Find(d => !d.IsClosed).OrderByDescending(d => d.PollId).FirstOrDefault();
     }
 }

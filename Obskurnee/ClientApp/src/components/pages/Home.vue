@@ -1,5 +1,10 @@
 <template>
 <section>
+  <span class="todo-l" v-if="currentPoll || currentDiscussion">
+    Vitaj, {{ myProfile.name }}. 
+    <span v-if="currentPoll">Práve beží <router-link :to="{ name: 'poll', params: { pollId: currentPoll.pollId } }">hlasovanie.</router-link></span>
+    <span v-if="currentDiscussion">Zbierame <router-link :to="{ name: 'discussion', params: { discussionId: currentDiscussion.discussionId } }">návrhy!</router-link></span>
+  </span>
   <div class="grid2">
   <book-large-card :post="currentBook.post" style="margin: auto;" v-if="currentBook && currentBook.post">
       <h5><em>Momentálne čítame knihu #{{ currentBook.order }}</em></h5>
@@ -37,6 +42,8 @@ export default {
         currentBook: {},
         myProfile: {},
         noticeboardHtml: "",
+        currentPoll: {},
+        currentDiscussion: {},
       }
   },
   methods: {
@@ -50,6 +57,8 @@ export default {
               }
               this.noticeboardHtml = response.data.notice;
               this.myProfile = response.data.myProfile;
+              this.currentPoll = response.data.currentPoll;
+              this.currentDiscussion = response.data.currentDiscussion ;
             })
             .catch(function (error) {
                 console.log(error);
