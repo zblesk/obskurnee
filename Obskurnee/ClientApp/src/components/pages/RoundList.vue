@@ -65,7 +65,6 @@
                 </div>
             </div>
             <div class="winner" v-if="round.bookId">
-                <h3 class="winner-title">Vítěz kola</h3>
                 <div class="winner-cover">
                     <router-link v-if="round.bookId" :to="{ name: 'book', params: { bookId: round.bookId } }">
                         <img v-if="round.book?.post?.imageUrl"
@@ -250,13 +249,6 @@ export default {
         color: var(c-accent);
     }
 
-    .winner-title {
-        font-size: 1.125em;
-        font-weight: bold;
-        text-align: center;
-        margin: 0 0 var(--spacer) 0;
-    }
-
     .winner-book,
     .winner-author {
         text-align: center;
@@ -302,8 +294,7 @@ export default {
     }
 
     /* round layout */
-    .round-title,
-    .winner-title {
+    .round-title {
         text-align: center;
     }
 
@@ -385,35 +376,24 @@ export default {
 
         .winner {
             margin: 0 0 0 calc(var(--spacer) * 2);
-        
-            display: grid;
-            grid-template-columns: auto auto;
-            grid-template-rows: calc(1.125em + var(--spacer)) 80px;
-        }
-
-        .winner-title {
-            grid-column: 1 / 3;
-            grid-row: 1 / 2;
-
-            text-align: left;
+            flex-direction: row;
         }
 
         .winner-cover {
-            grid-column: 1 / 2;
-            grid-row: 2 / 3;
-
-            margin-bottom: 0;
-            margin-right: var(--spacer);
-        }
-
-        .winner-desc {
-            grid-column: 2 / 3;
-            grid-row: 2 / 3;
+            margin: 0 var(--spacer) 0 0;
+            flex-shrink: 0;
         }
 
         .winner-book,
         .winner-author {
             text-align: left;
+        }
+
+        .winner-desc {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 55px;
         }
     }
 
