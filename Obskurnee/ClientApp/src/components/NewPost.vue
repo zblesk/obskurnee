@@ -1,11 +1,9 @@
 <template>
 <div>
   <div v-if="hide">
-    <a @click="toggleVisibility" class="button-primary">Ukaz</a>
-    <span class="todo-l">Davam button aby si si lahsie vsimla, ale mozno by stacil aj nejaky text link? Nemusi nutne byt, neviem co je lepsie - idealne nech sa to da lahko vsimnut, ale nie je to ako past na oko. :) </span>
+    <button @click="toggleVisibility" class="button-primary">Přidej nový návrh</button>
   </div>
   <div v-else class="form">
-    <a @click="toggleVisibility" class="button-primary">Skry</a>
     <div class="cover">
       <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />
     </div>
@@ -60,7 +58,10 @@
 
   Mozes lahko pridat aj [link](https://google.sk)"></textarea>
       </div>
-      <button @click="addPost" class="button-primary">Pridaj</button>
+      <div class="buttons">
+        <button @click="addPost" class="button-primary">Pridaj</button>
+        <button @click="toggleVisibility" class="button-secondary hide-form">Schovej formulář</button>
+      </div>
     </div>
   </div>
 </div>
@@ -156,6 +157,26 @@
     padding: 0.5em 1em;
     width: 100%;
     height: 15em;
+  }
+
+  .buttons {
+        display: flex;
+        flex-direction: column;
+    }
+
+  .hide-form {
+    margin-top: var(--spacer);
+  }
+
+  @media screen and (min-width: 576px) {
+    .buttons {
+      flex-direction: row;
+    }
+
+    .hide-form {
+      margin-top: 0;
+      margin-left: var(--spacer);
+    }
   }
 
 
