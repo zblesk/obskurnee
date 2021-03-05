@@ -72,9 +72,11 @@
                             :src="round.book?.post?.imageUrl" :alt="round.book.post.title" :title="round.book.post.title">
                         <img v-else 
                             src="../../assets/book.svg" :alt="round.book?.post?.title" :title="round.book?.post?.title">
-                        <b>{{ round.book?.post?.title }}</b><br />
-                        <span>{{ round.book?.post?.author }}</span>
                     </router-link>
+                </div>
+                <div class="winner-desc">
+                    <p class="winner-book"><router-link v-if="round.bookId" :to="{ name: 'book', params: { bookId: round.bookId } }">{{ round.book?.post?.title }}</router-link></p>
+                    <p class="winner-author">{{ round.book?.post?.author }}</p>
                 </div>
             </div>
         </div>
@@ -248,6 +250,26 @@ export default {
         color: var(c-accent);
     }
 
+    .winner-title {
+        font-size: 1.125em;
+        font-weight: bold;
+        text-align: center;
+        margin: 0 0 var(--spacer) 0;
+    }
+
+    .winner-book,
+    .winner-author {
+        text-align: center;
+    }
+
+    .winner-book {
+        font-weight: bold;
+    }
+
+    .winner-book a {
+        text-decoration: none;
+    }
+
     /* basic layout */
     .round {
         background-color: var(--c-bckgr-primary);
@@ -272,12 +294,11 @@ export default {
     }
 
     .winner-cover {
-        width: 100px;
-        height: auto;
+        height: 80px;
     }
 
     .winner-cover img {
-        width: 100%;
+        height: 100%;
     }
 
     /* round layout */
@@ -303,8 +324,22 @@ export default {
         margin-bottom: var(--spacer);
     }
 
+    .winner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     .winner-cover {
-        margin: 0 auto;
+        margin-bottom: var(--spacer);
+    }
+
+    .winner-book {
+        margin-bottom: calc(var(--spacer) / 2);
+    }
+
+    .winner-author {
+        margin-bottom: 0;
     }
 
     @media screen and (min-width: 576px) {
@@ -351,9 +386,34 @@ export default {
         .winner {
             margin: 0 0 0 calc(var(--spacer) * 2);
         
-            display: flex;
-            flex-direction: row-reverse;
-            align-items: center;
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-template-rows: calc(1.125em + var(--spacer)) 80px;
+        }
+
+        .winner-title {
+            grid-column: 1 / 3;
+            grid-row: 1 / 2;
+
+            text-align: left;
+        }
+
+        .winner-cover {
+            grid-column: 1 / 2;
+            grid-row: 2 / 3;
+
+            margin-bottom: 0;
+            margin-right: var(--spacer);
+        }
+
+        .winner-desc {
+            grid-column: 2 / 3;
+            grid-row: 2 / 3;
+        }
+
+        .winner-book,
+        .winner-author {
+            text-align: left;
         }
     }
 
@@ -367,8 +427,6 @@ export default {
             margin-right: calc(var(--spacer) * 2);
             margin-bottom: 0;
         }
-
-        
     }
 
 </style>
