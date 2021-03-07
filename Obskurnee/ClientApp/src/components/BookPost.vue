@@ -83,6 +83,10 @@
     margin-bottom: 0;
   }
 
+  .book__pitch p {
+    font-size: 0.875em;
+  }
+
   .book__pitch h2 {
     font-size: 1em;
     margin: 0 0 0.5em 0;
