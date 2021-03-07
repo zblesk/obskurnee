@@ -14,6 +14,7 @@
           <input id="passwordInput" type="password" v-model="form.password" required />
         </div>
         <button class="button-login" type="submit">Přihlásit</button>
+        <button class="button-logout" @click="onPasswordReset">Zabudnuté heslo</button>
         <button class="button-reset" type="reset">Zrušit</button>
       </form>
     </div>
@@ -185,8 +186,9 @@ export default {
     ...mapGetters("context", ["isAuthenticated"])
   },
   methods: {
-    ...mapActions("context", ["login", "logout"]),
-    onSubmit() {
+    ...mapActions("context", ["login", "logout", "passwordReset"]),
+    onSubmit() 
+    {
       this.login(this.form)
         .then(() => {
           this.$notifySuccess("Vitaj späť");
@@ -197,15 +199,28 @@ export default {
         }
       );
     },
-    onCancel() {
+    onCancel() 
+    {
       this.form = {};
       this.showLoginForm = false;
     },
-    onLogout(){
+    onLogout()
+    {
       this.logout();
       this.$router.push({ name: "home" });
       this.showLoginForm = false;
-    }
+    },
+    onPasswordReset() 
+    {
+      if (!this.form.email)
+      {
+        this.$notifyError('Zadaj email');
+        return;
+      }
+      this.passwordResetInit(this.form.email)
+        .then(() => this.$notifySuccess('Pozri mail'))
+        .catch((err) => this.$notifyError(err));
+    },
   },
 };
 </script>

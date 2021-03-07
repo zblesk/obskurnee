@@ -12,6 +12,7 @@ import Setup from "@/components/pages/Setup.vue";
 import BookList from "@/components/pages/BookList.vue";
 import DiscussionList from "@/components/pages/DiscussionList.vue";
 import Book from "@/components/pages/Book.vue";
+import PasswordReset from "@/components/pages/PasswordReset.vue";
 
 const routes = [
     {
@@ -78,6 +79,11 @@ const routes = [
         path: "/my/:email/:mode?",
         name: "user",
         component: User,
+    },
+    {
+        path: "/passwordreset/:userId/:token",
+        name: "passwordreset",
+        component: PasswordReset,
     }
 ];
 
