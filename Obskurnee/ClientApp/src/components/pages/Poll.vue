@@ -1,7 +1,7 @@
 <template>
 <section>
-  <h1 id="tableLabel">
-    {{ poll.title }}<small v-if="poll.isClosed"> Uzavreté</small>
+  <h1 id="tableLabel" class="page-title">
+    {{ poll.title }}<span class="poll-closed" v-if="poll.isClosed">&nbsp;Uzavreté</span>
   </h1>
 
   <div v-if="poll.isClosed">
@@ -11,31 +11,48 @@
       <text-post :post="poll.options.find(o => o.postId == poll.results.winnerPostId)"  style="margin: auto;">Víťaz</text-post>
     </router-link>
   </div>
-  <div v-if="!poll.isClosed && poll.results && poll.results.yetToVote" 
-    style="margin:1em; border-color: pink; border-style:dashed;">
-    Už hlasovalo {{ poll.results.alreadyVoted }} z {{ poll.results.totalVoters }}. <br />
-    Ešte nehlasovala: <span v-for="person in poll.results.yetToVote" v-bind:key="person">{{ person }}</span>
-  </div>
-  <ol>
-    <li v-for="option in poll.options" v-bind:key="option.postId">
-      <input type="checkbox" :id="option.postId" :value="option.postId" v-model="checkedOptions" :disabled="iVoted"/>
-      <label :for="option.postId" @click="toggleShow(option)"><strong>{{ option.title }}</strong> - {{ option.author }}</label>
-    </li>
-  </ol>
-  <button @click="vote" :disabled="!checkedOptions?.length" class="btn btn-warning">Hlasuj!</button>
-  
-  <div v-if="iVoted && poll.results && poll.results.votes">
-    <h2>VÝSLEDKY:</h2>
-    <ol>
-      <li v-for="vote in poll.results.votes" v-bind:key="vote">
-         {{ poll.options.find(o => o.postId == vote.postId).title }} 
-         - {{ vote.votes }} hlasy - {{ vote.percentage }}%
-      </li>
-    </ol>
+
+  <div class="page-wrapper flex">
+
+    <div class="page flex">
+
+      <div v-if="!poll.isClosed && poll.results && poll.results.yetToVote" 
+        style="margin:1em; border-color: pink; border-style:dashed;">
+        Už hlasovalo {{ poll.results.alreadyVoted }} z {{ poll.results.totalVoters }}. <br />
+        Ešte nehlasovala: <span v-for="person in poll.results.yetToVote" v-bind:key="person">{{ person }}</span>
+      </div>
+
+      <ol class="poll">
+        <li v-for="option in poll.options" v-bind:key="option.postId" class="poll-field">
+          <input type="checkbox" :id="option.postId" :value="option.postId" v-model="checkedOptions" :disabled="iVoted" class="checkbox" />
+          <label :for="option.postId" @click="toggleShow(option)"><span class="label-title">{{ option.title }}</span> <span>(</span>{{ option.author }}<span>)</span></label>
+        </li>
+      </ol>
+
+      <div class="buttons">
+        <button @click="vote" :disabled="!checkedOptions?.length" class="button-primary">Hlasovat</button>
+        <button v-if="isMod && !poll.isClosed" @click="closePoll(poll.pollId)" class="button-primary poll-to-close">Zavri hlasovanie hned</button>
+      </div>
+      
+      <div v-if="iVoted && poll.results && poll.results.votes">
+        <h2>VÝSLEDKY:</h2>
+        <ol>
+          <li v-for="vote in poll.results.votes" v-bind:key="vote">
+            {{ poll.options.find(o => o.postId == vote.postId).title }} 
+            - {{ vote.votes }} hlasy - {{ vote.percentage }}%
+          </li>
+        </ol>
+      </div>
+
+    </div>
+
+    <div class="book-post-wrapper flex">
+      <book-post v-if="previewId" v-bind:key="previewId.postId" v-bind:post="previewId" ></book-post>
+    </div>
+
   </div>
 
-  <book-post v-if="previewId" v-bind:key="previewId.postId" v-bind:post="previewId" ></book-post>
-  <a v-if="isMod" @click="closePoll(poll.pollId)" class="button">Zavri hlasovanie hned</a>
+
 </section>
 </template>
 
@@ -102,5 +119,101 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+
+  .poll-closed {
+    font-size: 0.65em;
+    color: var(--c-accent);
+    text-transform: uppercase;
+    vertical-align: super;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .poll-to-close {
+    margin-top: var(--spacer);
+  }
+
+  @media screen and (min-width: 576px) {
+    .buttons {
+      flex-direction: row;
+    }
+
+    .poll-to-close {
+      margin-top: 0;
+      margin-left: var(--spacer);
+    }
+  }
+
+  /* layout */
+
+  .page {
+    max-width: 800px;
+    background-color: var(--c-bckgr-primary);
+    margin: var(--spacer);
+    padding: calc(2* var(--spacer));
+  }
+
+  @media screen and (min-width: 840px) {
+    .page {
+      margin: var(--spacer) auto;
+    }
+  }
+
+  .book-post-wrapper {
+    max-width: 800px;
+    margin: var(--spacer);
+  }
+
+  @media screen and (min-width: 840px) {
+    .book-post-wrapper {
+      margin: var(--spacer) auto;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    .page-wrapper.flex {
+      display: flex;
+    }
+
+    .book-post-wrapper.flex {
+      flex: 1 1 50%;
+      margin-left: var(--spacer);
+      margin-right: var(--spacer);
+    }
+
+    .page.flex {
+      flex: 1 1 50%;
+      margin-left: var(--spacer);
+    }
+  }
+
+  /* open poll */
+
+  .poll {
+    margin: 0 0 var(--spacer) 0;
+    padding-left: calc(var(--spacer) * 2);
+  }
+
+  .poll-field:not(:last-child) {
+    margin-bottom: calc(var(--spacer) / 2);
+  }
+
+  .poll-field input {
+    margin-right: calc(var(--spacer) / 2);
+    margin-left: calc(var(--spacer) / 2);
+  }
+
+  .checkbox:checked+label>.label-title {
+    font-weight: bold;
+  }
+
+  
+  
+
+
+
 </style>
