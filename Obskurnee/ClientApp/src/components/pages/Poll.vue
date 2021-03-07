@@ -25,7 +25,7 @@
       <ol class="poll">
         <li v-for="option in poll.options" v-bind:key="option.postId" class="poll-field">
           <input type="checkbox" :id="option.postId" :value="option.postId" v-model="checkedOptions" :disabled="iVoted" class="checkbox" />
-          <label :for="option.postId" @click="toggleShow(option)"><span class="label-title">{{ option.title }}</span> <span>(</span>{{ option.author }}<span>)</span></label>
+          <label :for="option.postId" @click="toggleShow(option)"><span class="label-title">{{ option.title }}</span> <span v-if="option.author">({{ option.author }})</span></label>
         </li>
       </ol>
 
