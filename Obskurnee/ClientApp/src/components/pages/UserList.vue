@@ -8,14 +8,26 @@
                 <div class="user-pic">
                     <img src="../../assets/reader.svg" alt="reader">
                 </div>
+            </router-link>
                 <div class="user-desc">
-                    <h2 class="user-name">{{ user.name }}</h2>
+                    <router-link :to="{ name: 'user', params: { email: user.email } }">
+                        <h2 class="user-name">{{ user.name }}</h2>
+                    </router-link>
                     <div class="user-bio" v-html="user.aboutMeHtml"></div>
                 </div>
-                <div v-for="review in user.currentlyReading" v-bind:key="review.ReviewId">
-                    {{ review }} <hr />
-                </div>
-            </router-link>
+            <div class="reading">
+                <h3 class="reading-title">Právě čte:</h3>
+                <ul class="reading-list">
+                    <li v-for="review in user.currentlyReading" v-bind:key="review.ReviewId"><a :href="review.reviewUrl">{{ review.author }}: <span class="reading-book">{{ review.bookTitle }}</span></a></li>
+                </ul>
+            </div>
+            <!--
+            <div v-for="review in user.currentlyReading" v-bind:key="review.ReviewId">
+                {{ review }} <hr />
+            </div>
+            -->
+
+            
         </div>
     </div>
 
@@ -23,16 +35,11 @@
 </template>
 
 <style scoped>
-    .user-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: var(--spacer);
-        padding: 0 var(--spacer);
-    }
 
     .user-card {
         background-color: var(--c-bckgr-primary);
         padding: var(--spacer);
+        margin: 0 var(--spacer) var(--spacer) var(--spacer);
     }
 
     .user-pic {
@@ -52,6 +59,7 @@
     }
 
     .user-name {
+        color: var(--c-primary);
         font-size: 1.5em;
         font-weight: bold;
         text-align: center;
@@ -66,6 +74,34 @@
     .user-card a {
         text-decoration: none;
     }
+
+    .reading-book {
+        font-weight: bold;
+    }
+
+    .reading-list li {
+        line-height: 1.5;
+        margin-bottom: var(--spacer);
+    }
+
+    .reading-list li:last-child {
+        margin-bottom: 0;
+    }
+
+    @media screen and (min-width: 400px) {
+        .user-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: var(--spacer);
+            padding: 0 var(--spacer);
+            margin-bottom: var(--spacer);
+        }
+
+        .user-card {
+            margin: 0 0 0 0;
+        }
+    }
+
 
 
 </style>
