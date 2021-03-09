@@ -146,7 +146,7 @@ namespace Obskurnee
             });
 
             userService.ReloadCache();
-            lifetime.ApplicationStarted.Register(() => Log.Information("Application started"));
+            lifetime.ApplicationStarted.Register(() => Log.Information("Application started at {@base}", Config.Current));
             lifetime.ApplicationStopping.Register(() => Log.Information("Application stopping"));
             lifetime.ApplicationStopped.Register(() => Log.Information("Application stopped"));
         }

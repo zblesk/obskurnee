@@ -24,6 +24,7 @@ namespace Obskurnee.Models
             }
         }
 
+        public string Urls { get; set; }
         public SymmetricSecurityKey SecurityKey { get; private set; }
         public string BaseUrl { get => (_baseUrl ?? "").Trim().TrimEnd('/'); set => _baseUrl = value; }
         public int DefaultPasswordMinLength { get; set; }
