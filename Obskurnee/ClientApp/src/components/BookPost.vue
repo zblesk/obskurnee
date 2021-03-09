@@ -26,6 +26,8 @@
   .book {
     padding: var(--spacer);
     background-color: var(--c-bckgr-primary);
+    overflow: hidden;
+    width: 100%;
   }
 
   .book__cover {
@@ -37,7 +39,7 @@
   @media screen and (min-width: 400px) {
     .book__cover {
       float: left;
-      margin: 0 var(--spacer) var(--spacer) 0;
+      margin: 0 var(--spacer) 0 0;
     }
   }
 
