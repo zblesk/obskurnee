@@ -4,7 +4,7 @@
       <div v-if="!showLoginForm" class="form-not-shown">
         <button class="button-show" @click="this.showLoginForm = true">Přihlášení</button>
       </div>
-      <form @submit.prevent="onSubmit" @reset.prevent="onCancel" v-if="showLoginForm" class="login-form">
+      <form @submit.prevent="onSubmit" @keyup.enter="onSubmit" @reset.prevent="onCancel" v-if="showLoginForm" class="login-form">
         <div class="login-form-field">
           <label for="emailInput">E-mail</label>
           <input id="emailInput" type="email" v-model="form.email" required />
@@ -14,8 +14,8 @@
           <input id="passwordInput" type="password" v-model="form.password" required />
         </div>
         <button class="button-login" type="submit">Přihlásit</button>
-        <button class="button-logout" @click="onPasswordReset">Zabudnuté heslo</button>
-        <button class="button-reset" type="reset">Zrušit</button>
+        <button class="button-reset" @click="goToReset">Zabudnuté heslo</button>
+        <button class="button-logout" type="reset">Zrušit</button>
       </form>
     </div>
     <div v-if="isAuthenticated" class="is-auth">
@@ -186,7 +186,7 @@ export default {
     ...mapGetters("context", ["isAuthenticated"])
   },
   methods: {
-    ...mapActions("context", ["login", "logout", "passwordReset"]),
+    ...mapActions("context", ["login", "logout"]),
     onSubmit() 
     {
       this.login(this.form)
@@ -195,7 +195,8 @@ export default {
         }
       )
       .catch((err) => {
-          this.$notifyError("Prihlásenie zlyhalo :( " + err);
+          this.$notifyError("Prihlásenie zlyhalo :( ");
+          console.log(err);
         }
       );
     },
@@ -210,17 +211,11 @@ export default {
       this.$router.push({ name: "home" });
       this.showLoginForm = false;
     },
-    onPasswordReset() 
+    goToReset()
     {
-      if (!this.form.email)
-      {
-        this.$notifyError('Zadaj email');
-        return;
-      }
-      this.passwordResetInit(this.form.email)
-        .then(() => this.$notifySuccess('Pozri mail'))
-        .catch((err) => this.$notifyError(err));
-    },
+      this.showLoginForm = false;
+      this.$router.push({ name: 'passwordreset' });
+    }
   },
 };
 </script>

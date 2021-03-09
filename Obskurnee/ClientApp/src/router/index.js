@@ -81,7 +81,7 @@ const routes = [
         component: User,
     },
     {
-        path: "/passwordreset/:userId/:token",
+        path: "/passwordreset/:userId?/:token(.*)?",
         name: "passwordreset",
         component: PasswordReset,
     }

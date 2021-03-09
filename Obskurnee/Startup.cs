@@ -97,7 +97,6 @@ namespace Obskurnee
                     }));
                 });
 
-
             ConfigureAuthAndIdentity(services);
         }
 
@@ -195,7 +194,7 @@ namespace Obskurnee
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequiredLength = 15;
+                options.Password.RequiredLength = Config.Current.DefaultPasswordMinLength;
                 options.ClaimsIdentity.UserIdClaimType = BookclubClaims.UserId;
             })
                .AddUserStore<LiteDbUserStore<Bookworm>>()

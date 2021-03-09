@@ -1,102 +1,66 @@
 <template>
 <section>
- 
+    <div v-if="$route.params.token">
+        <label for="passwordInput">Heslo</label>
+        <input id="passwordInput" @keyup.enter="resetPassword" v-model="newPassword" required />
+        <button @click="resetPassword">Reset</button>
+    </div>
+    <div v-else>
+        <div class="login-form-field">
+            <label for="emailInput">E-mail</label>
+            <input id="emailInput" @keyup.enter="initPasswordReset" type="email" v-model="email" required />
+        </div>
+        <button class="button-reset" @click="initPasswordReset">Odošli</button>
+    </div>
 </section>
 </template>
 
 
 <script>
-import axios from 'axios';
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 export default {
     name: "PasswordReset",
     data() {
         return {
+            email: "",
+            newPassword: "",
         }
     },
     methods: {
-        ...mapActions("context", ["passwordResetFinish"]),
+        ...mapActions("context", ["passwordResetFinish", "passwordResetInit", "login"]),
+        resetPassword()
+        {
+            if (!this.newPassword)
+            {
+                this.$notifyError('Zadaj heslo');
+                return;
+            }
+            this.passwordResetFinish({ 
+                password: this.newPassword, 
+                userId: this.$route.params.userId, 
+                token: this.$route.params.token})
+                .then(() => {
+                    this.$notifySuccess("Zmenené");
+                    this.$router.push({ name: 'home' });
+                })
+                .catch((err, p) =>{ 
+                    console.log('aaaaaaaaaaaa koniec', err, p);
+                    console.log(err); 
+                    this.$notifyError(err?.response?.data); });
+        },
+        initPasswordReset() 
+        {
+            if (!this.email)
+            {
+                this.$notifyError('Zadaj email');
+                return;
+            }
+            this.passwordResetInit(this.email)
+                .then(() => this.$notifySuccess('Pozri mail'))
+                .catch((err) => this.$notifyError(err));
+        },
     },
     mounted() {
     }
 }
 </script>
-
-<style scoped>
-    .main {
-        padding: var(--spacer);
-        background-color: var(--c-bckgr-primary);
-        max-width: 800px;
-        margin: 0 var(--spacer) calc(var(--spacer) * 2) var(--spacer);
-    }
-
-    @media screen and (min-width: 840px) {
-        .main {
-            margin: 0 auto var(--spacer) auto;
-        }
-    }
-
-    .not-mod-text {
-        font-size: 1.5em;
-        font-weight: bold;
-        text-align: center;
-    }
-
-    .not-mod-pic {
-        max-width: 400px;
-        margin: 0 auto;
-    }
-
-    .not-mod img {
-        width: 100%;
-    }
-
-    .section {
-        margin-bottom: calc(2* var(--spacer));
-    }
-
-    .section-title {
-        margin-top: 0;
-        margin-bottom: 0.5em;
-    }
-
-    .form-field label {
-        display: block;
-        margin-bottom: calc(var(--spacer) / 2);
-    }
-
-    .form-field textarea {
-        width: 100%;
-        height: 15em;
-        margin-bottom: calc(var(--spacer) / 2);
-    }
-
-    .form-field input {
-        width: 100%;
-        max-width: 380px;
-        margin-bottom: calc(var(--spacer) / 2);
-    }
-
-    .note {
-        display: flex;
-        align-items: center;
-        margin-top: var(--spacer);
-        padding: 0 calc(var(--spacer) / 2);
-    }
-
-    .note-pic {
-        width: 20px;
-        flex-shrink: 0;
-    }
-
-    .note-pic img {
-        width: 100%;
-    }
-
-    .note-text {
-        font-size: 0.875em;
-        opacity: 0.8;
-        margin: 0 0 0 calc(var(--spacer) / 2);
-    }
-
-</style>

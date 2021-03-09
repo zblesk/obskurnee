@@ -19,10 +19,10 @@ createApp(App)
   .mixin({
     created(){
       let opts = { position: "bottom-right" };
-      this.$notifyError = (text) => this.$toast.error(text, opts);
-      this.$notifySuccess = (text) => this.$toast.success(text, opts);
-      this.$notifyNormal = (text) => this.$toast.show(text, opts);
-      this.$notifyInfo = (text) => this.$toast.info(text, opts);
+      this.$notifyError = (text) => this.$toast.error(text.toString(), opts);
+      this.$notifySuccess = (text) => this.$toast.success(text.toString(), opts);
+      this.$notifyNormal = (text) => this.$toast.show(text.toString(), opts);
+      this.$notifyInfo = (text) => this.$toast.info(text.toString(), opts);
     }
   })
   .mount('#app');

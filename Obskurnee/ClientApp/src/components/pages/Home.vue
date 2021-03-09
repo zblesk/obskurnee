@@ -42,8 +42,8 @@ export default {
         currentBook: {},
         myProfile: {},
         noticeboardHtml: "",
-        currentPoll: {},
-        currentDiscussion: {},
+        currentPoll: null,
+        currentDiscussion: null,
       }
   },
   methods: {

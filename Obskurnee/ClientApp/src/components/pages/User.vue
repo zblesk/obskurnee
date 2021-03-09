@@ -91,6 +91,7 @@ Mozes lahko pridat aj [link](https://google.sk)"></textarea>
     </div>
     <div class="profile-button">
       <a @click="startEditing" class="button-primary" :v-if="isMod || user.userId == myUserId">Upravit údaje</a>
+      <a @click="$router.push({ name: 'passwordreset' })" class="button-primary" :v-if="isMod || user.userId == myUserId">Zmeniť heslo</a>
     </div>
   </div>
   

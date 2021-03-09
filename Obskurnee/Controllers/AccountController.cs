@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.Services;
 using Obskurnee.ViewModels;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
@@ -62,13 +63,20 @@ namespace Obskurnee.Controllers
         public async Task<JsonResult> RegisterFirstAdmin([FromBody] LoginCredentials creds)
             => Json(await _users.RegisterFirstAdmin(creds));
 
-        [HttpGet("passwordreset/{userId}/{resetToken}")]
+        [HttpPost("passwordreset/token/{userId}")]
         [AllowAnonymous]
-        public Task<IdentityResult> ResetPassword(string userId, string resetToken, [FromBody] JsonElement payload)
-            => _users.ResetPassword(
+        public async Task<IActionResult> ResetPassword(string userId, [FromBody] JsonElement payload)
+        {
+            var result = await _users.ResetPassword(
                 HttpUtility.UrlDecode(userId),
-                HttpUtility.UrlDecode(resetToken),
+                payload.GetProperty("resetToken").GetString(),
                 payload.GetProperty("password").GetString());
+            if (!result.Succeeded)
+            {
+                return StatusCode(403, result.Errors.Aggregate("", (a, e) => $"{a}{e.Description} "));
+            }
+            return Ok();
+        }
 
         [HttpPost("passwordreset/{email}")]
         [AllowAnonymous]

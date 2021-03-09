@@ -75,9 +75,11 @@ export default {
     {
       return axios.post('/api/accounts/passwordreset/' + email);
     },
-    // passwordResetFinish(_)
-    // {
-      
-    // }
+    passwordResetFinish(_, pwdData)
+    {
+      return axios.post(
+        `/api/accounts/passwordreset/token/${encodeURIComponent(pwdData.userId)}`, 
+        { resetToken: pwdData.token, password: pwdData.password });
+    }
   }
 }
