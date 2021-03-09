@@ -8,6 +8,7 @@ namespace Obskurnee.Models
         public readonly string DataFolder = "data";
         public readonly string ImageFolder = "images";
         private string _key;
+        private string _baseUrl;
 
         public static Config Current;
 
@@ -24,8 +25,7 @@ namespace Obskurnee.Models
         }
 
         public SymmetricSecurityKey SecurityKey { get; private set; }
-        public string Urls { get; set; }
-        public string BaseUrl { get => Urls.Trim().TrimEnd('/'); }
+        public string BaseUrl { get => _baseUrl.Trim().TrimEnd('/'); set => _baseUrl = value; }
         public int DefaultPasswordMinLength { get; set; }
         public string PasswordGenerationChars { get; set; }
         public string GoodreadsRssBaseUrl { get; set; }
