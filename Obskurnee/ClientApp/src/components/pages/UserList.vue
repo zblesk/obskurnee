@@ -15,19 +15,15 @@
                     </router-link>
                     <div class="user-bio" v-html="user.aboutMeHtml"></div>
                 </div>
-            <div class="reading">
+            <div class="reading" v-if="user.currentlyReading.length">
                 <h3 class="reading-title">Právě čte:</h3>
                 <ul class="reading-list">
                     <li v-for="review in user.currentlyReading" v-bind:key="review.ReviewId"><a :href="review.reviewUrl">{{ review.author }}: <span class="reading-book">{{ review.bookTitle }}</span></a></li>
                 </ul>
             </div>
-            <!--
-            <div v-for="review in user.currentlyReading" v-bind:key="review.ReviewId">
-                {{ review }} <hr />
-            </div>
-            -->
-
-            
+            <div  class="reading" v-else>
+                Práve nič nečíta.
+            </div>            
         </div>
     </div>
 
