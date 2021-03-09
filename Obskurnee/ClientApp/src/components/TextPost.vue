@@ -1,9 +1,9 @@
 <template>
  <div class="card">
-  <span v-if="this.$slots.default"><slot></slot></span>
+  <h2 v-if="this.$slots.default" class="slot"><slot></slot></h2>
   <div class="container">
-    <h4><b>{{ post.title }}</b></h4>
-    <p v-html="post.renderedText"></p>
+    <h3 class="title">{{ post.title }}</h3>
+    <p v-html="post.renderedText" class="desc"></p>
   </div>
 </div> 
 </template>
@@ -17,19 +17,23 @@ export default {
 </script>
 
 <style scoped>
-.card {
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-  max-width:  220px;
-  padding: 0 1ex 0 1ex;
-}
 
-.card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
+  .slot {
+    text-align: center;
+    font-size: 1.25em;
+    margin-top: 0;
+    margin-bottom: var(--spacer);
+  }
 
-.container {
-  padding: 2px 16px;
-}
+  .container {
+    text-align: center;
+  }
+
+  .title {
+    color: var(--c-primary);
+    font-size: 1.25em;
+  }
+
+
 </style>
 
