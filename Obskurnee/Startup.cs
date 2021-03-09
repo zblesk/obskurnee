@@ -173,19 +173,6 @@ namespace Obskurnee
                         ValidateLifetime = true,
                         IssuerSigningKey = Config.Current.SecurityKey,
                     };
-                    // The JwtBearer scheme knows how to extract the token from the Authorization header
-                    // but we will need to manually extract it from the query string in the case of requests to the hub
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnMessageReceived = ctx =>
-                        {
-                            if (ctx.Request.Query.ContainsKey("access_token"))
-                            {
-                                ctx.Token = ctx.Request.Query["access_token"];
-                            }
-                            return Task.CompletedTask;
-                        }
-                    };
                 });
 
             services.AddIdentityCore<Bookworm>(options =>
