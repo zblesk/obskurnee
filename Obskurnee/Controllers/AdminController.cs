@@ -67,26 +67,27 @@ namespace Obskurnee.Controllers
             _logger.LogInformation("Adding user {email}", email);
             var password = Enumerable.Range(1, _config.DefaultPasswordMinLength)
                 .Aggregate(
-                "", 
+                "",
                 (pwd, _) => $"{pwd}{_config.PasswordGenerationChars[_random.Next(_config.PasswordGenerationChars.Length)]}");
-            try
-            {
-                var passwordSrc = await "https://zble.sk/api/password-gen/"
-                    .GetAsync()
-                    .ReceiveJson<List<string>>();
-                password = string.Join("", passwordSrc);
-            }
-            catch
-            {
-                // ignore errors
-            }
+            if (_config.UseExternalFriendlyPasswordGenerator) 
+                try
+                {
+                    var passwordSrc = await "https://zble.sk/api/password-gen/"
+                        .GetAsync()
+                        .ReceiveJson<List<string>>();
+                    password = string.Join("", passwordSrc).Trim().RemoveDiacritics();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Error when attempting to fetch friendly password");
+                }
 
             var user = await _users.Register(new LoginCredentials { Email = email, Password = password });
             if (user != null)
             {
                 await _mailer.SendMail(
-                    $"Vitaj, {user.Name}", 
-                    $"Bola si uspesne zaregistrovana.\nPrihlas sa na <a href='{_config.BaseUrl}'>{_config.BaseUrl}</a>\n\nTvoj prihlasovaci mail: {user.Email}\nDefault heslo: {password}\n\nAsi by bolo najlepsie si to heslo zmenit.", 
+                    $"Vitaj, {user.Name}",
+                    $"Bola si uspesne zaregistrovana.\nPrihlas sa na <a href='{_config.BaseUrl}'>{_config.BaseUrl}</a>\n\nTvoj prihlasovaci mail: {user.Email}\nDefault heslo: {password}\n\nAsi by bolo najlepsie si to heslo zmenit.",
                     email);
                 return Json(user);
             }
