@@ -109,6 +109,7 @@ namespace Obskurnee.Services
                 _logger.LogInformation("User created");
                 ReloadCache();
                 Newsletter.Subscribe(user.Id, Newsletters.BasicEvents);
+                _db.Flush();
                 return UserInfo.From(user);
             }
             return null;
@@ -143,7 +144,7 @@ namespace Obskurnee.Services
             if (newUser == null)
             {
                 _logger.LogError("First admin creation failed");
-                return null;
+                throw new Exception("First admin creation failed");
             }
             var isMod = await MakeModerator(newUser.Email);
             var isAdmin = await MakeAdmin(newUser.Email);

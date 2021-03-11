@@ -61,6 +61,11 @@ namespace Obskurnee.Services
             return book;
         }
 
+        public void Flush()
+        {
+            _db.Checkpoint();
+        }
+
         public void Dispose()
         {
             _db?.Checkpoint();
