@@ -5,10 +5,10 @@
   </h1>
 
   <div v-if="poll.isClosed" class="winner">
-    <book-preview v-if="poll.followupLink?.kind !== 'Discussion'" :book="{ bookId: poll.followupLink.entityId, post: poll.options.find(o => o.postId == poll.results.winnerPostId) }" 
-      style="margin: auto;">Víťaz</book-preview>
+    <h2 class="winner-title">Víťaz</h2>
+    <book-preview v-if="poll.followupLink?.kind !== 'Discussion'" :book="{ bookId: poll.followupLink.entityId, post: poll.options.find(o => o.postId == poll.results.winnerPostId) }"></book-preview>
     <router-link v-if="poll.followupLink?.kind == 'Discussion'" :to="{ name: 'discussion', params: { discussionId: poll.followupLink.entityId } }" class="link">
-      <text-post :post="poll.options.find(o => o.postId == poll.results.winnerPostId)">Víťaz</text-post>
+      <text-post :post="poll.options.find(o => o.postId == poll.results.winnerPostId)"></text-post>
     </router-link>
   </div>
 
@@ -175,6 +175,13 @@ export default {
 
   .link {
     text-decoration: none;
+  }
+
+  .winner-title {
+    text-align: center;
+    font-size: 1.25em;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 
   /* layout */
