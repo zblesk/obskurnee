@@ -22,7 +22,7 @@
                 </ul>
             </div>
             <div  class="reading" v-else>
-                Práve nič nečíta.
+                <h3 class="reading-title">Práve nič nečíta.</h3>
             </div>            
         </div>
     </div>
