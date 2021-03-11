@@ -65,6 +65,7 @@ namespace Obskurnee
             services.AddTransient<RecommendationService>();
             services.AddSingleton<MatrixService>();
             services.AddTransient<ReviewService>();
+            services.AddHostedService<FeedFetcherService>();
 
             switch (Configuration["MailerType"])
             {

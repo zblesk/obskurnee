@@ -21,7 +21,6 @@ namespace Obskurnee.Services
 
         private readonly SignInManager<Bookworm> _signInManager;
         private readonly UserManager<Bookworm> _userManager;
-        private readonly GoodreadsScraper _scraper;
 
         private readonly JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
         private readonly IMailerService _mailer;
@@ -46,7 +45,6 @@ namespace Obskurnee.Services
            Database database,
            ILogger<UserService> logger,
            IMailerService mailer,
-           GoodreadsScraper scraper,
            IServiceProvider serviceProvider,
            ReviewService reviews,
            Config config)
@@ -56,7 +54,6 @@ namespace Obskurnee.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
             _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
-            _scraper = scraper ?? throw new ArgumentNullException(nameof(scraper));
             EnsureCacheLoaded();
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _reviews = reviews ?? throw new ArgumentNullException(nameof(reviews));
@@ -88,6 +85,9 @@ namespace Obskurnee.Services
                 yield return user;
             }
         }
+
+        public IEnumerable<Bookworm> GetAllUsersAsBookworm()
+            => _db.Users.FindAll();
 
         public IList<string> GetAllUserIds()
         {
@@ -250,27 +250,8 @@ namespace Obskurnee.Services
             }
             _logger.LogInformation("User profile for {userId} ({email}) updated.", user.Id, user.Email.Address);
             ReloadCache();
-            Task.Run(() => UpdateReviews(user));
 
             return await GetUserByEmail(email);
-        }
-
-        public void UpdateReviews(Bookworm user)
-        {
-            try
-            {
-                _logger.LogInformation("Updating GR review from shelf RSS for {userId}", user.Id);
-                _db.CurrentlyReadings.DeleteMany(r => r.OwnerId == user.Id);
-                _db.CurrentlyReadings.InsertBulk(_scraper.GetCurrentlyReadingBooks(user));
-                foreach (var review in _scraper.GetReadBooks(user))
-                {
-                    _db.Reviews.Upsert(review);
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Update of GR profile for user {userId} failed", user.Id);
-            }
         }
     }
 }

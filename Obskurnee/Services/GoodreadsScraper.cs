@@ -116,7 +116,7 @@ namespace Obskurnee.Services
         {
             if (string.IsNullOrWhiteSpace(user.GoodreadsUserId))
             {
-                _logger.LogWarning("Triggered RSS feed fetch for user {userId}, but no Goodreads User ID is available. Exitting.", user.Id);
+                _logger.LogInformation("Triggered RSS feed fetch for user {userId}, but no Goodreads User ID is available. Exitting.", user.Id);
                 return Enumerable.Empty<Review>();
             }
 
@@ -128,7 +128,7 @@ namespace Obskurnee.Services
         {
             if (string.IsNullOrWhiteSpace(user.GoodreadsUserId))
             {
-                _logger.LogWarning("Triggered RSS feed fetch for user {userId}, but no Goodreads User ID is available. Exitting.", user.Id);
+                _logger.LogInformation("Triggered RSS feed fetch for user {userId}, but no Goodreads User ID is available. Exitting.", user.Id);
                 return Enumerable.Empty<Review>();
             }
 
