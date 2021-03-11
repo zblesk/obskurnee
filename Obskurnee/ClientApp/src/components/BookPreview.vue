@@ -5,8 +5,8 @@
         <img :src="book.post.imageUrl" :alt="book.post.title" v-if="book.post.imageUrl">
       </div>
       <div class="book-description">
-        <h2 class="book-order" v-if="this.$slots.default"><slot></slot></h2>
-        <p class="book-text">{{ book.post.author }}: {{ book.post.title }}</p>
+        <h2 class="book-title"><span v-if="this.$slots.default"><slot></slot></span> <span class="book-link">{{ book.post.title }}</span></h2>
+        <p class="book-author">{{ book.post.author }}</p>
       </div>
     </router-link>
   </div> 
@@ -35,20 +35,24 @@ export default {
     margin: 0 auto;
   }
 
-  .book-order {
+  .book-title {
     font-weight: bold;
     margin-top: var(--spacer);
     margin-bottom: var(--spacer);
   }
 
-  .book-order,
-  .book-text {
+  .book-title,
+  .book-author {
     font-size: 1em;
     text-align: center;
   }
 
   .book-card a {
     text-decoration: none;
+  }
+
+  .book-link {
+    color: var(--c-accent);
   }
 
 </style>
