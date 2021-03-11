@@ -6,7 +6,7 @@ namespace Obskurnee.Models
 {
     public class Poll : HeaderData
     {
-        public enum FollowupKind { Discussion, Book }
+        public enum FollowupKind { Discussion, Book, Tiebreaker }
         public record FollowupReference(FollowupKind kind, int entityId);
 
         [BsonId] public int PollId { get; set; }
@@ -20,6 +20,12 @@ namespace Obskurnee.Models
         public PollResults? Results { get; set; }
         public Poll(string ownerId) : base(ownerId) { }
 
-        public int FindWinningPost() => Results?.Votes.OrderByDescending(vote => vote.Votes).First().PostId ?? 0;
+        public int FindAnyWinningPost() => Results?.Votes.OrderByDescending(vote => vote.Votes).First().PostId ?? 0;
+
+        public IList<VoteResultItem> FindWinningPosts()
+        {
+            var maxVotes = Results?.Votes.Max(vote => vote.Votes);
+            return Results?.Votes.Where(vote => vote.Votes == maxVotes).ToList();
+        }
     }
 }
