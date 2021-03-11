@@ -45,11 +45,6 @@ namespace Obskurnee.Services
             var voteId = $"{pollId}-{userId}";
             var vote = _db.Votes
                 .FindById(voteId);
-            if (vote == null
-                && poll.Results != null)
-            {
-                poll.Results.Votes = null;
-            }
             return new PollInfo(poll, vote);
         }
 
@@ -98,13 +93,14 @@ namespace Obskurnee.Services
                                  where !allVotes.Any(v => v.OwnerId == u.Key)
                                  select u.Value.Name)
                                  .ToList(),
-                    Votes = from t in totals.OrderByDescending(kvp => kvp.Value)
-                            select new VoteResultItem
-                            {
-                                PostId = t.Key,
-                                Votes = t.Value,
-                                Percentage = (int)((t.Value / (decimal)allVotes.Count()) * 100)
-                            },
+                    Votes = (from t in totals.OrderByDescending(kvp => kvp.Value)
+                             select new VoteResultItem
+                             {
+                                 PostId = t.Key,
+                                 Votes = t.Value,
+                                 Percentage = (int)((t.Value / (decimal)allVotes.Count()) * 100)
+                             })
+                             .ToList(),
                 };
                 _db.Polls.Update(poll);
                 return poll.Results;

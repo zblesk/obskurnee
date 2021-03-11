@@ -22,17 +22,7 @@
         <p class="paragraph">Ješte nehlasovali: <span v-for="person in poll.results.yetToVote" v-bind:key="person">{{ person }},</span></p>
       </div>
 
-      <div v-if="iVoted && poll.results && poll.results.votes && !poll.isClosed">
-        <h2 class="subtitle u-mt">Průběžné výsledky</h2>
-        <ol class="poll">
-          <li class="poll-field" v-for="vote in poll.results.votes" v-bind:key="vote">
-            {{ poll.options.find(o => o.postId == vote.postId).title }}:
-             {{ vote.votes }} hlasy - {{ vote.percentage }}%
-          </li>
-        </ol>
-      </div>
-
-      <div v-if="poll.isClosed && poll.results && poll.results.votes">
+      <div v-if="iVoted || (poll.isClosed && poll.results?.votes)">
         <h2 class="subtitle">Výsledky</h2>
         <ol class="poll">
           <li class="poll-field" v-for="vote in poll.results.votes" v-bind:key="vote">
@@ -113,7 +103,7 @@ export default {
           this.iVoted = true;
         })
         .catch(function (error) {
-          console.log(error);
+          this.$notifyError(error);
         });
     },
   },

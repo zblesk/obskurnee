@@ -11,6 +11,6 @@ namespace Obskurnee.Models
         /// <summary>
         /// Post ID to count
         /// </summary>
-        public IEnumerable<VoteResultItem> Votes { get; set; }
+        public List<VoteResultItem> Votes { get; set; }
     }
 }
