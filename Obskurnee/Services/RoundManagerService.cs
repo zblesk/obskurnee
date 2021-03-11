@@ -136,23 +136,33 @@ namespace Obskurnee.Services
             var round = _db.Rounds.FindById(poll.RoundId);
             Trace.Assert(!poll.IsClosed);
             poll.IsClosed = true;
-            poll.Results.WinnerPostId = poll.FindWinningPost();
-            Trace.Assert(poll.Results.WinnerPostId != 0);
-            var result = new RoundUpdateResults { Poll = poll, Round = round };
-            switch (poll.Topic)
+
+            var winners = poll.FindWinningPosts();
+
+            if (winners.Count == 1)
             {
-                case Topic.Books:
-                    result.Book = _bookService.CreateBook(poll, round.RoundId, currentUserId);
-                    round.BookId = result.Book.BookId;
-                    poll.FollowupLink = new Poll.FollowupReference(Poll.FollowupKind.Book, result.Book.BookId);
-                    SendNewBookNotification(result);
-                    break;
-                case Topic.Themes:
-                    result.Discussion = CreateDiscussionFromTopicPoll(currentUserId, poll, round);
-                    round.BookDiscussionId = result.Discussion.DiscussionId;
-                    poll.FollowupLink = new Poll.FollowupReference(Poll.FollowupKind.Discussion, result.Discussion.DiscussionId);
-                    SendNewDiscussionNotification(result.Discussion);
-                    break;
+                poll.Results.WinnerPostId = winners[0].PostId;
+                Trace.Assert(poll.Results.WinnerPostId != 0);
+                var result = new RoundUpdateResults { Poll = poll, Round = round };
+                switch (poll.Topic)
+                {
+                    case Topic.Books:
+                        result.Book = _bookService.CreateBook(poll, round.RoundId, currentUserId);
+                        round.BookId = result.Book.BookId;
+                        poll.FollowupLink = new Poll.FollowupReference(Poll.FollowupKind.Book, result.Book.BookId);
+                        SendNewBookNotification(result);
+                        break;
+                    case Topic.Themes:
+                        result.Discussion = CreateDiscussionFromTopicPoll(currentUserId, poll, round);
+                        round.BookDiscussionId = result.Discussion.DiscussionId;
+                        poll.FollowupLink = new Poll.FollowupReference(Poll.FollowupKind.Discussion, result.Discussion.DiscussionId);
+                        SendNewDiscussionNotification(result.Discussion);
+                        break;
+                }
+            }
+            else
+            {
+                _logger.LogInformation("There are {count} winning posts with {max} votes. A tiebreaker round is needed.");
             }
             _db.Polls.Update(poll);
             _db.Rounds.Update(round);
