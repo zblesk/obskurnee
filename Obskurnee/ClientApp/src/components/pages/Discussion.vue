@@ -127,7 +127,7 @@ export default {
 
     .button-close {
       position: absolute;
-      left: 344px;
+      right: 42px;
       bottom: 60px;
     }
   }
