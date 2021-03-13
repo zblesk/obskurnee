@@ -17,6 +17,10 @@ export default {
     {
       state.votes[vote.pollId] = vote.postIds;
     },
+    setEmptyVote(state, pollId)
+    {
+      state.votes[pollId] = [];
+    },
   },
   actions: {
     async getPollData({ commit, state }, pollId)
@@ -28,17 +32,16 @@ export default {
       return axios.get("/api/polls/" + pollId)
         .then((response) =>
         {
-          console.log(response.data);
           commit('setPoll', response.data.poll);
           if (response.data.myVote)
           {
-          console.log(response.data.myVote);
-          commit('setMyVote', response.data.myVote);
+            commit('setMyVote', response.data.myVote);
           }
-        })
-        .catch(function (error)
-        {
-          console.log(error);
+          else 
+          {
+            commit('setEmptyVote', pollId);
+          }
+          return Promise.resolve(state.polls[pollId]);
         });
     },
     async sendVote({ commit }, { pollId, votes })
@@ -51,10 +54,6 @@ export default {
           commit('setPoll', response.data.poll);
           commit('setMyVote', { pollId: pollId, postIds: votes });
           return Promise.resolve(response.data);
-        })
-        .catch(function (error)
-        {
-          console.log(error);
         });
     },
     async closePoll({ commit }, pollId)
@@ -65,10 +64,6 @@ export default {
         {
           commit('setPoll', response.data.poll);
           return Promise.resolve(response.data);
-        })
-        .catch(function (error)
-        {
-          console.log(error);
         });
     }
   }

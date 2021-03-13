@@ -129,6 +129,9 @@
   <data name="pollTitle" xml:space="preserve">
     <value>{0:title} - hlasovanie</value>
   </data>
+  <data name="tiebreakerTitle" xml:space="preserve">
+    <value>Rozstrel: {0:title}</value>
+  </data>
   <data name="topicDiscussionTitle" xml:space="preserve">
     <value>{0:title} - návrhy tém</value>
   </data>
