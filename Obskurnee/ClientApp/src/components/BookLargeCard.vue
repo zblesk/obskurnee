@@ -1,9 +1,13 @@
 <template>
   <div class="card">
     <div class="cover">
-      <img :src="post.imageUrl" :alt="post.title" v-if="post.imageUrl">
+      <a :href="post.url" :alt="post.title">
+        <img :src="post.imageUrl" :alt="post.title" v-if="post.imageUrl">
+      </a>
     </div>
-    <h1 class="title">{{ post.author }}: {{ post.title }}</h1>
+    <h1 class="title">
+      <a :href="post.url" :alt="post.title">{{ post.author }}: {{ post.title }}</a>
+    </h1>
     <p class="summary" v-html="post.renderedText"></p>
   </div>
 </template>
@@ -12,15 +16,9 @@
 
   .card {
     padding: var(--spacer);
-    margin: calc(var(--spacer) * 2) var(--spacer) 0 var(--spacer);
     background-color: var(--c-bckgr-primary);
     max-width: 800px;
-  }
-
-  @media screen and (min-width: 840px) {
-    .card {
-      margin: calc(var(--spacer) * 2) auto;
-    }
+    overflow: hidden;
   }
 
   .cover {
@@ -36,9 +34,8 @@
     }
   }
 
-  .book__cover img {
-    width: 100%;
-    height: auto;
+  .cover img {
+    max-width: 100%;
   }
 
   .title {
@@ -49,16 +46,19 @@
     margin-bottom: var(--spacer);
   }
 
-  .heading {
-    font-size: 1em;
-    font-weight: bold;
+  .title a {
+    text-decoration: none;
+  }
+
+  @media screen and (min-width: 576px) {
+    .title {
+      margin-top: 0;
+    }
   }
 
   .summary {
     font-size: 1em;
   }
-
-
 
 </style>
 
