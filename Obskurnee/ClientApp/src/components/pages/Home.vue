@@ -54,17 +54,15 @@
 </template>
 
 <script>
-/*import BookPreview from '../BookPreview.vue';*/
 import axios from 'axios';
 import BookLargeCard from '../BookLargeCard.vue';
 import { mapGetters } from 'vuex';
 
 export default {
-  components: { /*BookPreview,*/ BookLargeCard },
+  components: { BookLargeCard },
   name: 'Home',
   data() {
     return {
-      books: [],
       currentBook: {},
       myProfile: {},
       noticeboardHtml: '',
@@ -78,8 +76,7 @@ export default {
         .get('/api/home')
         .then((response) => {
           if (response.data.books.length) {
-            this.books = response.data.books;
-            this.currentBook = this.books.shift();
+            this.currentBook = response.data.books.shift();
           }
           this.noticeboardHtml = response.data.notice;
           this.myProfile = response.data.myProfile;
