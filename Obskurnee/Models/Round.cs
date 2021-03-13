@@ -10,8 +10,10 @@ namespace Obskurnee.Models
         public int BookId { get; set; }
         public int ThemeDiscussionId { get; set; }
         public int ThemePollId { get; set; }
+        public int ThemeTiebreakerPollId { get; set; }
         public int BookDiscussionId { get; set; }
         public int BookPollId { get; set; }
+        public int BookTiebreakerPollId { get; set; }
         public Topic Kind { get; set; }
 
         ///<remarks>Will not be auto-loaded from DB.</remarks>
