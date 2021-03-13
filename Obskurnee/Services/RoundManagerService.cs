@@ -83,6 +83,7 @@ namespace Obskurnee.Services
             SendNewDiscussionNotification(discussion);
             return round;
         }
+
         public RoundUpdateResults CloseDiscussion(int discussionId, string currentUserId)
         {
             var discussion = _db.Discussions.FindById(discussionId);

@@ -30,7 +30,7 @@
       <div v-if="!poll.isClosed && poll.results && poll.results.yetToVote" class="u-md">
        <h2 class="subtitle">Stav hlasování</h2>
         <p class="paragraph">Už hlasovalo {{ poll.results.alreadyVoted }} z {{ poll.results.totalVoters }} čtenářů.</p>
-        <p class="paragraph">Ješte nehlasovali: <span v-for="person in poll.results.yetToVote" v-bind:key="person">{{ person }},</span></p> 
+        <p class="paragraph">Ješte nehlasovali: <span v-for="person in poll.results.yetToVote" v-bind:key="person">{{ person }},</span></p>
       </div>
 
       <div v-if="iVoted || (poll.isClosed && poll.results && poll.results.votes)">
@@ -43,7 +43,6 @@
         </ol>
       </div>
 
-
       <h2 v-if="poll.results" class="subtitle u-mt">Možnosti</h2>
       <ol class="poll">
         <li v-for="option in poll.options" v-bind:key="option.postId" class="poll-field">
@@ -54,7 +53,7 @@
 
       <div class="buttons">
         <button @click="vote" :disabled="!checkedOptions?.length" class="button-primary" v-if="!iVoted && !poll.isClosed">Hlasovat</button>
-        <button v-if="isMod && !poll.isClosed" @click="closePoll(poll.pollId)" class="button-secondary poll-to-close">Zavri hlasovanie hned</button>
+        <button v-if="isMod && !poll.isClosed" @click="doClosePoll" class="button-secondary poll-to-close">Zavri hlasovanie hned</button>
       </div>
       
     </div>
@@ -73,10 +72,8 @@
 
   </div> 
 
-
 </section>
 </template>
-
 
 <script>
 import { mapGetters,mapActions, mapState } from "vuex";
@@ -118,6 +115,7 @@ export default {
       }
       this.sendVote( { pollId: this.poll.pollId, votes: this.checkedOptions })
         .then(() => {
+          this.poll = this.polls[this.poll.pollId];
           this.iVoted = true;
         })
         .catch((error) => this.$notifyError(error));
@@ -133,6 +131,13 @@ export default {
           this.poll = this.polls[newPollId];
           this.checkedOptions = this.votes[newPollId];
           this.iVoted = this.checkedOptions?.length > 0;
+        });
+    },
+    doClosePoll()
+    {
+      this.closePoll(this.poll.pollId)
+        .then((data) => {
+          this.poll = data.poll;
         });
     }
   },
