@@ -2,7 +2,7 @@
   <section>
     <div class="homepage">
 
-      <div class="welcome" v-if="currentPoll || currentDiscussion">
+      <div class="welcome">
         <div class="welcome-pic">
           <img src="../../assets/hi.svg" alt="hi icon">
         </div>
@@ -159,6 +159,9 @@ export default {
     .page-optional {
       margin-left: calc(var(--spacer) * 2);
 
+      flex-grow: 1;
+      flex-basis: 100%;
+
       display: flex;
       flex-direction: column;
     }
@@ -174,8 +177,9 @@ export default {
     }
 
     .blc-wrapper {
-      margin-top: 0;
-      margin-bottom: 0;
+      margin: 0 auto;
+      flex-grow: 1;
+      flex-basis: 100%;
     }
 
     .notice-board {
