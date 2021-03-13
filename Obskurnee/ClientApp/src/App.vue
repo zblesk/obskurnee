@@ -118,58 +118,39 @@ body {
   background-color: var(--c-accent-secondary);
 }
 
+textarea,
+input {
+  font-size: 14px;
+  padding: calc(var(--spacer) / 2);
+  outline: none;
+}
+
 /* generic styling for markdown */
+
 p {
   font-size: 1em;
+  line-height: 1.5;
   color: var(--c-font);
   margin-bottom: 1em;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+.book__pitch p {
+  font-size: 0.875em;
+}
+
+.book__pitch h2 {
+  font-size: 1em;
+  margin: 0 0 0.5em 0;
 }
 
 h1, h2, h3 {
   color: var(--c-font);
   font-weight: bold;
-}
-
-h1 {
-  font-size: 2em;
-  margin-top: 0.67em;
-  margin-bottom: 0.67em;
-}
-
-h2 {
-  font-size: 1.5em;
-  margin-top: 0.83em;
-  margin-bottom: 0.83em;
-}
-
-h3 {
-  font-size: 1.17em;
-  margin-top: 1em;
-  margin-bottom: 1em;
-}
-
-blockquote {
-  margin-left: var(--spacer);
-  font-style: italic;
-}
-
-ul,
-ol {
-  margin-bottom: 1em;
-  padding-left: calc(2 * var(--spacer));
-}
-
-li {
-  margin-bottom: 0.625em;
-}
-
-img {
-  max-width: 100%;
-}
-
-hr {
-  margin-top: var(--spacer);
-  margin-bottom: var(--spacer);
+  margin-top: 0;
 }
 
 a {
@@ -180,11 +161,44 @@ a:hover {
   color: var(--c-accent-darker);
 }
 
-textarea,
-input {
-  font-size: 14px;
-  padding: calc(var(--spacer) / 2);
-  outline: none;
+h1 {
+  font-size: 1.5em;
+  margin-bottom: var(--spacer);
+}
+
+h2 {
+  font-size: 1.2em;
+  margin-bottom: var(--spacer);
+}
+
+h3 {
+  font-size: 1.17em;
+  margin-bottom: var(--spacer);
+}
+
+blockquote {
+  margin-left: var(--spacer);
+  font-style: italic;
+  margin-bottom: var(--spacer);
+}
+
+ul,
+ol {
+  margin-bottom: var(--spacer);
+  padding-left: calc(2 * var(--spacer));
+}
+
+li {
+  margin-bottom: calc(var(--spacer) / 2);
+}
+
+img {
+  max-width: 100%;
+}
+
+hr {
+  margin-top: var(--spacer);
+  margin-bottom: var(--spacer);
 }
 
 </style>
