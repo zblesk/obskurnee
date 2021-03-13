@@ -42,7 +42,7 @@
 
         </div>
 
-        <div class="blc-wrapper">
+        <div class="blc-wrapper" v-if="currentBook && currentBook.post">
           <h2 class="blc-heading">Momentálne čítame knihu #{{ currentBook.order }}</h2>
           <book-large-card :post="currentBook.post" v-if="currentBook && currentBook.post"></book-large-card>
         </div>
