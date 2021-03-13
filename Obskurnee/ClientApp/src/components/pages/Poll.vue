@@ -3,26 +3,37 @@
   <h1 id="tableLabel" class="page-title">
     {{ poll.title }}<span class="poll-closed" v-if="poll.isClosed">&nbsp;Uzavreté</span>
   </h1>
-
-  <div v-if="poll.isClosed" class="winner">
-    <h2 class="winner-title">Víťaz</h2>
-    <book-preview v-if="poll.followupLink?.kind == 'Book'" :book="{ bookId: poll.followupLink.entityId, post: poll.options.find(o => o.postId == poll.results.winnerPostId) }"></book-preview>
-    <router-link v-if="poll.followupLink?.kind == 'Discussion'" :to="{ name: 'discussion', params: { discussionId: poll.followupLink.entityId } }" class="link">
-      <text-post :post="poll.options.find(o => o.postId == poll.results.winnerPostId)"></text-post>
-    </router-link>
+ <div v-if="poll.isClosed" class="winner"> 
+    <div v-if="poll.followupLink?.kind == 'Poll'">
+      <h2 class="winner-title">Rozstrel</h2>
+      <router-link :to="{ name: 'poll', params: { pollId: poll.followupLink.entityId } }" class="link">
+          | <span v-for="vote in poll.results.votes.filter(v => v.votes == poll.results.votes[0].votes)" v-bind:key="vote">
+            {{ poll.options.find(o => o.postId == vote.postId).title }} |
+          </span>
+      </router-link>
+    </div>
+    <div v-else>
+      <h2 class="winner-title">Víťaz</h2>
+      <book-preview v-if="poll.followupLink?.kind == 'Book'" 
+        :book="{ bookId: poll.followupLink.entityId, post: poll.options.find(o => o.postId == poll.results.winnerPostId) }">
+      </book-preview>
+      <router-link v-if="poll.followupLink?.kind == 'Discussion'" 
+        :to="{ name: 'discussion', params: { discussionId: poll.followupLink.entityId } }" class="link">
+        <text-post :post="poll.options.find(o => o.postId == poll.results.winnerPostId)"></text-post>
+      </router-link>
+    </div>
   </div>
 
   <div class="page-wrapper flex">
-
     <div class="page flex">
 
       <div v-if="!poll.isClosed && poll.results && poll.results.yetToVote">
-        <h2 class="subtitle">Stav hlasování</h2>
+       <h2 class="subtitle">Stav hlasování</h2>
         <p class="paragraph">Už hlasovalo {{ poll.results.alreadyVoted }} z {{ poll.results.totalVoters }} čtenářů.</p>
-        <p class="paragraph">Ješte nehlasovali: <span v-for="person in poll.results.yetToVote" v-bind:key="person">{{ person }},</span></p>
+        <p class="paragraph">Ješte nehlasovali: <span v-for="person in poll.results.yetToVote" v-bind:key="person">{{ person }},</span></p> 
       </div>
 
-      <div v-if="iVoted || (poll.isClosed && poll.results?.votes)">
+      <div v-if="iVoted || (poll.isClosed && poll.results && poll.results.votes)">
         <h2 class="subtitle">Výsledky</h2>
         <ol class="poll">
           <li class="poll-field" v-for="vote in poll.results.votes" v-bind:key="vote">
@@ -31,6 +42,7 @@
           </li>
         </ol>
       </div>
+
 
       <h2 v-if="poll.results" class="subtitle u-mt">Možnosti</h2>
       <ol class="poll">
@@ -46,12 +58,12 @@
       </div>
       
     </div>
-
+ 
     <div class="book-post-wrapper flex">
       <book-post v-if="previewId" v-bind:key="previewId.postId" v-bind:post="previewId" ></book-post>
-    </div>
+    </div> 
 
-  </div>
+  </div> 
 
 
 </section>
@@ -59,25 +71,24 @@
 
 
 <script>
+import { mapGetters,mapActions, mapState } from "vuex";
 import BookPost from '../BookPost.vue';
 import BookPreview from '../BookPreview.vue';
 import TextPost from '../TextPost.vue';
-import { mapGetters,mapActions, mapState } from "vuex";
-
 export default {
-  components: { BookPost, TextPost, BookPreview },
   name: "Poll",
+  components: { BookPost, TextPost, BookPreview },
   data() {
     return {
       previewId: null,
       checkedOptions: [],
       iVoted: false,
-    };
+      poll: { options: [] }, 
+    }; 
   },
   computed: {
     ...mapGetters("context", ["isMod"]),
     ...mapState("polls", ["polls", "votes"]),
-    poll: function () { return this.polls[this.$route.params.pollId] ?? { options: [] }; },
   },
   methods: {
     ...mapActions("polls", ["getPollData", "sendVote", "closePoll"]),
@@ -97,25 +108,33 @@ export default {
       {
         return;
       }
-      this.sendVote( { pollId: this.$route.params.pollId, votes: this.checkedOptions })
-        .then((response) => {
-          console.log('klientsky respons', response);
+      this.sendVote( { pollId: this.poll.pollId, votes: this.checkedOptions })
+        .then(() => {
           this.iVoted = true;
         })
-        .catch(function (error) {
-          this.$notifyError(error);
-        });
+        .catch((error) => this.$notifyError(error));
     },
+    onLoad(newPollId)
+    {
+      if (!newPollId)
+      {
+        return;
+      }
+      this.getPollData(newPollId)
+        .then(() => {
+          this.poll = this.polls[newPollId];
+          this.checkedOptions = this.votes[newPollId];
+          this.iVoted = this.checkedOptions?.length > 0;
+        });
+    }
+  },
+  watch: {
+    '$route.params' ({ pollId }) {
+      this.onLoad(pollId);
+    }
   },
   mounted() {
-    this.getPollData(this.$route.params.pollId)
-      .then(() => {
-        this.checkedOptions = this.votes[this.$route.params.pollId] ?? [];
-        if (this.checkedOptions?.length)
-        {
-          this.iVoted = true;
-        }
-      });
+    this.onLoad(this.$route.params.pollId);
   },
 };
 </script>
