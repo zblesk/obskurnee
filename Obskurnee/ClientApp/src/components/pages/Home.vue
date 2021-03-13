@@ -20,7 +20,7 @@
 
       <div class="page-bottom">
 
-        <div class="page-optional">
+        <div class="page-optional" v-if="isAuthenticated && (userProfileIncomplete || noticeboardHtml)">
 
           <div v-if="isAuthenticated && userProfileIncomplete" class="profile-info">
             <div class="info-pic">
