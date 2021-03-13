@@ -27,7 +27,7 @@
   <div class="page-wrapper flex">
     <div class="page flex">
 
-      <div v-if="!poll.isClosed && poll.results && poll.results.yetToVote">
+      <div v-if="!poll.isClosed && poll.results && poll.results.yetToVote" class="u-md">
        <h2 class="subtitle">Stav hlasování</h2>
         <p class="paragraph">Už hlasovalo {{ poll.results.alreadyVoted }} z {{ poll.results.totalVoters }} čtenářů.</p>
         <p class="paragraph">Ješte nehlasovali: <span v-for="person in poll.results.yetToVote" v-bind:key="person">{{ person }},</span></p> 
@@ -60,6 +60,14 @@
     </div>
  
     <div class="book-post-wrapper flex">
+      <div class="book-post-empty" v-if="!previewId">
+        <div class="note">
+          <div class="note-pic">
+            <img src="../../assets/lamp.svg" alt="lamp icon" />
+          </div>
+          <p class="note-text">Klikni na název některé z možností v hlasování a zde se objeví podrobnější popis.</p>
+        </div>
+      </div>
       <book-post v-if="previewId" v-bind:key="previewId.postId" v-bind:post="previewId" ></book-post>
     </div> 
 
@@ -178,6 +186,10 @@ export default {
     margin-top: calc(var(--spacer) * 2);
   }
 
+  .u-md {
+    margin-bottom: calc(var(--spacer) * 2);
+  }
+
   .paragraph {
     margin-bottom: calc(var(--spacer) / 2);
   }
@@ -221,6 +233,10 @@ export default {
     }
   }
 
+  .note {
+    display: none;
+  }
+
   @media screen and (min-width: 1200px) {
     .page-wrapper.flex {
       display: flex;
@@ -239,6 +255,34 @@ export default {
     .page.flex {
       flex: 1 1 50%;
       margin-left: var(--spacer);
+    }
+
+    .book-post-empty {
+      background-color: var(--c-bckgr-primary);
+      width: 100%;
+      height: 100%;
+      padding: calc(var(--spacer) * 2);
+    }
+
+    .note {
+      display: flex;
+      align-items: center;
+      padding: 0 calc(var(--spacer) / 2);
+    }
+
+    .note-pic {
+      width: 20px;
+      flex-shrink: 0;
+    }
+
+    .note-pic img {
+      width: 100%;
+    }
+
+    .note-text {
+      font-size: 0.875em;
+      opacity: 0.8;
+      margin: 0 0 0 calc(var(--spacer) / 2);
     }
   }
 
