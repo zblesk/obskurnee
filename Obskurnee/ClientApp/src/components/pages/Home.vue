@@ -27,7 +27,7 @@
               <img src="../../assets/information.svg" alt="information bubble icon">
             </div>
             <div class="info-text">
-              <p>Este nemas vyplneny profil. <router-link :to="{name: 'user', params: { email: myProfile.email, mode: 'edit' },}">Prosím, doplň ho.</router-link></p>
+              <p>Ještě nemáš vyplněný profil. <router-link :to="{name: 'user', params: { email: myProfile.email, mode: 'edit' },}">Prosím, doplň ho.</router-link></p>
               <p>Zbývá ti doplnit:</p>
               <ul>
                 <li v-if="!myProfile.name">jméno</li>
