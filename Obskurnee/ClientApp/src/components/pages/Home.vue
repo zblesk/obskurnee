@@ -2,7 +2,7 @@
   <section>
     <div class="homepage">
 
-      <div class="welcome">
+      <div v-if="isAuthenticated" class="welcome">
         <div class="welcome-pic">
           <img src="../../assets/hi.svg" alt="hi icon">
         </div>
