@@ -43,16 +43,19 @@
                     <td><button @click="makeMod(user.email)" class="button-primary">Přidej</button></td>
                 </tr>
             </table>
-
-            <p class="todo"><strong>Rozárka: </strong>Budeš přidávat i funkci na odebrání moderátorské funkce?</p>
-            <p class="todo-l">Zatim ne</p>
         </div>
 
         <div class="section">
             <h2 class="section-title">Newsletter</h2>
             <p>Uživatelé přihlášení k odběru newsletteru:</p>
-            <p class="todo">dodělat</p>
-            {{ newsletterInfo }}
+            <p>Zakladne</p>
+            <div v-for="subscriber in newsletterInfo['basicevents']" v-bind:key="subscriber">
+                {{ subscriber.name }}, 
+            </div>
+            <p>Vsechno</p>
+            <div v-for="subscriber in newsletterInfo['allevents']" v-bind:key="subscriber">
+                {{ subscriber.name }}, 
+            </div>
         </div>
 
     </div>
