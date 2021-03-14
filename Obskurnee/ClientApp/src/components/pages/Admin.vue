@@ -3,9 +3,6 @@
     <h1 id="tableLabel" class="page-title">Admin</h1>
     <div v-if="!isMod" class="main">
         <h2 class="not-mod-text">Je mi líto, sem má přístup pouze moderátor.</h2>
-        <div class="not-mod-pic">
-            <img src="../../assets/cry.jpg" alt="woman crying" />
-        </div>
     </div>
     
     <div v-if="isMod" class="main">
@@ -150,9 +147,10 @@ export default {
     }
 
     .not-mod-text {
-        font-size: 1.5em;
-        font-weight: bold;
+        font-size: 1.2em;
+        font-weight: normal;
         text-align: center;
+        margin-bottom: 0;
     }
 
     .not-mod-pic {
