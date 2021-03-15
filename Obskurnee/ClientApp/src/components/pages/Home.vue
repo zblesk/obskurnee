@@ -6,7 +6,7 @@
         <div class="welcome-pic">
           <img src="../../assets/hi.svg" alt="hi icon">
         </div>
-        <p class="welcome-text">Vitaj, <span class="welcome-name">{{ myProfile.name }}</span>!
+        <p class="welcome-text">Vitaj, <span class="welcome-name" v-if="myProfile">{{ myProfile.name }}</span>!
           <span v-if="currentDiscussion"> Zbierame
             <router-link :to="{name: 'discussion', params: { discussionId: currentDiscussion.discussionId },}">nové návrhy</router-link>.
           </span>
@@ -54,42 +54,18 @@
 </template>
 
 <script>
-import axios from 'axios';
 import BookLargeCard from '../BookLargeCard.vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState, mapActions } from 'vuex';
 
 export default {
   components: { BookLargeCard },
   name: 'Home',
-  data() {
-    return {
-      currentBook: {},
-      myProfile: {},
-      noticeboardHtml: '',
-      currentPoll: null,
-      currentDiscussion: null,
-    };
-  },
   methods: {
-    getBooks() {
-      axios
-        .get('/api/home')
-        .then((response) => {
-          if (response.data.books.length) {
-            this.currentBook = response.data.books.shift();
-          }
-          this.noticeboardHtml = response.data.notice;
-          this.myProfile = response.data.myProfile;
-          this.currentPoll = response.data.currentPoll;
-          this.currentDiscussion = response.data.currentDiscussion;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
+    ...mapActions('global', ['loadHome'])
   },
   computed: {
     ...mapGetters('context', ['isAuthenticated']),
+    ...mapState('global', ['myProfile', 'currentBook', 'noticeboardHtml', 'currentPoll', 'currentDiscussion']),
     userProfileIncomplete: function() {
       return (
         this.myProfile &&
@@ -103,7 +79,7 @@ export default {
     },
   },
   mounted() {
-    this.getBooks();
+    this.loadHome();
   },
 };
 </script>

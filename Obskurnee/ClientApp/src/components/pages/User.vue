@@ -130,13 +130,6 @@ Mozes lahko pridat aj [link](https://google.sk)"></textarea>
       </tr>
     </table>
   </div>
-
-  <p class="todo-l"><strong>Laci:</strong>sem co este? Chceme tu naprikald userove reviews, recs?</p>
-  <p class="todo"><strong>Rozárka:</strong>To bych nedávala do profilu, ten bych nechala čistě jako přehled osobních údajů určených k editaci. Review a recs bych nechala do sekce My.</p>
-  <p class="todo-l"><strong>Laci:</strong>Okej, v tom pripade porozmyslaj nad rozlozenim stranok aj routes. Myslel som, ze budeme mat URL ako mame teraz, ze /my/mailadersa, kde budes vidiet skondenzovane user info a pod tym reviews a take veci. Iba mod by videl moznost 'edit'. <br/> Mozeme to dat aj inam, ale - kam? Ake budu URL?</p>
-  <p class="todo"><strong>Rozárka:</strong>Hmm, máš recht. V sekci My by mohly být kartičky s přehledem uživatelů - pro každého třeba jen jméno, profile pic (😁) a bio, případně počet recenzí a recs. A po rozkliknutí by se mohla zobrazit takhle stránka, na které by byly veškeré údaje včetně těch reviews a recs a jen mod/majitel účtu by tam měl tlačítko na editaci.</p>
-  <p class="todo"><strong>Rozárka:</strong>Budeme sem přidávat profile pic?</p>
-  <p class="todo-l"><strong>Laci:</strong>Dobra otazka, co ja viem? Bude to niekto vyplnat?</p>
   </div>
 </section>
 </template>

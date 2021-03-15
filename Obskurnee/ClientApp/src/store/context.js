@@ -31,7 +31,7 @@ export default {
     }
   },
   actions: {
-    login({ commit }, credentials)
+    login({ commit, dispatch }, credentials)
     {
       return axios.post('/api/accounts/login', credentials).then(res =>
       {
@@ -40,6 +40,7 @@ export default {
         delete profile.token;
         commit('setProfile', profile);
         commit('setJwtToken', jwtToken);
+        dispatch('global/loadHome', {}, { root: true});
       });
     },
     logout({ commit }) 
