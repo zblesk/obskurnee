@@ -93,7 +93,7 @@
           <a @click="$router.push({ name: 'passwordreset' })" class="button-secondary button-password" :v-if="isMod || user.userId == myUserId">Zmeniť heslo</a>
         </div>
 
-        <div class="reading" v-if="user.currentlyReading.length">
+        <div class="reading" v-if="user.currentlyReading?.length">
           <h3 class="reading-title">Právě čte:</h3>
           <ul class="reading-list">
               <li v-for="review in user.currentlyReading" v-bind:key="review.ReviewId"><a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.bookTitle }}</strong></a></li>
