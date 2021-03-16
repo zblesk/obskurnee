@@ -11,6 +11,7 @@ export default {
     isMod: (state, getters) => state.profile.isModerator || getters.isAdmin,
     isAdmin: state => state.profile.isAdmin,
     myUserId: state => state.profile.userId,
+    isMe: (_, getters) => (userId) => getters.myUserId == userId,
   },
   mutations: {
     setProfile(state, profile)

@@ -105,8 +105,17 @@
 
       </div>
     </div>
-    
-    <div>
+
+    <div v-if="myRecs" class="todo-l">
+      <div v-for="rec in myRecs" v-bind:key="rec.postId">
+        {{ rec.title }} - {{ rec.author }}
+      </div>
+    </div>
+    <div v-else>
+      Zatiaľ žiadne odporúčania. 
+    </div>
+
+    <div v-if="user && isMe(user.userId)">
       Newslettery: 
       <table>
         <tr>
@@ -152,15 +161,17 @@ export default {
         mode: "default",
         editingUser: {},
         subscriptions: [],
+        myRecs: [],
       }
   },
   computed: {
-    ...mapGetters("context", ["myUserId", "isMod"]),
+    ...mapGetters("context", ["myUserId", "isMod", "isMe"]),
     subscribedBasic: function () { return this.subscriptions.includes('basicevents'); },
     subscribedAll: function () { return this.subscriptions.includes('allevents'); },
   },
   methods: {
     ...mapActions("users", ["getUser", "updateUser"]),
+    ...mapActions("recommendations", ["fetchRecommendationsFor"]),
     updateProfile() 
     {
       this.updateUser(this.editingUser)
@@ -203,7 +214,7 @@ export default {
           {
             this.subscriptions = response.data;
           })
-          .catch((err) => this.$$notifyError(err));
+          .catch((err) => this.$notifyError(err));
     },
   },
   mounted() {
@@ -214,6 +225,9 @@ export default {
         {
           this.startEditing();
         }
+        this.fetchRecommendationsFor(this.user.userId)
+          .then(recs => this.myRecs = recs)
+          .catch((err) => this.$notifyError(err));
       });
     this.fetchNewsletterSubsciptions();
   }
