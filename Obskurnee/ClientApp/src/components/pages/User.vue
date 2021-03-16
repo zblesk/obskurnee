@@ -106,11 +106,6 @@
       </div>
     </div>
     
-    <!-- SMAZAT -->
-    <div v-if="user.currentlyReading">
-      <review-card v-for="review in user.currentlyReading" v-bind:key="review.ReviewId" :review="review" />
-    </div>
-
     <div>
       Newslettery: 
       <table>
@@ -149,9 +144,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import axios from 'axios';
-import ReviewCard from '../ReviewCard.vue';
 export default {
-  components: { ReviewCard },
   name: 'User',
   data() {
       return {
