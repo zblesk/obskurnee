@@ -17,7 +17,7 @@
         </div>
 
         <div class="section">
-            <h2 class="section-title">Založení nového uživatele</h2>
+            <h2 class="section-title u-mt">Založení nového uživatele</h2>
             <div class="form-field">
                 <label for="new-user">E-mailová adresa nového uživatele</label>
                 <input type="email" v-model="newUserEmal" id="new-user" />
@@ -32,30 +32,21 @@
         </div>
 
         <div class="section">
-            <h2 class="section-title">Moderátoři</h2>
+            <h2 class="section-title u-mt">Moderátoři</h2>
             <p>Aktuální moderátoři: <span v-for="mod in mods" v-bind:key="mod.userId"><router-link :to="{ name: 'user', params: { email: mod.email } }">{{mod.name}}</router-link>, </span></p>
             <p>Přidej uživatele k moderátorům:</p>
-            <p class="todo">Dodělat styling tabulky, až budu mít založených víc uživatelů</p>
-            <table>
-                <tr v-for="user in nonMods" v-bind:key="user.userId">
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.email }}</td>
-                    <td><button @click="makeMod(user.email)" class="button-primary">Přidej</button></td>
-                </tr>
-            </table>
+            <div class="row" v-for="user in nonMods" v-bind:key="user.userId">
+                <div class="wannabe-mod">{{ user.name }}</div>
+                <div class="add-button">
+                    <button @click="makeMod(user.email)" class="button-primary button-small">Přidej</button>
+                </div>
+            </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title">Newsletter</h2>
-            <p>Uživatelé přihlášení k odběru newsletteru:</p>
-            <p>Zakladne</p>
-            <div v-for="subscriber in newsletterInfo['basicevents']" v-bind:key="subscriber">
-                {{ subscriber.name }}, 
-            </div>
-            <p>Vsechno</p>
-            <div v-for="subscriber in newsletterInfo['allevents']" v-bind:key="subscriber">
-                {{ subscriber.name }}, 
-            </div>
+            <h2 class="section-title u-mt">Uživatelé přihlášení k odběru newsletteru</h2>
+            <p>Zakladní události: <span v-for="subscriber in newsletterInfo['basicevents']" v-bind:key="subscriber">{{ subscriber.name }}, </span></p>
+            <p>Všechny události: <span v-for="subscriber in newsletterInfo['allevents']" v-bind:key="subscriber">{{ subscriber.name }}, </span></p>
         </div>
 
     </div>
@@ -170,8 +161,11 @@ export default {
     }
 
     .section-title {
-        margin-top: 0;
-        margin-bottom: 0.5em;
+        margin-bottom: var(--spacer);
+    }
+
+    .u-mt {
+        margin-top: calc(var(--spacer) * 2);
     }
 
     .form-field label {
@@ -211,6 +205,43 @@ export default {
         font-size: 0.875em;
         opacity: 0.8;
         margin: 0 0 0 calc(var(--spacer) / 2);
+    }
+
+    .button-small {
+        padding: 0.3em 0.6em;
+    }
+
+    .row {
+        margin-top: 0;
+        margin-bottom: 0;
+        border-top: 1px solid var(--c-accent);
+    }
+
+    .row:last-child {
+        border-bottom: 1px solid var(--c-accent);
+    }
+
+    .wannabe-mod {
+        text-align: center;
+        padding: calc(var(--spacer) / 2);
+    }
+
+    .add-button {
+        text-align: center;
+        padding: 0 calc(var(--spacer) / 2) calc(var(--spacer) / 2) calc(var(--spacer) / 2);
+    }
+
+    @media screen and (min-width: 576px) {
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 400px;
+        }
+
+        .add-button {
+            padding-top: calc(var(--spacer) / 2);
+        }
     }
 
 </style>
