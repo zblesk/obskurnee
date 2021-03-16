@@ -71,6 +71,11 @@
         text-decoration: none;
     }
 
+    .reading-title {
+        margin-top: var(--spacer);
+        margin-bottom: var(--spacer);
+    }
+
     .reading-book {
         font-weight: bold;
     }
