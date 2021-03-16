@@ -1,135 +1,147 @@
 <template>
 <section>
   <div v-if="user">
-  <div v-if="mode == 'edit'">
-    <div class="profile">
-      <div class="form-field">
-        <label for="username" class="label">Jméno (povinné):</label>
-        <input type="text" class="input" id="username" required v-model="editingUser.name" />
-      </div>
-      <div class="form-field">
-        <label for="userphone" class="label">Telefon:</label>
-        <input type="tel" class="input" id="userphone" v-model="editingUser.phone" />
-      </div>
-      <div class="form-field">
-        <label for="usergr" class="label">Profil na Goodreads:</label>
-        <input type="url" class="input" id="usergr" v-model="editingUser.goodreadsUrl" />
-      </div>
-      <div class="form-field">
-        <label for="userbio" class="label">O mne:</label> 
-        <textarea class="textarea" id="userbio" v-model="editingUser.aboutMe" placeholder="Napis sem nieco o sebe! Ake mas rada zanre? Co su Tvoje oblubene knihy? Co naopak nemas rada? Nieco ine, co nam o sebe povies?
+    <h1 class="page-title">{{ user.name }}</h1>
 
-Mozes pouzit Markdown na jednoduche formatovanie textu. 
-Ak by si sa stratila, klikni na help ikonku nizsie.
-Medzi zaklady patri napriklad: 
+    <div v-if="mode == 'edit'">
+      <div class="profile">
+        <div class="form-field">
+          <label for="username" class="label">Jméno (povinné):</label>
+          <input type="text" class="input" id="username" required v-model="editingUser.name" />
+        </div>
+        <div class="form-field">
+          <label for="userphone" class="label">Telefon:</label>
+          <input type="tel" class="input" id="userphone" v-model="editingUser.phone" />
+        </div>
+        <div class="form-field">
+          <label for="usergr" class="label">Profil na Goodreads:</label>
+          <input type="url" class="input" id="usergr" v-model="editingUser.goodreadsUrl" />
+        </div>
+        <div class="form-field">
+          <label for="userbio" class="label">O mne:</label> 
+          <textarea class="textarea" id="userbio" v-model="editingUser.aboutMe" placeholder="Napis sem nieco o sebe! Ake mas rada zanre? Co su Tvoje oblubene knihy? Co naopak nemas rada? Nieco ine, co nam o sebe povies?
 
-# Najvacsi nadpis
-## mensi nadpis 
+  Mozes pouzit Markdown na jednoduche formatovanie textu. 
+  Ak by si sa stratila, klikni na help ikonku nizsie.
+  Medzi zaklady patri napriklad: 
 
-**tucny textt** alebo _kurziva_ 
+  # Najvacsi nadpis
+  ## mensi nadpis 
 
-- necislovany
-- zoznam
-- je 
-- jednoduchy
+  **tucny textt** alebo _kurziva_ 
 
-1. cislovany
-2. tiez
-3. lahky
+  - necislovany
+  - zoznam
+  - je 
+  - jednoduchy
 
-> takto sa pise citat
-> **moze** obsahovat aj _**formatovanie**_
+  1. cislovany
+  2. tiez
+  3. lahky
 
-Mozes lahko pridat aj [link](https://google.sk)"></textarea>
-        <div>
-          <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank">
-            <img src="../../assets/markdown-logo.svg" width="25" height="25"/>
-              Pomoc s Markdownom
-            </a>
+  > takto sa pise citat
+  > **moze** obsahovat aj _**formatovanie**_
+
+  Mozes lahko pridat aj [link](https://google.sk)"></textarea>
+          <div>
+            <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank">
+              <img src="../../assets/markdown-logo.svg" width="25" height="25"/>
+                Pomoc s Markdownom
+              </a>
+          </div>
         </div>
       </div>
+      <div class="profile-button">
+        <a @click="updateProfile" class="button-primary button-margin" :v-if="isMod || user.userId == myUserId">Uložit změny</a>
+        <a @click="stopEditing" class="button-secondary button-margin" :v-if="isMod || user.userId == myUserId">Zahodit změny</a>
+      </div>
     </div>
-    <div class="profile-button">
-      <a @click="updateProfile" class="button-primary button-margin" :v-if="isMod || user.userId == myUserId">Uložit změny</a>
-      <a @click="stopEditing" class="button-secondary button-margin" :v-if="isMod || user.userId == myUserId">Zahodit změny</a>
-    </div>
-  </div>
 
-  <div v-if="mode != 'edit'">
-    <div class="profile">
-      <div class="profil-row" style="font-size: 2em; font-weight: bold; text-align: center;">
-        <h1>{{ user.name }}</h1>
-      </div>
-      <div class="profile-row">
-        <div class="profile-val" v-html="user.aboutMeHtml"></div>
-      </div>
-      <div class="profile-row">
-        <table style="width: 100%">
-          <tr>
-            <td>
-              <div class="profile-val"><a :href="'mailto:' + user.email">📧 {{ user.email }}</a></div>
-            </td>
-            <td>
-              <div class="profile-val">
-                <a :href="'tel:' + user.phone">
-                  <img src="../../assets/whatsapp-logo.png" width="25" height="25"/>
-                    {{ user.phone }}
-                  </a>
-                </div>
-            </td>
-            <td>
-              <div class="profile -val">
-                <a :href="user.goodreadsUrl">
-                  <img src="../../assets/goodreads-logo.svg" width="25" height="25"/>
-                    Goodreads
-                </a>
-              </div>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <div class="profile-button">
-      <a @click="startEditing" class="button-primary" :v-if="isMod || user.userId == myUserId">Upravit údaje</a>
-      <a @click="$router.push({ name: 'passwordreset' })" class="button-primary" :v-if="isMod || user.userId == myUserId">Zmeniť heslo</a>
-    </div>
-  </div>
-  
-  <div v-if="user.currentlyReading">
-    <review-card v-for="review in user.currentlyReading" v-bind:key="review.ReviewId" :review="review" />
-  </div>
+    <div v-if="mode != 'edit'">
+      <div class="profile">
+        <p class="bio" v-html="user.aboutMeHtml"></p>
 
-  <div>
-    Newslettery: 
-    <table>
-      <tr>
-        <td>Základné udalosti</td>
-        <td>{{ subscribedBasic ? 'Prihlásené' : 'Neprihlásené' }}</td>
-        <td>
-          <a 
-            @click="toggleSubscription('basicevents', !subscribedBasic)" 
-            class="button-primary">
-            {{ subscribedBasic ? 'Odhlásiť' : 'Prihlásiť' }}
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>Všetky udalosti</td>
-        <td>{{ subscribedAll ? 'Prihlásené' : 'Neprihlásené' }}</td>
-        <td>
-          <a 
-            @click="toggleSubscription('allevents', !subscribedAll)" 
-            class="button-primary">
-            {{ subscribedAll ? 'Odhlásiť' : 'Prihlásiť' }}
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>Všetky notifikácie tiež budú zaslané do chatroomu <a href="https://matrix.to/#/#bookclub:zble.sk">#bookclub:zble.sk</a></td>
-        <td><span class="todo-l">ale zatial idu do inej, testovacej miestnosti nech v tej 'ostrej' nie je vyvojovy spam :D </span></td>
-      </tr>
-    </table>
-  </div>
+        <div class="contacts">
+          <div class="mo">
+            <div class="mo-pic">
+              <img src="../../assets/email.svg" alt="email icon">
+            </div>
+            <div class="mo-text">
+              <a :href="'mailto:' + user.email">{{ user.email }}</a>
+            </div>
+          </div>
+          <div class="mo">
+            <div class="mo-pic">
+              <img src="../../assets/WhatsApp_Logo_1.png" alt="whatsapp logo">
+            </div>
+            <div class="mo-text">
+              <a :href="'tel:' + user.phone">{{ user.phone }}</a>
+            </div>
+          </div>
+          <div class="mo">
+            <div class="mo-pic">
+              <img src="../../assets/goodreads_icon_32x32.png" alt="goodreads icon">
+            </div>
+            <div class="mo-text">
+              <a :href="user.goodreadsUrl">Goodreads</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="buttons" :v-if="isMod || user.userId == myUserId">
+          <a @click="startEditing" class="button-primary" :v-if="isMod || user.userId == myUserId">Upravit údaje</a>
+          <a @click="$router.push({ name: 'passwordreset' })" class="button-secondary button-password" :v-if="isMod || user.userId == myUserId">Zmeniť heslo</a>
+        </div>
+
+        <div class="reading" v-if="user.currentlyReading.length">
+          <h3 class="reading-title">Právě čte:</h3>
+          <ul class="reading-list">
+              <li v-for="review in user.currentlyReading" v-bind:key="review.ReviewId"><a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.bookTitle }}</strong></a></li>
+          </ul>
+        </div>
+        <div  class="reading" v-else>
+          <h3 class="reading-title">Práve nič nečíta.</h3>
+        </div>
+
+      </div>
+    </div>
+    
+    <!-- SMAZAT -->
+    <div v-if="user.currentlyReading">
+      <review-card v-for="review in user.currentlyReading" v-bind:key="review.ReviewId" :review="review" />
+    </div>
+
+    <div>
+      Newslettery: 
+      <table>
+        <tr>
+          <td>Základné udalosti</td>
+          <td>{{ subscribedBasic ? 'Prihlásené' : 'Neprihlásené' }}</td>
+          <td>
+            <a 
+              @click="toggleSubscription('basicevents', !subscribedBasic)" 
+              class="button-primary">
+              {{ subscribedBasic ? 'Odhlásiť' : 'Prihlásiť' }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>Všetky udalosti</td>
+          <td>{{ subscribedAll ? 'Prihlásené' : 'Neprihlásené' }}</td>
+          <td>
+            <a 
+              @click="toggleSubscription('allevents', !subscribedAll)" 
+              class="button-primary">
+              {{ subscribedAll ? 'Odhlásiť' : 'Prihlásiť' }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>Všetky notifikácie tiež budú zaslané do chatroomu <a href="https://matrix.to/#/#bookclub:zble.sk">#bookclub:zble.sk</a></td>
+          <td><span class="todo-l">ale zatial idu do inej, testovacej miestnosti nech v tej 'ostrej' nie je vyvojovy spam :D </span></td>
+        </tr>
+      </table>
+    </div>
   </div>
 </section>
 </template>
@@ -291,5 +303,93 @@ export default {
   .button-margin {
     margin: calc(0.5 * var(--spacer));
   }
+
+  .bio {
+    margin-bottom: calc(var(--spacer) * 2);
+  }
+
+  .contacts {
+    margin-bottom: calc(var(--spacer) * 2);
+  }
+
+  .mo {
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin-bottom: calc(var(--spacer) / 2);
+  }
+
+  .mo-pic {
+    width: 26px;
+    flex-shrink: 0;
+  }
+
+  .mo-pic img {
+    width: 100%;
+  }
+
+  .mo-text {
+    margin: 0 0 0 calc(var(--spacer) / 2);
+  }
+
+  @media screen and (min-width: 768px) {
+    .contacts {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .mo {
+      margin-bottom: 0;
+    }
+
+    .mo:not(:last-child) {
+      margin-right: calc(var(--spacer) * 2);
+    }
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: calc(var(--spacer) * 2);
+  }
+
+  .button-password {
+    margin-top: var(--spacer);
+  }
+
+  @media screen and (min-width: 576px) {
+    .buttons {
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .button-password {
+      margin-top: 0;
+      margin-left: var(--spacer);
+    }
+  }
+
+  .reading-title {
+    margin-bottom: var(--spacer);
+  }
+
+  .reading a {
+    text-decoration: none;
+  }
+
+  .reading-list {
+    margin-bottom: 0;
+  }
+
+  .reading-list li {
+    line-height: 1.5;
+    margin-bottom: var(--spacer);
+  }
+
+  .reading-list li:last-child {
+    margin-bottom: 0;
+  }
+
 
 </style>
