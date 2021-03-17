@@ -22,7 +22,7 @@ namespace Obskurnee.Models
         public bool IsClosed { get; set; }
         public Topic Topic { get; set; }
         public bool IsTiebreaker { get; set; } = false;
-        public PollResults? Results { get; set; }
+        public PollResults Results { get; set; }
         public Poll(string ownerId) : base(ownerId) { }
 
         public int FindAnyWinningPost() => Results?.Votes.OrderByDescending(vote => vote.Votes).First().PostId ?? 0;

@@ -25,8 +25,9 @@ export default {
           });
       },
       async createNewRound ({ commit }, round) {
-        return axios.post('api/rounds', round).then(res => {
-          commit('addRound', res.data);
+        return axios.post('api/rounds', round)
+          .then(res => {
+            commit('addRound', res.data);
         })
       }
     }
