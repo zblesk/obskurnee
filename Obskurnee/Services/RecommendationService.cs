@@ -29,7 +29,7 @@ namespace Obskurnee.Services
             _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
-        public IList<Post> GetAllRecs() => _db.RecPosts.FindAll().ToList();
+        public IList<Post> GetAllRecs() => _db.RecPosts.FindAll().OrderByDescending(r => r.CreatedOn).ToList();
 
         public IList<Post> GetRecs(string userId) => _db.RecPosts.Query().Where(p => p.OwnerId == userId).ToList();
 

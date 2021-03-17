@@ -12,7 +12,7 @@ export default {
         state.recommendations = recommendations;
       },
       addPost (state, post) {
-        state.recommendations.push(post);
+        state.recommendations.unshift(post);
       }
     },
     actions: {
@@ -22,9 +22,6 @@ export default {
           .get("/api/recommendations/")
           .then(response => {
             commit('setRecommendations', response.data);
-          })
-          .catch(function (error) {
-            console.log(error);
           });
       },
       async newRecommendation({ commit }, newPost) 
@@ -34,9 +31,6 @@ export default {
             newPost)
           .then((response) => {
             commit('addPost', response.data);
-          })
-          .catch(function (error) {
-            console.log(error);
           });
     },
     async fetchRecommendationsFor({ dispatch, state }, userId)
