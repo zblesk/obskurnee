@@ -45,8 +45,14 @@
 
         <div class="section">
             <h2 class="section-title u-mt">Uživatelé přihlášení k odběru newsletteru</h2>
-            <p>Zakladní události: <span v-for="subscriber in newsletterInfo['basicevents']" v-bind:key="subscriber">{{ subscriber.name }}, </span></p>
-            <p>Všechny události: <span v-for="subscriber in newsletterInfo['allevents']" v-bind:key="subscriber">{{ subscriber.name }}, </span></p>
+            <p>
+                Zakladní události: <span v-for="subscriber in newsletterInfo['basicevents']" v-bind:key="subscriber">{{ subscriber.name }}, </span>
+                <span v-if="!newsletterInfo['basicevents'] || newsletterInfo['basicevents'].length == 0"><em>Momentálne nikto</em></span>
+            </p>
+            <p>
+                Všechny události: <span v-for="subscriber in newsletterInfo['allevents']" v-bind:key="subscriber">{{ subscriber.name }}, </span>
+                <span v-if="!newsletterInfo['allevents'] || newsletterInfo['allevents'].length == 0"><em>Momentálne nikto</em></span>
+            </p>
         </div>
 
     </div>
