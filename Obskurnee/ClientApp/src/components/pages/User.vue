@@ -106,14 +106,15 @@
       </div>
     </div>
 
-    <div v-if="myRecs" class="todo-l">
-      <div v-for="rec in myRecs" v-bind:key="rec.postId">
-        {{ rec.title }} - {{ rec.author }}
+      <div v-if="myRecs && myRecs.length > 0" class="todo-l">
+        <div v-for="rec in myRecs" v-bind:key="rec.postId">
+          {{ rec.title }} - {{ rec.author }}
+        </div>
       </div>
-    </div>
-    <div v-else>
-      Zatiaľ žiadne odporúčania. 
-    </div>
+      <div v-else>
+        Zatiaľ od Teba nemáme žiadne odporúčania. <span v-if="user && isMe(user.userId)">Čo tak <router-link :to="{ name: 'recommendationlist' }">nejaké pridať?</router-link> 💖</span>
+      </div>
+
 
     <div v-if="user && isMe(user.userId)">
       Newslettery: 
