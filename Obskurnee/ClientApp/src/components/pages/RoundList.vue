@@ -108,6 +108,7 @@ export default {
             this.createNewRound(this.newRound).then(() => 
             {
                 this.newRound = {};
+                this.hide = true;
             });
         },
         toggleVisibility()
