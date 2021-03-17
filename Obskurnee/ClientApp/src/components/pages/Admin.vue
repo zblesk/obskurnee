@@ -36,7 +36,9 @@
             <p>Aktuální moderátoři: <span v-for="mod in mods" v-bind:key="mod.userId"><router-link :to="{ name: 'user', params: { email: mod.email } }">{{mod.name}}</router-link>, </span></p>
             <p>Přidej uživatele k moderátorům:</p>
             <div class="row" v-for="user in nonMods" v-bind:key="user.userId">
-                <div class="wannabe-mod">{{ user.name }}</div>
+                <div class="wannabe-mod">
+                    <router-link :to="{ name: 'user', params: { email: user.email } }">{{ user.name }}</router-link> 
+                </div>
                 <div class="add-button">
                     <button @click="makeMod(user.email)" class="button-primary button-small">Přidej</button>
                 </div>
@@ -46,11 +48,17 @@
         <div class="section">
             <h2 class="section-title u-mt">Uživatelé přihlášení k odběru newsletteru</h2>
             <p>
-                Zakladní události: <span v-for="subscriber in newsletterInfo['basicevents']" v-bind:key="subscriber">{{ subscriber.name }}, </span>
+                Zakladní události: 
+                <span v-for="subscriber in newsletterInfo['basicevents']" v-bind:key="subscriber">
+                    <router-link :to="{ name: 'user', params: { email: subscriber.email } }">{{ subscriber.name }}</router-link>, 
+                </span>
                 <span v-if="!newsletterInfo['basicevents'] || newsletterInfo['basicevents'].length == 0"><em>Momentálne nikto</em></span>
             </p>
             <p>
-                Všechny události: <span v-for="subscriber in newsletterInfo['allevents']" v-bind:key="subscriber">{{ subscriber.name }}, </span>
+                Všechny události: 
+                <span v-for="subscriber in newsletterInfo['allevents']" v-bind:key="subscriber">
+                    <router-link :to="{ name: 'user', params: { email: subscriber.email } }">{{ subscriber.name }}</router-link>, 
+                </span>
                 <span v-if="!newsletterInfo['allevents'] || newsletterInfo['allevents'].length == 0"><em>Momentálne nikto</em></span>
             </p>
         </div>
