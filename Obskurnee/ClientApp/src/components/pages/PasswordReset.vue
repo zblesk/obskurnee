@@ -1,19 +1,61 @@
 <template>
 <section>
-    <div v-if="$route.params.token">
-        <label for="passwordInput">Heslo</label>
-        <input id="passwordInput" @keyup.enter="resetPassword" v-model="newPassword" required />
-        <button @click="resetPassword">Reset</button>
-    </div>
-    <div v-else>
-        <div class="login-form-field">
-            <label for="emailInput">E-mail</label>
-            <input id="emailInput" @keyup.enter="initPasswordReset" type="email" v-model="email" required />
+    <h1 class="page-title">Změna hesla</h1>
+    <div class="page">
+        <div v-if="$route.params.token">
+            <div class="form-field">
+                <label for="passwordInput" class="label">Heslo</label>
+                <input type="password" class="input" id="passwordInput" @keyup.enter="resetPassword" v-model="newPassword" required />
+            </div>
+            <button @click="resetPassword" class="button-primary">Reset</button>
         </div>
-        <button class="button-reset" @click="initPasswordReset">Odošli</button>
+        <div v-else>
+            <div class="form-field">
+                <label for="emailInput" class="label">Zadej svůj e-mail</label>
+                <input class="input" id="emailInput" @keyup.enter="initPasswordReset" type="email" placeholder="@" v-model="email" required />
+            </div>
+            <button class="button-primary" @click="initPasswordReset">Odošli</button>
+        </div>
     </div>
 </section>
 </template>
+
+<style scoped>
+
+    .page {
+        max-width: 800px;
+        background-color: var(--c-bckgr-primary);
+        margin: var(--spacer);
+        padding: calc(2* var(--spacer));
+    }
+
+    @media screen and (min-width: 840px) {
+        .page {
+            margin: var(--spacer) auto;
+        }
+    }
+
+    .form-field {
+        margin-bottom: var(--spacer);
+    }
+
+    .label {
+        display: block;
+        font-size: 1em;
+        margin-bottom: calc(var(--spacer) / 3);
+    }
+
+    .input {
+        width: 100%;
+        max-width: 360px;
+        border: 0;
+        background-color: var(--c-bckgr-secondary);
+        padding: 0.5em;
+    }
+
+
+
+</style>
 
 
 <script>
