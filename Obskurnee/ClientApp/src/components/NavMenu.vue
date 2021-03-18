@@ -181,7 +181,7 @@
         display: block;
     }
 
-    @media screen and (min-width: 700px) {
+    @media screen and (min-width: 992px) {
         .navigation-toggler {
             display: none;
         }
