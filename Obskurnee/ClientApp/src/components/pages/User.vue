@@ -18,7 +18,17 @@
           <input type="url" class="input" id="usergr" v-model="editingUser.goodreadsUrl" />
         </div>
         <div class="form-field">
-          <label for="userbio" class="label">O mne:</label> 
+          <div class="label-wrapper">
+            <label for="userbio" class="label label-userbio">O mne:</label>
+            <div class="mo mo-markdown">
+              <div class="mo-pic">
+                <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
+              </div>
+              <div class="mo-markdown-link">
+                <a href="https://www.markdownguide.org/cheat-sheet/">Pomoc s Markdownom</a>
+              </div>
+            </div>
+          </div>
           <textarea class="textarea" id="userbio" v-model="editingUser.aboutMe" placeholder="Napis sem nieco o sebe! Ake mas rada zanre? Co su Tvoje oblubene knihy? Co naopak nemas rada? Nieco ine, co nam o sebe povies?
 
   Mozes pouzit Markdown na jednoduche formatovanie textu. 
@@ -43,17 +53,11 @@
   > **moze** obsahovat aj _**formatovanie**_
 
   Mozes lahko pridat aj [link](https://google.sk)"></textarea>
-          <div>
-            <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank">
-              <img src="../../assets/markdown-logo.svg" width="25" height="25"/>
-                Pomoc s Markdownom
-              </a>
-          </div>
         </div>
-      </div>
-      <div class="profile-button">
-        <a @click="updateProfile" class="button-primary button-margin" :v-if="isMod || user.userId == myUserId">Uložit změny</a>
-        <a @click="stopEditing" class="button-secondary button-margin" :v-if="isMod || user.userId == myUserId">Zahodit změny</a>
+        <div class="buttons-edit">
+          <a @click="updateProfile" class="button-primary" :v-if="isMod || user.userId == myUserId">Uložit změny</a>
+          <a @click="stopEditing" class="button-secondary button-cancel" :v-if="isMod || user.userId == myUserId">Zahodit změny</a>
+        </div>
       </div>
     </div>
 
@@ -225,30 +229,17 @@ export default {
 
 <style scoped>
 
-  .profile,
-  .profile-button {
-    max-width: 800px;
-  }
-
   .profile {
+    max-width: 800px;
     background-color: var(--c-bckgr-primary);
     margin: var(--spacer);
     padding: calc(2* var(--spacer));
     text-align: left;
   }
 
-  .profile-button {
-    margin: 0 var(--spacer);
-    text-align: center;
-  }
-
   @media screen and (min-width: 840px) {
     .profile {
       margin: var(--spacer) auto;
-    }
-
-    .profile-button {
-      margin: 0 auto;
     }
   }
 
@@ -268,6 +259,7 @@ export default {
 
   .label {
     display: block;
+    margin-bottom: calc(var(--spacer) / 2);
   }
 
   .input {
@@ -294,10 +286,45 @@ export default {
     padding: 0.5em 1em;
     width: 100%;
     height: 15em;
+    margin-top: calc(var(--spacer) / 2);
   }
 
-  .button-margin {
-    margin: calc(0.5 * var(--spacer));
+  .label-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen and (min-width: 576px) {
+    .label-wrapper {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .label-userbio {
+      margin-bottom: 0;
+    }
+  }
+
+  .buttons-edit {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .button-cancel {
+    margin-top: var(--spacer);
+  }
+
+  @media screen and (min-width: 576px) {
+    .buttons-edit {
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .button-cancel {
+      margin-top: 0;
+      margin-left: var(--spacer);
+    }
   }
 
   .bio {
@@ -322,15 +349,22 @@ export default {
 
   .mo-pic img {
     width: 100%;
+    vertical-align: bottom;
   }
 
-  .mo-text {
+  .mo-text,
+  .mo-markdown-link {
     margin: 0 0 0 calc(var(--spacer) / 2);
   }
 
   .mo-text a {
     text-decoration: none;
     font-weight: bold;
+  }
+
+  .mo-markdown a {
+    text-decoration: underline;
+    font-weight: normal;
   }
 
   @media screen and (min-width: 768px) {
