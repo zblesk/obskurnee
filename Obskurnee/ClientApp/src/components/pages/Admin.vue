@@ -52,14 +52,14 @@
                 <span v-for="subscriber in newsletterInfo['basicevents']" v-bind:key="subscriber">
                     <router-link :to="{ name: 'user', params: { email: subscriber.email } }">{{ subscriber.name }}</router-link>, 
                 </span>
-                <span v-if="!newsletterInfo['basicevents'] || newsletterInfo['basicevents'].length == 0"><em>Momentálne nikto</em></span>
+                <span v-if="!newsletterInfo['basicevents'] || newsletterInfo['basicevents'].length == 0">momentálne nikto</span>
             </p>
             <p>
                 Všechny události: 
                 <span v-for="subscriber in newsletterInfo['allevents']" v-bind:key="subscriber">
                     <router-link :to="{ name: 'user', params: { email: subscriber.email } }">{{ subscriber.name }}</router-link>, 
                 </span>
-                <span v-if="!newsletterInfo['allevents'] || newsletterInfo['allevents'].length == 0"><em>Momentálne nikto</em></span>
+                <span v-if="!newsletterInfo['allevents'] || newsletterInfo['allevents'].length == 0">momentálne nikto</span>
             </p>
         </div>
 

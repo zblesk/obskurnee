@@ -370,7 +370,7 @@ export default {
   @media screen and (min-width: 768px) {
     .contacts {
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-around;
     }
 
     .mo {
