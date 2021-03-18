@@ -88,7 +88,7 @@
           </div>
         </div>
 
-        <div class="buttons" :v-if="isMod || user.userId == myUserId">
+        <div class="buttons" v-if="isMod || user.userId == myUserId">
           <a @click="startEditing" class="button-primary" :v-if="isMod || user.userId == myUserId">Upravit údaje</a>
           <a @click="$router.push({ name: 'passwordreset' })" class="button-secondary button-password" :v-if="isMod || user.userId == myUserId">Zmeniť heslo</a>
         </div>
@@ -101,6 +101,25 @@
         </div>
         <div  class="reading" v-else>
           <h3 class="reading-title">Práve nič nečíta.</h3>
+        </div>
+
+        <div class="newletters" v-if="user && isMe(user.userId)">
+          <h3 class="nl-title">Newsletters</h3>
+          <div class="nl-table">
+            <div class="nl-row">
+              <p class="nl-current">Základné udalosti: {{ subscribedBasic ? 'Prihlásené' : 'Neprihlásené' }}</p>
+              <div class="nl-button">
+                <button @click="toggleSubscription('basicevents', !subscribedBasic)" class="button-primary button-small">{{ subscribedBasic ? 'Odhlásiť' : 'Prihlásiť' }}</button>
+              </div>
+            </div>
+            <div class="nl-row">
+              <p class="nl-current">Všetky udalosti: {{ subscribedAll ? 'Prihlásené' : 'Neprihlásené' }}</p>
+              <div class="nl-button">
+                <button @click="toggleSubscription('allevents', !subscribedAll)" class="button-primary button-small">{{ subscribedAll ? 'Odhlásiť' : 'Prihlásiť' }}</button>
+              </div>
+            </div>
+          </div>
+          <p class="nl-text">Všetky notifikácie tiež budú zaslané do chatroomu <a href="https://matrix.to/#/#bookclub:zble.sk">#bookclub:zble.sk</a><span class="todo-l">, ale zatial idu do inej, testovacej miestnosti nech v tej 'ostrej' nie je vyvojovy spam :D</span></p>
         </div>
 
       </div>
@@ -116,37 +135,6 @@
       </div>
 
 
-    <div v-if="user && isMe(user.userId)">
-      Newslettery: 
-      <table>
-        <tr>
-          <td>Základné udalosti</td>
-          <td>{{ subscribedBasic ? 'Prihlásené' : 'Neprihlásené' }}</td>
-          <td>
-            <a 
-              @click="toggleSubscription('basicevents', !subscribedBasic)" 
-              class="button-primary">
-              {{ subscribedBasic ? 'Odhlásiť' : 'Prihlásiť' }}
-            </a>
-          </td>
-        </tr>
-        <tr>
-          <td>Všetky udalosti</td>
-          <td>{{ subscribedAll ? 'Prihlásené' : 'Neprihlásené' }}</td>
-          <td>
-            <a 
-              @click="toggleSubscription('allevents', !subscribedAll)" 
-              class="button-primary">
-              {{ subscribedAll ? 'Odhlásiť' : 'Prihlásiť' }}
-            </a>
-          </td>
-        </tr>
-        <tr>
-          <td>Všetky notifikácie tiež budú zaslané do chatroomu <a href="https://matrix.to/#/#bookclub:zble.sk">#bookclub:zble.sk</a></td>
-          <td><span class="todo-l">ale zatial idu do inej, testovacej miestnosti nech v tej 'ostrej' nie je vyvojovy spam :D </span></td>
-        </tr>
-      </table>
-    </div>
   </div>
 </section>
 </template>
@@ -340,6 +328,11 @@ export default {
     margin: 0 0 0 calc(var(--spacer) / 2);
   }
 
+  .mo-text a {
+    text-decoration: none;
+    font-weight: bold;
+  }
+
   @media screen and (min-width: 768px) {
     .contacts {
       display: flex;
@@ -378,6 +371,10 @@ export default {
     }
   }
 
+  .reading {
+    margin-bottom: calc(var(--spacer) * 2);
+  }
+
   .reading-title {
     margin-bottom: var(--spacer);
   }
@@ -397,6 +394,48 @@ export default {
 
   .reading-list li:last-child {
     margin-bottom: 0;
+  }
+
+  .button-small {
+    padding: 0.3em 0.6em;
+  }
+
+  .nl-table {
+    margin-bottom: var(--spacer);
+  }
+
+  .nl-row {
+    margin-top: 0;
+    margin-bottom: 0;
+    border-top: 1px solid var(--c-accent);
+  }
+
+  .nl-row:last-child {
+    border-bottom: 1px solid var(--c-accent);
+  }
+
+  .nl-current {
+    text-align: center;
+    padding: calc(var(--spacer) / 2);
+    margin-bottom: 0;
+  }
+
+  .nl-button {
+    text-align: center;
+    padding: 0 calc(var(--spacer) / 2) calc(var(--spacer) / 2) calc(var(--spacer) / 2);
+  }
+
+  @media screen and (min-width: 576px) {
+    .nl-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 400px;
+    }
+
+    .nl-button {
+      padding-top: calc(var(--spacer) / 2);
+    }
   }
 
 
