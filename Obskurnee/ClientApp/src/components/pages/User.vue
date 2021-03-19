@@ -135,9 +135,7 @@
     </div>
 
       <div v-if="myRecs && myRecs.length > 0" class="todo-l">
-        <div v-for="rec in myRecs" v-bind:key="rec.postId">
-          {{ rec.title }} - {{ rec.author }}
-        </div>
+        <recommendation-card v-bind:post="rec" v-for="rec in myRecs" v-bind:key="rec.postId" />
       </div>
       <div v-else>
         Zatiaľ od Teba nemáme žiadne odporúčania. <span v-if="user && isMe(user.userId)">Čo tak <router-link :to="{ name: 'recommendationlist' }">nejaké pridať?</router-link> 💖</span>
@@ -151,7 +149,9 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import axios from 'axios';
+import RecommendationCard from '../RecommendationCard.vue';
 export default {
+  components: { RecommendationCard },
   name: 'User',
   data() {
       return {
