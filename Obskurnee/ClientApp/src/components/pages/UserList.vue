@@ -1,20 +1,22 @@
 <template>
 <section>
-    <h1 id="tableLabel" class="page-title">Seznam bookclubberů</h1>
+    <h1 id="tableLabel" class="page-title u-mb">Seznam bookclubberů</h1>
+    <h2 class="page-note">(moderátoři mají magické schopnosti)</h2>
     
     <div class="user-grid" v-if="users">
         <div class="user-card" v-for="user in users" v-bind:key="user.userId">
             <router-link :to="{ name: 'user', params: { email: user.email } }">
                 <div class="user-pic">
-                    <img src="../../assets/reader.svg" alt="reader">
+                    <img src="../../assets/fairy-white.svg" alt="fairy icon" class="user-pic-mod">
+                    <!--<img src="../../assets/reader.svg" alt="reader">-->
                 </div>
             </router-link>
-                <div class="user-desc">
-                    <router-link :to="{ name: 'user', params: { email: user.email } }">
-                        <h2 class="user-name">{{ user.name }}</h2>
-                    </router-link>
-                    <div class="user-bio" v-html="user.aboutMeHtml"></div>
-                </div>
+            <div class="user-desc">
+                <router-link :to="{ name: 'user', params: { email: user.email } }">
+                    <h2 class="user-name">{{ user.name }}</h2>
+                </router-link>
+                <div class="user-bio" v-html="user.aboutMeHtml"></div>
+            </div>
             <div class="reading" v-if="user.currentlyReading.length">
                 <h3 class="reading-title">Právě čte:</h3>
                 <ul class="reading-list">
@@ -31,6 +33,16 @@
 </template>
 
 <style scoped>
+
+    .u-mb {
+        margin-bottom: calc(var(--spacer) / 2);
+    }
+
+    .page-note {
+        text-align: center;
+        font-weight: normal;
+        margin-bottom: var(--spacer);
+    }
 
     .user-card {
         background-color: var(--c-bckgr-primary);
@@ -52,6 +64,11 @@
         max-width: 60%;
         display: block;
         margin: 0 auto;
+    }
+
+    .user-pic-mod {
+        position: relative;
+        left: 8px;
     }
 
     .user-name {

@@ -1,7 +1,12 @@
 <template>
 <section>
   <div v-if="user">
-    <h1 class="page-title">{{ user.name }}</h1>
+    <div class="page-title-wrapper">
+      <div class="mod">
+        <img src="../../assets/fairy.svg" alt="fairy icon">
+      </div>
+      <h1 class="page-title-user">{{ user.name }}</h1>
+    </div>
 
     <div v-if="mode == 'edit'">
       <div class="profile">
@@ -228,6 +233,30 @@ export default {
 </script>
 
 <style scoped>
+
+  .page-title-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: calc(1.5 * var(--spacer));
+    margin-bottom: var(--spacer);
+  }
+
+  .mod {
+    width: 36px;
+    margin-right: var(--spacer);
+  }
+
+  .mod img {
+    width: 100%;
+  }
+
+  .page-title-user {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 0;
+  }
 
   .profile {
     max-width: 800px;
