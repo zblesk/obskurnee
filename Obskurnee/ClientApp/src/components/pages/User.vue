@@ -2,7 +2,7 @@
 <section>
   <div v-if="user">
     <div class="page-title-wrapper">
-      <div class="mod">
+      <div class="mod" v-if="user.isModerator">
         <img src="../../assets/fairy.svg" alt="fairy icon">
       </div>
       <h1 class="page-title-user">{{ user.name }}</h1>
