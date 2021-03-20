@@ -134,12 +134,11 @@
       </div>
     </div>
 
-      <div v-if="myRecs && myRecs.length > 0" class="todo-l">
+    <h2 class="page-subtitle">{{ user.name }} doporučuje ke čtení</h2>
+    <div v-if="myRecs && myRecs.length > 0" class="grid">
         <recommendation-card v-bind:post="rec" v-for="rec in myRecs" v-bind:key="rec.postId" />
-      </div>
-      <div v-else>
-        Zatiaľ od Teba nemáme žiadne odporúčania. <span v-if="user && isMe(user.userId)">Čo tak <router-link :to="{ name: 'recommendationlist' }">nejaké pridať?</router-link> 💖</span>
-      </div>
+    </div>
+    <p v-else class="recs-message">Zatiaľ tu nemáme žiadne odporúčania. <span v-if="user && isMe(user.userId)">Čo tak <router-link :to="{ name: 'recommendationlist' }">nejaké pridať?</router-link></span></p>
 
 
   </div>
@@ -498,6 +497,34 @@ export default {
 
     .nl-button {
       padding-top: calc(var(--spacer) / 2);
+    }
+  }
+
+  .page-subtitle {
+    font-size: 1.5em;
+    text-align: center;
+    margin-top: calc(var(--spacer) * 2);
+    margin-bottom: var(--spacer) * 2;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 450px));
+    gap: var(--spacer);
+    margin: 0;
+    padding: var(--spacer);
+  }
+
+  .recs-message {
+    max-width: 800px;
+    background-color: var(--c-bckgr-primary);
+    margin: var(--spacer);
+    padding: calc(2* var(--spacer));
+  }
+
+  @media screen and (min-width: 840px) {
+    .recs-message {
+      margin: var(--spacer) auto;
     }
   }
 
