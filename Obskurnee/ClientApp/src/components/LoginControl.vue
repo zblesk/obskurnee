@@ -2,7 +2,7 @@
   <div class="login">
     <div v-if="!isAuthenticated" class="not-auth">
       <div v-if="!showLoginForm" class="form-not-shown">
-        <button class="button-primary button-show" @click="this.showLoginForm = true">Přihlášení</button>
+        <button class="button-primary button-show" @click="this.showLoginForm = true">Přihlásit</button>
       </div>
       <form @submit.prevent="onSubmit" @keyup.enter="onSubmit" @reset.prevent="onCancel" v-if="showLoginForm" class="login-form">
         <div class="login-form-field">

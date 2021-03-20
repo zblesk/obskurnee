@@ -14,7 +14,7 @@
                 <label for="emailInput" class="label">Zadej svůj e-mail</label>
                 <input class="input" id="emailInput" @keyup.enter="initPasswordReset" type="email" placeholder="@" v-model="email" required />
             </div>
-            <button class="button-primary" @click="initPasswordReset">Odošli</button>
+            <button class="button-primary" @click="initPasswordReset">Odeslat</button>
         </div>
     </div>
 </section>

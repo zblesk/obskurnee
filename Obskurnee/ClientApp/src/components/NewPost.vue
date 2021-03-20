@@ -1,7 +1,7 @@
 <template>
 <div>
   <div v-if="hide">
-    <button @click="toggleVisibility" class="button-primary">Přidej nový návrh</button>
+    <button @click="toggleVisibility" class="button-primary">Přidat nový návrh</button>
   </div>
   <div v-else class="form">
     <div class="cover">
@@ -59,8 +59,8 @@
   Mozes lahko pridat aj [link](https://google.sk)"></textarea>
       </div>
       <div class="buttons">
-        <button @click="addPost" class="button-primary">Pridaj</button>
-        <button @click="toggleVisibility" class="button-secondary hide-form">Schovej formulář</button>
+        <button @click="addPost" class="button-primary">Přidat</button>
+        <button @click="toggleVisibility" class="button-secondary hide-form">Schovat formulář</button>
       </div>
     </div>
   </div>

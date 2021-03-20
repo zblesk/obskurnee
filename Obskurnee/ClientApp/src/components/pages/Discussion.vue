@@ -7,10 +7,10 @@
       <new-post :mode="discussion.topic" @new-post="onNewPost"></new-post>
       <div></div>
     </div>
-    <button @click="closeDiscussion" v-if="isMod && discussion.posts?.length && !discussion.isClosed" class="button-secondary button-close">Uzavri diskusiu a vytvor hlasovanie</button>
+    <button @click="closeDiscussion" v-if="isMod && discussion.posts?.length && !discussion.isClosed" class="button-secondary button-close">Uzavřít diskuzi a vytvořit hlasování</button>
 
     <div class="form" v-if="discussion.pollId">
-      <router-link :to="{ name: 'poll', params: { pollId: discussion.pollId } }" class="button-primary">Choď na hlasovanie</router-link>
+      <router-link :to="{ name: 'poll', params: { pollId: discussion.pollId } }" class="button-primary">Jít na hlasování</router-link>
     </div>
   </div>
 

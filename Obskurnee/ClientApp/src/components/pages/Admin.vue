@@ -40,7 +40,7 @@
                     <router-link :to="{ name: 'user', params: { email: user.email } }">{{ user.name }}</router-link> 
                 </div>
                 <div class="add-button">
-                    <button @click="makeMod(user.email)" class="button-primary button-small">Přidej</button>
+                    <button @click="makeMod(user.email)" class="button-primary button-small">Přidat</button>
                 </div>
             </div>
         </div>

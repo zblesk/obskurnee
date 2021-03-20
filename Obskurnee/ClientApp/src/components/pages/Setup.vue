@@ -11,7 +11,7 @@
                     v-model="form.password"
                     required
                     placeholder="h3sl0" />
-    <button class="btn btn-primary ml-2" type="submit">Zaregistruj</button>
+    <button class="btn btn-primary ml-2" type="submit">Zaregistrovat</button>
   </form>
 </div>
 </template>

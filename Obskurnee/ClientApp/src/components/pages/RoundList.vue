@@ -27,7 +27,7 @@
     </div>
     <div class="buttons">
         <button @click="cNewRound" class="button-primary">Nové kolo</button>
-        <button class="button-secondary hide-form" @click="toggleVisibility">Schovej formulář</button>
+        <button class="button-secondary hide-form" @click="toggleVisibility">Schovat formulář</button>
     </div>
 </div>
 

@@ -55,7 +55,7 @@
 
       <div class="buttons">
         <button @click="vote" :disabled="!checkedOptions?.length" class="button-primary" v-if="!iVoted && !poll.isClosed">Hlasovat</button>
-        <button v-if="isMod && !poll.isClosed" @click="doClosePoll" class="button-secondary poll-to-close">Zavri hlasovanie hned</button>
+        <button v-if="isMod && !poll.isClosed" @click="doClosePoll" class="button-secondary poll-to-close">Zavřít hlasování hned</button>
       </div>
       
     </div>
