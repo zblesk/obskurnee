@@ -13,7 +13,7 @@
                         <router-link :to="{ name: 'home' }">Domov</router-link>
                     </div>
                     <button type="button" class="navigation-toggler" @click="toggle">
-                        <img src="../assets/menu.svg">
+                        <img src="../assets/menu.svg" alt="menu icon">
                     </button>
                 </div>
                 <div class="navigation-toggled" v-bind:class="{show: isExpanded}">

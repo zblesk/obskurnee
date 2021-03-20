@@ -5,7 +5,7 @@
   </div>
   <div v-else class="form">
     <div class="cover">
-      <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />
+      <img :src="newpost.imageUrl" v-if="newpost.imageUrl" :alt="newpost.title" />
     </div>
     <div class="form-text">
       <div v-if="mode != 'Themes'" class="form-field">
@@ -20,7 +20,7 @@
         <div v-if="fetchInProgress" class="alert">Kamo počkaj, LOADUJEM</div>
       </div>
       <div class="cover-mobile">
-        <img :src="newpost.imageUrl" v-if="newpost.imageUrl" />
+        <img :src="newpost.imageUrl" v-if="newpost.imageUrl" :alt="newpost.title" />
       </div>
       <div class="form-field">
         <label for="name" v-if="mode == 'Books' || mode == 'Recommendations'">Název knihy</label>

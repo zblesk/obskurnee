@@ -39,7 +39,7 @@
             <div class="mo-wrapper">
                 <div class="mo mo-theme" v-if="round.themeDiscussionId">
                     <div class="mo-icon">
-                        <img src="../../assets/book-shelves.svg" alt="stack of papers">
+                        <img src="../../assets/book-shelves.svg" alt="book shelves icon">
                     </div>
                     <div class="mo-text">
                         <p class="mo-link">
@@ -52,7 +52,7 @@
                 </div>
                 <div class="mo" v-if="round.bookDiscussionId">
                     <div class="mo-icon">
-                        <img src="../../assets/magic-book.svg">
+                        <img src="../../assets/magic-book.svg" alt="magic book icon">
                     </div>
                     <div class="mo-text">
                         <p class="mo-link">
