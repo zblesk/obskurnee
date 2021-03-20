@@ -6,10 +6,12 @@
  <div v-if="poll.isClosed" class="winner"> 
     <div v-if="poll.followupLink?.kind == 'Poll'">
       <h2 class="winner-title">Rozstrel</h2>
-      <router-link :to="{ name: 'poll', params: { pollId: poll.followupLink.entityId } }" class="link">
-          | <span v-for="vote in poll.results.votes.filter(v => v.votes == poll.results.votes[0].votes)" v-bind:key="vote">
-            {{ poll.options.find(o => o.postId == vote.postId).title }} |
-          </span>
+      <p class="tiebreaker-text">Máme několik vítězů se stejným počtem hlasů:</p>
+      <ul class="tiebreaker-list">
+        <li v-for="vote in poll.results.votes.filter(v => v.votes == poll.results.votes[0].votes)" v-bind:key="vote">{{ poll.options.find(o => o.postId == vote.postId).title }}</li>
+      </ul>
+      <router-link :to="{ name: 'poll', params: { pollId: poll.followupLink.entityId } }">
+        <button class="button-primary">Přejít na rozstřelové hlasování</button>
       </router-link>
     </div>
     <div v-else>
@@ -311,9 +313,11 @@ export default {
     font-weight: bold;
   }
 
-  
-  
+  /* tiebreaker */
 
-
+  .tiebreaker-text {
+    margin-top: var(--spacer);
+    margin-bottom: calc(var(--spacer) / 2);
+  }
 
 </style>
