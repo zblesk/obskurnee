@@ -1,6 +1,11 @@
 <template>
+<div>
   <nav-menu></nav-menu>
   <router-view />
+  <div class="todo">
+    ja som footer, urob ma
+  </div>
+</div>
 </template>
 
 <script>
