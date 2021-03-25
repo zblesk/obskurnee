@@ -1,7 +1,7 @@
 <template>
 <div>
-  <div v-if="hide">
-    <button @click="toggleVisibility" class="button-primary">Přidat nový návrh</button>
+  <div v-if="hide" class="button-show-wrapper">
+    <button @click="toggleVisibility" class="button-primary button-show">Přidat nový návrh</button>
   </div>
   <div v-else class="form">
     <div class="cover">
@@ -68,6 +68,23 @@
 </template>
 
 <style scoped>
+
+  .button-show {
+    display: block;
+    width: 100%;
+  }
+
+  @media screen and (min-width: 576px) {
+    .button-show-wrapper {
+      display: flex;
+      justify-content: center;
+    }
+
+    .button-show {
+      display: inline-block;
+      width: auto;
+    }
+  }
 
   .cover-mobile {
     max-width: 240px;
@@ -171,6 +188,7 @@
   @media screen and (min-width: 576px) {
     .buttons {
       flex-direction: row;
+      justify-content: center;
     }
 
     .hide-form {
