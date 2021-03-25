@@ -68,7 +68,8 @@
 
     <div v-if="mode != 'edit'">
       <div class="profile">
-        <p class="bio" v-html="user.aboutMeHtml"></p>
+        <p v-if="user.aboutMeHtml" class="bio" v-html="user.aboutMeHtml"></p>
+        <p v-else class="bio"><em>Zatiaľ nám o sebe nič nepovedala.</em></p>
 
         <div class="contacts">
           <div class="mo">
@@ -76,7 +77,8 @@
               <img src="../../assets/email.svg" alt="email icon">
             </div>
             <div class="mo-text">
-              <a :href="'mailto:' + user.email">{{ user.email }}</a>
+              <a v-if="user.email" :href="'mailto:' + user.email">{{ user.email }}</a>
+              <p v-else>Nemáme</p>
             </div>
           </div>
           <div class="mo">
@@ -84,7 +86,8 @@
               <img src="../../assets/WhatsApp_Logo_1.png" alt="whatsapp logo">
             </div>
             <div class="mo-text">
-              <a :href="'tel:' + user.phone">{{ user.phone }}</a>
+              <a v-if="user.phone" :href="'tel:' + user.phone">{{ user.phone }}</a>
+              <p v-else>Nemáme</p>
             </div>
           </div>
           <div class="mo">
@@ -92,7 +95,8 @@
               <img src="../../assets/goodreads_icon_32x32.png" alt="goodreads icon">
             </div>
             <div class="mo-text">
-              <a :href="user.goodreadsUrl">Goodreads</a>
+              <a v-if="user.goodreadsUrl" :href="user.goodreadsUrl">Goodreads</a>
+              <p v-else>Nemáme</p>
             </div>
           </div>
         </div>
@@ -166,6 +170,14 @@ export default {
     subscribedBasic: function () { return this.subscriptions.includes('basicevents'); },
     subscribedAll: function () { return this.subscriptions.includes('allevents'); },
   },
+  watch: {
+    '$route' (to) {
+      if (to.name == 'user')
+      {
+        this.onLoad();
+      }
+    }
+  },
   methods: {
     ...mapActions("users", ["getUser", "updateUser"]),
     ...mapActions("recommendations", ["fetchRecommendationsFor"]),
@@ -213,20 +225,24 @@ export default {
           })
           .catch((err) => this.$notifyError(err));
     },
+    onLoad()
+    {
+      this.fetchProfile()
+        .then(() =>
+        {
+          if (this.$route.params.mode == "edit")
+          {
+            this.startEditing();
+          }
+          this.fetchRecommendationsFor(this.user.userId)
+            .then(recs => this.myRecs = recs)
+            .catch((err) => this.$notifyError(err));
+        });
+      this.fetchNewsletterSubsciptions();
+    },
   },
   mounted() {
-    this.fetchProfile()
-      .then(() =>
-      {
-        if (this.$route.params.mode == "edit")
-        {
-          this.startEditing();
-        }
-        this.fetchRecommendationsFor(this.user.userId)
-          .then(recs => this.myRecs = recs)
-          .catch((err) => this.$notifyError(err));
-      });
-    this.fetchNewsletterSubsciptions();
+    this.onLoad();
   }
 }
 </script>
