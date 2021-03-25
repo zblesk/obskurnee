@@ -7,7 +7,9 @@
       <new-post :mode="discussion.topic" @new-post="onNewPost"></new-post>
       <div></div>
     </div>
-    <button @click="closeDiscussion" v-if="isMod && discussion.posts?.length && !discussion.isClosed" class="button-secondary button-close">Uzavřít diskuzi a vytvořit hlasování</button>
+    <div class="button-wrapper">
+      <button @click="closeDiscussion" v-if="isMod && discussion.posts?.length && !discussion.isClosed" class="button-secondary button-close">Uzavřít diskuzi a vytvořit hlasování</button>
+    </div>
 
     <div class="form" v-if="discussion.pollId">
       <router-link :to="{ name: 'poll', params: { pollId: discussion.pollId } }" class="button-primary">Jít na hlasování</router-link>
@@ -114,12 +116,17 @@ export default {
   }
 
   @media screen and (min-width: 576px) {
+    .button-wrapper {
+      display: flex;
+      justify-content: center;
+    }
+    
     .button-close {
       display: inline-block;
       width: auto;
     }
   }
-
+/*
   @media screen and (min-width: 755px) {
     .page {
       position: relative;
@@ -131,5 +138,5 @@ export default {
       bottom: 60px;
     }
   }
-
+*/
 </style>
