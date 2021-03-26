@@ -2,10 +2,9 @@
 
 namespace Obskurnee.Models
 {
-    public class Review : HeaderData
+    public class GoodreadsReview : HeaderData
     {
         public string ReviewId { get; set; }
-        public int BookId { get; set; }
         public string BookTitle { get; set; }
         public string GoodreadsBookId { get; set; }
         public string ReviewUrl { get; set; }
@@ -15,6 +14,6 @@ namespace Obskurnee.Models
         [BsonIgnore] public string RenderedReviewText { get => ReviewText.RenderMarkdown(); }
         public string ImageUrl { get; internal set; }
 
-        public Review(string ownerId) : base(ownerId) { }
+        public GoodreadsReview(string ownerId) : base(ownerId) { }
     }
 }

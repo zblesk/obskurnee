@@ -20,8 +20,9 @@ namespace Obskurnee.Services
         public readonly ILiteCollection<Round> Rounds;
         public readonly ILiteCollection<Bookworm> Users;
         public readonly ILiteCollection<Setting> Settings;
-        public readonly ILiteCollection<Review> Reviews;
-        public readonly ILiteCollection<Review> CurrentlyReadings;
+        public readonly ILiteCollection<BookclubReview> BookReviews;
+        public readonly ILiteCollection<GoodreadsReview> GoodreadsReviews;
+        public readonly ILiteCollection<GoodreadsReview> CurrentlyReadings;
         public readonly ILiteCollection<NewsletterSubscription> NewsletterSubscriptions;
 
         LiteDatabase ILiteDbContext.LiteDatabase => _db;
@@ -43,15 +44,17 @@ namespace Obskurnee.Services
             Rounds = _db.GetCollection<Round>("rounds");
             Users = _db.GetCollection<Bookworm>("users");
             Settings = _db.GetCollection<Setting>("settings");
-            Reviews = _db.GetCollection<Review>("reviews");
-            CurrentlyReadings = _db.GetCollection<Review>("currentlyreadings");
+            GoodreadsReviews = _db.GetCollection<GoodreadsReview>("reviews");
+            CurrentlyReadings = _db.GetCollection<GoodreadsReview>("currentlyreadings");
             NewsletterSubscriptions = _db.GetCollection<NewsletterSubscription>("newslettersubscriptions");
+            BookReviews = _db.GetCollection<BookclubReview>("bookclubreviews").Include(b => b.Book).Include(b => b.Book.Post);
 
             Posts.EnsureIndex(p => p.DiscussionId);
             Votes.EnsureIndex(v => v.PollId);
             RecPosts.EnsureIndex(r => r.OwnerId);
             NewsletterSubscriptions.EnsureIndex(ns => ns.UserId);
             NewsletterSubscriptions.EnsureIndex(ns => ns.NewsletterName);
+            BookReviews.EnsureIndex(br => br.OwnerId);
         }
 
         public GoodreadsBookInfo StoreBookInfo(GoodreadsBookInfo book)

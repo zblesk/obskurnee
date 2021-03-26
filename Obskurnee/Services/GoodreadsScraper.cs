@@ -112,38 +112,38 @@ namespace Obskurnee.Services
             return result;
         }
 
-        public IEnumerable<Review> GetCurrentlyReadingBooks(Bookworm user)
+        public IEnumerable<GoodreadsReview> GetCurrentlyReadingBooks(Bookworm user)
         {
             if (string.IsNullOrWhiteSpace(user.GoodreadsUserId))
             {
                 _logger.LogInformation("Triggered RSS feed fetch for user {userId}, but no Goodreads User ID is available. Exitting.", user.Id);
-                return Enumerable.Empty<Review>();
+                return Enumerable.Empty<GoodreadsReview>();
             }
 
             var rssUrl = $"{_config.GoodreadsRssBaseUrl}{user.GoodreadsUserId}?shelf=currently-reading";
             return GetReviewsFromFeed(user.Id, rssUrl);
         }
 
-        public IEnumerable<Review> GetReadBooks(Bookworm user)
+        public IEnumerable<GoodreadsReview> GetReadBooks(Bookworm user)
         {
             if (string.IsNullOrWhiteSpace(user.GoodreadsUserId))
             {
                 _logger.LogInformation("Triggered RSS feed fetch for user {userId}, but no Goodreads User ID is available. Exitting.", user.Id);
-                return Enumerable.Empty<Review>();
+                return Enumerable.Empty<GoodreadsReview>();
             }
 
             var rssUrl = $"{_config.GoodreadsRssBaseUrl}{user.GoodreadsUserId}?shelf=read";
             return GetReviewsFromFeed(user.Id, rssUrl);
         }
 
-        private List<Review> GetReviewsFromFeed(string userId, string rssUrl)
+        private List<GoodreadsReview> GetReviewsFromFeed(string userId, string rssUrl)
         {
             var reader = XmlReader.Create(rssUrl);
             var feed = SyndicationFeed.Load(reader);
             var reviews = (from item in feed.Items
                            let rating = GetElementExtensionValueByOuterName(item, "user_rating")
                            let bookId = GetElementExtensionValueByOuterName(item, "book_id")
-                           select new Review(userId)
+                           select new GoodreadsReview(userId)
                            {
                                ReviewId = $"{userId}-{bookId}",
                                BookTitle = item.Title.Text.Trim(),
