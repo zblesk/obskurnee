@@ -52,7 +52,7 @@ namespace Obskurnee.Services
             string userId,
             ushort rating,
             string reviewText,
-            string reviewUrl = null)
+            string reviewUrl)
         {
             var book = _db.Books.FindById(bookId);
             var review = new BookclubReview(userId)
