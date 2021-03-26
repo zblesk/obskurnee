@@ -165,7 +165,7 @@ _{3} strán | [link na GR]({4:url})_
     <value>{0:name} odporučila knihu</value>
   </data>
   <data name="newRoundBodyMarkdown" xml:space="preserve">
-    <value>Pridaj svoje návrhy! **Nemáme obmedzenia na počty - čím viac, tým väčšia sranda!"**  
+    <value>Pridaj svoje návrhy! **Nemáme obmedzenia na počty - čím viac, tým väčšia sranda!**  
 
 Návrhy [pridávaj tu]({0:link}).</value>
   </data>
