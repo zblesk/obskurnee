@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
 using Microsoft.Extensions.Localization;
+using System.Linq;
 
 namespace Obskurnee.Controllers
 {
@@ -19,15 +20,18 @@ namespace Obskurnee.Controllers
         private readonly ILogger<PollController> _logger;
         private readonly PollService _polls;
         private readonly RoundManagerService _roundManager;
+        private readonly UserService _users;
 
         public PollController(
             ILogger<PollController> logger,
             PollService polls,
-            RoundManagerService roundManager)
+            RoundManagerService roundManager,
+            UserService users)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _polls = polls ?? throw new ArgumentNullException(nameof(polls));
             _roundManager = roundManager ?? throw new ArgumentNullException(nameof(roundManager));
+            _users = users ?? throw new ArgumentNullException(nameof(users));
         }
 
         [HttpGet]
@@ -44,7 +48,7 @@ namespace Obskurnee.Controllers
             vote.PollId = pollId;
             var poll = _polls.CastPollVote(vote.SetOwner(User));
             _logger.LogInformation("User {userId} voted in poll {pollId}", User.GetUserId(), pollId);
-            if (poll.Results.AlreadyVoted == poll.Results.TotalVoters)
+            if (poll.Results.AlreadyVoted.Count == _users.GetAllUsers().Count())
             {
                 return _roundManager.ClosePoll(pollId, User.GetUserId());
             }

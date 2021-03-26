@@ -29,10 +29,10 @@
   <div class="page-wrapper flex">
     <div class="page flex">
 
-      <div v-if="!poll.isClosed && poll.results && poll.results.yetToVote" class="u-md">
+      <div v-if="!poll.isClosed && poll.results && poll.results.alreadyVoted" class="u-md">
        <h2 class="subtitle">Stav hlasování</h2>
-        <p class="paragraph">Už hlasovalo {{ poll.results.alreadyVoted }} z {{ poll.results.totalVoters }} čtenářů.</p>
-        <p class="paragraph">Ješte nehlasovali: <span v-for="person in poll.results.yetToVote" v-bind:key="person">{{ person }},</span></p>
+        <p class="paragraph">Už hlasovalo {{ poll.results.alreadyVoted.length }} z {{users.length }} čtenářů.</p>
+        <p class="paragraph">Ješte nehlasovali: <span v-for="person in yetToVote" v-bind:key="person">{{ person.name }},</span></p>
       </div>
 
       <div v-if="iVoted || (poll.isClosed && poll.results && poll.results.votes)">
@@ -96,6 +96,9 @@ export default {
   computed: {
     ...mapGetters("context", ["isMod"]),
     ...mapState("polls", ["polls", "votes"]),
+    ...mapState("users", ["users"]),
+    ...mapGetters("users", ["totalUsers"]),
+    yetToVote: function() { return this.users.filter(user => !this.poll.results.alreadyVoted.some(u => u == user.userId)); }
   },
   methods: {
     ...mapActions("polls", ["getPollData", "sendVote", "closePoll"]),

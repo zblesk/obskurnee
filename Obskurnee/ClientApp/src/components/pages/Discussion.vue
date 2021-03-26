@@ -61,7 +61,12 @@ export default {
     },
     onNewPost(post)
     {
-      this.newPost({ discussionId: this.discussion.discussionId, newPost: post });
+      const onErr = this.$notifyError;
+      this.newPost({ discussionId: this.discussion.discussionId, newPost: post })
+          .catch(function (error) {
+            console.log(error);
+            onErr("Nepodarilo sa pridať príspevok");
+          });
     },
   },
   mounted() {

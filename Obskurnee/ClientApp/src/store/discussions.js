@@ -57,9 +57,6 @@ export default {
             newPost)
           .then((response) => {
             commit('addPost', { discussionId: discussionId, post: response.data });
-          })
-          .catch(function (error) {
-            console.log(error);
           });
     }
   }

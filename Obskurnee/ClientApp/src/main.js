@@ -26,3 +26,5 @@ createApp(App)
     }
   })
   .mount('#app');
+
+store.dispatch("users/getUsers");

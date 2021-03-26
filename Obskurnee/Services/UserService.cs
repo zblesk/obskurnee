@@ -81,7 +81,10 @@ namespace Obskurnee.Services
         {
             foreach (var user in Users.Values)
             {
-                user.CurrentlyReading = _reviews.GetCurrentlyReading(user.UserId);
+                if (includeCurrentlyReading)
+                {
+                    user.CurrentlyReading = _reviews.GetCurrentlyReading(user.UserId);
+                }
                 yield return user;
             }
         }

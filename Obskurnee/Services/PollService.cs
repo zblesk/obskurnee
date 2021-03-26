@@ -87,12 +87,7 @@ namespace Obskurnee.Services
                 }
                 poll.Results = new PollResults
                 {
-                    AlreadyVoted = allVotes.Count(),
-                    TotalVoters = _users.GetAllUserIds().Count,
-                    YetToVote = (from u in _users.Users
-                                 where !allVotes.Any(v => v.OwnerId == u.Key)
-                                 select u.Value.Name)
-                                 .ToList(),
+                    AlreadyVoted = allVotes.Select(v => v.OwnerId).ToList(),
                     Votes = (from t in totals.OrderByDescending(kvp => kvp.Value)
                              select new VoteResultItem
                              {

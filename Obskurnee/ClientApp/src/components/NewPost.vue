@@ -223,7 +223,6 @@ export default {
       if (!this.newpost.url 
         || !this.newpost.url.startsWith("https://www.goodreads.com"))
       {
-        console.log("Not fetching ", this.newpost.url);
         return;
       }
       this.fetchInProgress = true;
