@@ -44,7 +44,7 @@ namespace Obskurnee.Services
             Rounds = _db.GetCollection<Round>("rounds");
             Users = _db.GetCollection<Bookworm>("users");
             Settings = _db.GetCollection<Setting>("settings");
-            GoodreadsReviews = _db.GetCollection<GoodreadsReview>("reviews");
+            GoodreadsReviews = _db.GetCollection<GoodreadsReview>("goodreadsreviews");
             CurrentlyReadings = _db.GetCollection<GoodreadsReview>("currentlyreadings");
             NewsletterSubscriptions = _db.GetCollection<NewsletterSubscription>("newslettersubscriptions");
             BookReviews = _db.GetCollection<BookclubReview>("bookclubreviews").Include(b => b.Book).Include(b => b.Book.Post);
