@@ -31,7 +31,7 @@ namespace Obskurnee.Controllers
         public IEnumerable<BookclubReview> GetForBook(int bookId) => _reviews.GetBookReviews(bookId);
         
         [HttpGet]
-        [Route("book/{userId:string}")]
+        [Route("book/{userId}")]
         public IEnumerable<BookclubReview> GetForUser(string userId) => _reviews.GetUserReviews(userId);
 
         [HttpPost]

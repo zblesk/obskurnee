@@ -1,6 +1,7 @@
 ﻿using AspNetCore.Identity.LiteDB.Data;
 using LiteDB;
 using Obskurnee.Models;
+using Serilog;
 using System;
 using System.IO;
 
@@ -27,12 +28,10 @@ namespace Obskurnee.Services
 
         LiteDatabase ILiteDbContext.LiteDatabase => _db;
 
-        public Database(
-            Serilog.ILogger logger,
-            Config config)
+        public Database()
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _db = new LiteDatabase(Path.Combine(config.DataFolder, "bookclub.db"));
+            _logger = Log.ForContext<Database>();
+            _db = new LiteDatabase("Filename=" + Path.Combine("data", "bookclub.db") + ";Connection=shared");
             _db.CheckpointSize = 1;
             Discussions = _db.GetCollection<Discussion>("discussions");
             Posts = _db.GetCollection<Post>("posts");
