@@ -49,9 +49,10 @@ namespace Obskurnee
             });
 
             Configuration.Bind(Config.Current);
+            var databaseSingleton = new Database(Log.Logger.ForContext<Database>(), Config.Current);
 
-            services.AddTransient<Database>();
-            services.AddTransient<ILiteDbContext, Database>();
+            services.AddSingleton<Database>(databaseSingleton);
+            services.AddSingleton<ILiteDbContext>((ILiteDbContext)databaseSingleton);
             services.AddSingleton(Config.Current);
             services.AddTransient<GoodreadsScraper>();
             services.AddTransient<PollService>();
