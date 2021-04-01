@@ -5,7 +5,16 @@
     </book-large-card>
   </div>
 
-    <h2 class="todo-l">sem este recenzie</h2>
+  <div class="form">
+    <div class="form-text" v-if="!hideForm">
+       <input v-model="newReview.rating" placeholder="5" />
+       <input v-model="newReview.reviewText" />
+    </div>
+    <div class="buttons">
+      <button @click="addReview" class="button-primary" v-if="!hideForm">Pridať</button>
+      <button @click="toggleVisibility" class="button-secondary hide-form">Schovať formulár</button>
+    </div>
+  </div>
 
 </section>
 </template>
@@ -36,10 +45,16 @@ export default {
   data() {
       return {
         book: {},
+        newReview: {},
+        hideForm: false,
       }
   },
   methods: {
     ...mapActions("books", ["getBookById"]),
+    toggleVisibility()
+    {
+      this.hideForm = !this.hideForm;
+    }
   },
   computed: {
   },
