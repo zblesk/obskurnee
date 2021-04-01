@@ -36,7 +36,7 @@ export default {
       },
       async newReview({ commit, state }, { bookId, review }) 
       {
-        retuawaitrn axios.post(
+        await axios.post(
             "/api/reviews/book/" + bookId,
             review)
           .then((response) => {
