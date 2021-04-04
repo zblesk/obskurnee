@@ -179,4 +179,10 @@ Návrhy [pridávaj tu]({0:link}).</value>
 
 [link]({2:link})</value>
   </data>
+  <data name="passwordResetBody" xml:space="preserve">
+    <value>Resetni si heslo tu: &lt;a href=""{0}""&gt;{0}&lt;/a&gt;</value>
+  </data>
+  <data name="passwordResetSubject" xml:space="preserve">
+    <value>Reset hesla</value>
+  </data>
 </root>

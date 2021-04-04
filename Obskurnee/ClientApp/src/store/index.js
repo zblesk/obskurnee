@@ -6,6 +6,7 @@ import polls from './polls'
 import users from './users'
 import books from './books'
 import recommendations from './recommendations'
+import reviews from './reviews'
 import global from './global'
 
 export default createStore({
@@ -18,5 +19,6 @@ export default createStore({
     books,
     recommendations,
     global,
+    reviews,
   }
 })

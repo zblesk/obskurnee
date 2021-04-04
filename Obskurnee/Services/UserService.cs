@@ -10,6 +10,7 @@ using Obskurnee.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Web;
+using Microsoft.Extensions.Localization;
 
 namespace Obskurnee.Services
 {
@@ -27,7 +28,7 @@ namespace Obskurnee.Services
         private readonly IServiceProvider _serviceProvider;
         private readonly ReviewService _reviews;
         private readonly Config _config;
-
+        private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
         private NewsletterService Newsletter { get => (NewsletterService)_serviceProvider.GetService(typeof(NewsletterService)); }
 
         public IReadOnlyDictionary<string, UserInfo> Users
@@ -47,6 +48,7 @@ namespace Obskurnee.Services
            IMailerService mailer,
            IServiceProvider serviceProvider,
            ReviewService reviews,
+           IStringLocalizer<NewsletterStrings> newsletterLocalizer,
            Config config)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
@@ -58,6 +60,7 @@ namespace Obskurnee.Services
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _reviews = reviews ?? throw new ArgumentNullException(nameof(reviews));
             _config = config ?? throw new ArgumentNullException(nameof(config));
+            _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
         }
 
         public void ReloadCache()
@@ -201,8 +204,8 @@ namespace Obskurnee.Services
                                             _config.BaseUrl,
                                             HttpUtility.UrlEncode(user.Id),
                                             HttpUtility.UrlEncode(resetToken));
-            var subject = "Reset hesla";
-            var body = string.Format(@"Resetni si heslo tu: <a href=""{0}"">{0}</a>", callbackUrl);
+            var subject = _newsletterLocalizer["passwordResetSubject"];
+            var body = _newsletterLocalizer.Format("passwordResetBody", callbackUrl);
             await _mailer.SendMail(subject, body, user.Email.Address);
             _logger.LogWarning("reset hesla body {b}", body);
             return true;
