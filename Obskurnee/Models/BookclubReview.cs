@@ -4,7 +4,7 @@ namespace Obskurnee.Models
 {
     public class BookclubReview : HeaderData
     {
-        public string ReviewId { get; set; }
+        [BsonId] public string ReviewId { get; set; }
         [BsonRef] public Book Book { get; set; }
         public string GoodreadsBookId { get; set; }
         public string ReviewUrl { get; set; }
