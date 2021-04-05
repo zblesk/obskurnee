@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  <review-card v-for="rev in bookReviews(currentBookId)" v-bind:key="rev.reviewId" v-bind:review="rev" ></review-card>
+  <books-review-card v-for="rev in bookReviews(currentBookId)" v-bind:key="rev.reviewId" v-bind:review="rev" ></books-review-card>
 </section>
 </template>
 
@@ -38,10 +38,10 @@
 <script>
 import BookLargeCard from '../BookLargeCard.vue';
 import { mapActions, mapGetters } from "vuex";
-import ReviewCard from '../ReviewCard.vue';
+import BooksReviewCard from '../BooksReviewCard.vue';
 
 export default {
-  components: { BookLargeCard, ReviewCard },
+  components: { BookLargeCard, BooksReviewCard },
   name: 'Book',
   data() {
       return {
@@ -49,7 +49,6 @@ export default {
         book: {},
         newReviewData: {},
         hideForm: false,
-        reviews: [],
       }
   },
   methods: {
@@ -74,10 +73,6 @@ export default {
     this.getBookById(this.currentBookId)
       .then(book => this.book = book);
     this.fetchBookReviews(this.currentBookId)
-      .then(data => {
-        this.reviews = data;
-        console.log('b', data);
-      })
       .catch(e => this.$notifyError(e));
   }
 }

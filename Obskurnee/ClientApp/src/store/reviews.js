@@ -8,6 +8,8 @@ export default {
     getters: {
       bookReviews: (state) => (bookId) => 
         Object.entries(state.reviews).filter((kvp) => kvp[1].book.bookId == bookId).map((kvp) => kvp[1]),
+      userReviews: (state) => (userId) => 
+        Object.entries(state.reviews).filter((kvp) => kvp[1].ownerId == userId).map((kvp) => kvp[1]),
     },
     mutations: {
       addReviews (state, reviews) {
@@ -21,7 +23,7 @@ export default {
       async fetchUserReviews ({ commit }, userId) 
       {
         return axios
-          .get("/api/reviews/user" + userId)
+          .get("/api/reviews/user/" + userId)
           .then(response => {
             commit('addReviews', response.data);
             return Promise.resolve(response.data);

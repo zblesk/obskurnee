@@ -144,7 +144,9 @@
     </div>
     <p v-else class="recs-message">Zatiaľ tu nemáme žiadne odporúčania. <span v-if="user && isMe(user.userId)">Čo tak <router-link :to="{ name: 'recommendationlist' }">nejaké pridať?</router-link></span></p>
 
-
+    <div v-if="userReviews(user.userId)">
+      <users-review-card v-for="rev in userReviews(user.userId)" v-bind:key="rev.reviewId" v-bind:review="rev" ></users-review-card>
+    </div>
   </div>
 </section>
 </template>
@@ -153,8 +155,9 @@
 import { mapActions, mapGetters } from "vuex";
 import axios from 'axios';
 import RecommendationCard from '../RecommendationCard.vue';
+import UsersReviewCard from '../UsersReviewCard.vue';
 export default {
-  components: { RecommendationCard },
+  components: { RecommendationCard, UsersReviewCard },
   name: 'User',
   data() {
       return {
@@ -167,6 +170,7 @@ export default {
   },
   computed: {
     ...mapGetters("context", ["myUserId", "isMod", "isMe"]),
+    ...mapGetters("reviews", ["userReviews"]),
     subscribedBasic: function () { return this.subscriptions.includes('basicevents'); },
     subscribedAll: function () { return this.subscriptions.includes('allevents'); },
   },
@@ -181,6 +185,7 @@ export default {
   methods: {
     ...mapActions("users", ["getUser", "updateUser"]),
     ...mapActions("recommendations", ["fetchRecommendationsFor"]),
+    ...mapActions("reviews", ["fetchUserReviews"]),
     updateProfile() 
     {
       this.updateUser(this.editingUser)
@@ -237,6 +242,12 @@ export default {
           this.fetchRecommendationsFor(this.user.userId)
             .then(recs => this.myRecs = recs)
             .catch((err) => this.$notifyError(err));
+          this.fetchUserReviews(this.user.userId)
+            .then(data => {
+              this.reviews = data;
+              console.log('b', data);
+            })
+            .catch(e => this.$notifyError(e));
         });
       this.fetchNewsletterSubsciptions();
     },
