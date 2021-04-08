@@ -11,5 +11,11 @@ namespace Obskurnee.Models
     public class ApplicationDbContext : IdentityDbContext<Bookworm>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) : base(opts) { }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("DataSource=Data\\users.db;Cache=Shared");
+            base.OnConfiguring(optionsBuilder);
+        }
     }
 }

@@ -29,6 +29,8 @@ namespace Obskurnee.Services
         private readonly ReviewService _reviews;
         private readonly Config _config;
         private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
+        private readonly ApplicationDbContext _dbContext;
+
         private NewsletterService Newsletter { get => (NewsletterService)_serviceProvider.GetService(typeof(NewsletterService)); }
 
         public IReadOnlyDictionary<string, UserInfo> Users
@@ -49,7 +51,8 @@ namespace Obskurnee.Services
            IServiceProvider serviceProvider,
            ReviewService reviews,
            IStringLocalizer<NewsletterStrings> newsletterLocalizer,
-           Config config)
+           Config config,
+           ApplicationDbContext dbContext)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
@@ -61,15 +64,14 @@ namespace Obskurnee.Services
             _reviews = reviews ?? throw new ArgumentNullException(nameof(reviews));
             _config = config ?? throw new ArgumentNullException(nameof(config));
             _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
+            _dbContext = dbContext;
         }
 
         public void ReloadCache()
         {
-            //_users = _db.Users
-            //    .FindAll()
-            //    .Select(async u => UserInfo.From(u, await _userManager.GetClaimsAsync(u)))
-            //    .Select(t => t.Result)
-            //    .ToDictionary(u => u.UserId);
+            _users = _dbContext.Users.ToList()
+                .Select(u => UserInfo.From(u))
+                .ToDictionary(u => u.UserId);
         }
 
         private void EnsureCacheLoaded()
@@ -92,13 +94,13 @@ namespace Obskurnee.Services
             }
         }
 
-        public IEnumerable<Bookworm> GetAllUsersAsBookworm()
-            => _db.Users.FindAll();
+        public List<Bookworm> GetAllUsersAsBookworm()
+            => _db.Users.ToList();
 
         public IList<string> GetAllUserIds()
         {
             EnsureCacheLoaded();
-            return _db.Users.Query().Select(u => u.Id).ToList();
+            return _db.Users.Select(u => u.Id).ToList();
         }
 
         public async Task<UserInfo> Register(LoginCredentials creds)
@@ -220,7 +222,7 @@ namespace Obskurnee.Services
 
         public async Task<UserInfo> GetUserByEmail(string email)
         {
-            var user = _db.Users.FindOne(bw => bw.Email == email);
+            var user = _db.Users.First(bw => bw.Email == email);
             return UserInfo.From(user, await _userManager.GetClaimsAsync(user));
         }
      

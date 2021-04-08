@@ -1,6 +1,8 @@
 ﻿using LiteDB;
 using Obskurnee.Models;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Obskurnee.Services
@@ -17,16 +19,18 @@ namespace Obskurnee.Services
         public readonly ILiteCollection<Poll> Polls;
         public readonly ILiteCollection<Vote> Votes;
         public readonly ILiteCollection<Round> Rounds;
-        public readonly ILiteCollection<Bookworm> Users;
+        public readonly List<Bookworm> Users;
         public readonly ILiteCollection<Setting> Settings;
         public readonly ILiteCollection<BookclubReview> BookReviews;
         public readonly ILiteCollection<GoodreadsReview> GoodreadsReviews;
         public readonly ILiteCollection<GoodreadsReview> CurrentlyReadings;
         public readonly ILiteCollection<NewsletterSubscription> NewsletterSubscriptions;
+        private readonly ApplicationDbContext _dbContext;
 
         public Database(
             Serilog.ILogger logger,
-            Config config)
+            Config config,
+           ApplicationDbContext dbContext)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = new LiteDatabase(Path.Combine(config.DataFolder, "bookclub.db"));
@@ -39,7 +43,7 @@ namespace Obskurnee.Services
             Polls = _db.GetCollection<Poll>("polls").Include(p => p.Options);
             Votes = _db.GetCollection<Vote>("votes");
             Rounds = _db.GetCollection<Round>("rounds");
-            Users = _db.GetCollection<Bookworm>("users");
+            Users = dbContext.Users.ToList();
             Settings = _db.GetCollection<Setting>("settings");
             GoodreadsReviews = _db.GetCollection<GoodreadsReview>("goodreadsreviews");
             CurrentlyReadings = _db.GetCollection<GoodreadsReview>("currentlyreadings");
@@ -52,6 +56,7 @@ namespace Obskurnee.Services
             NewsletterSubscriptions.EnsureIndex(ns => ns.UserId);
             NewsletterSubscriptions.EnsureIndex(ns => ns.NewsletterName);
             BookReviews.EnsureIndex(br => br.OwnerId);
+            _dbContext = dbContext;
         }
 
         public GoodreadsBookInfo StoreBookInfo(GoodreadsBookInfo book)

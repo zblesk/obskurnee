@@ -48,7 +48,9 @@ namespace Obskurnee
             });
 
             Configuration.Bind(Config.Current);
-            var databaseSingleton = new Database(Log.Logger.ForContext<Database>(), Config.Current);
+
+            var databaseSingleton = new Database(Log.Logger.ForContext<Database>(), Config.Current,
+                new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>()));
 
             services.AddSingleton<Database>(databaseSingleton);
             services.AddSingleton(Config.Current);
@@ -68,6 +70,7 @@ namespace Obskurnee
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));
+            
 
             switch (Configuration["MailerType"])
             {
