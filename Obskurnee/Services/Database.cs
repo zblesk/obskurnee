@@ -1,12 +1,11 @@
-﻿using AspNetCore.Identity.LiteDB.Data;
-using LiteDB;
+﻿using LiteDB;
 using Obskurnee.Models;
 using System;
 using System.IO;
 
 namespace Obskurnee.Services
 {
-    public sealed class Database : ILiteDbContext, IDisposable
+    public sealed class Database :  IDisposable
     {
         private readonly Serilog.ILogger _logger;
         private readonly LiteDatabase _db;
@@ -24,8 +23,6 @@ namespace Obskurnee.Services
         public readonly ILiteCollection<GoodreadsReview> GoodreadsReviews;
         public readonly ILiteCollection<GoodreadsReview> CurrentlyReadings;
         public readonly ILiteCollection<NewsletterSubscription> NewsletterSubscriptions;
-
-        LiteDatabase ILiteDbContext.LiteDatabase => _db;
 
         public Database(
             Serilog.ILogger logger,

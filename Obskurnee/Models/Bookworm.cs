@@ -1,10 +1,10 @@
-﻿using AspNetCore.Identity.LiteDB.Models;
-using LiteDB;
+﻿using LiteDB;
+using Microsoft.AspNetCore.Identity;
 using System.Text.RegularExpressions;
 
 namespace Obskurnee.Models
 {
-    public class Bookworm : ApplicationUser
+    public class Bookworm : IdentityUser
     {
         public string GoodreadsProfileUrl { get; set; }
         public string GoodreadsUserId 

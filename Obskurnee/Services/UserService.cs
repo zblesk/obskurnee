@@ -18,7 +18,7 @@ namespace Obskurnee.Services
     {
         private readonly ILogger<UserService> _logger;
         private readonly Database _db;
-        private static IReadOnlyDictionary<string, UserInfo> _users;
+        private static IReadOnlyDictionary<string, UserInfo> _users = new Dictionary<string, UserInfo>();
 
         private readonly SignInManager<Bookworm> _signInManager;
         private readonly UserManager<Bookworm> _userManager;
@@ -65,11 +65,11 @@ namespace Obskurnee.Services
 
         public void ReloadCache()
         {
-            _users = _db.Users
-                .FindAll()
-                .Select(async u => UserInfo.From(u, await _userManager.GetClaimsAsync(u)))
-                .Select(t => t.Result)
-                .ToDictionary(u => u.UserId);
+            //_users = _db.Users
+            //    .FindAll()
+            //    .Select(async u => UserInfo.From(u, await _userManager.GetClaimsAsync(u)))
+            //    .Select(t => t.Result)
+            //    .ToDictionary(u => u.UserId);
         }
 
         private void EnsureCacheLoaded()
@@ -108,7 +108,7 @@ namespace Obskurnee.Services
                 UserName = creds.Email.Substring(0, creds.Email.IndexOf('@')),
                 Email = creds.Email,
             };
-            _logger.LogInformation("Registering user {email}", user.Email.Address);
+            _logger.LogInformation("Registering user {email}", user.Email);
             var result = await _userManager.CreateAsync(user, creds.Password);
             if (result.Succeeded)
             {
@@ -206,7 +206,7 @@ namespace Obskurnee.Services
                                             HttpUtility.UrlEncode(resetToken));
             var subject = _newsletterLocalizer["passwordResetSubject"];
             var body = _newsletterLocalizer.Format("passwordResetBody", callbackUrl);
-            await _mailer.SendMail(subject, body, user.Email.Address);
+            await _mailer.SendMail(subject, body, user.Email);
             _logger.LogWarning("reset hesla body {b}", body);
             return true;
         }
@@ -220,7 +220,7 @@ namespace Obskurnee.Services
 
         public async Task<UserInfo> GetUserByEmail(string email)
         {
-            var user = _db.Users.FindOne(bw => bw.Email.Address == email);
+            var user = _db.Users.FindOne(bw => bw.Email == email);
             return UserInfo.From(user, await _userManager.GetClaimsAsync(user));
         }
      
@@ -238,7 +238,7 @@ namespace Obskurnee.Services
             string aboutMe)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            _logger.LogInformation("Updating user profile for {userId} ({email})", user.Id, user.Email.Address);
+            _logger.LogInformation("Updating user profile for {userId} ({email})", user.Id, user.Email);
             user.UserName = name;
             user.GoodreadsProfileUrl = goodreadsUrl;
             user.AboutMe = aboutMe;
@@ -255,7 +255,7 @@ namespace Obskurnee.Services
                     identityResult);
                 throw new DatastoreException("User update succeeded, but phone number update failed.");
             }
-            _logger.LogInformation("User profile for {userId} ({email}) updated.", user.Id, user.Email.Address);
+            _logger.LogInformation("User profile for {userId} ({email}) updated.", user.Id, user.Email);
             ReloadCache();
 
             return await GetUserByEmail(email);

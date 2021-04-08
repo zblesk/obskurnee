@@ -37,8 +37,8 @@ namespace Obskurnee.ViewModels
             => new (){
                 UserId = user.Id,
                 Name = user.UserName,
-                Email = user.Email.Address,
-                Phone = user.Phone?.Number,
+                Email = user.Email,
+                Phone = user.PhoneNumber,
                 AboutMe = user.AboutMe,
                 AboutMeHtml = user.RenderedAboutMe,
                 GoodreadsUrl = user.GoodreadsProfileUrl,
@@ -52,8 +52,8 @@ namespace Obskurnee.ViewModels
             {
                 UserId = user.Id,
                 Name = user.UserName,
-                Email = user.Email.Address,
-                Phone = user.Phone?.Number,
+                Email = user.Email,
+                Phone = user.PhoneNumber,
                 AboutMe = user.AboutMe,
                 AboutMeHtml = user.RenderedAboutMe,
                 GoodreadsUrl = user.GoodreadsProfileUrl,

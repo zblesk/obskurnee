@@ -1,5 +1,3 @@
-using AspNetCore.Identity.LiteDB;
-using AspNetCore.Identity.LiteDB.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,6 +20,7 @@ using System.Configuration;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 
 namespace Obskurnee
 {
@@ -52,7 +51,6 @@ namespace Obskurnee
             var databaseSingleton = new Database(Log.Logger.ForContext<Database>(), Config.Current);
 
             services.AddSingleton<Database>(databaseSingleton);
-            services.AddSingleton<ILiteDbContext>((ILiteDbContext)databaseSingleton);
             services.AddSingleton(Config.Current);
             services.AddTransient<GoodreadsScraper>();
             services.AddTransient<PollService>();
@@ -66,6 +64,10 @@ namespace Obskurnee
             services.AddSingleton<MatrixService>();
             services.AddTransient<ReviewService>();
             services.AddHostedService<FeedFetcherService>();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlite(
+                    Configuration.GetConnectionString("DefaultConnection")));
 
             switch (Configuration["MailerType"])
             {
@@ -105,8 +107,11 @@ namespace Obskurnee
             IApplicationBuilder app,
             IWebHostEnvironment env,
             IHostApplicationLifetime lifetime,
-            UserService userService)
+            UserService userService,
+            ApplicationDbContext dbContext)
         {
+            Log.Information("Checking database");
+            dbContext.Database.Migrate();
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
@@ -185,7 +190,7 @@ namespace Obskurnee
                 options.Password.RequiredLength = Config.Current.DefaultPasswordMinLength;
                 options.ClaimsIdentity.UserIdClaimType = BookclubClaims.UserId;
             })
-               .AddUserStore<LiteDbUserStore<Bookworm>>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
                .AddSignInManager<SignInManager<Bookworm>>()
                .AddDefaultTokenProviders();
 
