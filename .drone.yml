@@ -3,18 +3,6 @@ type: docker
 name: Build & Deploy
 
 steps:
-# - name: node build
-#   image: node:14
-#   commands:
-#   - cd Obskurnee
-#   - cd ClientApp
-#   - npm install
-#   - npm run build -- --prod
-
-# - name: dotnet build
-#   image: mcr.microsoft.com/dotnet/sdk:5.0
-#   commands:
-#   - dotnet publish -c ReleaseNoNode -o published
 
 - name: docker build
   image: plugins/docker

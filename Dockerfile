@@ -7,8 +7,6 @@ COPY Obskurnee/*.csproj ./Obskurnee/
 RUN dotnet restore -r linux-x64
 
 COPY Obskurnee/. ./Obskurnee/
-# This one can't be reffed via Nuget
-COPY AspNetCore.Identity.LiteDB.dll ./Obskurnee/
 
 WORKDIR /source/Obskurnee
 RUN dotnet publish -c ReleaseNoNode -o /app --no-restore -r linux-x64 --self-contained false
