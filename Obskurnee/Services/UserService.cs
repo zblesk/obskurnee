@@ -95,12 +95,12 @@ namespace Obskurnee.Services
         }
 
         public List<Bookworm> GetAllUsersAsBookworm()
-            => _db.Users.ToList();
+            => _dbContext.Users.ToList();
 
         public IList<string> GetAllUserIds()
         {
             EnsureCacheLoaded();
-            return _db.Users.Select(u => u.Id).ToList();
+            return _dbContext.Users.Select(u => u.Id).ToList();
         }
 
         public async Task<UserInfo> Register(LoginCredentials creds)
@@ -222,7 +222,7 @@ namespace Obskurnee.Services
 
         public async Task<UserInfo> GetUserByEmail(string email)
         {
-            var user = _db.Users.First(bw => bw.Email == email);
+            var user = _dbContext.Users.First(bw => bw.Email == email);
             return UserInfo.From(user, await _userManager.GetClaimsAsync(user));
         }
      

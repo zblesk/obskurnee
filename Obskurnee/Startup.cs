@@ -49,8 +49,7 @@ namespace Obskurnee
 
             Configuration.Bind(Config.Current);
 
-            var databaseSingleton = new Database(Log.Logger.ForContext<Database>(), Config.Current,
-                new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>()));
+            var databaseSingleton = new Database(Log.Logger.ForContext<Database>(), Config.Current);
 
             services.AddSingleton<Database>(databaseSingleton);
             services.AddSingleton(Config.Current);
