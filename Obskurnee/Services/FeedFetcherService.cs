@@ -17,9 +17,6 @@ namespace Obskurnee.Services
         private Timer _timer;
         private bool isRunning = false;
         private readonly object @lock = new object();
-        private Config _config;
-        private UserService _userService;
-        private ReviewService _reviews;
         private readonly IServiceScopeFactory _scopeFactory;
 
         public FeedFetcherService(
@@ -32,20 +29,15 @@ namespace Obskurnee.Services
 
         public Task StartAsync(CancellationToken stoppingToken)
         {
-            using (var scope = _scopeFactory.CreateScope())
-            {
-                _userService = (UserService)scope.ServiceProvider.GetService(typeof(UserService));
-                _config = (Config)scope.ServiceProvider.GetService(typeof(Config));
-                _reviews = (ReviewService)scope.ServiceProvider.GetService(typeof(ReviewService));
-                _logger.LogInformation("Feed fetcher service started. Fetch interval: {min} minutes",
-                    _config.GoodreadsFetchIntervalMinutes);
-
-                _timer = new Timer(FetchFeeds,
-                    null,
-                    TimeSpan.FromMinutes(3), // let the app startup finish first
-                    TimeSpan.FromMinutes(_config.GoodreadsFetchIntervalMinutes));
-                return Task.CompletedTask;
-            }
+            using var scope = _scopeFactory.CreateScope();
+            var config = (Config)scope.ServiceProvider.GetService(typeof(Config));
+            _logger.LogInformation("Feed fetcher service started. Fetch interval: {min} minutes",
+                config.GoodreadsFetchIntervalMinutes);
+            _timer = new Timer(FetchFeeds,
+                null,
+                TimeSpan.FromMinutes(3), // let the app startup finish first
+                TimeSpan.FromMinutes(config.GoodreadsFetchIntervalMinutes));
+            return Task.CompletedTask;
         }
 
         private void FetchFeeds(object state)
@@ -61,10 +53,13 @@ namespace Obskurnee.Services
             }
             try
             {
+                using var scope = _scopeFactory.CreateScope();
+                var reviews = (ReviewService)scope.ServiceProvider.GetService(typeof(ReviewService));
+                var userService = (UserService)scope.ServiceProvider.GetService(typeof(UserService));
                 _logger.LogInformation("Starting RSS fetch");
-                foreach (var user in _userService.GetAllUsersAsBookworm())
+                foreach (var user in userService.GetAllUsersAsBookworm())
                 {
-                    _reviews.FetchReviewUpdates(user);
+                    reviews.FetchReviewUpdates(user);
                 }
             }
             finally
