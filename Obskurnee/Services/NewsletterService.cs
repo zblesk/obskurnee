@@ -4,6 +4,7 @@ using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Obskurnee.Services
 {
@@ -52,10 +53,17 @@ namespace Obskurnee.Services
         }
 
         public Dictionary<string, IEnumerable<UserInfo>> GetAllNewsletterSubscribers()
-            => _db.NewsletterSubscriptions.FindAll()
-                .GroupBy(ns => ns.NewsletterName)
-                .ToDictionary(grouping => grouping.Key,
-                                grouping => grouping.Select(ns => _userService.Users[ns.UserId]));
+        {
+            var result = new Dictionary<string, IEnumerable<UserInfo>>();
+            foreach (var newsletter in _db.NewsletterSubscriptions.FindAll()
+                                            .GroupBy(ns => ns.NewsletterName))
+            {
+                var names = newsletter.Select(ns => _userService.GetUserById(ns.UserId)).ToArray();
+                Task.WaitAll(names);
+                result[newsletter.Key] = names.Select(n => n.Result);
+            }
+            return result;
+        }
 
         public void SendNewsletter(string newsletterName, string subject, string body, bool forwardSubjectToMatrix = true)
         {

@@ -62,7 +62,7 @@ namespace Obskurnee
             services.AddTransient<SettingsService>();
             services.AddTransient<NewsletterService>();
             services.AddTransient<RecommendationService>();
-            services.AddSingleton<MatrixService>();
+            services.AddTransient<MatrixService>();
             services.AddTransient<ReviewService>();
             services.AddHostedService<FeedFetcherService>();
 
@@ -152,7 +152,7 @@ namespace Obskurnee
                 }
             });
 
-            userService.ReloadCache();
+            userService.LoadUsernameCache();
             lifetime.ApplicationStarted.Register(() => 
                 Log.Information("Application started at {@base}", 
                     Config.Current.BaseUrl));

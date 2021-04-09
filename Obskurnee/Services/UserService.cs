@@ -18,7 +18,6 @@ namespace Obskurnee.Services
     {
         private readonly ILogger<UserService> _logger;
         private readonly Database _db;
-        private static IReadOnlyDictionary<string, UserInfo> _users = new Dictionary<string, UserInfo>();
 
         private readonly SignInManager<Bookworm> _signInManager;
         private readonly UserManager<Bookworm> _userManager;
@@ -30,17 +29,9 @@ namespace Obskurnee.Services
         private readonly Config _config;
         private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
         private readonly ApplicationDbContext _dbContext;
+        private static IReadOnlyDictionary<string, string> _userNames = new Dictionary<string, string>();
 
         private NewsletterService Newsletter { get => (NewsletterService)_serviceProvider.GetService(typeof(NewsletterService)); }
-
-        public IReadOnlyDictionary<string, UserInfo> Users
-        {
-            get
-            {
-                EnsureCacheLoaded();
-                return _users;
-            }
-        }
 
         public UserService(
            UserManager<Bookworm> userManager,
@@ -59,7 +50,6 @@ namespace Obskurnee.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
             _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
-            EnsureCacheLoaded();
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _reviews = reviews ?? throw new ArgumentNullException(nameof(reviews));
             _config = config ?? throw new ArgumentNullException(nameof(config));
@@ -67,24 +57,11 @@ namespace Obskurnee.Services
             _dbContext = dbContext;
         }
 
-        public void ReloadCache()
-        {
-            _users = _dbContext.Users.ToList()
-                .Select(u => UserInfo.From(u))
-                .ToDictionary(u => u.UserId);
-        }
-
-        private void EnsureCacheLoaded()
-        {
-            if (_users == null)
-            {
-                ReloadCache();
-            }
-        }
-
         public IEnumerable<UserInfo> GetAllUsers(bool includeCurrentlyReading = false)
         {
-            foreach (var user in Users.Values)
+            var users = GetAllUsers();
+            users.Wait();
+            foreach (var user in users.Result)
             {
                 if (includeCurrentlyReading)
                 {
@@ -94,12 +71,31 @@ namespace Obskurnee.Services
             }
         }
 
+        public async Task<List<UserInfo>> GetAllUsers()
+        {
+            var result = new List<UserInfo>();
+            foreach (var user in _dbContext.Users)
+            {
+                var claims = await _userManager.GetClaimsAsync(user);
+                result.Add(UserInfo.From(user, claims));
+            }
+            return result;
+        }
+
+        public void LoadUsernameCache()
+        {
+            _userNames = (from user in _dbContext.Users
+                          select new { user.Id, user.UserName })
+                         .ToDictionary(
+                            u => u.Id,
+                            u => u.UserName);
+        }
+
         public List<Bookworm> GetAllUsersAsBookworm()
             => _dbContext.Users.ToList();
 
         public IList<string> GetAllUserIds()
         {
-            EnsureCacheLoaded();
             return _dbContext.Users.Select(u => u.Id).ToList();
         }
 
@@ -115,7 +111,7 @@ namespace Obskurnee.Services
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created");
-                ReloadCache();
+                LoadUsernameCache();
                 Newsletter.Subscribe(user.Id, Newsletters.BasicEvents);
                 _db.Flush();
                 return UserInfo.From(user);
@@ -128,7 +124,6 @@ namespace Obskurnee.Services
             _logger.LogInformation("Making moderator of {email}", email);
             var user = await _signInManager.UserManager.FindByEmailAsync(email);
             var identityResult = await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Moderator, "true"));
-            ReloadCache();
             return identityResult;
         }
 
@@ -137,7 +132,6 @@ namespace Obskurnee.Services
             _logger.LogInformation("Making admin of {email}", email);
             var user = await _signInManager.UserManager.FindByEmailAsync(email);
             var identityResult = await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Admin, "true"));
-            ReloadCache();
             return identityResult;
         }
 
@@ -158,7 +152,6 @@ namespace Obskurnee.Services
             var isAdmin = await MakeAdmin(newUser.Email);
             if (isMod.Succeeded && isAdmin.Succeeded)
             {
-                ReloadCache();
                 return newUser;
             }
             _logger.LogError("First admin creation failed. \nMod sucess: {@isMod} \n\nAdmin success: {@isAdmin}", isMod, isAdmin);
@@ -191,7 +184,7 @@ namespace Obskurnee.Services
                     expires: DateTime.UtcNow.AddDays(190),
                     signingCredentials: _config.SigningCreds));
 
-        public static string GetUserName(string userId) => (_users?.ContainsKey(userId ?? "") ?? false) ? _users[userId].Name : null;
+        public static string GetUserName(string userId) => (_userNames?.ContainsKey(userId ?? "") ?? false) ? _userNames[userId] : "";
 
         public async Task<bool> InitiatePasswordReset(string email)
         {
@@ -258,7 +251,7 @@ namespace Obskurnee.Services
                 throw new DatastoreException("User update succeeded, but phone number update failed.");
             }
             _logger.LogInformation("User profile for {userId} ({email}) updated.", user.Id, user.Email);
-            ReloadCache();
+            LoadUsernameCache();
 
             return await GetUserByEmail(email);
         }

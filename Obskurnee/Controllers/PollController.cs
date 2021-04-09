@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
 using Microsoft.Extensions.Localization;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Obskurnee.Controllers
 {
@@ -43,12 +44,12 @@ namespace Obskurnee.Controllers
 
         [HttpPost]
         [Route("{pollId:int}/vote")]
-        public RoundUpdateResults CastVote(int pollId, Vote vote)
+        public async Task<RoundUpdateResults> CastVote(int pollId, Vote vote)
         {
             vote.PollId = pollId;
             var poll = _polls.CastPollVote(vote.SetOwner(User));
             _logger.LogInformation("User {userId} voted in poll {pollId}", User.GetUserId(), pollId);
-            if (poll.Results.AlreadyVoted.Count == _users.GetAllUsers().Count())
+            if (poll.Results.AlreadyVoted.Count == (await _users.GetAllUsers()).Count)
             {
                 return _roundManager.ClosePoll(pollId, User.GetUserId());
             }
