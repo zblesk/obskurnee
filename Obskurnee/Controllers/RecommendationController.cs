@@ -5,6 +5,7 @@ using Obskurnee.Services;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace Obskurnee.Controllers
 {
@@ -25,13 +26,14 @@ namespace Obskurnee.Controllers
         }
 
         [HttpGet]
-        public IList<Post> GetAllRecs() => _recommendations.GetAllRecs();
+        public IList<Recommendation> GetAllRecs() => _recommendations.GetAllRecs();
 
         [HttpGet]
         [Route("{userId}")]
-        public IList<Post> GetRecs(string userId) => _recommendations.GetRecs(userId);
+        public IList<Recommendation> GetRecs(string userId) => _recommendations.GetRecs(userId);
 
         [HttpPost]
-        public Post AddRec([FromBody] Post post) => _recommendations.AddRec(post, User.GetUserId());
+        public async Task<Recommendation> AddRec([FromBody] Recommendation post) 
+            => await _recommendations.AddRec(post, User.GetUserId());
     }
 }

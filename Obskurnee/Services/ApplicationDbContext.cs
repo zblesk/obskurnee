@@ -15,5 +15,6 @@ namespace Obskurnee.Services
 
         public DbSet<Setting> Settings { get; set; }
         public DbSet<GoodreadsBookInfo> BookInfos { get; set; }
+        public DbSet<Recommendation> Recommendations { get; set; }
     }
 }

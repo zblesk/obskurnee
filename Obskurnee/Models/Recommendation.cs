@@ -1,33 +1,26 @@
 ﻿using LiteDB;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.RegularExpressions;
 
 namespace Obskurnee.Models
 {
-    [Table("Posts")]
-    public class Post : HeaderData
+    [Table("Recommendation")]
+    [Index(nameof(OwnerId))]
+    public class Recommendation : HeaderData
     {
-        public record OriginalPostReference(Topic topic, int entityId);
-
         [Key]
         public int PostId { get; set; }
-
-        public int DiscussionId { get; set; }
-
-        [NotMapped]
-        public OriginalPostReference OriginalPost { get; set; } = null;
-
         public string Title { get; set; }
         public string Author { get; set; }
         public string Text { get; set; }
         public int PageCount { get; set; }
         public string Url { get; set; }
+        public string ImageUrl { get; set; }
 
         [NotMapped]
-        [BsonIgnore] public string RenderedText { get => Text.RenderMarkdown(); }
-
-        public string ImageUrl { get; set; }
+        public string RenderedText { get => Text.RenderMarkdown(); }
 
         [NotMapped]
         public string GetGoodreadsId
@@ -43,8 +36,6 @@ namespace Obskurnee.Models
             }
         }
 
-        public Post(string ownerId) : base(ownerId)
-        {
-        }
+        public Recommendation(string ownerId) : base(ownerId) { }
     }
 }

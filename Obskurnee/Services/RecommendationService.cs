@@ -4,56 +4,52 @@ using Obskurnee.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Obskurnee.Services
 {
     public class RecommendationService
     {
         private readonly ILogger<RecommendationService> _logger;
-        private readonly Database _db;
+        private readonly ApplicationDbContext _db;
         private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
         private readonly NewsletterService _newsletter;
         private readonly Config _config;
 
         public RecommendationService(
             ILogger<RecommendationService> logger,
-            Database database,
             IStringLocalizer<NewsletterStrings> newsletterLocalizer,
             NewsletterService newsletter,
-            Config config)
+            Config config,
+            ApplicationDbContext db)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _db = database ?? throw new ArgumentNullException(nameof(database));
             _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
             _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
             _config = config ?? throw new ArgumentNullException(nameof(config));
+            _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
-        public IList<Post> GetAllRecs() => _db.RecPosts.FindAll().OrderByDescending(r => r.CreatedOn).ToList();
+        public IList<Recommendation> GetAllRecs() 
+            => _db.Recommendations
+                .OrderByDescending(r => r.CreatedOn)
+                .ToList();
 
-        public IList<Post> GetRecs(string userId) => _db.RecPosts.Query().Where(p => p.OwnerId == userId).ToList();
+        public IList<Recommendation> GetRecs(string userId) 
+            => _db.Recommendations.Where(p => p.OwnerId == userId)
+                .ToList();
 
-        public Post AddRec(Post rec, string userId)
+        public async Task<Recommendation> AddRec(Recommendation rec, string userId)
         {
-            var thread = _db.RecThreads.Find(rt => rt.OwnerId == userId).FirstOrDefault();
-            if (thread == null)
-            {
-                thread = new Discussion(userId)
-                {
-                    Topic = Topic.Recommendations,
-                };
-                _db.RecThreads.Insert(thread);
-            }
             rec.PostId = 0;
-            rec.DiscussionId = thread.DiscussionId;
             rec.OwnerId = userId;
-            _db.RecPosts.Insert(rec);
-
+            _db.Recommendations.Add(rec);
+            await _db.SaveChangesAsync();
             SendNewRecNotification(rec);
             return rec;
         }
 
-        private void SendNewRecNotification(Post rec)
+        private void SendNewRecNotification(Recommendation rec)
         {
             var link = $"{_config.BaseUrl}/odporucania/";
             _newsletter.SendNewsletter(
