@@ -1,35 +1,50 @@
 ﻿using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using System;
+using System.Linq;
 
 namespace Obskurnee.Services
 {
     public class SettingsService
     {
         private readonly ILogger<SettingsService> _logger;
-        private readonly Database _db;
+        private readonly ApplicationDbContext _db;
 
         public SettingsService(
             ILogger<SettingsService> logger,
-            Database database)
+            ApplicationDbContext database)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
         }
 
-        public bool UpsertSetting(string key, string value) 
-            => _db.Settings.Upsert(new Setting
+        public void UpsertSetting(string key, string value)
+        {
+            _logger.LogInformation("Updating setting '{key}'", key);
+            var existing = _db.Settings.FirstOrDefault(s => s.Key == key);
+            if (existing == null)
+            {
+                _db.Settings.Add(new Setting
                 {
                     Key = key,
                     Value = value,
                     LastChange = DateTime.UtcNow
                 });
+            }
+            else
+            {
+                existing.Value = value;
+                existing.LastChange = DateTime.UtcNow;
+                _db.Settings.Update(existing);
+            }
+            _db.SaveChanges();
+        }
 
-        public dynamic GetSetting(string key) => _db.Settings.FindById(key)?.Value;
+        public string GetSetting(string key) => _db.Settings.FirstOrDefault(s => s.Key == key)?.Value;
 
         public T GetSettingValue<T>(string key)
         {
-            var setting = _db.Settings.FindById(key);
+            var setting = _db.Settings.FirstOrDefault(s => s.Key == key);
             if (setting == null)
             {
                 return default(T);

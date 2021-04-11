@@ -1,19 +1,22 @@
 ﻿using LiteDB;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Obskurnee.Models
 {
+    [Table("settings")]
     public class Setting
     {
-        public class Keys
+        public static class Keys
         {
             public const string MailgunSettings = "mailgun-creds";
             public const string ModNoticeboard = "noticeboard-contents";
         }
 
-        [BsonId]
+        [Key]
         public string Key { get; set; }
-        public dynamic Value { get; set; }
+        public string Value { get; set; }
         public DateTime LastChange { get; set; } = DateTime.UtcNow;
     }
 }
