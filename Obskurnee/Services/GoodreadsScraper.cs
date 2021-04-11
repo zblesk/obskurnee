@@ -4,15 +4,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.ServiceModel.Syndication;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Xml.Linq;
-using System.ServiceModel.Syndication;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace Obskurnee.Services
 {
@@ -22,15 +22,18 @@ namespace Obskurnee.Services
         private readonly ILogger<GoodreadsScraper> _logger;
         private readonly IWebHostEnvironment _hostEnv;
         private readonly Config _config;
+        private readonly ApplicationDbContext _db;
 
         public GoodreadsScraper(
             ILogger<GoodreadsScraper> logger,
             IWebHostEnvironment hostEnv,
-            Config config)
+            Config config,
+            ApplicationDbContext db)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _hostEnv = hostEnv ?? throw new ArgumentNullException(nameof(hostEnv));
             _config = config ?? throw new ArgumentNullException(nameof(config));
+            _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
         public async Task<GoodreadsBookInfo> ScrapeBookInfo(string goodreadsUrl)
@@ -44,72 +47,21 @@ namespace Obskurnee.Services
             var result = new GoodreadsBookInfo("none") { Url = goodreadsUrl };
             try
             {
-                var converter = new ReverseMarkdown.Converter();
                 using (WebClient client = new WebClient())
                 {
-                    string downloadString = await client.DownloadStringTaskAsync(goodreadsUrl);
-                    var html = new HtmlDocument();
-                    html.LoadHtml(downloadString);
-
-                    var document = html.DocumentNode;
-
-                    result.Title = document.QuerySelector("#bookTitle")?.InnerText?.Trim();
-                    result.Author = document.QuerySelector(".authorName__container > a:nth-child(1) > span:nth-child(1)")?.InnerText?.Trim();
-                    var description = document.QuerySelector("#description.readable.stacked span:nth-child(2)")?.InnerHtml;
-                    if (description != null)
-                    {
-                        result.Description = converter.Convert(description);
-                    }
-                    else
-                    {
-                        _logger.LogWarning("Failed extracting Description from {url}", goodreadsUrl);
-                    }
-                    var pages = document.QuerySelectorAll("#details > div:nth-child(1) > span").FirstOrDefault(node => node.InnerText.Contains("pages"))?.InnerText;
-                    var imgUrl = document.QuerySelector(".editionCover > img")?.Attributes["src"]?.Value;
-
-                    if (!string.IsNullOrWhiteSpace(pages)
-                        && pages.IndexOf(' ') > -1)
-                    {
-                        if (int.TryParse(pages.Substring(0, pages.IndexOf(' ')), out int pageNum))
-                        {
-                            result.PageCount = pageNum;
-                        }
-                    }
-
-                    try
-                    {
-                        if (!string.IsNullOrWhiteSpace(imgUrl))
-                        {
-                            _logger.LogInformation("Downloading image for {bookname} at {url}", result.Title, imgUrl);
-                            var pic = await client.DownloadDataTaskAsync(imgUrl);
-                            var sanitizedName = Regex.Replace(
-                                    result.Title.Replace(' ', '-'),
-                                    "[^a-zA-Z0-9-]", "");
-                            var relativeFilename =  sanitizedName.Substring(0, Math.Min(90, sanitizedName.Length)) 
-                                + _rand.Next(10_000, 100_000).ToString()
-                                + Path.GetExtension(imgUrl) ?? ".jpg";
-                            var physicalPath = Path.Join(
-                                _hostEnv.ContentRootPath,
-                                _config.DataFolder,
-                                _config.ImageFolder,
-                                relativeFilename);
-                            var relativeUrl = '/' + _config.ImageFolder + '/' + relativeFilename;
-                            _logger.LogInformation("File downloaded, saving it at {filename}", physicalPath);
-                            await File.WriteAllBytesAsync(physicalPath, pic);
-                            result.ImageUrl = relativeUrl;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Image extraction failed for {url}", imgUrl);
-                    }
+                    string bookPageHtml = await client.DownloadStringTaskAsync(goodreadsUrl);
+                    string imgUrl = ExtractBookInfo(goodreadsUrl, result, bookPageHtml);
+                    await ExtractBookImage(result, client, imgUrl);
                 }
+                _db.BookInfos.Add(result);
+                await _db.SaveChangesAsync();
+                return result;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "GR extraction failed for {url}", goodreadsUrl);
+                return null;
             }
-            return result;
         }
 
         public IEnumerable<GoodreadsReview> GetCurrentlyReadingBooks(Bookworm user)
@@ -172,6 +124,77 @@ namespace Obskurnee.Services
         {
             ushort.TryParse(number, out ushort result);
             return result;
+        }
+
+        private string ExtractBookInfo(
+            string goodreadsUrl,
+            GoodreadsBookInfo result,
+            string bookPageHtml)
+        {
+            var converter = new ReverseMarkdown.Converter();
+            var html = new HtmlDocument();
+            html.LoadHtml(bookPageHtml);
+
+            var document = html.DocumentNode;
+
+            result.Title = document.QuerySelector("#bookTitle")?.InnerText?.Trim();
+            result.Author = document.QuerySelector(".authorName__container > a:nth-child(1) > span:nth-child(1)")?.InnerText?.Trim();
+            var description = document.QuerySelector("#description.readable.stacked span:nth-child(2)")?.InnerHtml;
+            if (description != null)
+            {
+                result.Description = converter.Convert(description);
+            }
+            else
+            {
+                _logger.LogWarning("Failed extracting Description from {url}", goodreadsUrl);
+            }
+            var pages = document.QuerySelectorAll("#details > div:nth-child(1) > span").FirstOrDefault(node => node.InnerText.Contains("pages"))?.InnerText;
+            var imgUrl = document.QuerySelector(".editionCover > img")?.Attributes["src"]?.Value;
+
+            if (!string.IsNullOrWhiteSpace(pages)
+                && pages.IndexOf(' ') > -1)
+            {
+                if (int.TryParse(pages.Substring(0, pages.IndexOf(' ')), out int pageNum))
+                {
+                    result.PageCount = pageNum;
+                }
+            }
+
+            return imgUrl;
+        }
+
+        private async Task ExtractBookImage(
+            GoodreadsBookInfo result,
+            WebClient client,
+            string imgUrl)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(imgUrl))
+                {
+                    _logger.LogInformation("Downloading image for {bookname} at {url}", result.Title, imgUrl);
+                    var pic = await client.DownloadDataTaskAsync(imgUrl);
+                    var sanitizedName = Regex.Replace(
+                            result.Title.Replace(' ', '-'),
+                            "[^a-zA-Z0-9-]", "");
+                    var relativeFilename = sanitizedName.Substring(0, Math.Min(90, sanitizedName.Length))
+                        + _rand.Next(10_000, 100_000).ToString()
+                        + Path.GetExtension(imgUrl) ?? ".jpg";
+                    var physicalPath = Path.Join(
+                        _hostEnv.ContentRootPath,
+                        _config.DataFolder,
+                        _config.ImageFolder,
+                        relativeFilename);
+                    var relativeUrl = '/' + _config.ImageFolder + '/' + relativeFilename;
+                    _logger.LogInformation("File downloaded, saving it at {filename}", physicalPath);
+                    await File.WriteAllBytesAsync(physicalPath, pic);
+                    result.ImageUrl = relativeUrl;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Image extraction failed for {url}", imgUrl);
+            }
         }
     }
 }

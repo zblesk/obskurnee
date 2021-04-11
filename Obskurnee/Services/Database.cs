@@ -52,12 +52,6 @@ namespace Obskurnee.Services
             BookReviews.EnsureIndex(br => br.OwnerId);
         }
 
-        public GoodreadsBookInfo StoreBookInfo(GoodreadsBookInfo book)
-        {
-            var bookInfos = _db.GetCollection<GoodreadsBookInfo>("goodreadsbookinfo");
-            bookInfos.Insert(book);
-            return book;
-        }
 
         public void Flush()
         {

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Obskurnee.Models
 {
-    [Table("settings")]
+    [Table("Settings")]
     public class Setting
     {
         public static class Keys

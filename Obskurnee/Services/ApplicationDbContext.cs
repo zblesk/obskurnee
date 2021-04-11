@@ -13,6 +13,7 @@ namespace Obskurnee.Services
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) : base(opts) { }
 
-        public DbSet<Setting> Settings { get; set; } 
+        public DbSet<Setting> Settings { get; set; }
+        public DbSet<GoodreadsBookInfo> BookInfos { get; set; }
     }
 }

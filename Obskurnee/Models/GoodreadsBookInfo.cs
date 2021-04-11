@@ -1,7 +1,13 @@
-﻿namespace Obskurnee.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Obskurnee.Models
 {
+    [Table("GoodreadsBookInfos")]
     public class GoodreadsBookInfo : HeaderData
     {
+        [Key]
+        public int GoodreadsBookInfoId { get; set; }
         public string Url { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
