@@ -9,7 +9,6 @@ namespace Obskurnee.Services
 {
     public sealed class Database :  IDisposable
     {
-        private readonly Serilog.ILogger _logger;
         private readonly LiteDatabase _db;
         public readonly ILiteCollection<Discussion> Discussions;
         public readonly ILiteCollection<Post> Posts;
@@ -18,15 +17,11 @@ namespace Obskurnee.Services
         public readonly ILiteCollection<Vote> Votes;
         public readonly ILiteCollection<Round> Rounds;
         public readonly ILiteCollection<BookclubReview> BookReviews;
-        public readonly ILiteCollection<GoodreadsReview> GoodreadsReviews;
-        public readonly ILiteCollection<GoodreadsReview> CurrentlyReadings;
         public readonly ILiteCollection<NewsletterSubscription> NewsletterSubscriptions;
 
         public Database(
-            Serilog.ILogger logger,
             Config config)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = new LiteDatabase(Path.Combine(config.DataFolder, "bookclub.db"));
             _db.CheckpointSize = 1;
             Discussions = _db.GetCollection<Discussion>("discussions");
@@ -35,8 +30,6 @@ namespace Obskurnee.Services
             Polls = _db.GetCollection<Poll>("polls").Include(p => p.Options);
             Votes = _db.GetCollection<Vote>("votes");
             Rounds = _db.GetCollection<Round>("rounds");
-            GoodreadsReviews = _db.GetCollection<GoodreadsReview>("goodreadsreviews");
-            CurrentlyReadings = _db.GetCollection<GoodreadsReview>("currentlyreadings");
             NewsletterSubscriptions = _db.GetCollection<NewsletterSubscription>("newslettersubscriptions");
             BookReviews = _db.GetCollection<BookclubReview>("bookclubreviews").Include(b => b.Book).Include(b => b.Book.Post);
 

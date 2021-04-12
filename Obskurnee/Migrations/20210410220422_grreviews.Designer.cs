@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Obskurnee.Services;
 
 namespace Obskurnee.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210410220422_grreviews")]
+    partial class grreviews
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -269,9 +271,6 @@ namespace Obskurnee.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Kind")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("OwnerId")
                         .HasColumnType("TEXT");
 
@@ -286,7 +285,7 @@ namespace Obskurnee.Migrations
 
                     b.HasKey("ReviewId");
 
-                    b.ToTable("GoodreadsReviews");
+                    b.ToTable("GoodreadsReview");
                 });
 
             modelBuilder.Entity("Obskurnee.Models.Recommendation", b =>

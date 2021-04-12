@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using static Obskurnee.Models.GoodreadsReview.ReviewKind;
 
 namespace Obskurnee.Services
 {
@@ -73,7 +74,7 @@ namespace Obskurnee.Services
             }
 
             var rssUrl = $"{_config.GoodreadsRssBaseUrl}{user.GoodreadsUserId}?shelf=currently-reading";
-            return GetReviewsFromFeed(user.Id, rssUrl);
+            return GetReviewsFromFeed(user.Id, rssUrl, CurrentlyReading);
         }
 
         public IEnumerable<GoodreadsReview> GetReadBooks(Bookworm user)
@@ -85,10 +86,13 @@ namespace Obskurnee.Services
             }
 
             var rssUrl = $"{_config.GoodreadsRssBaseUrl}{user.GoodreadsUserId}?shelf=read";
-            return GetReviewsFromFeed(user.Id, rssUrl);
+            return GetReviewsFromFeed(user.Id, rssUrl, Read);
         }
 
-        private List<GoodreadsReview> GetReviewsFromFeed(string userId, string rssUrl)
+        private List<GoodreadsReview> GetReviewsFromFeed(
+            string userId, 
+            string rssUrl,
+            GoodreadsReview.ReviewKind kind)
         {
             var reader = XmlReader.Create(rssUrl);
             var feed = SyndicationFeed.Load(reader);
@@ -105,6 +109,7 @@ namespace Obskurnee.Services
                                ReviewText = GetElementExtensionValueByOuterName(item, "user_review"),
                                GoodreadsBookId = bookId,
                                ReviewUrl = item.Id,
+                               Kind = kind
                            })
                            .ToList();
             _logger.LogDebug("Loaded {count} items for user {userId} from RSS {rssUrl}",
