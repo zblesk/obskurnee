@@ -50,7 +50,7 @@ namespace Obskurnee.Controllers
                 Notice = _settingsService.GetSettingValue<string>(Setting.Keys.ModNoticeboard)?.RenderMarkdown(),
                 MyProfile = await _userService.GetUserByEmail(User.FindFirstValue(ClaimTypes.Email)),
                 SiteName = "",
-                CurrentPoll = _pollService.GetLatestOpen(),
+                CurrentPoll = await _pollService.GetLatestOpen(),
                 CurrentDiscussion = _discussionService.GetLatestOpen(),
             });
         }

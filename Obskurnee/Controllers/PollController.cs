@@ -36,18 +36,18 @@ namespace Obskurnee.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Poll> GetPolls() => _polls.GetAll();
+        public async Task<IEnumerable<Poll>> GetPolls() => await _polls.GetAll();
         
         [HttpGet]
         [Route("{pollId:int}")]
-        public PollInfo GetPoll(int pollId) => _polls.GetPollInfo(pollId, User.GetUserId());
+        public async Task<PollInfo> GetPoll(int pollId) => await _polls.GetPollInfo(pollId, User.GetUserId());
 
         [HttpPost]
         [Route("{pollId:int}/vote")]
         public async Task<RoundUpdateResults> CastVote(int pollId, Vote vote)
         {
             vote.PollId = pollId;
-            var poll = _polls.CastPollVote(vote.SetOwner(User));
+            var poll = await _polls.CastPollVote(vote.SetOwner(User));
             _logger.LogInformation("User {userId} voted in poll {pollId}", User.GetUserId(), pollId);
             if (poll.Results.AlreadyVoted.Count == (await _users.GetAllUsers()).Count)
             {

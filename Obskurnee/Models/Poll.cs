@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Obskurnee.Models
 {
@@ -18,7 +19,21 @@ namespace Obskurnee.Models
         /// Only used if IsTiebreaker.
         /// </summary>
         public int PreviousPollId { get; set; }
-  [NotMapped]      public FollowupReference FollowupLink { get; set; }
+        
+        [NotMapped]
+        public FollowupReference FollowupLink
+        {
+            get => !string.IsNullOrWhiteSpace(FollowupLinkSerialized)
+                ? JsonConvert.DeserializeObject<FollowupReference>(FollowupLinkSerialized)
+                : null;
+            set
+            {
+                FollowupLinkSerialized = JsonConvert.SerializeObject(value);
+            }
+        }
+
+        public string FollowupLinkSerialized { get; set; }
+
         public int RoundId { get; set; }
 
         [BsonRef("posts")] public List<Post> Options { get; set; }
@@ -26,7 +41,21 @@ namespace Obskurnee.Models
         public bool IsClosed { get; set; }
         public Topic Topic { get; set; }
         public bool IsTiebreaker { get; set; } = false;
- [NotMapped]       public PollResults Results { get; set; }
+
+        [NotMapped]
+        public PollResults Results
+        {
+            get => !string.IsNullOrWhiteSpace(ResultsSerialized)
+                ? JsonConvert.DeserializeObject<PollResults>(ResultsSerialized)
+                : null;
+            set
+            {
+                ResultsSerialized = JsonConvert.SerializeObject(value);
+            }
+        }
+
+        public string ResultsSerialized { get; set; }
+
         public Poll(string ownerId) : base(ownerId) { }
 
         public int FindAnyWinningPost() => Results?.Votes.OrderByDescending(vote => vote.Votes).First().PostId ?? 0;

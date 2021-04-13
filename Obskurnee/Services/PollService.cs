@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Localization;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.ViewModels;
@@ -6,20 +7,21 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Obskurnee.Services
 {
     public class PollService
     {
         private readonly ILogger<PollService> _logger;
-        private readonly Database _db;
+        private readonly ApplicationDbContext _db;
         private readonly UserService _users;
         private readonly IStringLocalizer<Strings> _localizer;
         private readonly object @lock = new object();
 
         public PollService(
             ILogger<PollService> logger,
-            Database database,
+            ApplicationDbContext database,
             UserService users,
             IStringLocalizer<Strings> localizer)
         {
@@ -29,47 +31,52 @@ namespace Obskurnee.Services
             _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
         }
 
-        public IEnumerable<Poll> GetAll()
-        {
-            return (from poll in _db.Polls.Query()
-                    orderby poll.CreatedOn descending
-                    select poll)
-                    .ToList();
-        }
+        public Task<List<Poll>> GetAll()
+            => (from poll in _db.Polls
+                orderby poll.CreatedOn descending
+                select poll)
+                .ToListAsync();
 
-        public PollInfo GetPollInfo(int pollId, string userId)
+        public async Task<PollInfo> GetPollInfo(int pollId, string userId)
         {
-            var poll = _db.Polls
+            var poll = await _db.Polls
               .Include(x => x.Options)
-              .FindById(pollId);
+              .FirstAsync(p => p.PollId == pollId);
             var voteId = $"{pollId}-{userId}";
-            var vote = _db.Votes
-                .FindById(voteId);
+            var vote = await _db.Votes.Where(v => v.PollId == pollId && v.OwnerId == userId).FirstOrDefaultAsync();
             return new PollInfo(poll, vote);
         }
 
-        public Poll CastPollVote(Vote vote)
+        public async Task<Poll> CastPollVote(Vote vote)
         {
             _logger.LogInformation("New vote: {@vote}", vote);
             Trace.Assert(!string.IsNullOrWhiteSpace(vote.OwnerId));
-            Trace.Assert(vote.PollId != 0);
-            var poll = _db.Polls.FindById(vote.PollId);
-            Trace.Assert(poll != null);
+            var poll = await _db.Polls
+                .Include(p => p.Options)
+                .FirstAsync(p => p.PollId == vote.PollId);
             if (poll.IsClosed)
             {
                 throw new PermissionException(_localizer["votingClosed"]);
             }
-            _db.Votes.Upsert(vote);
 
-            UpdateVoteStats(poll);
+            var existing = await _db.Votes.FirstOrDefaultAsync(v => v.VoteId == vote.VoteId);
+            if (existing != null)
+            {
+                _db.Votes.Remove(existing);
+                await _db.SaveChangesAsync();
+            }
+            _db.Votes.Add(vote);
+            await _db.SaveChangesAsync();
+            await UpdateVoteStats(poll);
             return poll;
         }
 
-        private PollResults UpdateVoteStats(Poll poll)
+        private async Task<PollResults> UpdateVoteStats(Poll poll)
         {
-            lock (@lock)
+            try
             {
-                var allVotes = _db.Votes.Find(v => v.PollId == poll.PollId);
+                await _db.Database.BeginTransactionAsync();
+                var allVotes = await _db.Votes.Where(v => v.PollId == poll.PollId).ToListAsync();
                 var totals = new Dictionary<int, int>();
                 foreach (var votes in allVotes)
                 {
@@ -98,10 +105,19 @@ namespace Obskurnee.Services
                              .ToList(),
                 };
                 _db.Polls.Update(poll);
+
+                await _db.SaveChangesAsync();
+                await _db.Database.CommitTransactionAsync();
                 return poll.Results;
+            }
+            catch
+            {
+                _db.Database.RollbackTransaction();
+                throw;
             }
         }
 
-        public Poll GetLatestOpen() => _db.Polls.Find(d => !d.IsClosed).OrderByDescending(d => d.PollId).FirstOrDefault();
+        public Task<Poll> GetLatestOpen()
+            => _db.Polls.OrderByDescending(d => d.PollId).FirstOrDefaultAsync(d => !d.IsClosed);
     }
 }

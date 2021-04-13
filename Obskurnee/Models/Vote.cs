@@ -1,4 +1,6 @@
 ﻿using LiteDB;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,6 +8,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Obskurnee.Models
 {
     [Table("Votes")]
+    [Index(nameof(PollId))]
+    [Index(nameof(OwnerId))]
     public class Vote : HeaderData
     {
         [Key]
@@ -17,10 +21,19 @@ namespace Obskurnee.Models
         /// <summary>
         /// Contains votes - IDs of posts the user voted for
         /// </summary>
-        // todo remove? 
-        [NotMapped] public int[] PostIds { get; set; }
+        [NotMapped]
+        public int[] PostIds
+        {
+            get => !string.IsNullOrWhiteSpace(PostIdsSerialized)
+                    ? JsonConvert.DeserializeObject<int[]>(PostIdsSerialized)
+                    : null;
+            set
+            {
+                PostIdsSerialized = JsonConvert.SerializeObject(value);
+            }
+        }
 
-        public ICollection<Post> Posts { get; set; }
+        public string PostIdsSerialized { get; set; }
 
         public Vote(string ownerId) : base(ownerId) { }
     }
