@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Obskurnee.Controllers
 {
@@ -33,7 +34,7 @@ namespace Obskurnee.Controllers
         [HttpPost]
         [Authorize(Policy = "ModOnly")]
         [Route("close-poll/{pollId:int}")]
-        public RoundUpdateResults ClosePoll(int pollId)
+        public Task<RoundUpdateResults> ClosePoll(int pollId)
         {
             _logger.LogInformation("Moderator {userId} closing poll {pollId}", User.GetUserId(), pollId);
             return _roundManager.ClosePoll(pollId, User.GetUserId());
@@ -50,11 +51,11 @@ namespace Obskurnee.Controllers
 
         [HttpPost]
         [Authorize(Policy = "ModOnly")]
-        public async Task<Round> NewRound([FromBody] JsonElement  roundData) 
+        public async Task<Round> NewRound([FromBody] JObject roundData)
             => await _roundManager.NewRound(
-                (Topic)Enum.Parse(typeof(Topic), roundData.GetProperty("topic").GetString()),
-                roundData.GetProperty("title").GetString(),
-                roundData.TryGetProperty("description", out _) ? roundData.GetProperty("description").GetString() : "",
+                (Topic)Enum.Parse(typeof(Topic), roundData["topic"].ToString()),
+                roundData["title"].ToString(),
+                roundData.ContainsKey("description") ? roundData["description"].ToString() : "",
                 User.GetUserId());
     }
 }

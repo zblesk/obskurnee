@@ -26,15 +26,15 @@ namespace Obskurnee.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Discussion>> GetDiscussions() => await _discussions.GetAll();
+        public Task<List<Discussion>> GetDiscussions() => _discussions.GetAll();
 
         [HttpGet]
         [Route("{discussionId:int}")]
-        public async Task<Discussion> GetPosts(int discussionId) => await _discussions.GetWithPosts(discussionId);
+        public Task<Discussion> GetPosts(int discussionId) => _discussions.GetWithPosts(discussionId);
 
         [HttpPost]
         [Route("{discussionId:int}")]
-        public async Task<Post> NewPost(int discussionId, Post post)
-            => await _discussions.NewPost(discussionId, post.SetOwner(User));
+        public Task<Post> NewPost(int discussionId, Post post)
+            => _discussions.NewPost(discussionId, post.SetOwner(User));
     }
 }

@@ -15,7 +15,6 @@ namespace Obskurnee.Services
     {
         private readonly ILogger<RoundManagerService> _logger;
         private readonly ApplicationDbContext _db;
-        private readonly object @lock = new object();
         private readonly BookService _bookService;
         private readonly NewsletterService _newsletter;
         private readonly IStringLocalizer<Strings> _localizer;
@@ -138,83 +137,93 @@ namespace Obskurnee.Services
             return new() { Discussion = discussion, Round = round };
         }
 
-        public RoundUpdateResults ClosePoll(int pollId, string currentUserId)
+        public async Task<RoundUpdateResults> ClosePoll(int pollId, string currentUserId)
         {
-            //lock (@lock)
-            //{
-            //    _logger.LogInformation("Closing poll {pollId}", pollId);
-            //    RoundUpdateResults result;
-            //    var poll = _db.Polls.FindById(pollId);
-            //    var round = _db.Rounds.FindById(poll.RoundId);
-            //    Trace.Assert(!poll.IsClosed);
-            //    Trace.Assert(poll.Results.Votes.Count > 0);
-            //    poll.IsClosed = true;
+            try
+            {
+                _logger.LogInformation("Closing poll {pollId}", pollId);
+                await _db.Database.BeginTransactionAsync();
+                RoundUpdateResults result;
+                var poll = await _db.Polls
+                            .Include(p => p.Round)
+                            .FirstAsync(p => p.PollId == pollId);
+                var round = poll.Round;
+                Trace.Assert(!poll.IsClosed);
+                Trace.Assert(poll.Results.Votes.Count > 0);
+                poll.IsClosed = true;
 
-            //    var winners = poll.FindWinningPosts();
-            //    Trace.Assert(winners.Count > 0);
+                var winners = poll.FindWinningPosts();
+                Trace.Assert(winners.Count > 0);
 
-            //    if (winners.Count == 1
-            //        || poll.IsTiebreaker)
-            //    {
-            //        poll.Results.WinnerPostId = winners.OrderBy(p => Guid.NewGuid()).First();
-            //        Trace.Assert(poll.Results.WinnerPostId != 0);
-            //        result = new RoundUpdateResults { Poll = poll, Round = round };
-            //        switch (poll.Topic)
-            //        {
-            //            case Topic.Books:
-            //                result.Book = _bookService.CreateBook(poll, round.RoundId, currentUserId);
-            //                round.BookId = result.Book.BookId;
-            //                poll.FollowupLink = new Poll.FollowupReference(Poll.LinkKind.Book, result.Book.BookId);
-            //                SendNewBookNotification(result);
-            //                break;
-            //            case Topic.Themes:
-            //                result.Discussion = CreateDiscussionFromTopicPoll(currentUserId, poll, round);
-            //                round.BookDiscussionId = result.Discussion.DiscussionId;
-            //                poll.FollowupLink = new Poll.FollowupReference(Poll.LinkKind.Discussion, result.Discussion.DiscussionId);
-            //                SendNewDiscussionNotification(result.Discussion);
-            //                break;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        _logger.LogInformation("There are {count} winning posts with {max} votes. A tiebreaker round is needed.");
-            //        var posts = (from post in _db.Posts.Query()
-            //                     where winners.Contains(post.PostId)
-            //                     orderby post.PostId
-            //                     select post)
-            //                    .ToList();
-            //        var tiebreaker = new Poll(currentUserId)
-            //        {
-            //            PreviousPollId = poll.PollId,
-            //            DiscussionId = poll.DiscussionId,
-            //            Title = _localizer.Format("tiebreakerTitle", poll.Title),
-            //            Options = posts,
-            //            Topic = poll.Topic,
-            //            IsTiebreaker = true,
-            //            RoundId = round.RoundId,
-            //        };
-            //        _db.Polls.Insert(tiebreaker);
-            //        poll.FollowupLink = new Poll.FollowupReference(Poll.LinkKind.Poll, tiebreaker.PollId);
-            //        switch (poll.Topic)
-            //        {
-            //            case Topic.Books:
-            //                round.BookTiebreakerPollId = tiebreaker.PollId;
-            //                break;
-            //            case Topic.Themes:
-            //                round.ThemeTiebreakerPollId = tiebreaker.PollId;
-            //                break;
-            //            default:
-            //                throw new Exception($"Unexpected Topic: {poll.Topic}");
-            //        }
-            //        result = new RoundUpdateResults { Poll = tiebreaker, Round = round };
-            //        SendNewPollNotification(tiebreaker);
-            //    }
-            //    _db.Polls.Update(poll);
-            //    _db.Rounds.Update(round);
-            //    return result;
-            //}
+                if (winners.Count == 1
+                    || poll.IsTiebreaker)
+                {
+                    poll.Results.WinnerPostId = winners.OrderBy(_ => Guid.NewGuid()).First();
+                    Trace.Assert(poll.Results.WinnerPostId != 0);
+                    result = new RoundUpdateResults { Poll = poll, Round = round };
+                    switch (poll.Topic)
+                    {
+                        case Topic.Books:
+                            result.Book = _bookService.CreateBook(poll, round.RoundId, currentUserId);
+                            round.BookId = result.Book.BookId;
+                            poll.FollowupLink = new Poll.FollowupReference(Poll.LinkKind.Book, result.Book.BookId);
+                            SendNewBookNotification(result);
+                            break;
+                        case Topic.Themes:
+                            result.Discussion = await CreateDiscussionFromTopicPoll(currentUserId, poll, round);
+                            round.BookDiscussionId = result.Discussion.DiscussionId;
+                            poll.FollowupLink = new Poll.FollowupReference(Poll.LinkKind.Discussion, result.Discussion.DiscussionId);
+                            SendNewDiscussionNotification(result.Discussion);
+                            break;
+                    }
+                }
+                else
+                {
+                    _logger.LogInformation("There are {count} winning posts with {max} votes. A tiebreaker round is needed.");
+                    var posts = await (from post in _db.Posts
+                                       where winners.Contains(post.PostId)
+                                       orderby post.PostId
+                                       select post)
+                                       .ToListAsync();
+                    var tiebreaker = new Poll(currentUserId)
+                    {
+                        PreviousPollId = poll.PollId,
+                        DiscussionId = poll.DiscussionId,
+                        Title = _localizer.Format("tiebreakerTitle", poll.Title),
+                        Options = posts,
+                        Topic = poll.Topic,
+                        IsTiebreaker = true,
+                        RoundId = round.RoundId,
+                    };
+                    await _db.Polls.AddAsync(tiebreaker);
+                    await _db.SaveChangesAsync();
+                    poll.FollowupLink = new Poll.FollowupReference(Poll.LinkKind.Poll, tiebreaker.PollId);
+                    switch (poll.Topic)
+                    {
+                        case Topic.Books:
+                            round.BookTiebreakerPollId = tiebreaker.PollId;
+                            break;
+                        case Topic.Themes:
+                            round.ThemeTiebreakerPollId = tiebreaker.PollId;
+                            break;
+                        default:
+                            throw new Exception($"Unexpected Topic: {poll.Topic}");
+                    }
+                    result = new RoundUpdateResults { Poll = tiebreaker, Round = round };
+                    SendNewPollNotification(tiebreaker);
+                }
+                _db.Polls.Update(poll);
+                _db.Rounds.Update(round);
 
-            return null;
+                await _db.SaveChangesAsync();
+                await _db.Database.CommitTransactionAsync();
+                return result;
+            }
+            catch
+            {
+                _db.Database.RollbackTransaction();
+                throw;
+            }
         }
 
         private async Task<Discussion> CreateDiscussionFromTopicPoll(

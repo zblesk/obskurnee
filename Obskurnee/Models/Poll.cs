@@ -32,9 +32,11 @@ namespace Obskurnee.Models
             }
         }
 
+        [JsonIgnore]
         public string FollowupLinkSerialized { get; set; }
 
         public int RoundId { get; set; }
+        public Round Round { get; set; }
 
         [BsonRef("posts")] public List<Post> Options { get; set; }
         public string Title { get; set; }
@@ -43,18 +45,19 @@ namespace Obskurnee.Models
         public bool IsTiebreaker { get; set; } = false;
 
         [NotMapped]
-        public PollResults Results
+        public PollResults Results { get; set; }
+
+        [JsonIgnore]
+        public string ResultsSerialized
         {
-            get => !string.IsNullOrWhiteSpace(ResultsSerialized)
-                ? JsonConvert.DeserializeObject<PollResults>(ResultsSerialized)
-                : null;
             set
             {
-                ResultsSerialized = JsonConvert.SerializeObject(value);
+                Results = !string.IsNullOrWhiteSpace(value)
+                           ? JsonConvert.DeserializeObject<PollResults>(value)
+                           : null;
             }
+            get => JsonConvert.SerializeObject(Results);
         }
-
-        public string ResultsSerialized { get; set; }
 
         public Poll(string ownerId) : base(ownerId) { }
 

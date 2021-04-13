@@ -59,6 +59,10 @@ namespace Obskurnee.Models
         [JsonIgnore]
         public List<Discussion> AllRelatedDiscussions { get; set; }
 
+        [InverseProperty("Round")]
+        [JsonIgnore]
+        public List<Poll> AllRelatedPolls { get; set; }
+
         public Round(string ownerId) : base(ownerId)
         {
         }
