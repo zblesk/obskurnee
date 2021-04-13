@@ -9,8 +9,8 @@ using Obskurnee.Services;
 namespace Obskurnee.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210412201043_round")]
-    partial class round
+    [Migration("20210413085414_u2")]
+    partial class u2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -187,6 +187,39 @@ namespace Obskurnee.Migrations
                     b.ToTable("Books");
                 });
 
+            modelBuilder.Entity("Obskurnee.Models.BookclubReview", b =>
+                {
+                    b.Property<string>("ReviewId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GoodreadsBookId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<ushort>("Rating")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ReviewText")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReviewUrl")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ReviewId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("BookclubReviews");
+                });
+
             modelBuilder.Entity("Obskurnee.Models.Bookworm", b =>
                 {
                     b.Property<string>("Id")
@@ -289,6 +322,8 @@ namespace Obskurnee.Migrations
 
                     b.HasKey("DiscussionId");
 
+                    b.HasIndex("RoundId");
+
                     b.ToTable("Discussions");
                 });
 
@@ -367,6 +402,26 @@ namespace Obskurnee.Migrations
                     b.ToTable("GoodreadsReviews");
                 });
 
+            modelBuilder.Entity("Obskurnee.Models.NewsletterSubscription", b =>
+                {
+                    b.Property<string>("NewsletterSubscriptionId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NewsletterName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("NewsletterSubscriptionId");
+
+                    b.HasIndex("NewsletterName");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("NewsletterSubscriptions");
+                });
+
             modelBuilder.Entity("Obskurnee.Models.Poll", b =>
                 {
                     b.Property<int>("PollId")
@@ -401,8 +456,6 @@ namespace Obskurnee.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("PollId");
-
-                    b.HasIndex("RoundId");
 
                     b.ToTable("Polls");
                 });
@@ -504,7 +557,13 @@ namespace Obskurnee.Migrations
                     b.Property<int>("BookPollId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("BookPollPollId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("BookTiebreakerPollId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("BookTiebreakerPollPollId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedOn")
@@ -522,13 +581,31 @@ namespace Obskurnee.Migrations
                     b.Property<int>("ThemePollId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("ThemePollPollId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("ThemeTiebreakerPollId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ThemeTiebreakerPollPollId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
                         .HasColumnType("TEXT");
 
                     b.HasKey("RoundId");
+
+                    b.HasIndex("BookDiscussionId");
+
+                    b.HasIndex("BookPollPollId");
+
+                    b.HasIndex("BookTiebreakerPollPollId");
+
+                    b.HasIndex("ThemeDiscussionId");
+
+                    b.HasIndex("ThemePollPollId");
+
+                    b.HasIndex("ThemeTiebreakerPollPollId");
 
                     b.ToTable("Rounds");
                 });
@@ -671,15 +748,35 @@ namespace Obskurnee.Migrations
                     b.Navigation("Round");
                 });
 
-            modelBuilder.Entity("Obskurnee.Models.Poll", b =>
+            modelBuilder.Entity("Obskurnee.Models.BookclubReview", b =>
+                {
+                    b.HasOne("Obskurnee.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("Obskurnee.Models.Discussion", b =>
                 {
                     b.HasOne("Obskurnee.Models.Round", "Round")
-                        .WithMany()
+                        .WithMany("AllRelatedDiscussions")
                         .HasForeignKey("RoundId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Round");
+                });
+
+            modelBuilder.Entity("Obskurnee.Models.NewsletterSubscription", b =>
+                {
+                    b.HasOne("Obskurnee.Models.Bookworm", "User")
+                        .WithMany("NewsletterSubscriptions")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Obskurnee.Models.Post", b =>
@@ -695,6 +792,49 @@ namespace Obskurnee.Migrations
                         .HasForeignKey("PollId");
 
                     b.Navigation("Discussion");
+                });
+
+            modelBuilder.Entity("Obskurnee.Models.Round", b =>
+                {
+                    b.HasOne("Obskurnee.Models.Discussion", "BookDiscussion")
+                        .WithMany()
+                        .HasForeignKey("BookDiscussionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Obskurnee.Models.Poll", "BookPoll")
+                        .WithMany()
+                        .HasForeignKey("BookPollPollId");
+
+                    b.HasOne("Obskurnee.Models.Poll", "BookTiebreakerPoll")
+                        .WithMany()
+                        .HasForeignKey("BookTiebreakerPollPollId");
+
+                    b.HasOne("Obskurnee.Models.Discussion", "ThemeDiscussion")
+                        .WithMany()
+                        .HasForeignKey("ThemeDiscussionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Obskurnee.Models.Poll", "ThemePoll")
+                        .WithMany()
+                        .HasForeignKey("ThemePollPollId");
+
+                    b.HasOne("Obskurnee.Models.Poll", "ThemeTiebreakerPoll")
+                        .WithMany()
+                        .HasForeignKey("ThemeTiebreakerPollPollId");
+
+                    b.Navigation("BookDiscussion");
+
+                    b.Navigation("BookPoll");
+
+                    b.Navigation("BookTiebreakerPoll");
+
+                    b.Navigation("ThemeDiscussion");
+
+                    b.Navigation("ThemePoll");
+
+                    b.Navigation("ThemeTiebreakerPoll");
                 });
 
             modelBuilder.Entity("Obskurnee.Models.Vote", b =>
@@ -723,6 +863,11 @@ namespace Obskurnee.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Obskurnee.Models.Bookworm", b =>
+                {
+                    b.Navigation("NewsletterSubscriptions");
+                });
+
             modelBuilder.Entity("Obskurnee.Models.Discussion", b =>
                 {
                     b.Navigation("Posts");
@@ -735,6 +880,8 @@ namespace Obskurnee.Migrations
 
             modelBuilder.Entity("Obskurnee.Models.Round", b =>
                 {
+                    b.Navigation("AllRelatedDiscussions");
+
                     b.Navigation("Book");
                 });
 #pragma warning restore 612, 618

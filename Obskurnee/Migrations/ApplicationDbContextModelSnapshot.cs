@@ -179,8 +179,7 @@ namespace Obskurnee.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.HasIndex("RoundId")
-                        .IsUnique();
+                    b.HasIndex("RoundId");
 
                     b.ToTable("Books");
                 });
@@ -319,6 +318,8 @@ namespace Obskurnee.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("DiscussionId");
+
+                    b.HasIndex("RoundId");
 
                     b.ToTable("Discussions");
                 });
@@ -544,25 +545,16 @@ namespace Obskurnee.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("BookDiscussionDiscussionId")
+                    b.Property<int?>("BookDiscussionId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BookDiscussionId")
+                    b.Property<int?>("BookId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BookId")
+                    b.Property<int?>("BookPollId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BookPollId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("BookPollPollId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("BookTiebreakerPollId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("BookTiebreakerPollPollId")
+                    b.Property<int?>("BookTiebreakerPollId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedOn")
@@ -574,22 +566,13 @@ namespace Obskurnee.Migrations
                     b.Property<string>("OwnerId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ThemeDiscussionDiscussionId")
+                    b.Property<int?>("ThemeDiscussionId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ThemeDiscussionId")
+                    b.Property<int?>("ThemePollId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ThemePollId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("ThemePollPollId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ThemeTiebreakerPollId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("ThemeTiebreakerPollPollId")
+                    b.Property<int?>("ThemeTiebreakerPollId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Title")
@@ -597,17 +580,19 @@ namespace Obskurnee.Migrations
 
                     b.HasKey("RoundId");
 
-                    b.HasIndex("BookDiscussionDiscussionId");
+                    b.HasIndex("BookDiscussionId");
 
-                    b.HasIndex("BookPollPollId");
+                    b.HasIndex("BookId");
 
-                    b.HasIndex("BookTiebreakerPollPollId");
+                    b.HasIndex("BookPollId");
 
-                    b.HasIndex("ThemeDiscussionDiscussionId");
+                    b.HasIndex("BookTiebreakerPollId");
 
-                    b.HasIndex("ThemePollPollId");
+                    b.HasIndex("ThemeDiscussionId");
 
-                    b.HasIndex("ThemeTiebreakerPollPollId");
+                    b.HasIndex("ThemePollId");
+
+                    b.HasIndex("ThemeTiebreakerPollId");
 
                     b.ToTable("Rounds");
                 });
@@ -736,8 +721,8 @@ namespace Obskurnee.Migrations
                         .IsRequired();
 
                     b.HasOne("Obskurnee.Models.Round", "Round")
-                        .WithOne("Book")
-                        .HasForeignKey("Obskurnee.Models.Book", "RoundId")
+                        .WithMany()
+                        .HasForeignKey("RoundId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -759,6 +744,17 @@ namespace Obskurnee.Migrations
                         .IsRequired();
 
                     b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("Obskurnee.Models.Discussion", b =>
+                {
+                    b.HasOne("Obskurnee.Models.Round", "Round")
+                        .WithMany("AllRelatedDiscussions")
+                        .HasForeignKey("RoundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Round");
                 });
 
             modelBuilder.Entity("Obskurnee.Models.NewsletterSubscription", b =>
@@ -789,27 +785,33 @@ namespace Obskurnee.Migrations
                 {
                     b.HasOne("Obskurnee.Models.Discussion", "BookDiscussion")
                         .WithMany()
-                        .HasForeignKey("BookDiscussionDiscussionId");
+                        .HasForeignKey("BookDiscussionId");
+
+                    b.HasOne("Obskurnee.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId");
 
                     b.HasOne("Obskurnee.Models.Poll", "BookPoll")
                         .WithMany()
-                        .HasForeignKey("BookPollPollId");
+                        .HasForeignKey("BookPollId");
 
                     b.HasOne("Obskurnee.Models.Poll", "BookTiebreakerPoll")
                         .WithMany()
-                        .HasForeignKey("BookTiebreakerPollPollId");
+                        .HasForeignKey("BookTiebreakerPollId");
 
                     b.HasOne("Obskurnee.Models.Discussion", "ThemeDiscussion")
                         .WithMany()
-                        .HasForeignKey("ThemeDiscussionDiscussionId");
+                        .HasForeignKey("ThemeDiscussionId");
 
                     b.HasOne("Obskurnee.Models.Poll", "ThemePoll")
                         .WithMany()
-                        .HasForeignKey("ThemePollPollId");
+                        .HasForeignKey("ThemePollId");
 
                     b.HasOne("Obskurnee.Models.Poll", "ThemeTiebreakerPoll")
                         .WithMany()
-                        .HasForeignKey("ThemeTiebreakerPollPollId");
+                        .HasForeignKey("ThemeTiebreakerPollId");
+
+                    b.Navigation("Book");
 
                     b.Navigation("BookDiscussion");
 
@@ -867,7 +869,7 @@ namespace Obskurnee.Migrations
 
             modelBuilder.Entity("Obskurnee.Models.Round", b =>
                 {
-                    b.Navigation("Book");
+                    b.Navigation("AllRelatedDiscussions");
                 });
 #pragma warning restore 612, 618
         }

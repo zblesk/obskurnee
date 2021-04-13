@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Obskurnee.Migrations
 {
-    public partial class polls3 : Migration
+    public partial class u : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,26 +49,6 @@ namespace Obskurnee.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Discussions",
-                columns: table => new
-                {
-                    DiscussionId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PollId = table.Column<int>(type: "INTEGER", nullable: false),
-                    RoundId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", nullable: true),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
-                    IsClosed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Topic = table.Column<int>(type: "INTEGER", nullable: false),
-                    OwnerId = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Discussions", x => x.DiscussionId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "GoodreadsBookInfos",
                 columns: table => new
                 {
@@ -107,6 +87,27 @@ namespace Obskurnee.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GoodreadsReviews", x => x.ReviewId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Polls",
+                columns: table => new
+                {
+                    PollId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    DiscussionId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PreviousPollId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RoundId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
+                    IsClosed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Topic = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsTiebreaker = table.Column<bool>(type: "INTEGER", nullable: false),
+                    OwnerId = table.Column<string>(type: "TEXT", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Polls", x => x.PollId);
                 });
 
             migrationBuilder.CreateTable(
@@ -249,86 +250,21 @@ namespace Obskurnee.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Round",
+                name: "NewsletterSubscriptions",
                 columns: table => new
                 {
-                    RoundId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", nullable: true),
-                    BookId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ThemeDiscussionId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ThemePollId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ThemeTiebreakerPollId = table.Column<int>(type: "INTEGER", nullable: false),
-                    BookDiscussionId = table.Column<int>(type: "INTEGER", nullable: false),
-                    BookPollId = table.Column<int>(type: "INTEGER", nullable: false),
-                    BookTiebreakerPollId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Kind = table.Column<int>(type: "INTEGER", nullable: false),
-                    OwnerId = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    NewsletterSubscriptionId = table.Column<string>(type: "TEXT", nullable: false),
+                    NewsletterName = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Round", x => x.RoundId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Polls",
-                columns: table => new
-                {
-                    PollId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    DiscussionId = table.Column<int>(type: "INTEGER", nullable: false),
-                    PreviousPollId = table.Column<int>(type: "INTEGER", nullable: false),
-                    RoundId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", nullable: true),
-                    IsClosed = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Topic = table.Column<int>(type: "INTEGER", nullable: false),
-                    IsTiebreaker = table.Column<bool>(type: "INTEGER", nullable: false),
-                    OwnerId = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Polls", x => x.PollId);
+                    table.PrimaryKey("PK_NewsletterSubscriptions", x => x.NewsletterSubscriptionId);
                     table.ForeignKey(
-                        name: "FK_Polls_Round_RoundId",
-                        column: x => x.RoundId,
-                        principalTable: "Round",
-                        principalColumn: "RoundId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Posts",
-                columns: table => new
-                {
-                    PostId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    DiscussionId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", nullable: true),
-                    Author = table.Column<string>(type: "TEXT", nullable: true),
-                    Text = table.Column<string>(type: "TEXT", nullable: true),
-                    PageCount = table.Column<int>(type: "INTEGER", nullable: false),
-                    Url = table.Column<string>(type: "TEXT", nullable: true),
-                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    PollId = table.Column<int>(type: "INTEGER", nullable: true),
-                    OwnerId = table.Column<string>(type: "TEXT", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Posts", x => x.PostId);
-                    table.ForeignKey(
-                        name: "FK_Posts_Discussions_DiscussionId",
-                        column: x => x.DiscussionId,
-                        principalTable: "Discussions",
-                        principalColumn: "DiscussionId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Posts_Polls_PollId",
-                        column: x => x.PollId,
-                        principalTable: "Polls",
-                        principalColumn: "PollId",
+                        name: "FK_NewsletterSubscriptions_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -353,26 +289,48 @@ namespace Obskurnee.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Book",
+                name: "BookclubReviews",
                 columns: table => new
                 {
-                    BookId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PostId = table.Column<int>(type: "INTEGER", nullable: true),
-                    Order = table.Column<int>(type: "INTEGER", nullable: false),
-                    BookDiscussionId = table.Column<int>(type: "INTEGER", nullable: false),
-                    BookPollId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ReviewId = table.Column<string>(type: "TEXT", nullable: false),
+                    BookId = table.Column<int>(type: "INTEGER", nullable: false),
+                    GoodreadsBookId = table.Column<string>(type: "TEXT", nullable: true),
+                    ReviewUrl = table.Column<string>(type: "TEXT", nullable: true),
+                    Rating = table.Column<ushort>(type: "INTEGER", nullable: false),
+                    ReviewText = table.Column<string>(type: "TEXT", nullable: true),
                     OwnerId = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Book", x => x.BookId);
+                    table.PrimaryKey("PK_BookclubReviews", x => x.ReviewId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    PostId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    DiscussionId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
+                    Author = table.Column<string>(type: "TEXT", nullable: true),
+                    Text = table.Column<string>(type: "TEXT", nullable: true),
+                    PageCount = table.Column<int>(type: "INTEGER", nullable: false),
+                    Url = table.Column<string>(type: "TEXT", nullable: true),
+                    ImageUrl = table.Column<string>(type: "TEXT", nullable: true),
+                    PollId = table.Column<int>(type: "INTEGER", nullable: true),
+                    OwnerId = table.Column<string>(type: "TEXT", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.PostId);
                     table.ForeignKey(
-                        name: "FK_Book_Posts_PostId",
-                        column: x => x.PostId,
-                        principalTable: "Posts",
-                        principalColumn: "PostId",
+                        name: "FK_Posts_Polls_PollId",
+                        column: x => x.PollId,
+                        principalTable: "Polls",
+                        principalColumn: "PollId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -397,6 +355,127 @@ namespace Obskurnee.Migrations
                         column: x => x.VotesVoteId,
                         principalTable: "Votes",
                         principalColumn: "VoteId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rounds",
+                columns: table => new
+                {
+                    RoundId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Kind = table.Column<int>(type: "INTEGER", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
+                    ThemeDiscussionId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ThemeDiscussionDiscussionId = table.Column<int>(type: "INTEGER", nullable: true),
+                    ThemePollId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ThemePollPollId = table.Column<int>(type: "INTEGER", nullable: true),
+                    ThemeTiebreakerPollId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ThemeTiebreakerPollPollId = table.Column<int>(type: "INTEGER", nullable: true),
+                    BookDiscussionId = table.Column<int>(type: "INTEGER", nullable: false),
+                    BookPollId = table.Column<int>(type: "INTEGER", nullable: false),
+                    BookPollPollId = table.Column<int>(type: "INTEGER", nullable: true),
+                    BookTiebreakerPollId = table.Column<int>(type: "INTEGER", nullable: false),
+                    BookTiebreakerPollPollId = table.Column<int>(type: "INTEGER", nullable: true),
+                    BookId = table.Column<int>(type: "INTEGER", nullable: false),
+                    OwnerId = table.Column<string>(type: "TEXT", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rounds", x => x.RoundId);
+                    table.ForeignKey(
+                        name: "FK_Rounds_Polls_BookPollPollId",
+                        column: x => x.BookPollPollId,
+                        principalTable: "Polls",
+                        principalColumn: "PollId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Rounds_Polls_BookTiebreakerPollPollId",
+                        column: x => x.BookTiebreakerPollPollId,
+                        principalTable: "Polls",
+                        principalColumn: "PollId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Rounds_Polls_ThemePollPollId",
+                        column: x => x.ThemePollPollId,
+                        principalTable: "Polls",
+                        principalColumn: "PollId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Rounds_Polls_ThemeTiebreakerPollPollId",
+                        column: x => x.ThemeTiebreakerPollPollId,
+                        principalTable: "Polls",
+                        principalColumn: "PollId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Books",
+                columns: table => new
+                {
+                    BookId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PostId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RoundId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Order = table.Column<int>(type: "INTEGER", nullable: false),
+                    BookDiscussionId = table.Column<int>(type: "INTEGER", nullable: false),
+                    BookPollId = table.Column<int>(type: "INTEGER", nullable: false),
+                    OwnerId = table.Column<string>(type: "TEXT", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Books", x => x.BookId);
+                    table.ForeignKey(
+                        name: "FK_Books_Books_BookDiscussionId",
+                        column: x => x.BookDiscussionId,
+                        principalTable: "Books",
+                        principalColumn: "BookId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Books_Polls_BookPollId",
+                        column: x => x.BookPollId,
+                        principalTable: "Polls",
+                        principalColumn: "PollId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Books_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "PostId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Books_Rounds_RoundId",
+                        column: x => x.RoundId,
+                        principalTable: "Rounds",
+                        principalColumn: "RoundId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Discussions",
+                columns: table => new
+                {
+                    DiscussionId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    PollId = table.Column<int>(type: "INTEGER", nullable: false),
+                    RoundId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    IsClosed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Topic = table.Column<int>(type: "INTEGER", nullable: false),
+                    OwnerId = table.Column<string>(type: "TEXT", nullable: true),
+                    CreatedOn = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Discussions", x => x.DiscussionId);
+                    table.ForeignKey(
+                        name: "FK_Discussions_Rounds_RoundId",
+                        column: x => x.RoundId,
+                        principalTable: "Rounds",
+                        principalColumn: "RoundId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -438,14 +517,45 @@ namespace Obskurnee.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Book_PostId",
-                table: "Book",
+                name: "IX_BookclubReviews_BookId",
+                table: "BookclubReviews",
+                column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_BookDiscussionId",
+                table: "Books",
+                column: "BookDiscussionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_BookPollId",
+                table: "Books",
+                column: "BookPollId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_PostId",
+                table: "Books",
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Polls_RoundId",
-                table: "Polls",
+                name: "IX_Books_RoundId",
+                table: "Books",
+                column: "RoundId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Discussions_RoundId",
+                table: "Discussions",
                 column: "RoundId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NewsletterSubscriptions_NewsletterName",
+                table: "NewsletterSubscriptions",
+                column: "NewsletterName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NewsletterSubscriptions_UserId",
+                table: "NewsletterSubscriptions",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_DiscussionId",
@@ -468,10 +578,34 @@ namespace Obskurnee.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Round_BookId",
-                table: "Round",
-                column: "BookId",
-                unique: true);
+                name: "IX_Rounds_BookDiscussionId",
+                table: "Rounds",
+                column: "BookDiscussionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rounds_BookPollPollId",
+                table: "Rounds",
+                column: "BookPollPollId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rounds_BookTiebreakerPollPollId",
+                table: "Rounds",
+                column: "BookTiebreakerPollPollId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rounds_ThemeDiscussionDiscussionId",
+                table: "Rounds",
+                column: "ThemeDiscussionDiscussionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rounds_ThemePollPollId",
+                table: "Rounds",
+                column: "ThemePollPollId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rounds_ThemeTiebreakerPollPollId",
+                table: "Rounds",
+                column: "ThemeTiebreakerPollPollId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Votes_PollId",
@@ -479,19 +613,59 @@ namespace Obskurnee.Migrations
                 column: "PollId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Round_Book_BookId",
-                table: "Round",
+                name: "FK_BookclubReviews_Books_BookId",
+                table: "BookclubReviews",
                 column: "BookId",
-                principalTable: "Book",
+                principalTable: "Books",
                 principalColumn: "BookId",
                 onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Posts_Discussions_DiscussionId",
+                table: "Posts",
+                column: "DiscussionId",
+                principalTable: "Discussions",
+                principalColumn: "DiscussionId",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Rounds_Discussions_BookDiscussionId",
+                table: "Rounds",
+                column: "BookDiscussionId",
+                principalTable: "Discussions",
+                principalColumn: "DiscussionId",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Rounds_Discussions_ThemeDiscussionDiscussionId",
+                table: "Rounds",
+                column: "ThemeDiscussionDiscussionId",
+                principalTable: "Discussions",
+                principalColumn: "DiscussionId",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Book_Posts_PostId",
-                table: "Book");
+                name: "FK_Rounds_Polls_BookPollPollId",
+                table: "Rounds");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Rounds_Polls_BookTiebreakerPollPollId",
+                table: "Rounds");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Rounds_Polls_ThemePollPollId",
+                table: "Rounds");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Rounds_Polls_ThemeTiebreakerPollPollId",
+                table: "Rounds");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Discussions_Rounds_RoundId",
+                table: "Discussions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -509,10 +683,16 @@ namespace Obskurnee.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "BookclubReviews");
+
+            migrationBuilder.DropTable(
                 name: "GoodreadsBookInfos");
 
             migrationBuilder.DropTable(
                 name: "GoodreadsReviews");
+
+            migrationBuilder.DropTable(
+                name: "NewsletterSubscriptions");
 
             migrationBuilder.DropTable(
                 name: "PostVote");
@@ -527,6 +707,9 @@ namespace Obskurnee.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Books");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
@@ -536,16 +719,13 @@ namespace Obskurnee.Migrations
                 name: "Posts");
 
             migrationBuilder.DropTable(
-                name: "Discussions");
-
-            migrationBuilder.DropTable(
                 name: "Polls");
 
             migrationBuilder.DropTable(
-                name: "Round");
+                name: "Rounds");
 
             migrationBuilder.DropTable(
-                name: "Book");
+                name: "Discussions");
         }
     }
 }

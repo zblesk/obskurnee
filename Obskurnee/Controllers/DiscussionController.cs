@@ -5,6 +5,7 @@ using Obskurnee.Services;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace Obskurnee.Controllers
 {
@@ -25,14 +26,15 @@ namespace Obskurnee.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Discussion> GetDiscussions() => _discussions.GetAll();
+        public async Task<IEnumerable<Discussion>> GetDiscussions() => await _discussions.GetAll();
 
         [HttpGet]
         [Route("{discussionId:int}")]
-        public Discussion GetPosts(int discussionId) => _discussions.GetWithPosts(discussionId);
+        public async Task<Discussion> GetPosts(int discussionId) => await _discussions.GetWithPosts(discussionId);
 
         [HttpPost]
         [Route("{discussionId:int}")]
-        public Post NewPost(int discussionId, Post post) => _discussions.NewPost(discussionId, post.SetOwner(User));
+        public async Task<Post> NewPost(int discussionId, Post post)
+            => await _discussions.NewPost(discussionId, post.SetOwner(User));
     }
 }

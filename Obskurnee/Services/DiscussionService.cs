@@ -1,62 +1,57 @@
-﻿using Microsoft.Extensions.Localization;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 
 namespace Obskurnee.Services
 {
     public class DiscussionService
     {
         private readonly ILogger<DiscussionService> _logger;
-        private readonly Database _db;
-        private static readonly object @lock = new object();
         private readonly IStringLocalizer<Strings> _localizer;
         private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
         private readonly NewsletterService _newsletter;
         private readonly Config _config;
+        private readonly ApplicationDbContext _db;
 
         public DiscussionService(
             ILogger<DiscussionService> logger,
-            Database database,
+            ApplicationDbContext db,
             IStringLocalizer<Strings> localizer,
             IStringLocalizer<NewsletterStrings> newsletterLocalizer,
             NewsletterService newsletter,
             Config config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _db = database ?? throw new ArgumentNullException(nameof(database));
             _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
             _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
             _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
             _config = config ?? throw new ArgumentNullException(nameof(config));
+            _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
 
-        public IEnumerable<Discussion> GetAll()
-            => (from discussion in _db.Discussions.Query()
+        public Task<List<Discussion>> GetAll()
+            => (from discussion in _db.Discussions
                 orderby discussion.CreatedOn descending
                 select discussion)
-                .ToList();
+                .ToListAsync();
 
-        public Post NewPost(int discussionId, Post post)
+        public async Task<Post> NewPost(int discussionId, Post post)
         {
-            var discussion = _db.Discussions.FindById(discussionId);
+            var discussion = _db.Discussions.First(d => d.DiscussionId == discussionId);
             if (discussion.IsClosed)
             {
                 throw new Exception(_localizer["discussionClosed"]);
             }
             post.PostId = 0; //ensure it wasn't sent from the client
             post.DiscussionId = discussionId;
-
-            lock (@lock)
-            {
-                _db.Posts.Insert(post);
-                discussion.Posts = _db.Posts.Find(p => p.DiscussionId == discussionId).OrderBy(p => p.CreatedOn).ToList();
-                _db.Discussions.Update(discussion);
-            }
+            await _db.Posts.AddAsync(post);
+            await _db.SaveChangesAsync();
             SendNewPostNotification(discussion, post);
             return post;
         }
@@ -91,8 +86,10 @@ namespace Obskurnee.Services
                 body);
         }
 
-        public Discussion GetWithPosts(int discussionId) => _db.Discussions.Include(d => d.Posts).FindById(discussionId);
+        public async Task<Discussion> GetWithPosts(int discussionId) 
+            => await _db.Discussions.Include(d => d.Posts).FirstOrDefaultAsync(d => d.DiscussionId == discussionId);
 
-        public Discussion GetLatestOpen() => _db.Discussions.Find(d => !d.IsClosed).OrderByDescending(d => d.DiscussionId).FirstOrDefault();
+        public async Task<Discussion> GetLatestOpen()
+            => await _db.Discussions.Where(d => !d.IsClosed).OrderByDescending(d => d.DiscussionId).FirstOrDefaultAsync();
     }
 }

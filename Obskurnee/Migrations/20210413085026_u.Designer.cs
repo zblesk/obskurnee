@@ -9,8 +9,8 @@ using Obskurnee.Services;
 namespace Obskurnee.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210412203543_bcr")]
-    partial class bcr
+    [Migration("20210413085026_u")]
+    partial class u
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -187,6 +187,39 @@ namespace Obskurnee.Migrations
                     b.ToTable("Books");
                 });
 
+            modelBuilder.Entity("Obskurnee.Models.BookclubReview", b =>
+                {
+                    b.Property<string>("ReviewId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GoodreadsBookId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OwnerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<ushort>("Rating")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ReviewText")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ReviewUrl")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ReviewId");
+
+                    b.HasIndex("BookId");
+
+                    b.ToTable("BookclubReviews");
+                });
+
             modelBuilder.Entity("Obskurnee.Models.Bookworm", b =>
                 {
                     b.Property<string>("Id")
@@ -289,6 +322,8 @@ namespace Obskurnee.Migrations
 
                     b.HasKey("DiscussionId");
 
+                    b.HasIndex("RoundId");
+
                     b.ToTable("Discussions");
                 });
 
@@ -365,6 +400,26 @@ namespace Obskurnee.Migrations
                     b.HasKey("ReviewId");
 
                     b.ToTable("GoodreadsReviews");
+                });
+
+            modelBuilder.Entity("Obskurnee.Models.NewsletterSubscription", b =>
+                {
+                    b.Property<string>("NewsletterSubscriptionId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NewsletterName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("NewsletterSubscriptionId");
+
+                    b.HasIndex("NewsletterName");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("NewsletterSubscriptions");
                 });
 
             modelBuilder.Entity("Obskurnee.Models.Poll", b =>
@@ -493,9 +548,6 @@ namespace Obskurnee.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("BookDiscussionDiscussionId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("BookDiscussionId")
                         .HasColumnType("INTEGER");
 
@@ -546,7 +598,7 @@ namespace Obskurnee.Migrations
 
                     b.HasKey("RoundId");
 
-                    b.HasIndex("BookDiscussionDiscussionId");
+                    b.HasIndex("BookDiscussionId");
 
                     b.HasIndex("BookPollPollId");
 
@@ -699,6 +751,37 @@ namespace Obskurnee.Migrations
                     b.Navigation("Round");
                 });
 
+            modelBuilder.Entity("Obskurnee.Models.BookclubReview", b =>
+                {
+                    b.HasOne("Obskurnee.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("Obskurnee.Models.Discussion", b =>
+                {
+                    b.HasOne("Obskurnee.Models.Round", "Round")
+                        .WithMany("AllRelatedDiscussions")
+                        .HasForeignKey("RoundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Round");
+                });
+
+            modelBuilder.Entity("Obskurnee.Models.NewsletterSubscription", b =>
+                {
+                    b.HasOne("Obskurnee.Models.Bookworm", "User")
+                        .WithMany("NewsletterSubscriptions")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Obskurnee.Models.Post", b =>
                 {
                     b.HasOne("Obskurnee.Models.Discussion", "Discussion")
@@ -718,7 +801,9 @@ namespace Obskurnee.Migrations
                 {
                     b.HasOne("Obskurnee.Models.Discussion", "BookDiscussion")
                         .WithMany()
-                        .HasForeignKey("BookDiscussionDiscussionId");
+                        .HasForeignKey("BookDiscussionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Obskurnee.Models.Poll", "BookPoll")
                         .WithMany()
@@ -779,6 +864,11 @@ namespace Obskurnee.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Obskurnee.Models.Bookworm", b =>
+                {
+                    b.Navigation("NewsletterSubscriptions");
+                });
+
             modelBuilder.Entity("Obskurnee.Models.Discussion", b =>
                 {
                     b.Navigation("Posts");
@@ -791,6 +881,8 @@ namespace Obskurnee.Migrations
 
             modelBuilder.Entity("Obskurnee.Models.Round", b =>
                 {
+                    b.Navigation("AllRelatedDiscussions");
+
                     b.Navigation("Book");
                 });
 #pragma warning restore 612, 618

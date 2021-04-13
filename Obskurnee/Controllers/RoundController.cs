@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Obskurnee.Controllers
 {
@@ -27,7 +28,7 @@ namespace Obskurnee.Controllers
         }
 
         [HttpGet]
-        public IList<Round> GetRounds() => _roundManager.AllRounds();
+        public async Task<IList<Round>> GetRounds() => await _roundManager.AllRounds();
 
         [HttpPost]
         [Authorize(Policy = "ModOnly")]
@@ -49,10 +50,11 @@ namespace Obskurnee.Controllers
 
         [HttpPost]
         [Authorize(Policy = "ModOnly")]
-        public Round NewRound([FromBody] JsonElement  roundData) => _roundManager.NewRound(
-            (Topic)Enum.Parse(typeof(Topic), roundData.GetProperty("topic").GetString()),
-            roundData.GetProperty("title").GetString(),
-            roundData.TryGetProperty("description", out _) ? roundData.GetProperty("description").GetString() : "",
-            User.GetUserId());
+        public async Task<Round> NewRound([FromBody] JsonElement  roundData) 
+            => await _roundManager.NewRound(
+                (Topic)Enum.Parse(typeof(Topic), roundData.GetProperty("topic").GetString()),
+                roundData.GetProperty("title").GetString(),
+                roundData.TryGetProperty("description", out _) ? roundData.GetProperty("description").GetString() : "",
+                User.GetUserId());
     }
 }
