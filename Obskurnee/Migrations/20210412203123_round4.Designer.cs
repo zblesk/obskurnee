@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Obskurnee.Services;
 
 namespace Obskurnee.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210412203123_round4")]
+    partial class round4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -491,9 +493,6 @@ namespace Obskurnee.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("BookDiscussionDiscussionId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("BookDiscussionId")
                         .HasColumnType("INTEGER");
 
@@ -543,8 +542,6 @@ namespace Obskurnee.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("RoundId");
-
-                    b.HasIndex("BookDiscussionDiscussionId");
 
                     b.HasIndex("BookPollPollId");
 
@@ -714,10 +711,6 @@ namespace Obskurnee.Migrations
 
             modelBuilder.Entity("Obskurnee.Models.Round", b =>
                 {
-                    b.HasOne("Obskurnee.Models.Discussion", "BookDiscussion")
-                        .WithMany()
-                        .HasForeignKey("BookDiscussionDiscussionId");
-
                     b.HasOne("Obskurnee.Models.Poll", "BookPoll")
                         .WithMany()
                         .HasForeignKey("BookPollPollId");
@@ -737,8 +730,6 @@ namespace Obskurnee.Migrations
                     b.HasOne("Obskurnee.Models.Poll", "ThemeTiebreakerPoll")
                         .WithMany()
                         .HasForeignKey("ThemeTiebreakerPollPollId");
-
-                    b.Navigation("BookDiscussion");
 
                     b.Navigation("BookPoll");
 

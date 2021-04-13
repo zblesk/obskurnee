@@ -18,5 +18,16 @@ namespace Obskurnee.Services
         public DbSet<Recommendation> Recommendations { get; set; }
         public DbSet<GoodreadsReview> GoodreadsReviews { get; set; }
 
+        // --------------------------------------------- presunut nad, po skon
+        public DbSet<Discussion> Discussions { get; set; }
+
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<Poll> Polls { get; set; }
+        public DbSet<Vote> Votes { get; set; }
+        public DbSet<Round> Rounds { get; set; }
+        //public DbSet<BookclubReview> BookReviews { get; set; }
+        //public DbSet<NewsletterSubscription> NewsletterSubscriptions { get; set; }
+
     }
 }

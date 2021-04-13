@@ -1,10 +1,14 @@
 ﻿using LiteDB;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Obskurnee.Models
 {
+    [Table("Discussions")]
     public class Discussion : HeaderData
     {
+        [Key]
         public int DiscussionId { get; set; }
         public int PollId { get; set; }
         public int RoundId { get; set; }
@@ -12,8 +16,10 @@ namespace Obskurnee.Models
         public string Description { get; set; }
         public bool IsClosed { get; set; }
         virtual public Topic Topic{ get; set; }
-        [BsonIgnore] public string RenderedDescription { get => Description.RenderMarkdown(); }
-        [BsonRef("posts")] public IList<Post> Posts { get; set; } = new List<Post>();
+        [NotMapped] 
+        [BsonIgnore]
+        public string RenderedDescription { get => Description.RenderMarkdown(); }
+        [BsonRef("posts")] public List<Post> Posts { get; set; } = new List<Post>();
 
         public Discussion(string ownerId) : base(ownerId) { }
     }

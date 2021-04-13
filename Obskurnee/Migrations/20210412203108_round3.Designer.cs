@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Obskurnee.Services;
 
 namespace Obskurnee.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210412203108_round3")]
+    partial class round3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -491,9 +493,6 @@ namespace Obskurnee.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("BookDiscussionDiscussionId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("BookDiscussionId")
                         .HasColumnType("INTEGER");
 
@@ -503,13 +502,7 @@ namespace Obskurnee.Migrations
                     b.Property<int>("BookPollId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("BookPollPollId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("BookTiebreakerPollId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("BookTiebreakerPollPollId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedOn")
@@ -543,12 +536,6 @@ namespace Obskurnee.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("RoundId");
-
-                    b.HasIndex("BookDiscussionDiscussionId");
-
-                    b.HasIndex("BookPollPollId");
-
-                    b.HasIndex("BookTiebreakerPollPollId");
 
                     b.HasIndex("ThemeDiscussionDiscussionId");
 
@@ -714,18 +701,6 @@ namespace Obskurnee.Migrations
 
             modelBuilder.Entity("Obskurnee.Models.Round", b =>
                 {
-                    b.HasOne("Obskurnee.Models.Discussion", "BookDiscussion")
-                        .WithMany()
-                        .HasForeignKey("BookDiscussionDiscussionId");
-
-                    b.HasOne("Obskurnee.Models.Poll", "BookPoll")
-                        .WithMany()
-                        .HasForeignKey("BookPollPollId");
-
-                    b.HasOne("Obskurnee.Models.Poll", "BookTiebreakerPoll")
-                        .WithMany()
-                        .HasForeignKey("BookTiebreakerPollPollId");
-
                     b.HasOne("Obskurnee.Models.Discussion", "ThemeDiscussion")
                         .WithMany()
                         .HasForeignKey("ThemeDiscussionDiscussionId");
@@ -737,12 +712,6 @@ namespace Obskurnee.Migrations
                     b.HasOne("Obskurnee.Models.Poll", "ThemeTiebreakerPoll")
                         .WithMany()
                         .HasForeignKey("ThemeTiebreakerPollPollId");
-
-                    b.Navigation("BookDiscussion");
-
-                    b.Navigation("BookPoll");
-
-                    b.Navigation("BookTiebreakerPoll");
 
                     b.Navigation("ThemeDiscussion");
 

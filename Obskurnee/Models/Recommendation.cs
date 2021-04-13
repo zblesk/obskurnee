@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Obskurnee.Models
 {
-    [Table("Recommendation")]
+    [Table("Recommendations")]
     [Index(nameof(OwnerId))]
     public class Recommendation : HeaderData
     {
