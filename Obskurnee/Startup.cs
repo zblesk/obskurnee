@@ -21,6 +21,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Converters;
 
 namespace Obskurnee
 {
@@ -41,7 +42,20 @@ namespace Obskurnee
             Directory.CreateDirectory(Path.Combine(Config.Current.DataFolder, Config.Current.ImageFolder));
 
             services.AddControllers()
-                .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+                .AddNewtonsoftJson(o =>
+                {
+                    o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    o.SerializerSettings.Converters.Add(new StringEnumConverter());
+                });
+//                .AddJsonOptions(o =>
+//                {
+//                    o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+//                    o.JsonSerializerOptions.MaxDepth = 5;
+//                    o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+//#if DEBUG
+//                    o.JsonSerializerOptions.WriteIndented = true;
+//#endif
+//                });
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp";
