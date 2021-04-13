@@ -42,10 +42,10 @@ namespace Obskurnee.Controllers
         [HttpPost]
         [Authorize(Policy = "ModOnly")]
         [Route("close-discussion/{discussionId:int}")]
-        public RoundUpdateResults CloseDiscussion(int discussionId)
+        public async Task<RoundUpdateResults> CloseDiscussion(int discussionId)
         {
             _logger.LogInformation("Moderator {userId} closing discussion {discussionId}", User.GetUserId(), discussionId);
-            return _roundManager.CloseDiscussion(discussionId, User.GetUserId());
+            return await _roundManager.CloseDiscussion(discussionId, User.GetUserId());
         }
 
         [HttpPost]

@@ -85,9 +85,12 @@ namespace Obskurnee.Services
             return round;
         }
 
-        public RoundUpdateResults CloseDiscussion(int discussionId, string currentUserId)
+        public async Task<RoundUpdateResults> CloseDiscussion(int discussionId, string currentUserId)
         {
-            var discussion = _db.Discussions.Include(d => d.Posts).First(d => d.DiscussionId == discussionId);
+            var discussion = await _db.Discussions
+                                    .Include(d => d.Posts)
+                                    .Include(d => d.Round)
+                                    .FirstAsync(d => d.DiscussionId == discussionId);
             if (discussion.IsClosed)
             {
                 throw new PermissionException(_localizer["discussionClosed"]);
@@ -96,41 +99,43 @@ namespace Obskurnee.Services
             {
                 throw new PermissionException(_localizer["atLeastOneProposalRequired"]);
             }
-            //var round = _db.Rounds.FindById(discussion.RoundId);
-            //lock (@lock)
-            //{
-            //    discussion.IsClosed = true;
-            //    var posts = (from post in _db.Posts.Query()
-            //                 where post.DiscussionId == discussionId
-            //                 orderby post.PostId
-            //                 select post)
-            //                 .ToList();
-            //    var poll = new Poll(currentUserId)
-            //    {
-            //        DiscussionId = discussion.DiscussionId,
-            //        Title = _localizer.Format("pollTitle", discussion.Title),
-            //        Options = posts,
-            //        Topic = discussion.Topic,
-            //        RoundId = round.RoundId,
-            //    };
-            //    _db.Polls.Insert(poll);
-            //    discussion.PollId = poll.PollId;
-            //    switch (discussion.Topic)
-            //    {
-            //        case Topic.Books:
-            //            round.BookPollId = poll.PollId;
-            //            break;
-            //        case Topic.Themes:
-            //            round.ThemePollId = poll.PollId;
-            //            break;
-            //    }
-            //    _db.Discussions.Update(discussion);
-            //    _db.Rounds.Update(round);
-
-            //    SendNewPollNotification(poll);
-            //}
-            //return new() { Discussion = discussion, Round = round };
-            return null;
+            var round = discussion.Round;
+            try
+            {
+                await _db.Database.BeginTransactionAsync();
+                discussion.IsClosed = true;
+                var poll = new Poll(currentUserId)
+                {
+                    DiscussionId = discussion.DiscussionId,
+                    Title = _localizer.Format("pollTitle", discussion.Title),
+                    Options = discussion.Posts,
+                    Topic = discussion.Topic,
+                    RoundId = round.RoundId,
+                };
+                await _db.Polls.AddAsync(poll);
+                await _db.SaveChangesAsync();
+                discussion.PollId = poll.PollId;
+                switch (discussion.Topic)
+                {
+                    case Topic.Books:
+                        round.BookPollId = poll.PollId;
+                        break;
+                    case Topic.Themes:
+                        round.ThemePollId = poll.PollId;
+                        break;
+                }
+                _db.Discussions.Update(discussion);
+                _db.Rounds.Update(round);
+                await _db.SaveChangesAsync();
+                await _db.Database.CommitTransactionAsync();
+                SendNewPollNotification(poll);
+            }
+            catch
+            {
+                _db.Database.RollbackTransaction();
+                throw;
+            }
+            return new() { Discussion = discussion, Round = round };
         }
 
         public RoundUpdateResults ClosePoll(int pollId, string currentUserId)
