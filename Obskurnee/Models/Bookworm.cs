@@ -1,5 +1,6 @@
 ﻿using LiteDB;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Obskurnee.Models
@@ -15,5 +16,6 @@ namespace Obskurnee.Models
         }
         public string AboutMe { get; set; }
         [BsonIgnore] public string RenderedAboutMe { get => AboutMe.RenderMarkdown(); }
+        public ICollection<NewsletterSubscription> NewsletterSubscriptions { get; set; }
     }
 }
