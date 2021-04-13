@@ -10,7 +10,7 @@ namespace Obskurnee.Services
     public sealed class Database :  IDisposable
     {
         private readonly LiteDatabase _db;
-        public readonly ILiteCollection<Post> Posts;
+      //  public readonly ILiteCollection<Post> Posts;
         public readonly ILiteCollection<Book> Books;
         public readonly ILiteCollection<Poll> Polls;
         public readonly ILiteCollection<Vote> Votes;
@@ -23,7 +23,7 @@ namespace Obskurnee.Services
             _db = new LiteDatabase(Path.Combine(config.DataFolder, "bookclub.db"));
             _db.CheckpointSize = 1;
             // Discussions = _db.GetCollection<Discussion>("discussions");
-            Posts = _db.GetCollection<Post>("posts");
+    //        Posts = _db.GetCollection<Post>("posts");
             Books = _db.GetCollection<Book>("books").Include(b => b.Post).Include(b => b.Round);
             Polls = _db.GetCollection<Poll>("polls").Include(p => p.Options);
             Votes = _db.GetCollection<Vote>("votes");
@@ -31,7 +31,7 @@ namespace Obskurnee.Services
             NewsletterSubscriptions = _db.GetCollection<NewsletterSubscription>("newslettersubscriptions");
             BookReviews = _db.GetCollection<BookclubReview>("bookclubreviews").Include(b => b.Book).Include(b => b.Book.Post);
 
-            Posts.EnsureIndex(p => p.DiscussionId);
+    //        Posts.EnsureIndex(p => p.DiscussionId);
             Votes.EnsureIndex(v => v.PollId);
             NewsletterSubscriptions.EnsureIndex(ns => ns.UserId);
             NewsletterSubscriptions.EnsureIndex(ns => ns.NewsletterName);

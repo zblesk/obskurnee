@@ -1,12 +1,15 @@
 ﻿using LiteDB;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace Obskurnee.Models
 {
     [Table("Posts")]
+    [Index(nameof(DiscussionId))]
     public class Post : HeaderData
     {
         public record OriginalPostReference(Topic topic, int entityId);
@@ -30,6 +33,8 @@ namespace Obskurnee.Models
         [BsonIgnore] public string RenderedText { get => Text.RenderMarkdown(); }
 
         public string ImageUrl { get; set; }
+
+        [JsonIgnore]
         public ICollection<Vote> Votes { get; set; }
 
         public string GetGoodreadsId()
