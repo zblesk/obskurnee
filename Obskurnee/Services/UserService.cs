@@ -23,7 +23,6 @@ namespace Obskurnee.Services
         private readonly JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
         private readonly IMailerService _mailer;
         private readonly IServiceProvider _serviceProvider;
-        private readonly ReviewService _reviews;
         private readonly Config _config;
         private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
         private readonly ApplicationDbContext _dbContext;
@@ -37,7 +36,6 @@ namespace Obskurnee.Services
            ILogger<UserService> logger,
            IMailerService mailer,
            IServiceProvider serviceProvider,
-           ReviewService reviews,
            IStringLocalizer<NewsletterStrings> newsletterLocalizer,
            Config config,
            ApplicationDbContext dbContext)
@@ -47,24 +45,9 @@ namespace Obskurnee.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-            _reviews = reviews ?? throw new ArgumentNullException(nameof(reviews));
             _config = config ?? throw new ArgumentNullException(nameof(config));
             _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
             _dbContext = dbContext;
-        }
-
-        public IEnumerable<UserInfo> GetAllUsers(bool includeCurrentlyReading = false)
-        {
-            var users = GetAllUsers();
-            users.Wait();
-            foreach (var user in users.Result)
-            {
-                if (includeCurrentlyReading)
-                {
-                    user.CurrentlyReading = _reviews.GetCurrentlyReading(user.UserId);
-                }
-                yield return user;
-            }
         }
 
         public async Task<List<UserInfo>> GetAllUsers()

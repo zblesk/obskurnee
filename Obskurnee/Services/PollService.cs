@@ -15,19 +15,15 @@ namespace Obskurnee.Services
     {
         private readonly ILogger<PollService> _logger;
         private readonly ApplicationDbContext _db;
-        private readonly UserService _users;
         private readonly IStringLocalizer<Strings> _localizer;
-        private readonly object @lock = new object();
 
         public PollService(
             ILogger<PollService> logger,
             ApplicationDbContext database,
-            UserService users,
             IStringLocalizer<Strings> localizer)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
-            _users = users ?? throw new ArgumentNullException(nameof(users));
             _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
         }
 

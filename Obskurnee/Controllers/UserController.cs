@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Obskurnee.Services;
 using Obskurnee.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Obskurnee.Controllers
@@ -24,7 +25,7 @@ namespace Obskurnee.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetAllUsers() => Json(_users.GetAllUsers(true));
+        public Task<List<UserInfo>> GetAllUsers() => _users.GetAllUsers();
 
         [HttpGet]
         [Route("{email}")]
