@@ -37,6 +37,9 @@ namespace Obskurnee.Models
         [JsonIgnore]
         public ICollection<Vote> Votes { get; set; }
 
+        [JsonIgnore]
+        public ICollection<Poll> AllPolls { get; set; }
+
         public string GetGoodreadsId()
         {
             if (string.IsNullOrWhiteSpace(Url))

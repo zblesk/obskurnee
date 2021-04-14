@@ -28,7 +28,7 @@ namespace Obskurnee.Services
         }
 
         public Task<List<Poll>> GetAll()
-            => (from poll in _db.Polls
+            => (from poll in _db.PollsWithData
                 orderby poll.CreatedOn descending
                 select poll)
                 .ToListAsync();

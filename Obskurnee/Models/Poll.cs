@@ -50,19 +50,19 @@ namespace Obskurnee.Models
         public bool IsTiebreaker { get; set; } = false;
 
         [NotMapped]
-        public PollResults Results { get; set; }
-
-        [JsonIgnore]
-        public string ResultsSerialized
+        public PollResults Results
         {
+            get => !string.IsNullOrWhiteSpace(ResultsSerialized)
+                        ? JsonConvert.DeserializeObject<PollResults>(ResultsSerialized)
+                        : new PollResults();
             set
             {
-                Results = !string.IsNullOrWhiteSpace(value)
-                           ? JsonConvert.DeserializeObject<PollResults>(value)
-                           : null;
+                ResultsSerialized = JsonConvert.SerializeObject(value);
             }
-            get => JsonConvert.SerializeObject(Results);
         }
+
+        [JsonIgnore]
+        public string ResultsSerialized { get; set; }
 
         public Poll(string ownerId) : base(ownerId) { }
 

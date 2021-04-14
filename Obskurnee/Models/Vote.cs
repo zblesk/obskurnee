@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,7 +25,7 @@ namespace Obskurnee.Models
         {
             get => !string.IsNullOrWhiteSpace(PostIdsSerialized)
                     ? JsonConvert.DeserializeObject<int[]>(PostIdsSerialized)
-                    : null;
+                    : Array.Empty<int>();
             set
             {
                 PostIdsSerialized = JsonConvert.SerializeObject(value);

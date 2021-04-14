@@ -143,14 +143,15 @@ namespace Obskurnee.Services
             try
             {
                 _logger.LogInformation("Closing poll {pollId}", pollId);
-          //      await _db.Database.BeginTransactionAsync();
+                await _db.Database.BeginTransactionAsync();
                 RoundUpdateResults result;
-                var poll = await _db.Polls
+                var poll = await _db.PollsWithData
                             .Include(p => p.Round)
                             .FirstAsync(p => p.PollId == pollId);
                 var round = poll.Round;
                 Trace.Assert(!poll.IsClosed);
-                Trace.Assert(poll.Results.Votes.Count > 0);
+                var pollResults = poll.Results;
+                Trace.Assert(pollResults.Votes.Count > 0);
                 poll.IsClosed = true;
 
                 var winners = poll.FindWinningPosts();
@@ -159,8 +160,9 @@ namespace Obskurnee.Services
                 if (winners.Count == 1
                     || poll.IsTiebreaker)
                 {
-                    poll.Results.WinnerPostId = winners.OrderBy(_ => Guid.NewGuid()).First();
-                    Trace.Assert(poll.Results.WinnerPostId != 0);
+                    pollResults.WinnerPostId = winners.OrderBy(_ => Guid.NewGuid()).First();
+                    Trace.Assert(pollResults.WinnerPostId != null);
+                    poll.Results = pollResults;
                     result = new RoundUpdateResults { Poll = poll, Round = round };
                     switch (poll.Topic)
                     {
@@ -210,19 +212,19 @@ namespace Obskurnee.Services
                         default:
                             throw new Exception($"Unexpected Topic: {poll.Topic}");
                     }
-                    result = new RoundUpdateResults { Poll = tiebreaker, Round = round };
+                    result = new RoundUpdateResults { Poll = poll, Round = round };
                     await SendNewPollNotification(tiebreaker);
                 }
                 _db.Polls.Update(poll);
                 _db.Rounds.Update(round);
 
                 await _db.SaveChangesAsync();
-               // await _db.Database.CommitTransactionAsync();
+                await _db.Database.CommitTransactionAsync();
                 return result;
             }
             catch
             {
-          //      _db.Database.RollbackTransaction();
+                _db.Database.RollbackTransaction();
                 throw;
             }
         }
