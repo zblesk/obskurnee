@@ -163,7 +163,11 @@
     }
 
     .navigation-item:hover,
-    .navigation-home:hover {
+    .navigation-item:focus,
+    .navigation-item:active,
+    .navigation-home:hover,
+    .navigation-home:focus,
+    .navigation-home:active {
         background-color: var(--c-accent);
         color: var(--c-font-rev);
     }

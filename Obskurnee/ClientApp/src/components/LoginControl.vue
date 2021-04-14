@@ -43,7 +43,9 @@
     color: var(--c-font);
   }
 
-  .menu-item:hover {
+  .menu-item:hover,
+  .menu-item:focus,
+  .menu-item:active {
     background-color: var(--c-accent);
     color: var(--c-font-rev);
   }

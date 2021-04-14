@@ -106,7 +106,9 @@ body {
   color: var(--c-font-rev);
 }
 
-.button-primary:hover {
+.button-primary:hover,
+.button-primary:focus,
+.button-primary:active {
   color: var(--c-font-rev);
   text-decoration: none;
   background-color: var(--c-accent-darker);
@@ -119,7 +121,9 @@ body {
   color: var(--c-accent-secondary);
 }
 
-.button-secondary:hover {
+.button-secondary:hover,
+.button-secondary:focus,
+.button-secondary:active {
   color: var(--c-font-rev);
   text-decoration: none;
   background-color: var(--c-accent-secondary);
@@ -164,7 +168,9 @@ a {
   color: var(--c-accent);
 }
 
-a:hover {
+a:hover,
+a:focus,
+a:active {
   color: var(--c-accent-darker);
 }
 
