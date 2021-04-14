@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using System;
@@ -13,16 +14,25 @@ namespace Obskurnee.Services
     {
         private readonly ILogger<ReviewService> _logger;
         private readonly GoodreadsScraper _scraper;
+        private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
+        private readonly NewsletterService _newsletter;
         private readonly ApplicationDbContext _db2;
+        private readonly Config _config;
 
         public ReviewService(
             ILogger<ReviewService> logger,
+            Config config,
             GoodreadsScraper scraper,
+            IStringLocalizer<NewsletterStrings> newsletterLocalizer,
+            NewsletterService newsletter,
             ApplicationDbContext db2)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _scraper = scraper ?? throw new ArgumentNullException(nameof(scraper));
+            _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
+            _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
             _db2 = db2 ?? throw new ArgumentNullException(nameof(db2));
+            _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
         public IList<GoodreadsReview> GetCurrentlyReading(string userId) 
@@ -79,7 +89,21 @@ namespace Obskurnee.Services
                 ReviewUrl = reviewUrl,
             };
             await _db2.BookReviews.AddAsync(review);
+            await _db2.SaveChangesAsync();
+            await SendNewReviewNotification(review);
             return review;
+        }
+
+        private async Task SendNewReviewNotification(BookclubReview review)
+        {
+            var link = $"{_config.BaseUrl}/knihy/{review.BookId}";
+            await _newsletter.SendNewsletter(
+                Newsletters.AllEvents,
+                _newsletterLocalizer.Format("newReviewSubject"),
+                _newsletterLocalizer.FormatAndRender("newReviewBodyMarkdown",
+                    link,
+                    review.Rating,
+                    review.ReviewText));
         }
     }
 }
