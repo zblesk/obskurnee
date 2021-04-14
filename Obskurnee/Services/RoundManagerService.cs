@@ -161,7 +161,7 @@ namespace Obskurnee.Services
                     || poll.IsTiebreaker)
                 {
                     pollResults.WinnerPostId = winners.OrderBy(_ => Guid.NewGuid()).First();
-                    Trace.Assert(pollResults.WinnerPostId != 0);
+                    Trace.Assert(pollResults.WinnerPostId != null);
                     poll.Results = pollResults;
                     result = new RoundUpdateResults { Poll = poll, Round = round };
                     switch (poll.Topic)
@@ -212,7 +212,7 @@ namespace Obskurnee.Services
                         default:
                             throw new Exception($"Unexpected Topic: {poll.Topic}");
                     }
-                    result = new RoundUpdateResults { Poll = tiebreaker, Round = round };
+                    result = new RoundUpdateResults { Poll = poll, Round = round };
                     await SendNewPollNotification(tiebreaker);
                 }
                 _db.Polls.Update(poll);
