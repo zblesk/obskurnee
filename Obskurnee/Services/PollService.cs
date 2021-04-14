@@ -39,8 +39,7 @@ namespace Obskurnee.Services
 
         public async Task<PollInfo> GetPollInfo(int pollId, string userId)
         {
-            var poll = await _db.Polls
-              .Include(x => x.Options)
+            var poll = await _db.PollsWithData
               .FirstAsync(p => p.PollId == pollId);
             var voteId = $"{pollId}-{userId}";
             var vote = await _db.Votes.Where(v => v.PollId == pollId && v.OwnerId == userId).FirstOrDefaultAsync();
@@ -51,8 +50,7 @@ namespace Obskurnee.Services
         {
             _logger.LogInformation("New vote: {@vote}", vote);
             Trace.Assert(!string.IsNullOrWhiteSpace(vote.OwnerId));
-            var poll = await _db.Polls
-                .Include(p => p.Options)
+            var poll = await _db.PollsWithData
                 .FirstAsync(p => p.PollId == vote.PollId);
             if (poll.IsClosed)
             {

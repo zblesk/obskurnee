@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using Obskurnee.Models;
+using System.Collections.Generic;
 
 namespace Obskurnee.Services
 {
@@ -22,5 +24,11 @@ namespace Obskurnee.Services
         public DbSet<Round> Rounds { get; set; }
         public DbSet<BookclubReview> BookReviews { get; set; }
         public DbSet<NewsletterSubscription> NewsletterSubscriptions { get; set; }
+
+        public IIncludableQueryable<Poll, List<Post>> PollsWithData
+            => Polls.Include(p => p.Options);
+
+        public IIncludableQueryable<Book, Round> BooksWithData 
+            => Books.Include(b => b.Post).Include(b => b.Round);
     }
 }

@@ -11,7 +11,7 @@ namespace Obskurnee.Services
     {
         private readonly LiteDatabase _db;
       //  public readonly ILiteCollection<Post> Posts;
-        public readonly ILiteCollection<Book> Books;
+     //   public readonly ILiteCollection<Book> Books;
       //  public readonly ILiteCollection<Poll> Polls;
       //  public readonly ILiteCollection<Vote> Votes;
         public readonly ILiteCollection<BookclubReview> BookReviews;
@@ -24,7 +24,7 @@ namespace Obskurnee.Services
             _db.CheckpointSize = 1;
             // Discussions = _db.GetCollection<Discussion>("discussions");
     //        Posts = _db.GetCollection<Post>("posts");
-            Books = _db.GetCollection<Book>("books").Include(b => b.Post).Include(b => b.Round);
+     //       Books = _db.GetCollection<Book>("books").Include(b => b.Post).Include(b => b.Round);
        //     Polls = _db.GetCollection<Poll>("polls").Include(p => p.Options);
          //   Votes = _db.GetCollection<Vote>("votes");
              // Rounds = _db.GetCollection<Round>("rounds");

@@ -1,21 +1,23 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Obskurnee.Services
 {
     public class BookService
     {
         private readonly ILogger<BookService> _logger;
-        private readonly Database _db;
+        private readonly ApplicationDbContext _db;
         private readonly UserService _users;
 
         public BookService(
             ILogger<BookService> logger,
-            Database database,
+            ApplicationDbContext database,
             UserService users)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -23,14 +25,14 @@ namespace Obskurnee.Services
             _users = users ?? throw new ArgumentNullException(nameof(users));
         }
 
-        public IEnumerable<Book> GetBooksNewestFirst()
-            => _db.Books.FindAll().OrderByDescending(b => b.Order);
+        public Task<List<Book>> GetBooksNewestFirst()
+            => _db.BooksWithData.OrderByDescending(b => b.Order).ToListAsync();
 
-        public Book GetBook(int bookId) =>  _db.Books.FindById(bookId);
+        public Task<Book> GetBook(int bookId) =>  _db.Books.FirstAsync(b => b.BookId == bookId);
 
-        public Book GetLatestBook() => _db.Books.Query().OrderByDescending(b => b.Order).FirstOrDefault();
+        public Task<Book> GetLatestBook() => _db.Books.OrderByDescending(b => b.Order).FirstOrDefaultAsync();
 
-        public Book CreateBook(Poll poll, int roundId, string ownerId)
+        public async Task<Book> CreateBook(Poll poll, int roundId, string ownerId)
         {
             _logger.LogInformation("Creating book for poll {pollId}", poll.PollId);
             Trace.Assert(poll.IsClosed);
@@ -45,12 +47,11 @@ namespace Obskurnee.Services
                 Round = new Round(null) { RoundId = roundId },
                 Post = new Post(null) { PostId = poll.Results.WinnerPostId },
             };
-            _db.Books.Insert(book);
-            _logger.LogInformation("Book #{bookNo} created - ID {bookId}, based on post {postId}. {@book}",
+            await _db.Books.AddAsync(book);
+            await _db.SaveChangesAsync();
+            _logger.LogInformation("Book #{bookNo} created - ID {bookId}",
                 book.Order,
-                book.BookId,
-                book.Post.PostId,
-                book);
+                book.BookId);
             return book;
         }
     }

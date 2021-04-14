@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Obskurnee.Models;
 using Obskurnee.Services;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Obskurnee.Controllers
 {
@@ -18,6 +21,6 @@ namespace Obskurnee.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetAllBooksOrdered() => Json(_books.GetBooksNewestFirst());
+        public Task<List<Book>> GetAllBooksOrdered() => _books.GetBooksNewestFirst();
     }
 }

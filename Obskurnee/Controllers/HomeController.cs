@@ -42,7 +42,7 @@ namespace Obskurnee.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-               return Json(new { Books = new[] { _bookService.GetLatestBook() } });
+               return Json(new { Books = new[] { await _bookService.GetLatestBook() } });
             }
             return Json(new
             {

@@ -164,7 +164,7 @@ namespace Obskurnee.Services
                     switch (poll.Topic)
                     {
                         case Topic.Books:
-                            result.Book = _bookService.CreateBook(poll, round.RoundId, currentUserId);
+                            result.Book = await _bookService.CreateBook(poll, round.RoundId, currentUserId);
                             round.BookId = result.Book.BookId;
                             poll.FollowupLink = new Poll.FollowupReference(Poll.LinkKind.Book, result.Book.BookId);
                             SendNewBookNotification(result);

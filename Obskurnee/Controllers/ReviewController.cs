@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Obskurnee.Controllers
 {
@@ -36,7 +37,12 @@ namespace Obskurnee.Controllers
 
         [HttpPost]
         [Route("book/{bookId:int}")]
-        public BookclubReview UpsertReview(int bookId, [FromBody] BookclubReview reviewData)
-            => _reviews.UpsertBookclubBookReview(bookId, User.GetUserId(), reviewData.Rating, reviewData.ReviewText, reviewData.ReviewUrl);
+        public Task<BookclubReview> UpsertReview(int bookId, [FromBody] BookclubReview reviewData)
+            => _reviews.UpsertBookclubBookReview(
+                bookId,
+                User.GetUserId(),
+                reviewData.Rating,
+                reviewData.ReviewText,
+                reviewData.ReviewUrl);
     }
 }

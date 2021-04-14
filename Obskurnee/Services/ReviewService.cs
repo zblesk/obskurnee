@@ -64,23 +64,22 @@ namespace Obskurnee.Services
 
         public IEnumerable<BookclubReview> GetUserReviews(string userId) => _db.BookReviews.Find(br => br.OwnerId == userId);
 
-        public BookclubReview UpsertBookclubBookReview(
+        public async Task<BookclubReview> UpsertBookclubBookReview(
             int bookId,
             string userId,
             ushort rating,
             string reviewText,
             string reviewUrl)
         {
-            var book = _db.Books.FindById(bookId);
             var review = new BookclubReview(userId)
             {
                 ReviewId = $"{bookId}-{userId}",
-                Book = book,
+                BookId = bookId,
                 ReviewText = reviewText,
                 Rating = rating,
                 ReviewUrl = reviewUrl,
             };
-            _db.BookReviews.Upsert(review);
+            await _db2.BookReviews.AddAsync(review);
             return review;
         }
     }
