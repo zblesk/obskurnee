@@ -6,7 +6,7 @@
       </a>
     </div>
     <a :href="post.url" class="book__link">
-      <h2 class="book__title">{{ post.title }}</h2>
+      <h2 class="book__title">{{post.author}}: {{ post.title }}</h2>
     </a>
     <p class="book__pages" v-if="post.pageCount">{{ post.pageCount }} strán</p>
     <p class="book__owner" v-if="showName">Doporučila {{ post.ownerName }}</p>
