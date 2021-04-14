@@ -9,8 +9,8 @@ using Obskurnee.Services;
 namespace Obskurnee.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210413124909_polls3")]
-    partial class polls3
+    [Migration("20210413211605_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -152,10 +152,10 @@ namespace Obskurnee.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BookDiscussionId")
+                    b.Property<int?>("BookDiscussionId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BookPollId")
+                    b.Property<int?>("BookPollId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedOn")
@@ -167,10 +167,10 @@ namespace Obskurnee.Migrations
                     b.Property<string>("OwnerId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PostId")
+                    b.Property<int?>("PostId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("RoundId")
+                    b.Property<int?>("RoundId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("BookId");
@@ -463,6 +463,8 @@ namespace Obskurnee.Migrations
 
                     b.HasKey("PollId");
 
+                    b.HasIndex("RoundId");
+
                     b.ToTable("Polls");
                 });
 
@@ -706,27 +708,19 @@ namespace Obskurnee.Migrations
                 {
                     b.HasOne("Obskurnee.Models.Book", "BookDiscussion")
                         .WithMany()
-                        .HasForeignKey("BookDiscussionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BookDiscussionId");
 
                     b.HasOne("Obskurnee.Models.Poll", "BookPoll")
                         .WithMany()
-                        .HasForeignKey("BookPollId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BookPollId");
 
                     b.HasOne("Obskurnee.Models.Post", "Post")
                         .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PostId");
 
                     b.HasOne("Obskurnee.Models.Round", "Round")
                         .WithOne("Book")
-                        .HasForeignKey("Obskurnee.Models.Book", "RoundId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Obskurnee.Models.Book", "RoundId");
 
                     b.Navigation("BookDiscussion");
 
@@ -766,6 +760,17 @@ namespace Obskurnee.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Obskurnee.Models.Poll", b =>
+                {
+                    b.HasOne("Obskurnee.Models.Round", "Round")
+                        .WithMany("AllRelatedPolls")
+                        .HasForeignKey("RoundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Round");
                 });
 
             modelBuilder.Entity("Obskurnee.Models.Post", b =>
@@ -860,6 +865,8 @@ namespace Obskurnee.Migrations
             modelBuilder.Entity("Obskurnee.Models.Round", b =>
                 {
                     b.Navigation("AllRelatedDiscussions");
+
+                    b.Navigation("AllRelatedPolls");
 
                     b.Navigation("Book");
                 });

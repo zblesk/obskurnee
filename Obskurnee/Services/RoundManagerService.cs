@@ -142,7 +142,7 @@ namespace Obskurnee.Services
             try
             {
                 _logger.LogInformation("Closing poll {pollId}", pollId);
-                await _db.Database.BeginTransactionAsync();
+          //      await _db.Database.BeginTransactionAsync();
                 RoundUpdateResults result;
                 var poll = await _db.Polls
                             .Include(p => p.Round)
@@ -216,12 +216,12 @@ namespace Obskurnee.Services
                 _db.Rounds.Update(round);
 
                 await _db.SaveChangesAsync();
-                await _db.Database.CommitTransactionAsync();
+               // await _db.Database.CommitTransactionAsync();
                 return result;
             }
             catch
             {
-                _db.Database.RollbackTransaction();
+          //      _db.Database.RollbackTransaction();
                 throw;
             }
         }

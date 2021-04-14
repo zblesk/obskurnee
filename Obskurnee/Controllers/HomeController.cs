@@ -46,12 +46,12 @@ namespace Obskurnee.Controllers
             }
             return Json(new
             {
-                Books = _bookService.GetBooksNewestFirst(),
+                Books = await _bookService.GetBooksNewestFirst(),
                 Notice = _settingsService.GetSettingValue<string>(Setting.Keys.ModNoticeboard)?.RenderMarkdown(),
                 MyProfile = await _userService.GetUserByEmail(User.FindFirstValue(ClaimTypes.Email)),
                 SiteName = "",
                 CurrentPoll = await _pollService.GetLatestOpen(),
-                CurrentDiscussion = _discussionService.GetLatestOpen(),
+                CurrentDiscussion = await _discussionService.GetLatestOpen(),
             });
         }
     }

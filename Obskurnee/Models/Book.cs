@@ -16,9 +16,7 @@ namespace Obskurnee.Models
         public Round Round { get; set; }
         public int Order { get; set; }
         public int? BookDiscussionId { get; set; }
-        public Book BookDiscussion { get; set; }
         public int? BookPollId { get; set; }
-        public Poll BookPoll { get; set; }
 
         public Book(string ownerId) : base(ownerId) { }
     }
