@@ -1,10 +1,12 @@
 <template>
-<div>
+<div class="page-container">
   <nav-menu></nav-menu>
-  <router-view />
-  <div class="todo">
-    ja som footer, urob ma
+  <div class="page-center">
+    <router-view />
   </div>
+  <footer class="footer">
+    <p class="attribution">Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> and <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>.</p>
+  </footer>
 </div>
 </template>
 
@@ -204,6 +206,32 @@ img {
 hr {
   margin-top: var(--spacer);
   margin-bottom: var(--spacer);
+}
+
+/* footer */
+.footer {
+  background-color: var(--c-bckgr-primary);
+  padding: var(--spacer);
+}
+
+.attribution {
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.attribution a {
+  color: var(--c-accent);
+}
+
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.page-center {
+  flex: 1 0 100%;
 }
 
 </style>
