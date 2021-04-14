@@ -10,7 +10,6 @@ namespace Obskurnee.Models
     [Index(nameof(UserId))]
     public class NewsletterSubscription
     {
-        [BsonId]
         [Key] public string NewsletterSubscriptionId { get => $"{NewsletterName}-{UserId}"; set { } }
         public string NewsletterName { get; set; }
         public string UserId { get; set; }

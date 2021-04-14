@@ -52,11 +52,11 @@ namespace Obskurnee.Services
             post.DiscussionId = discussionId;
             await _db.Posts.AddAsync(post);
             await _db.SaveChangesAsync();
-            SendNewPostNotification(discussion, post);
+            await SendNewPostNotification(discussion, post);
             return post;
         }
 
-        private void SendNewPostNotification(Discussion discussion, Post post)
+        private async Task SendNewPostNotification(Discussion discussion, Post post)
         {
             var link = $"{_config.BaseUrl}/navrhy/{discussion.DiscussionId}";
             var body = "";
@@ -80,7 +80,7 @@ namespace Obskurnee.Services
                     post.Text,
                     link);
             }
-            _newsletter.SendNewsletter(
+            await _newsletter.SendNewsletter(
                 Newsletters.AllEvents,
                 _newsletterLocalizer.Format("newPostSubject", post.OwnerName),
                 body);

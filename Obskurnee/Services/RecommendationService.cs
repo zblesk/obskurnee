@@ -45,14 +45,14 @@ namespace Obskurnee.Services
             rec.OwnerId = userId;
             _db.Recommendations.Add(rec);
             await _db.SaveChangesAsync();
-            SendNewRecNotification(rec);
+            await SendNewRecNotification(rec);
             return rec;
         }
 
-        private void SendNewRecNotification(Recommendation rec)
+        private async Task SendNewRecNotification(Recommendation rec)
         {
             var link = $"{_config.BaseUrl}/odporucania/";
-            _newsletter.SendNewsletter(
+            await _newsletter.SendNewsletter(
                 Newsletters.AllEvents,
                 _newsletterLocalizer.Format("newRecSubject", rec.OwnerName),
                 _newsletterLocalizer.FormatAndRender("newRecBodyMarkdown",

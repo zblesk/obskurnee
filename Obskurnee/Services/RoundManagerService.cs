@@ -127,7 +127,7 @@ namespace Obskurnee.Services
                 _db.Rounds.Update(round);
                 await _db.SaveChangesAsync();
                 await _db.Database.CommitTransactionAsync();
-                SendNewPollNotification(poll);
+                await SendNewPollNotification(poll);
             }
             catch
             {
@@ -167,13 +167,13 @@ namespace Obskurnee.Services
                             result.Book = await _bookService.CreateBook(poll, round.RoundId, currentUserId);
                             round.BookId = result.Book.BookId;
                             poll.FollowupLink = new Poll.FollowupReference(Poll.LinkKind.Book, result.Book.BookId);
-                            SendNewBookNotification(result);
+                            await SendNewBookNotification(result);
                             break;
                         case Topic.Themes:
                             result.Discussion = await CreateDiscussionFromTopicPoll(currentUserId, poll, round);
                             round.BookDiscussionId = result.Discussion.DiscussionId;
                             poll.FollowupLink = new Poll.FollowupReference(Poll.LinkKind.Discussion, result.Discussion.DiscussionId);
-                            SendNewDiscussionNotification(result.Discussion);
+                            await SendNewDiscussionNotification(result.Discussion);
                             break;
                     }
                 }
@@ -210,7 +210,7 @@ namespace Obskurnee.Services
                             throw new Exception($"Unexpected Topic: {poll.Topic}");
                     }
                     result = new RoundUpdateResults { Poll = tiebreaker, Round = round };
-                    SendNewPollNotification(tiebreaker);
+                    await SendNewPollNotification(tiebreaker);
                 }
                 _db.Polls.Update(poll);
                 _db.Rounds.Update(round);
@@ -244,10 +244,10 @@ namespace Obskurnee.Services
             return bookDiscussion;
         }
 
-        private void SendNewDiscussionNotification(Discussion discussion)
+        private async Task SendNewDiscussionNotification(Discussion discussion)
         {
             var link = $"{_config.BaseUrl}/navrhy/{discussion.DiscussionId}";
-            _newsletter.SendNewsletter(
+            await _newsletter.SendNewsletter(
                 Newsletters.BasicEvents,
                 _newsletterLocalizer.Format("newRoundSubject", discussion.Title),
                 _newsletterLocalizer.FormatAndRender("newRoundBodyMarkdown", link)
@@ -256,20 +256,20 @@ namespace Obskurnee.Services
                         : _newsletterLocalizer.FormatAndRender("additionalDescriptionMarkdown", discussion.Description)));
         }
 
-        private void SendNewPollNotification(Poll poll)
+        private async Task SendNewPollNotification(Poll poll)
         {
             var link = $"{_config.BaseUrl}/hlasovania/{poll.PollId}";
-            _newsletter.SendNewsletter(
+            await _newsletter.SendNewsletter(
                 Newsletters.BasicEvents,
                 _newsletterLocalizer.Format("newPollSubject", poll.Title),
                 _newsletterLocalizer.FormatAndRender("newPollBodyMarkdown", link));
         }
 
-        private void SendNewBookNotification(RoundUpdateResults result)
+        private async Task SendNewBookNotification(RoundUpdateResults result)
         {
             var link = $"{_config.BaseUrl}/knihy/{result.Book.BookId}";
             var post = _db.Posts.First(p => p.PostId == result.Book.Post.PostId);
-            _newsletter.SendNewsletter(
+            await _newsletter.SendNewsletter(
                 Newsletters.BasicEvents,
                 _newsletterLocalizer["newBookSubject"],
                 _newsletterLocalizer.FormatAndRender("newBookVotedBodyMarkdown", 

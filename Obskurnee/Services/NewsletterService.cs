@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.ViewModels;
 using System;
@@ -12,7 +13,7 @@ namespace Obskurnee.Services
     {
         private readonly ILogger<NewsletterService> _logger;
         private readonly IMailerService _mailer;
-        private readonly Database _db;
+        private readonly ApplicationDbContext _db;
         private readonly UserService _userService;
         private readonly MatrixService _matrix;
 
@@ -21,7 +22,7 @@ namespace Obskurnee.Services
             IMailerService mailer,
             MatrixService matrix,
             UserService userService,
-            Database db)
+            ApplicationDbContext db)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
@@ -30,32 +31,39 @@ namespace Obskurnee.Services
             _matrix = matrix ?? throw new ArgumentNullException(nameof(matrix));
         }
 
-        public IList<string> Subscribe(string userId, string newsletterName)
+        public async Task<List<string>> Subscribe(string userId, string newsletterName)
         {
             _logger.LogInformation("Subscribing {userId} to {newsletter}", userId, newsletterName);
-            _db.NewsletterSubscriptions.Upsert(new NewsletterSubscription
+            var existing = _db.NewsletterSubscriptions
+                .FirstOrDefault(ns => ns.NewsletterName == newsletterName && ns.UserId == userId);
+            if (existing != null)
             {
-                NewsletterName = newsletterName,
-                UserId = userId,
-            });
-            return GetSubscriptions(userId);
+                await _db.NewsletterSubscriptions.AddAsync(new NewsletterSubscription
+                {
+                    NewsletterName = newsletterName,
+                    UserId = userId,
+                });
+                await _db.SaveChangesAsync();
+            }
+            return await GetSubscriptions(userId);
         }
 
-        public IList<string> Unsubscribe(string userId, string newsletterName)
+        public Task<List<string>> Unsubscribe(string userId, string newsletterName)
         {
             _logger.LogInformation("Unsubscribing {userId} from {newsletter}", userId, newsletterName);
-            _db.NewsletterSubscriptions.Delete(new NewsletterSubscription
+            var existing = _db.NewsletterSubscriptions
+                .FirstOrDefault(ns => ns.NewsletterName == newsletterName && ns.UserId == userId);
+            if (existing != null)
             {
-                NewsletterName = newsletterName,
-                UserId = userId,
-            }.NewsletterSubscriptionId);
+                _db.NewsletterSubscriptions.Remove(existing);
+            }
             return GetSubscriptions(userId);
         }
 
         public Dictionary<string, IEnumerable<UserInfo>> GetAllNewsletterSubscribers()
         {
             var result = new Dictionary<string, IEnumerable<UserInfo>>();
-            foreach (var newsletter in _db.NewsletterSubscriptions.FindAll()
+            foreach (var newsletter in _db.NewsletterSubscriptions
                                             .GroupBy(ns => ns.NewsletterName))
             {
                 var names = newsletter.Select(ns => _userService.GetUserById(ns.UserId)).ToArray();
@@ -65,9 +73,13 @@ namespace Obskurnee.Services
             return result;
         }
 
-        public void SendNewsletter(string newsletterName, string subject, string body, bool forwardSubjectToMatrix = true)
+        public async Task SendNewsletter(
+            string newsletterName,
+            string subject,
+            string body,
+            bool forwardSubjectToMatrix = true)
         {
-            var subscribers = GetSubscribers(newsletterName);
+            var subscribers = await GetSubscribers(newsletterName);
             _matrix.SendMessage(
                 (forwardSubjectToMatrix 
                 ? $"# {subject} \n".RenderMarkdown()
@@ -79,19 +91,19 @@ namespace Obskurnee.Services
                 return;
             }
             _logger.LogInformation("Sending newsletter {newsletter} with subject {subject} to {count} subscribers.", newsletterName, subject, subscribers.Count);
-            _mailer.SendMail(subject, body, subscribers.ToArray());
+            await _mailer.SendMail(subject, body, subscribers.ToArray());
         }
 
-        public IList<string> GetSubscriptions(string userId)
-            => (from ns in _db.NewsletterSubscriptions.Query()
+        public Task<List<string>> GetSubscriptions(string userId)
+            => (from ns in _db.NewsletterSubscriptions
                 where ns.UserId == userId
                 select ns.NewsletterName)
-                .ToList();
+                .ToListAsync();
 
-        public IList<string> GetSubscribers(string newsletterName)
-            => (from ns in _db.NewsletterSubscriptions.Query()
+        public Task<List<string>> GetSubscribers(string newsletterName)
+            => (from ns in _db.NewsletterSubscriptions
                 where ns.NewsletterName == newsletterName
                 select ns.NewsletterName)
-                .ToList();
+                .ToListAsync();
     }
 }

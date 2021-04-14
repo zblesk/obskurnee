@@ -15,7 +15,7 @@ namespace Obskurnee.Services
       //  public readonly ILiteCollection<Poll> Polls;
       //  public readonly ILiteCollection<Vote> Votes;
         public readonly ILiteCollection<BookclubReview> BookReviews;
-        public readonly ILiteCollection<NewsletterSubscription> NewsletterSubscriptions;
+        //public readonly ILiteCollection<NewsletterSubscription> NewsletterSubscriptions;
 
         public Database(
             Config config)
@@ -28,13 +28,13 @@ namespace Obskurnee.Services
        //     Polls = _db.GetCollection<Poll>("polls").Include(p => p.Options);
          //   Votes = _db.GetCollection<Vote>("votes");
              // Rounds = _db.GetCollection<Round>("rounds");
-            NewsletterSubscriptions = _db.GetCollection<NewsletterSubscription>("newslettersubscriptions");
+            //NewsletterSubscriptions = _db.GetCollection<NewsletterSubscription>("newslettersubscriptions");
             BookReviews = _db.GetCollection<BookclubReview>("bookclubreviews").Include(b => b.Book).Include(b => b.Book.Post);
 
     //        Posts.EnsureIndex(p => p.DiscussionId);
      //       Votes.EnsureIndex(v => v.PollId);
-            NewsletterSubscriptions.EnsureIndex(ns => ns.UserId);
-            NewsletterSubscriptions.EnsureIndex(ns => ns.NewsletterName);
+         //   NewsletterSubscriptions.EnsureIndex(ns => ns.UserId);
+        //    NewsletterSubscriptions.EnsureIndex(ns => ns.NewsletterName);
             BookReviews.EnsureIndex(br => br.OwnerId);
         }
 

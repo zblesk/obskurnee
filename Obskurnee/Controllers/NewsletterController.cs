@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Services;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Obskurnee.Controllers
 {
@@ -31,10 +33,14 @@ namespace Obskurnee.Controllers
 
         [HttpPost]
         [Route("{newsletterName}/subscribe")]
-        public JsonResult Subscribe(string newsletterName) => Json(_newsletter.Subscribe(User.GetUserId(), newsletterName));
+        public Task<List<string>> Subscribe(string newsletterName) 
+            => _newsletter.Subscribe(User.GetUserId(), newsletterName);
 
         [HttpPost]
         [Route("{newsletterName}/unsubscribe")]
-        public JsonResult Unsubscribe(string newsletterName) => Json(_newsletter.Unsubscribe(User.GetUserId(), newsletterName));
+        public Task<List<string>> Unsubscribe(string newsletterName) 
+            => _newsletter.Unsubscribe(
+                User.GetUserId(),
+                newsletterName);
     }
 }
