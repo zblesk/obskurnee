@@ -1,4 +1,4 @@
-﻿using LiteDB;
+﻿
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -30,7 +30,7 @@ namespace Obskurnee.Models
         public string Url { get; set; }
 
         [NotMapped]
-        [BsonIgnore] public string RenderedText { get => Text.RenderMarkdown(); }
+        public string RenderedText { get => Text.RenderMarkdown(); }
 
         public string ImageUrl { get; set; }
 

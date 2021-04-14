@@ -1,4 +1,4 @@
-﻿using LiteDB;
+﻿
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,11 +11,11 @@ namespace Obskurnee.Models
         [Key]
         public int BookId { get; set; }
         public int PostId { get; set; }
-        [BsonRef("posts")] public Post Post { get; set; }
+        public Post Post { get; set; }
 
         [ForeignKey("Round")]
         public int RoundId { get; set; }
-        [BsonRef("rounds")] public Round Round { get; set; }
+        public Round Round { get; set; }
         public int Order { get; set; }
         public int BookDiscussionId { get; set; }
         public Book BookDiscussion { get; set; }

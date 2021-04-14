@@ -1,4 +1,4 @@
-﻿using LiteDB;
+﻿
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,9 +18,9 @@ namespace Obskurnee.Models
         public bool IsClosed { get; set; }
         virtual public Topic Topic{ get; set; }
         [NotMapped] 
-        [BsonIgnore]
+       
         public string RenderedDescription { get => Description.RenderMarkdown(); }
-        [BsonRef("posts")] public List<Post> Posts { get; set; } = new List<Post>();
+        public List<Post> Posts { get; set; } = new List<Post>();
 
         public Discussion(string ownerId) : base(ownerId) { }
     }

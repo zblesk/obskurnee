@@ -1,4 +1,4 @@
-﻿using LiteDB;
+﻿
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,8 +13,11 @@ namespace Obskurnee.Models
         public enum LinkKind { Discussion, Book, Poll }
         public record FollowupReference(LinkKind kind, int entityId);
 
-        [Key] [BsonId] public int PollId { get; set; }
+        [Key]
+        public int PollId { get; set; }
+
         public int DiscussionId { get; set; }
+
         /// <summary>
         /// Only used if IsTiebreaker.
         /// </summary>
@@ -38,7 +41,7 @@ namespace Obskurnee.Models
         public int RoundId { get; set; }
         public Round Round { get; set; }
 
-        [BsonRef("posts")] public List<Post> Options { get; set; }
+        public List<Post> Options { get; set; }
         public string Title { get; set; }
         public bool IsClosed { get; set; }
         public Topic Topic { get; set; }

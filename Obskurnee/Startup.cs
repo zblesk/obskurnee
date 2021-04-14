@@ -63,9 +63,6 @@ namespace Obskurnee
 
             Configuration.Bind(Config.Current);
 
-            var databaseSingleton = new Database(Config.Current);
-
-            services.AddSingleton<Database>(databaseSingleton);
             services.AddSingleton(Config.Current);
             services.AddTransient<GoodreadsScraper>();
             services.AddTransient<PollService>();

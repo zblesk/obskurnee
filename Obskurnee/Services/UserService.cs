@@ -17,7 +17,6 @@ namespace Obskurnee.Services
     public class UserService
     {
         private readonly ILogger<UserService> _logger;
-        private readonly Database _db;
 
         private readonly SignInManager<Bookworm> _signInManager;
         private readonly UserManager<Bookworm> _userManager;
@@ -36,7 +35,6 @@ namespace Obskurnee.Services
         public UserService(
            UserManager<Bookworm> userManager,
            SignInManager<Bookworm> signInManager,
-           Database database,
            ILogger<UserService> logger,
            IMailerService mailer,
            IServiceProvider serviceProvider,
@@ -48,7 +46,6 @@ namespace Obskurnee.Services
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _db = database ?? throw new ArgumentNullException(nameof(database));
             _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _reviews = reviews ?? throw new ArgumentNullException(nameof(reviews));
@@ -113,7 +110,6 @@ namespace Obskurnee.Services
                 _logger.LogInformation("User created");
                 LoadUsernameCache();
                 await Newsletter.Subscribe(user.Id, Newsletters.BasicEvents);
-                _db.Flush();
                 return UserInfo.From(user);
             }
             return null;

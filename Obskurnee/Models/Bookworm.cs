@@ -1,4 +1,4 @@
-﻿using LiteDB;
+﻿
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -15,7 +15,7 @@ namespace Obskurnee.Models
                 : Regex.Match(GoodreadsProfileUrl, @"show/(\d+)").Groups[1].Value;
         }
         public string AboutMe { get; set; }
-        [BsonIgnore] public string RenderedAboutMe { get => AboutMe.RenderMarkdown(); }
+        public string RenderedAboutMe { get => AboutMe.RenderMarkdown(); }
         public ICollection<NewsletterSubscription> NewsletterSubscriptions { get; set; }
     }
 }

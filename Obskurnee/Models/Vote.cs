@@ -1,4 +1,4 @@
-﻿using LiteDB;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -13,7 +13,6 @@ namespace Obskurnee.Models
     public class Vote : HeaderData
     {
         [Key]
-        [BsonId]
         public string VoteId { get => $"{PollId}-{OwnerId}"; set { } }
 
         public int PollId { get; set; }

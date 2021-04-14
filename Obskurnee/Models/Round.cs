@@ -1,4 +1,4 @@
-﻿using LiteDB;
+﻿
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,8 +10,8 @@ namespace Obskurnee.Models
     [Table("Rounds")]
     public class Round : HeaderData
     {
-        [JsonPropertyName("id")]
-        [BsonId] [Key] public int RoundId { get; set; }
+        [Key] 
+        public int RoundId { get; set; }
         public Topic Kind { get; set; }
         public string Title { get; set; }
 
@@ -53,7 +53,7 @@ namespace Obskurnee.Models
 
         public int? BookId { get; set; }
 
-        [BsonIgnore] public Book Book { get; set; }
+        public Book Book { get; set; }
 
         [InverseProperty("Round")]
         [JsonIgnore]
