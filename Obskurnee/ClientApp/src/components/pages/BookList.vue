@@ -13,7 +13,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: var(--spacer);
-        padding: 0 var(--spacer);
+        padding: var(--spacer);
     }
 
 </style>
