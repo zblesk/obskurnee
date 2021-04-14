@@ -112,7 +112,7 @@ namespace Obskurnee.Services
             {
                 _logger.LogInformation("User created");
                 LoadUsernameCache();
-                Newsletter.Subscribe(user.Id, Newsletters.BasicEvents);
+                await Newsletter.Subscribe(user.Id, Newsletters.BasicEvents);
                 _db.Flush();
                 return UserInfo.From(user);
             }

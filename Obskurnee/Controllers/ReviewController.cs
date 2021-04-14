@@ -29,11 +29,13 @@ namespace Obskurnee.Controllers
 
         [HttpGet]
         [Route("book/{bookId:int}")]
-        public IEnumerable<BookclubReview> GetForBook(int bookId) => _reviews.GetBookReviews(bookId);
+        public Task<List<BookclubReview>> GetForBook(int bookId)
+            => _reviews.GetBookReviews(bookId);
         
         [HttpGet]
         [Route("user/{userId}")]
-        public IEnumerable<BookclubReview> GetForUser(string userId) => _reviews.GetUserReviews(userId);
+        public Task<List<BookclubReview>> GetForUser(string userId)
+            => _reviews.GetUserReviews(userId);
 
         [HttpPost]
         [Route("book/{bookId:int}")]

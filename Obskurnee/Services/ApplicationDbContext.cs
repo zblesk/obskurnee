@@ -28,7 +28,10 @@ namespace Obskurnee.Services
         public IIncludableQueryable<Poll, List<Post>> PollsWithData
             => Polls.Include(p => p.Options);
 
-        public IIncludableQueryable<Book, Round> BooksWithData 
+        public IIncludableQueryable<Book, Round> BooksWithData
             => Books.Include(b => b.Post).Include(b => b.Round);
+
+        public IIncludableQueryable<BookclubReview, Post> BookReviewsWithData
+            => BookReviews.Include(br => br.Book).ThenInclude(b => b.Post);
     }
 }

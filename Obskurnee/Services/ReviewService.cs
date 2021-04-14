@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.ViewModels;
 using System;
@@ -12,18 +13,15 @@ namespace Obskurnee.Services
     public class ReviewService
     {
         private readonly ILogger<ReviewService> _logger;
-        private readonly Database _db;
         private readonly GoodreadsScraper _scraper;
         private readonly ApplicationDbContext _db2;
 
         public ReviewService(
             ILogger<ReviewService> logger,
             GoodreadsScraper scraper,
-            Database db,
             ApplicationDbContext db2)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _db = db ?? throw new ArgumentNullException(nameof(db));
             _scraper = scraper ?? throw new ArgumentNullException(nameof(scraper));
             _db2 = db2 ?? throw new ArgumentNullException(nameof(db2));
         }
@@ -60,9 +58,11 @@ namespace Obskurnee.Services
             }
         }
 
-        public IEnumerable<BookclubReview> GetBookReviews(int bookId) => _db.BookReviews.Find(br => br.Book.BookId == bookId);
+        public Task<List<BookclubReview>> GetBookReviews(int bookId)
+            => _db2.BookReviewsWithData.Where(br => br.Book.BookId == bookId).ToListAsync();
 
-        public IEnumerable<BookclubReview> GetUserReviews(string userId) => _db.BookReviews.Find(br => br.OwnerId == userId);
+        public Task<List<BookclubReview>> GetUserReviews(string userId)
+            => _db2.BookReviewsWithData.Where(br => br.OwnerId == userId).ToListAsync();
 
         public async Task<BookclubReview> UpsertBookclubBookReview(
             int bookId,
