@@ -77,7 +77,7 @@ namespace Obskurnee
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("SqliteConnection")));
             
 
             switch (Configuration["MailerType"])

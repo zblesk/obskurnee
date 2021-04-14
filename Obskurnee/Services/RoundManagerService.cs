@@ -42,6 +42,7 @@ namespace Obskurnee.Services
         public async Task<IList<Round>> AllRounds()
             => await _db.Rounds
                         .Include(r => r.Book)
+                        .ThenInclude(b => b.Post)
                         .OrderByDescending(r => r.CreatedOn)
                         .ToListAsync();
 

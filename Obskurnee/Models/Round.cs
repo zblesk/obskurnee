@@ -17,36 +17,42 @@ namespace Obskurnee.Models
         [ForeignKey(nameof(ThemeDiscussion))]
         public int? ThemeDiscussionId { get; set; }
 
+        [JsonIgnore]
         [ForeignKey(nameof(ThemeDiscussionId))]
         public Discussion ThemeDiscussion { get; set; }
 
         [ForeignKey(nameof(ThemePoll))]
         public int? ThemePollId { get; set; }
 
+        [JsonIgnore]
         [ForeignKey(nameof(ThemePollId))]
         public Poll ThemePoll { get; set; }
 
         [ForeignKey(nameof(ThemeTiebreakerPoll))]
         public int? ThemeTiebreakerPollId { get; set; }
 
+        [JsonIgnore]
         [ForeignKey(nameof(ThemeTiebreakerPollId))]
         public Poll ThemeTiebreakerPoll { get; set; }
 
         [ForeignKey(nameof(BookDiscussion))]
         public int? BookDiscussionId { get; set; }
 
+        [JsonIgnore]
         [ForeignKey(nameof(BookDiscussionId))]
         public Discussion BookDiscussion { get; set; }
 
         [ForeignKey(nameof(BookPoll))]
         public int? BookPollId { get; set; }
 
+        [JsonIgnore]
         [ForeignKey(nameof(BookPollId))]
         public Poll BookPoll { get; set; }
 
         [ForeignKey(nameof(BookTiebreakerPoll))]
         public int? BookTiebreakerPollId { get; set; }
 
+        [JsonIgnore]
         [ForeignKey(nameof(BookTiebreakerPollId))]
         public Poll BookTiebreakerPoll { get; set; }
 

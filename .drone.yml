@@ -25,6 +25,6 @@ steps:
     password:
       from_secret: matrix_password
 
-# trigger:
-#   branch:
-#   - master
+trigger:
+   branch:
+   - master

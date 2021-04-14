@@ -16,12 +16,12 @@ namespace Obskurnee.Models
         [Key]
         public int PollId { get; set; }
 
-        public int DiscussionId { get; set; }
+        public int? DiscussionId { get; set; }
 
         /// <summary>
         /// Only used if IsTiebreaker.
         /// </summary>
-        public int PreviousPollId { get; set; }
+        public int? PreviousPollId { get; set; }
         
         [NotMapped]
         public FollowupReference FollowupLink
@@ -38,7 +38,9 @@ namespace Obskurnee.Models
         [JsonIgnore]
         public string FollowupLinkSerialized { get; set; }
 
-        public int RoundId { get; set; }
+        public int? RoundId { get; set; }
+        
+        [JsonIgnore]
         public Round Round { get; set; }
 
         public List<Post> Options { get; set; }
