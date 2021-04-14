@@ -80,7 +80,7 @@ namespace Obskurnee.Services
             }
             _db.Rounds.Update(round);
             await _db.SaveChangesAsync();
-            SendNewDiscussionNotification(discussion);
+            await SendNewDiscussionNotification(discussion);
             return round;
         }
 

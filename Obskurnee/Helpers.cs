@@ -1,12 +1,13 @@
 ﻿using Markdig;
 using Microsoft.Extensions.Localization;
+using Newtonsoft.Json;
 using Obskurnee.Models;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Json;
+
 
 namespace Obskurnee
 {
@@ -37,9 +38,6 @@ namespace Obskurnee
         public static string FormatAndRender(this IStringLocalizer localizer, string name, params object[] args)
             => localizer.Format(name, args)
                 .RenderMarkdown();
-
-        public static Dictionary<string, dynamic> ToWritableDictionary(this object dict)
-            => JsonSerializer.Deserialize<Dictionary<string, dynamic>>(JsonSerializer.Serialize(dict));
 
         public static string RemoveDiacritics(this string text)
         {

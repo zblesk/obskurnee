@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 using Obskurnee.Models;
 using Obskurnee.Services;
 using Obskurnee.ViewModels;
 using System.Linq;
-using System.Text.Json;
+
 using System.Threading.Tasks;
 using System.Web;
 
@@ -65,12 +66,12 @@ namespace Obskurnee.Controllers
 
         [HttpPost("passwordreset/token/{userId}")]
         [AllowAnonymous]
-        public async Task<IActionResult> ResetPassword(string userId, [FromBody] JsonElement payload)
+        public async Task<IActionResult> ResetPassword(string userId, [FromBody] JObject payload)
         {
             var result = await _users.ResetPassword(
                 HttpUtility.UrlDecode(userId),
-                payload.GetProperty("resetToken").GetString(),
-                payload.GetProperty("password").GetString());
+                payload["resetToken"].ToString(),
+                payload["password"].ToString());
             if (!result.Succeeded)
             {
                 return StatusCode(403, result.Errors.Aggregate("", (a, e) => $"{a}{e.Description} "));

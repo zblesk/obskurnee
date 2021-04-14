@@ -4,11 +4,12 @@ using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.Services;
 using System.Collections.Generic;
-using System.Text.Json;
+
 using System.Threading.Tasks;
 using Flurl.Http;
 using System;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace Obskurnee.Controllers
 {
@@ -47,23 +48,18 @@ namespace Obskurnee.Controllers
 
         [HttpPost]
         [Route("noticeboard")]
-        public IActionResult UpdateNoticeboard([FromBody] JsonElement payload)
+        public IActionResult UpdateNoticeboard([FromBody] JObject payload)
         {
             _logger.LogInformation("Updating noticeboard");
-            _settings.UpsertSetting(Setting.Keys.ModNoticeboard, payload.GetProperty("text").GetString());
+            _settings.UpsertSetting(Setting.Keys.ModNoticeboard, payload["text"].ToString());
             return Ok();
         }
 
         [HttpPost]
-        [Route("mailconfig")]
-        [Authorize(Policy = "AdminOnly")]
-        public IActionResult UpdateMailConfig([FromBody] JsonElement mailConfig) => Ok();
-
-        [HttpPost]
         [Route("createuser")]
-        public async Task<IActionResult> CreateUser([FromBody] JsonElement payload)
+        public async Task<IActionResult> CreateUser([FromBody] JObject payload)
         {
-            var email = payload.GetProperty("email").GetString();
+            var email = payload["email"].ToString();
             _logger.LogInformation("Adding user {email}", email);
             var password = Enumerable.Range(1, _config.DefaultPasswordMinLength)
                 .Aggregate(
