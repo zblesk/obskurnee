@@ -8,7 +8,7 @@
       <img :src="newpost.imageUrl" v-if="newpost.imageUrl" :alt="newpost.title" />
     </div>
     <div class="form-text">
-      <div v-if="mode != 'Themes'" class="form-field">
+      <div v-if="mode != 'Themes'" class="form-field u-mb">
         <label for="grlink">Odkaz na Goodreads</label>
         <div class="note">
           <div class="note-pic">
@@ -22,21 +22,21 @@
       <div class="cover-mobile">
         <img :src="newpost.imageUrl" v-if="newpost.imageUrl" :alt="newpost.title" />
       </div>
-      <div class="form-field">
-        <label for="name" v-if="mode == 'Books' || mode == 'Recommendations'">Název knihy</label>
+      <div class="form-field u-mb">
+        <label for="name" v-if="mode == 'Books' || mode == 'Recommendations'">Název knihy*</label>
         <label for="name" v-if="mode == 'Themes'">Název tématu</label>
         <input v-model="newpost.title" id="name" required />
       </div>
-      <div class="form-field" v-if="mode != 'Themes'">
-        <label for="author">Jméno autora</label>
-        <input v-model="newpost.author" id="autor" />
+      <div class="form-field u-mb" v-if="mode != 'Themes'">
+        <label for="author">Jméno autora*</label>
+        <input v-model="newpost.author" id="autor" required />
       </div>
-      <div class="form-field" v-if="mode != 'Themes'">
-        <label for="pages">Počet stran</label>
-        <input v-model="newpost.pageCount" id="pages" />
+      <div class="form-field u-mb" v-if="mode != 'Themes'">
+        <label for="pages">Počet stran*</label>
+        <input type="number" v-model="newpost.pageCount" id="pages" required />
       </div>
       <div class="form-field">
-        <label for="text">Komentár k návrhu (podporuje markdown)</label>
+        <label for="text">Komentár k návrhu (podporuje markdown)*</label>
         <textarea v-model="newpost.text" id="text" required placeholder="Markdown umoznuje jednoduche formatovanie textu. Medzi zaklady patri napriklad: 
 
   # Najvacsi nadpis
@@ -58,6 +58,7 @@
 
   Mozes lahko pridat aj [link](https://google.sk)"></textarea>
       </div>
+      <p class="asterisk u-mb">Pole označená * jsou povinná.</p>
       <div class="buttons">
         <button @click="addPost" class="button-primary">Přidat</button>
         <button @click="toggleVisibility" class="button-secondary hide-form">Schovat formulář</button>
@@ -150,7 +151,13 @@
     margin: 0 0 0 calc(var(--spacer) / 2);
   }
 
-  .form-field {
+  .asterisk {
+    font-size: 0.875em;
+    opacity: 0.8;
+    margin-top: calc(var(--spacer) /2);
+  }
+
+  .u-mb {
     margin-bottom: var(--spacer);
   }
 
