@@ -59,7 +59,7 @@ namespace Obskurnee.Services
                 _logger.LogInformation("Starting RSS fetch");
                 foreach (var user in userService.GetAllUsersAsBookworm())
                 {
-                    reviews.FetchReviewUpdates(user);
+                    reviews.FetchReviewUpdates(user).Wait();
                 }
             }
             finally

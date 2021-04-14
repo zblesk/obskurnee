@@ -110,10 +110,9 @@ namespace Obskurnee
                     options.SupportedCultures = supportedCultures;
                     options.SupportedUICultures = supportedCultures;
 
-                    options.AddInitialRequestCultureProvider(new CustomRequestCultureProvider(async context =>
-                    {
-                        return new ProviderCultureResult(Config.Current.GlobalCulture);
-                    }));
+                    options.AddInitialRequestCultureProvider(
+                        new CustomRequestCultureProvider(
+                            _ => Task.FromResult(new ProviderCultureResult(Config.Current.GlobalCulture))));
                 });
 
             ConfigureAuthAndIdentity(services);
