@@ -9,29 +9,29 @@
         <div class="navigation-wrapper">
             <nav class="navigation">
                 <div class="navigation-visible">
-                    <div class="navigation-home">
-                        <router-link :to="{ name: 'home' }">Domov</router-link>
-                    </div>
+                    <router-link :to="{ name: 'home' }">
+                        <div class="navigation-home">Domov</div>
+                    </router-link>
                     <button type="button" class="navigation-toggler" @click="toggle">
                         <img src="../assets/menu.svg" alt="menu icon">
                     </button>
                 </div>
                 <div class="navigation-toggled" v-bind:class="{show: isExpanded}">
-                    <div class="navigation-item" v-if="isMod">
-                        <router-link :to="{ name: 'admin' }">Admin</router-link>
-                    </div>
-                    <div class="navigation-item" v-if="isAuthenticated">
-                        <router-link :to="{ name: 'booklist' }">Knihy</router-link>
-                    </div>
-                    <div class="navigation-item" v-if="isAuthenticated">
-                        <router-link :to="{ name: 'roundlist' }">Návrhy</router-link>
-                    </div>
-                    <div class="navigation-item" v-if="isAuthenticated">
-                        <router-link :to="{ name: 'recommendationlist' }">Odporúčania</router-link>
-                    </div>
-                    <div class="navigation-item" v-if="isAuthenticated">
-                        <router-link :to="{ name: 'userlist' }">My</router-link>
-                    </div>
+                    <router-link :to="{ name: 'admin' }">
+                        <div class="navigation-item" v-if="isMod">Admin</div>
+                    </router-link>
+                    <router-link :to="{ name: 'booklist' }">
+                        <div class="navigation-item" v-if="isAuthenticated">Knihy</div>
+                    </router-link>
+                    <router-link :to="{ name: 'roundlist' }">
+                        <div class="navigation-item" v-if="isAuthenticated">Návrhy</div>
+                    </router-link>
+                    <router-link :to="{ name: 'recommendationlist' }">
+                        <div class="navigation-item" v-if="isAuthenticated">Odporúčania</div>
+                    </router-link>
+                    <router-link :to="{ name: 'userlist' }">
+                        <div class="navigation-item" v-if="isAuthenticated">My</div>
+                    </router-link>
                     <div class="navigation-login">
                         <login-control></login-control>
                     </div>
@@ -130,6 +130,11 @@
         justify-content: space-between;
     }
 
+    .navigation-visible a {
+        flex-grow: 1;
+        flex-basis: 100%;
+    }
+
     .navigation-toggler {
         width: 40px;
         padding: 10px;
@@ -145,7 +150,6 @@
     }
 
     .navigation-home {
-        flex-grow: 1;
         font-weight: bold;
     }
 
@@ -154,22 +158,18 @@
         height: 40px;
         line-height: 40px;
         padding-left: var(--spacer);
+        font-size: 1.2em;
+        color: var(--c-font);
     }
 
     .navigation-item:hover,
     .navigation-home:hover {
         background-color: var(--c-accent);
-    }
-
-    .navigation-item:hover a,
-    .navigation-home:hover a {
         color: var(--c-font-rev);
     }
 
-    .navigation-item a,
-    .navigation-home a {
-        font-size: 1.2em;
-        color: var(--c-font);
+    .navigation-visible a,
+    .navigation-toggled a {
         text-decoration: none;
     }
 

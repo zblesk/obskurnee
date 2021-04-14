@@ -16,14 +16,14 @@
         <div class="buttons">
           <button class="button-primary button-login" type="submit">Přihlásit</button>
           <button class="button-secondary button-reset" @click="goToReset">Zabudnuté heslo</button>
-          <button class="button-secondary button-logout" type="reset">Zrušit</button>
+          <button class="button-secondary button-cancel" type="reset">Zrušit</button>
         </div>
       </form>
     </div>
     <div v-if="isAuthenticated" class="is-auth">
-      <div class="menu-item">
-        <router-link :to="{ name: 'user', params: { email: profile.email } }">Ja</router-link>
-      </div>
+      <router-link :to="{ name: 'user', params: { email: profile.email } }">
+        <div class="menu-item">Ja</div>
+      </router-link>
       <div class="menu-logout">
         <button class="button-secondary button-logout" @click="onLogout">Odhlásit</button>
       </div>
@@ -39,19 +39,16 @@
     height: 40px;
     line-height: 40px;
     padding-left: var(--spacer);
+    font-size: 1.2em;
+    color: var(--c-font);
   }
 
   .menu-item:hover {
     background-color: var(--c-accent);
-  }
-
-  .menu-item:hover a {
     color: var(--c-font-rev);
   }
 
-  .menu-item a {
-    font-size: 1.2em;
-    color: var(--c-font);
+  .is-auth a {
     text-decoration: none;
   }
 
@@ -64,6 +61,14 @@
   .button-login,
   .button-reset {
     margin-bottom: var(--spacer);
+  }
+
+  .button-show,
+  .button-login,
+  .button-reset,
+  .button-cancel,
+  .button-logout {
+    font-size: 16px;
   }
 
   .login-form {
