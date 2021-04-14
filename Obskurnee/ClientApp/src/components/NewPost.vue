@@ -24,7 +24,7 @@
       </div>
       <div class="form-field u-mb">
         <label for="name" v-if="mode == 'Books' || mode == 'Recommendations'">Název knihy*</label>
-        <label for="name" v-if="mode == 'Themes'">Název tématu</label>
+        <label for="name" v-if="mode == 'Themes'">Název tématu*</label>
         <input v-model="newpost.title" id="name" required />
       </div>
       <div class="form-field u-mb" v-if="mode != 'Themes'">
