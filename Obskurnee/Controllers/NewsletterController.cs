@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Services;
+using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,10 +27,12 @@ namespace Obskurnee.Controllers
         [HttpGet]
         [Authorize(Policy = "ModOnly")]
         [Route("all")]
-        public JsonResult GetAllSubscriptionInfo() => Json(_newsletter.GetAllNewsletterSubscribers());
+        public Task<GroupedNewsletterSubscribers> GetAllSubscriptionInfo() 
+            => _newsletter.GetAllNewsletterSubscribers();
 
         [HttpGet]
-        public JsonResult GetSubscribtions() => Json(_newsletter.GetSubscriptions(User.GetUserId()));
+        public Task<List<string>> GetSubscribtions() 
+            => _newsletter.GetSubscriptions(User.GetUserId());
 
         [HttpPost]
         [Route("{newsletterName}/subscribe")]

@@ -36,7 +36,7 @@ namespace Obskurnee.Services
             _logger.LogInformation("Subscribing {userId} to {newsletter}", userId, newsletterName);
             var existing = _db.NewsletterSubscriptions
                 .FirstOrDefault(ns => ns.NewsletterName == newsletterName && ns.UserId == userId);
-            if (existing != null)
+            if (existing == null)
             {
                 await _db.NewsletterSubscriptions.AddAsync(new NewsletterSubscription
                 {
@@ -48,7 +48,7 @@ namespace Obskurnee.Services
             return await GetSubscriptions(userId);
         }
 
-        public Task<List<string>> Unsubscribe(string userId, string newsletterName)
+        public async Task<List<string>> Unsubscribe(string userId, string newsletterName)
         {
             _logger.LogInformation("Unsubscribing {userId} from {newsletter}", userId, newsletterName);
             var existing = _db.NewsletterSubscriptions
@@ -56,15 +56,17 @@ namespace Obskurnee.Services
             if (existing != null)
             {
                 _db.NewsletterSubscriptions.Remove(existing);
+                await _db.SaveChangesAsync();
             }
-            return GetSubscriptions(userId);
+            return await GetSubscriptions(userId);
         }
 
-        public Dictionary<string, IEnumerable<UserInfo>> GetAllNewsletterSubscribers()
+        public async Task<GroupedNewsletterSubscribers> GetAllNewsletterSubscribers()
         {
-            var result = new Dictionary<string, IEnumerable<UserInfo>>();
-            foreach (var newsletter in _db.NewsletterSubscriptions
-                                            .GroupBy(ns => ns.NewsletterName))
+            var result = new GroupedNewsletterSubscribers();
+            foreach (var newsletter in (await _db.NewsletterSubscriptions
+                                                .ToListAsync())
+                                                .GroupBy(ns => ns.NewsletterName))
             {
                 var names = newsletter.Select(ns => _userService.GetUserById(ns.UserId)).ToArray();
                 Task.WaitAll(names);
