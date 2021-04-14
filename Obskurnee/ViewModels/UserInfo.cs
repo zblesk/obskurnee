@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Linq;
-using System.Dynamic;
 
 namespace Obskurnee.ViewModels
 {

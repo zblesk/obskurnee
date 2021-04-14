@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
-using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static Obskurnee.Models.GoodreadsReview.ReviewKind; 
+using static Obskurnee.Models.GoodreadsReview.ReviewKind;
 
 namespace Obskurnee.Services
 {

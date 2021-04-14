@@ -44,8 +44,8 @@ namespace Obskurnee.Services
                 BookDiscussionId = poll.DiscussionId,
                 BookPollId = poll.PollId,
                 Order = previousBookNo + 1,
-                Round = new Round(null) { RoundId = roundId },
-                Post = new Post(null) { PostId = poll.Results.WinnerPostId },
+                RoundId = roundId ,
+                PostId = poll.Results.WinnerPostId,
             };
             await _db.Books.AddAsync(book);
             await _db.SaveChangesAsync();

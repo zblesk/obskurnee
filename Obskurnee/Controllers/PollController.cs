@@ -6,9 +6,6 @@ using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
-using System.Diagnostics;
-using Microsoft.Extensions.Localization;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Obskurnee.Controllers

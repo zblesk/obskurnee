@@ -3,7 +3,6 @@ using Obskurnee.Models;
 using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
-using Flurl.Util;
 using Microsoft.Extensions.Configuration;
 using System;
 
