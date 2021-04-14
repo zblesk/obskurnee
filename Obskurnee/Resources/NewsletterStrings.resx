@@ -165,14 +165,16 @@ _{3} strán | [link na GR]({4:url})_
     <value>{0:name} odporučila knihu</value>
   </data>
   <data name="newReviewBodyMarkdown" xml:space="preserve">
-    <value>Hodnotenie: **{1}**
+    <value>_{3:name}:_
+
+{1}
 
 &gt; {2:text}
 
 [link]({0:link})</value>
   </data>
   <data name="newReviewSubject" xml:space="preserve">
-    <value>Nová recenzia</value>
+    <value>Nová recenzia na {0:title}</value>
   </data>
   <data name="newRoundBodyMarkdown" xml:space="preserve">
     <value>Pridaj svoje návrhy! **Nemáme obmedzenia na počty - čím viac, tým väčšia sranda!**  
