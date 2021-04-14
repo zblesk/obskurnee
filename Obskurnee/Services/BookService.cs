@@ -47,6 +47,8 @@ namespace Obskurnee.Services
                 RoundId = roundId ,
                 PostId = poll.Results.WinnerPostId,
             };
+            await _db.SaveChangesAsync();
+
             await _db.Books.AddAsync(book);
             await _db.SaveChangesAsync();
             _logger.LogInformation("Book #{bookNo} created - ID {bookId}",
