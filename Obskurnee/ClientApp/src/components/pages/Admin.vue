@@ -10,7 +10,17 @@
         <div class="section">
             <h2 class="section-title">Oznámení na hlavní stránce</h2>
             <div class="form-field">
-                <label for="notice">Text oznámení</label>
+                <div class="label-md-wrapper">
+                    <label for="notice">Text oznámení</label>
+                    <div class="mo-md">
+                        <div class="mo-md-pic">
+                            <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
+                        </div>
+                        <div class="mo-md-link">
+                            <a href="https://www.markdownguide.org/cheat-sheet/">Pomoc s Markdownom</a>
+                        </div>
+                    </div>
+                </div>
                 <textarea v-model="notice" id="notice"></textarea>
             </div>
             <button @click="updateNoticeboard()" class="button-primary">Uložit</button>

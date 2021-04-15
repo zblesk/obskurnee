@@ -36,7 +36,18 @@
         <input type="number" v-model="newpost.pageCount" id="pages" required />
       </div>
       <div class="form-field u-mb-not">
-        <label for="text">Komentár k návrhu (podporuje markdown)*</label>
+        
+        <div class="label-md-wrapper">
+          <label for="text">Komentár k návrhu*</label>
+          <div class="mo-md">
+            <div class="mo-md-pic">
+              <img src="../assets/Markdown-mark.svg" alt="markdown logo">
+            </div>
+            <div class="mo-md-link">
+              <a href="https://www.markdownguide.org/cheat-sheet/">Pomoc s Markdownom</a>
+            </div>
+          </div>
+        </div>
         <textarea v-model="newpost.text" id="text" required placeholder="Markdown umoznuje jednoduche formatovanie textu. Medzi zaklady patri napriklad: 
 
   # Najvacsi nadpis

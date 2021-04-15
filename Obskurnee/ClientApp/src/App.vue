@@ -225,6 +225,52 @@ body {
   height: 15em;
 }
 
+/* label with markdown help */
+.label-md-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: calc(var(--spacer) / 3);
+}
+
+@media screen and (min-width: 576px) {
+  .label-md-wrapper {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .label-md-wrapper .label-md {
+    margin-bottom: 0;
+  }
+
+  .label-md-wrapper .mo-md {
+    margin-bottom: 0;
+  }
+}
+
+.mo-md {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin-bottom: calc(var(--spacer) / 2);
+}
+
+.mo-md-pic {
+  width: 26px;
+  flex-shrink: 0;
+}
+
+.mo-md-pic img {
+  width: 100%;
+  display: block;
+}
+
+.mo-md-link {
+  font-size: 0.875em;
+  margin: 0 0 0 calc(var(--spacer) / 2);
+  text-decoration: underline;
+  font-weight: normal;
+}
+
 /* Cards */
 /* Used in: bookPost, recommendationCard, booksReviewCard, userReviewCard */
 .book {

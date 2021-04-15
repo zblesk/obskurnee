@@ -11,7 +11,17 @@
       <input type="number" min="1" max="5" v-model="newReviewData.rating" id="review-stars" required />
     </div>
     <div class="form-field" v-if="!hideForm">
-      <label for="review-text">Text review (podporuje markdown)</label>
+      <div class="label-md-wrapper">
+        <label for="review-text">Text review</label>
+        <div class="mo-md">
+          <div class="mo-md-pic">
+            <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
+          </div>
+          <div class="mo-md-link">
+            <a href="https://www.markdownguide.org/cheat-sheet/">Pomoc s Markdownom</a>
+          </div>
+        </div>
+      </div>
       <textarea id="review-text" v-model="newReviewData.reviewText" required />
     </div>
     <div class="buttons" v-if="hideForm">

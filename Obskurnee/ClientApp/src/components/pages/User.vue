@@ -23,13 +23,13 @@
           <input type="url" id="usergr" v-model="editingUser.goodreadsUrl" />
         </div>
         <div class="form-field">
-          <div class="label-wrapper">
-            <label for="userbio" class="label-userbio">O mne:</label>
-            <div class="mo mo-markdown">
-              <div class="mo-pic">
+          <div class="label-md-wrapper">
+            <label for="userbio" class="label-md">O mne:</label>
+            <div class="mo-md">
+              <div class="mo-md-pic">
                 <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
               </div>
-              <div class="mo-markdown-link">
+              <div class="mo-md-link">
                 <a href="https://www.markdownguide.org/cheat-sheet/">Pomoc s Markdownom</a>
               </div>
             </div>
@@ -288,26 +288,6 @@ export default {
     padding: calc(0.5 * var(--spacer)) 0;
   }
 
-  .form-field textarea {
-    margin-top: calc(var(--spacer) / 2);
-  }
-
-  .label-wrapper {
-    display: flex;
-    flex-direction: column;
-  }
-
-  @media screen and (min-width: 576px) {
-    .label-wrapper {
-      flex-direction: row;
-      justify-content: space-between;
-    }
-
-    .label-userbio {
-      margin-bottom: 0;
-    }
-  }
-
   .button-cancel {
     margin-top: var(--spacer);
   }
@@ -344,19 +324,13 @@ export default {
     vertical-align: bottom;
   }
 
-  .mo-text,
-  .mo-markdown-link {
+  .mo-text {
     margin: 0 0 0 calc(var(--spacer) / 2);
   }
 
   .mo-text a {
     text-decoration: none;
     font-weight: bold;
-  }
-
-  .mo-markdown a {
-    text-decoration: underline;
-    font-weight: normal;
   }
 
   @media screen and (min-width: 768px) {
