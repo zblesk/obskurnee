@@ -144,7 +144,8 @@
     </div>
     <p v-else class="recs-message">Zatiaľ tu nemáme žiadne odporúčania. <span v-if="user && isMe(user.userId)">Čo tak <router-link :to="{ name: 'recommendationlist' }">nejaké pridať?</router-link></span></p>
 
-    <div v-if="userReviews(user.userId)">
+    <h2 v-if="userReviews(user.userId)" class="page-subtitle u-mt">Knihy, které {{ user.name }} hodnotila</h2>
+    <div v-if="userReviews(user.userId)" class="grid">
       <users-review-card v-for="rev in userReviews(user.userId)" v-bind:key="rev.reviewId" v-bind:review="rev" ></users-review-card>
     </div>
   </div>
@@ -461,6 +462,10 @@ export default {
     text-align: center;
     margin-top: calc(var(--spacer) * 2);
     margin-bottom: var(--spacer) * 2;
+  }
+
+  .u-mt {
+    margin-top: var(--spacer);
   }
 
   .recs-message {
