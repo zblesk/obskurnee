@@ -53,7 +53,7 @@
         </li>
       </ol>
 
-      <div class="buttons">
+      <div class="buttons buttons-poll">
         <button @click="vote" :disabled="!checkedOptions?.length" class="button-primary" v-if="!iVoted && !poll.isClosed">Hlasovat</button>
         <button v-if="isMod && !poll.isClosed" @click="doClosePoll" class="button-secondary poll-to-close">Zavřít hlasování hned</button>
       </div>
@@ -218,7 +218,7 @@ export default {
     }
   }
 
-  .note.note-poll {
+  .note.note--poll {
     display: none;
   }
 
@@ -272,6 +272,12 @@ export default {
 
   .checkbox:checked+label>.label-title {
     font-weight: bold;
+  }
+
+  @media screen and (min-width: 576px) {
+    .buttons.buttons-poll {
+      justify-content: flex-start;
+    }
   }
 
   /* tiebreaker */
