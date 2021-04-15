@@ -3,7 +3,7 @@
   <h1 id="tableLabel" class="page-title">
     {{ poll.title }}<span class="poll-closed" v-if="poll.isClosed">&nbsp;Uzavreté</span>
   </h1>
- <div v-if="poll.isClosed" class="winner"> 
+  <div v-if="poll.isClosed" class="main"> 
     <div v-if="poll.followupLink?.kind == 'Poll'">
       <h2 class="winner-title">Rozstrel</h2>
       <p class="tiebreaker-text">Máme několik vítězů se stejným počtem hlasů:</p>
@@ -27,7 +27,7 @@
   </div>
 
   <div class="page-wrapper flex">
-    <div class="page flex">
+    <div class="main flex">
 
       <div v-if="!poll.isClosed && poll.results && poll.results.alreadyVoted" class="u-md">
        <h2 class="subtitle">Stav hlasování</h2>
@@ -216,22 +216,6 @@ export default {
   }
 
   /* layout */
-
-  .page,
-  .winner {
-    max-width: 800px;
-    background-color: var(--c-bckgr-primary);
-    margin: var(--spacer);
-    padding: calc(2* var(--spacer));
-  }
-
-  @media screen and (min-width: 840px) {
-    .page,
-    .winner {
-      margin: var(--spacer) auto;
-    }
-  }
-
   .book-post-wrapper {
     max-width: 800px;
     margin: var(--spacer);
@@ -262,7 +246,7 @@ export default {
       display: flex;
     }
 
-    .page.flex {
+    .main.flex {
       flex: 1 1 50%;
       margin-left: var(--spacer);
     }

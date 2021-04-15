@@ -141,19 +141,6 @@ export default {
 </script>
 
 <style scoped>
-    .main {
-        padding: var(--spacer);
-        background-color: var(--c-bckgr-primary);
-        max-width: 800px;
-        margin: 0 var(--spacer) calc(var(--spacer) * 2) var(--spacer);
-    }
-
-    @media screen and (min-width: 840px) {
-        .main {
-            margin: 0 auto var(--spacer) auto;
-        }
-    }
-
     .not-mod-text {
         font-size: 1.2em;
         font-weight: normal;
@@ -170,7 +157,7 @@ export default {
         width: 100%;
     }
 
-    .section {
+    .section:not(:last-child) {
         margin-bottom: calc(2* var(--spacer));
     }
 

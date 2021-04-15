@@ -9,7 +9,7 @@
     </div>
 
     <div v-if="mode == 'edit'">
-      <div class="profile">
+      <div class="main">
         <div class="form-field">
           <label for="username" class="label">Jméno (povinné):</label>
           <input type="text" class="input" id="username" required v-model="editingUser.name" />
@@ -67,7 +67,7 @@
     </div>
 
     <div v-if="mode != 'edit'">
-      <div class="profile">
+      <div class="main">
         <p v-if="user.aboutMeHtml" class="bio" v-html="user.aboutMeHtml"></p>
         <p v-else class="bio"><em>Zatiaľ nám o sebe nič nepovedala.</em></p>
 
@@ -282,20 +282,6 @@ export default {
     font-size: 2em;
     font-weight: bold;
     margin-bottom: 0;
-  }
-
-  .profile {
-    max-width: 800px;
-    background-color: var(--c-bckgr-primary);
-    margin: var(--spacer);
-    padding: calc(2* var(--spacer));
-    text-align: left;
-  }
-
-  @media screen and (min-width: 840px) {
-    .profile {
-      margin: var(--spacer) auto;
-    }
   }
 
   .profile-row {

@@ -3,7 +3,7 @@
 <h1 id="tableLabel" class="page-title">Kolá návrhov</h1>
 <button v-if="isMod && hide" class="button-primary new-round" @click="toggleVisibility">Založit nové kolo</button>
 
-<div v-if="isMod && !hide" class="page">
+<div v-if="isMod && !hide" class="main">
     <h2 class="form-heading">Založení nového kola</h2>
     <div class="form-field form-flex">
         <span>Začít s </span>
@@ -124,19 +124,6 @@ export default {
 
 <style scoped>
     /* Form */
-    .page {
-        max-width: 800px;
-        background-color: var(--c-bckgr-primary);
-        margin: var(--spacer);
-        padding: calc(2* var(--spacer));
-    }
-
-    @media screen and (min-width: 840px) {
-        .page {
-            margin: var(--spacer) auto;
-        }
-    }
-
     .new-round {
         display: block;
         margin: 0 auto;

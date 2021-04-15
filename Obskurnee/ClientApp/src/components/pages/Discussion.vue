@@ -1,7 +1,7 @@
 <template>
 <div>
   <h1 id="tableLabel" class="page-title">{{ discussion.title }}<span class="disc-closed" v-if="discussion.isClosed">&nbsp;Uzavreté</span></h1>
-  <div class="page">
+  <div class="main">
     <p v-html="discussion.renderedDescription" class="disc-desc"></p>
     <div class="form" v-if="!discussion.isClosed">
       <new-post :mode="discussion.topic" @new-post="onNewPost"></new-post>
@@ -88,20 +88,6 @@ export default {
     margin-bottom: var(--spacer);
   }
 
-  .page {
-    max-width: 800px;
-    background-color: var(--c-bckgr-primary);
-    margin: var(--spacer);
-    padding: calc(2* var(--spacer));
-  }
-
-  @media screen and (min-width: 840px) {
-    .page {
-      margin: var(--spacer) auto;
-    }
-  }
-
-
   .form {
     margin-bottom: var(--spacer);
   }
@@ -131,17 +117,5 @@ export default {
       width: auto;
     }
   }
-/*
-  @media screen and (min-width: 755px) {
-    .page {
-      position: relative;
-    }
 
-    .button-close {
-      position: absolute;
-      right: 42px;
-      bottom: 60px;
-    }
-  }
-*/
 </style>

@@ -89,6 +89,24 @@ body {
   margin-bottom: var(--spacer);
 }
 
+/* centre piece of pages */
+/* used in: admin, discussion, passwordReset, poll, recommendationList, roundList, setup, user */
+
+.main {
+  max-width: 800px;
+  background-color: var(--c-bckgr-primary);
+  margin: var(--spacer);
+  padding: calc(2* var(--spacer));
+  text-align: left;
+}
+
+@media screen and (min-width: 840px) {
+  .main {
+    margin: var(--spacer) auto;
+  }
+}
+
+/* buttons */
 .button-primary,
 .button-secondary {
   border-radius: 4px;
@@ -128,6 +146,8 @@ body {
   text-decoration: none;
   background-color: var(--c-accent-secondary);
 }
+
+/* forms */
 
 textarea,
 input {

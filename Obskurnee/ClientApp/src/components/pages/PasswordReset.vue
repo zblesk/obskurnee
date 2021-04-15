@@ -1,7 +1,7 @@
 <template>
 <section>
     <h1 class="page-title">Změna hesla</h1>
-    <div class="page">
+    <div class="main">
         <div v-if="$route.params.token">
             <div class="form-field">
                 <label for="passwordInput" class="label">Heslo</label>
@@ -21,19 +21,6 @@
 </template>
 
 <style scoped>
-
-    .page {
-        max-width: 800px;
-        background-color: var(--c-bckgr-primary);
-        margin: var(--spacer);
-        padding: calc(2* var(--spacer));
-    }
-
-    @media screen and (min-width: 840px) {
-        .page {
-            margin: var(--spacer) auto;
-        }
-    }
 
     .form-field {
         margin-bottom: var(--spacer);

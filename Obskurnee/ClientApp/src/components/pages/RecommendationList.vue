@@ -1,7 +1,7 @@
 <template>
 <section>
     <h1 id="tableLabel" class="page-title">Odporúčania</h1>
-    <div class="page">
+    <div class="main">
         <new-post mode="Recommendations" @new-post="newRecommendation"></new-post>
     </div>
     <div class="grid">
@@ -34,20 +34,6 @@ export default {
 </script>
 
 <style scoped>
-
-    .page {
-        max-width: 800px;
-        background-color: var(--c-bckgr-primary);
-        margin: var(--spacer);
-        padding: calc(2* var(--spacer));
-    }
-
-    @media screen and (min-width: 840px) {
-        .page {
-            margin: var(--spacer) auto;
-        }
-    }
-
     .grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(150px, 450px));
