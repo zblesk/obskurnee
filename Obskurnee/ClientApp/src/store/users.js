@@ -9,6 +9,7 @@ export default {
     nonMods: state => state.users?.filter(u => !u.isModerator),
     mods: state => state.users?.filter(u => u.isModerator),
     totalUsers: state => state.users?.length,
+    userMailById: state => userId => state.users?.find(u => u.userId == userId).email,
   },
   mutations: {
     setUsers(state, users)

@@ -245,7 +245,6 @@ export default {
           this.fetchUserReviews(this.user.userId)
             .then(data => {
               this.reviews = data;
-              console.log('b', data);
             })
             .catch(e => this.$notifyError(e));
         });
