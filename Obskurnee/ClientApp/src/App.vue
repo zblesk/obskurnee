@@ -181,12 +181,33 @@ body {
 }
 
 /* forms */
+/* used in: admin, newPost, passwordReset, roundList, setup, user */
 
-textarea,
-input {
-  font-size: 14px;
+.form-field {
+  margin-bottom: var(--spacer);
+}
+
+.form-field label {
+  display: block;
+  font-size: 1em;
+  margin-bottom: calc(var(--spacer) / 3);
+}
+
+.form-field input {
+  font-size: 0.875em;
+  width: 100%;
+  border: 0;
+  background-color: var(--c-bckgr-secondary);
   padding: calc(var(--spacer) / 2);
-  outline: none;
+}
+
+.form-field textarea {
+  font-size: 0.875em;
+  border: 0;
+  background-color: var(--c-bckgr-secondary);
+  padding: calc(var(--spacer) / 2);
+  width: 100%;
+  height: 15em;
 }
 
 /* generic styling for markdown */

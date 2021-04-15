@@ -18,11 +18,11 @@
         </div>
     </div>
     <div class="form-field">
-        <label for="name" class="label">Názov (napr. 'Kniha IXY')</label>
+        <label for="name">Názov (napr. 'Kniha IXY')</label>
         <input v-model="newRound.title" id="name" required />
     </div>
     <div class="form-field">
-        <label for="description" class="label">Popis</label>
+        <label for="description">Popis</label>
         <textarea v-model="newRound.description" id="description"></textarea>
     </div>
     <div class="buttons">
@@ -157,16 +157,6 @@ export default {
         margin-bottom: var(--spacer);
     }
 
-    .form-field {
-        margin-bottom: var(--spacer);
-    }
-
-    .label {
-        display: block;
-        font-size: 1em;
-        margin-bottom: calc(var(--spacer) / 3);
-    }
-
     .label-radio {
         display: inline-block;
     }
@@ -208,19 +198,7 @@ export default {
         }
     }
 
-    .form-field input {
-        width: 100%;
-        border: 0;
-        background-color: var(--c-bckgr-secondary);
-        padding: 0.5em;
-    }
-
     .form-field textarea {
-        font-size: 1em;
-        border: 0;
-        background-color: var(--c-bckgr-secondary);
-        padding: 0.5em 1em;
-        width: 100%;
         height: 5em;
     }
 

@@ -4,15 +4,15 @@
     <div class="main">
         <div v-if="$route.params.token">
             <div class="form-field">
-                <label for="passwordInput" class="label">Heslo</label>
-                <input type="password" class="input" id="passwordInput" @keyup.enter="resetPassword" v-model="newPassword" required />
+                <label for="passwordInput">Heslo</label>
+                <input type="password" id="passwordInput" @keyup.enter="resetPassword" v-model="newPassword" required />
             </div>
             <button @click="resetPassword" class="button-primary">Reset</button>
         </div>
         <div v-else>
             <div class="form-field">
-                <label for="emailInput" class="label">Zadej svůj e-mail</label>
-                <input class="input" id="emailInput" @keyup.enter="initPasswordReset" type="email" placeholder="@" v-model="email" required />
+                <label for="emailInput">Zadej svůj e-mail</label>
+                <input id="emailInput" @keyup.enter="initPasswordReset" type="email" v-model="email" required />
             </div>
             <button class="button-primary" @click="initPasswordReset">Odeslat</button>
         </div>
@@ -21,27 +21,9 @@
 </template>
 
 <style scoped>
-
-    .form-field {
-        margin-bottom: var(--spacer);
+    .form-field input {
+        max-width: 380px;
     }
-
-    .label {
-        display: block;
-        font-size: 1em;
-        margin-bottom: calc(var(--spacer) / 3);
-    }
-
-    .input {
-        width: 100%;
-        max-width: 360px;
-        border: 0;
-        background-color: var(--c-bckgr-secondary);
-        padding: 0.5em;
-    }
-
-
-
 </style>
 
 

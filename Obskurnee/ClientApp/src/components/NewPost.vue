@@ -8,9 +8,9 @@
       <img :src="newpost.imageUrl" v-if="newpost.imageUrl" :alt="newpost.title" />
     </div>
     <div class="form-text">
-      <div v-if="mode != 'Themes'" class="form-field u-mb">
+      <div v-if="mode != 'Themes'" class="form-field">
         <label for="grlink">Odkaz na Goodreads</label>
-        <div class="note mb">
+        <div class="note u-mb">
           <div class="note-pic">
               <img src="../assets/lamp.svg" alt="lamp icon" />
           </div>
@@ -22,20 +22,20 @@
       <div class="cover-mobile">
         <img :src="newpost.imageUrl" v-if="newpost.imageUrl" :alt="newpost.title" />
       </div>
-      <div class="form-field u-mb">
+      <div class="form-field">
         <label for="name" v-if="mode == 'Books' || mode == 'Recommendations'">Název knihy*</label>
         <label for="name" v-if="mode == 'Themes'">Název tématu*</label>
         <input v-model="newpost.title" id="name" required />
       </div>
-      <div class="form-field u-mb" v-if="mode != 'Themes'">
+      <div class="form-field" v-if="mode != 'Themes'">
         <label for="author">Jméno autora*</label>
         <input v-model="newpost.author" id="autor" required />
       </div>
-      <div class="form-field u-mb" v-if="mode != 'Themes'">
+      <div class="form-field" v-if="mode != 'Themes'">
         <label for="pages">Počet stran*</label>
         <input type="number" v-model="newpost.pageCount" id="pages" required />
       </div>
-      <div class="form-field">
+      <div class="form-field u-mb-not">
         <label for="text">Komentár k návrhu (podporuje markdown)*</label>
         <textarea v-model="newpost.text" id="text" required placeholder="Markdown umoznuje jednoduche formatovanie textu. Medzi zaklady patri napriklad: 
 
@@ -58,7 +58,7 @@
 
   Mozes lahko pridat aj [link](https://google.sk)"></textarea>
       </div>
-      <p class="asterisk u-mb">Pole označená * jsou povinná.</p>
+      <p class="asterisk">Pole označená * jsou povinná.</p>
       <div class="buttons">
         <button @click="addPost" class="button-primary">Přidat</button>
         <button @click="toggleVisibility" class="button-secondary hide-form">Schovat formulář</button>
@@ -129,7 +129,7 @@
     margin-top: calc(var(--spacer) / 2);
   }
 
-  .mb {
+  .u-mb {
     margin-bottom: calc(var(--spacer) / 2);
   }
 
@@ -139,30 +139,8 @@
     margin-top: calc(var(--spacer) /2);
   }
 
-  .u-mb {
-    margin-bottom: var(--spacer);
-  }
-
-  .form-field label {
-    display: block;
-    font-size: 1em;
-    margin-bottom: calc(var(--spacer) / 3);
-  }
-
-  .form-field input {
-    width: 100%;
-    border: 0;
-    background-color: var(--c-bckgr-secondary);
-    padding: 0.5em;
-  }
-
-  .form-field textarea {
-    font-size: 1em;
-    border: 0;
-    background-color: var(--c-bckgr-secondary);
-    padding: 0.5em 1em;
-    width: 100%;
-    height: 15em;
+  .form-field.u-mb-not {
+    margin-bottom: 0;
   }
 
   .buttons {

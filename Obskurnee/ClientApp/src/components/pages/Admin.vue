@@ -165,21 +165,8 @@ export default {
         margin-top: calc(var(--spacer) * 2);
     }
 
-    .form-field label {
-        display: block;
-        margin-bottom: calc(var(--spacer) / 2);
-    }
-
-    .form-field textarea {
-        width: 100%;
-        height: 15em;
-        margin-bottom: calc(var(--spacer) / 2);
-    }
-
     .form-field input {
-        width: 100%;
         max-width: 380px;
-        margin-bottom: calc(var(--spacer) / 2);
     }
 
     .mt {

@@ -11,20 +11,20 @@
     <div v-if="mode == 'edit'">
       <div class="main">
         <div class="form-field">
-          <label for="username" class="label">Jméno (povinné):</label>
-          <input type="text" class="input" id="username" required v-model="editingUser.name" />
+          <label for="username">Jméno (povinné):</label>
+          <input type="text" id="username" required v-model="editingUser.name" />
         </div>
         <div class="form-field">
-          <label for="userphone" class="label">Telefon:</label>
-          <input type="tel" class="input" id="userphone" v-model="editingUser.phone" />
+          <label for="userphone">Telefon:</label>
+          <input type="tel" id="userphone" v-model="editingUser.phone" />
         </div>
         <div class="form-field">
-          <label for="usergr" class="label">Profil na Goodreads:</label>
-          <input type="url" class="input" id="usergr" v-model="editingUser.goodreadsUrl" />
+          <label for="usergr">Profil na Goodreads:</label>
+          <input type="url" id="usergr" v-model="editingUser.goodreadsUrl" />
         </div>
         <div class="form-field">
           <div class="label-wrapper">
-            <label for="userbio" class="label label-userbio">O mne:</label>
+            <label for="userbio" class="label-userbio">O mne:</label>
             <div class="mo mo-markdown">
               <div class="mo-pic">
                 <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
@@ -34,7 +34,7 @@
               </div>
             </div>
           </div>
-          <textarea class="textarea" id="userbio" v-model="editingUser.aboutMe" placeholder="Napis sem nieco o sebe! Ake mas rada zanre? Co su Tvoje oblubene knihy? Co naopak nemas rada? Nieco ine, co nam o sebe povies?
+          <textarea id="userbio" v-model="editingUser.aboutMe" placeholder="Napis sem nieco o sebe! Ake mas rada zanre? Co su Tvoje oblubene knihy? Co naopak nemas rada? Nieco ine, co nam o sebe povies?
 
   Mozes pouzit Markdown na jednoduche formatovanie textu. 
   Ak by si sa stratila, klikni na help ikonku nizsie.
@@ -288,45 +288,7 @@ export default {
     padding: calc(0.5 * var(--spacer)) 0;
   }
 
-  .form-field {
-    margin-bottom: var(--spacer);
-  }
-
-  .profile-cat,
-  .label {
-    font-size: 1.2em;
-    font-weight: bold;
-  }
-
-  .label {
-    display: block;
-    margin-bottom: calc(var(--spacer) / 2);
-  }
-
-  .input {
-    width: 100%;
-    border: 0;
-    background-color: var(--c-bckgr-secondary);
-    padding: 0.5em;
-  }
-
-  .input,
-  .textarea {
-    outline-color: var(--c-accent-secondary);
-  }
-
-  .readonly {
-    outline: none;
-    color: rgba(41, 41, 41, 0.5); /* --c-font plus opacity */
-  }
-
-  .textarea {
-    font-size: 1em;
-    border: 0;
-    background-color: var(--c-bckgr-secondary);
-    padding: 0.5em 1em;
-    width: 100%;
-    height: 15em;
+  .form-field textarea {
     margin-top: calc(var(--spacer) / 2);
   }
 
