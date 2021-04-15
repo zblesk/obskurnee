@@ -1,7 +1,7 @@
 <template>
 <section>
   <div class="blc-wrapper">
-    <book-large-card :post="book.post" v-if="book && book.post">
+    <book-large-card :book="book" v-if="book && book.post">
     </book-large-card>
   </div>
 
