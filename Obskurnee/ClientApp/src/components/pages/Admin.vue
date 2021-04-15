@@ -23,7 +23,7 @@
                 <input type="email" v-model="newUserEmal" id="new-user" />
             </div>
             <button @click="addUser()" class="button-primary">Vytvořit</button>
-            <div class="note">
+            <div class="note mt">
                 <div class="note-pic">
                     <img src="../../assets/lamp.svg" alt="lamp icon" />
                 </div>
@@ -153,10 +153,6 @@ export default {
         margin: 0 auto;
     }
 
-    .not-mod img {
-        width: 100%;
-    }
-
     .section:not(:last-child) {
         margin-bottom: calc(2* var(--spacer));
     }
@@ -186,26 +182,8 @@ export default {
         margin-bottom: calc(var(--spacer) / 2);
     }
 
-    .note {
-        display: flex;
-        align-items: center;
+    .mt {
         margin-top: var(--spacer);
-        padding: 0 calc(var(--spacer) / 2);
-    }
-
-    .note-pic {
-        width: 20px;
-        flex-shrink: 0;
-    }
-
-    .note-pic img {
-        width: 100%;
-    }
-
-    .note-text {
-        font-size: 0.875em;
-        opacity: 0.8;
-        margin: 0 0 0 calc(var(--spacer) / 2);
     }
 
     .button-small {

@@ -10,7 +10,7 @@
     <div class="form-text">
       <div v-if="mode != 'Themes'" class="form-field u-mb">
         <label for="grlink">Odkaz na Goodreads</label>
-        <div class="note">
+        <div class="note mb">
           <div class="note-pic">
               <img src="../assets/lamp.svg" alt="lamp icon" />
           </div>
@@ -129,26 +129,8 @@
     margin-top: calc(var(--spacer) / 2);
   }
 
-  .note {
-    display: flex;
-    align-items: center;
+  .mb {
     margin-bottom: calc(var(--spacer) / 2);
-    padding: 0 calc(var(--spacer) / 2);
-  }
-
-  .note-pic {
-    width: 20px;
-    flex-shrink: 0;
-  }
-
-  .note-pic img {
-    width: 100%;
-  }
-
-  .note-text {
-    font-size: 0.875em;
-    opacity: 0.8;
-    margin: 0 0 0 calc(var(--spacer) / 2);
   }
 
   .asterisk {

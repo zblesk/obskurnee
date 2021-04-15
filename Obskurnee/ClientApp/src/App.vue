@@ -157,6 +157,29 @@ body {
   background-color: var(--c-accent-secondary);
 }
 
+/* note */
+/* used in: admin, poll, newPost */
+.note {
+  display: flex;
+  align-items: center;
+  padding: 0 calc(var(--spacer) / 2);
+}
+
+.note-pic {
+  width: 20px;
+  flex-shrink: 0;
+}
+
+.note-pic img {
+  width: 100%;
+}
+
+.note-text {
+  font-size: 0.875em;
+  opacity: 0.8;
+  margin: 0 0 0 calc(var(--spacer) / 2);
+}
+
 /* forms */
 
 textarea,

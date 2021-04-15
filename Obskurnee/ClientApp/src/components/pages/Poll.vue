@@ -62,7 +62,7 @@
  
     <div class="book-post-wrapper flex">
       <div class="book-post-empty" v-if="!previewId">
-        <div class="note">
+        <div class="note note--poll">
           <div class="note-pic">
             <img src="../../assets/lamp.svg" alt="lamp icon" />
           </div>
@@ -227,7 +227,7 @@ export default {
     }
   }
 
-  .note {
+  .note.note-poll {
     display: none;
   }
 
@@ -258,25 +258,8 @@ export default {
       padding: calc(var(--spacer) * 2);
     }
 
-    .note {
+    .note.note--poll {
       display: flex;
-      align-items: center;
-      padding: 0 calc(var(--spacer) / 2);
-    }
-
-    .note-pic {
-      width: 20px;
-      flex-shrink: 0;
-    }
-
-    .note-pic img {
-      width: 100%;
-    }
-
-    .note-text {
-      font-size: 0.875em;
-      opacity: 0.8;
-      margin: 0 0 0 calc(var(--spacer) / 2);
     }
   }
 
