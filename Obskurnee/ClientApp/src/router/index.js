@@ -3,14 +3,12 @@ import Home from "@/components/pages/Home.vue";
 import RoundList from "@/components/pages/RoundList.vue";
 import Discussion from "@/components/pages/Discussion.vue";
 import Poll from "@/components/pages/Poll.vue";
-import PollList from "@/components/pages/PollList.vue";
 import User from "@/components/pages/User.vue";
 import UserList from "@/components/pages/UserList.vue";
 import RecommendationList from "@/components/pages/RecommendationList.vue";
 import Admin from "@/components/pages/Admin.vue";
 import Setup from "@/components/pages/Setup.vue";
 import BookList from "@/components/pages/BookList.vue";
-import DiscussionList from "@/components/pages/DiscussionList.vue";
 import Book from "@/components/pages/Book.vue";
 import PasswordReset from "@/components/pages/PasswordReset.vue";
 
@@ -31,19 +29,9 @@ const routes = [
         component: RoundList,
     },
     {
-        path: "/diskusie",
-        name: "discussionlist",
-        component: DiscussionList,
-    },
-    {
         path: "/navrhy/:discussionId",
         name: "discussion",
         component: Discussion,
-    },
-    {
-        path: "/hlasovania",
-        name: "polllist",
-        component: PollList,
     },
     {
         path: "/hlasovania/:pollId",
