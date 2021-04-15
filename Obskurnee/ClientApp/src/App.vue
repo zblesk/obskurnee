@@ -157,6 +157,21 @@ body {
   background-color: var(--c-accent-secondary);
 }
 
+/* buttons - layout */
+/* used in: book, discussion, newPost, poll, roundList, user */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+@media screen and (min-width: 576px) {
+  .buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
 /* note */
 /* used in: admin, poll, newPost */
 .note {

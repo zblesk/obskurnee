@@ -59,7 +59,7 @@
 
   Mozes lahko pridat aj [link](https://google.sk)"></textarea>
         </div>
-        <div class="buttons-edit">
+        <div class="buttons">
           <a @click="updateProfile" class="button-primary" :v-if="isMod || user.userId == myUserId">Uložit změny</a>
           <a @click="stopEditing" class="button-secondary button-cancel" :v-if="isMod || user.userId == myUserId">Zahodit změny</a>
         </div>
@@ -308,22 +308,11 @@ export default {
     }
   }
 
-  .buttons-edit {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-  }
-
   .button-cancel {
     margin-top: var(--spacer);
   }
 
   @media screen and (min-width: 576px) {
-    .buttons-edit {
-      flex-direction: row;
-      justify-content: center;
-    }
-
     .button-cancel {
       margin-top: 0;
       margin-left: var(--spacer);
@@ -386,9 +375,6 @@ export default {
   }
 
   .buttons {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
     margin-bottom: calc(var(--spacer) * 2);
   }
 
@@ -397,11 +383,6 @@ export default {
   }
 
   @media screen and (min-width: 576px) {
-    .buttons {
-      flex-direction: row;
-      justify-content: center;
-    }
-
     .button-password {
       margin-top: 0;
       margin-left: var(--spacer);

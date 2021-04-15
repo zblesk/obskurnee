@@ -166,20 +166,11 @@ export default {
     vertical-align: super;
   }
 
-  .buttons {
-    display: flex;
-    flex-direction: column;
-  }
-
   .poll-to-close {
     margin-top: var(--spacer);
   }
 
   @media screen and (min-width: 576px) {
-    .buttons {
-      flex-direction: row;
-    }
-
     .poll-to-close {
       margin-top: 0;
       margin-left: var(--spacer);

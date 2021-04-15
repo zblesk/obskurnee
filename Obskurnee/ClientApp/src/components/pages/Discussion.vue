@@ -7,8 +7,8 @@
       <new-post :mode="discussion.topic" @new-post="onNewPost"></new-post>
       <div></div>
     </div>
-    <div class="button-wrapper">
-      <button @click="closeDiscussion" v-if="isMod && discussion.posts?.length && !discussion.isClosed" class="button-secondary button-close">Uzavřít diskuzi a vytvořit hlasování</button>
+    <div class="buttons">
+      <button @click="closeDiscussion" v-if="isMod && discussion.posts?.length && !discussion.isClosed" class="button-secondary">Uzavřít diskuzi a vytvořit hlasování</button>
     </div>
 
     <div class="form" v-if="discussion.pollId">
@@ -91,22 +91,4 @@ export default {
   .form {
     margin-bottom: var(--spacer);
   }
-
-  .button-close {
-    display: block;
-    width: 100%;
-  }
-
-  @media screen and (min-width: 576px) {
-    .button-wrapper {
-      display: flex;
-      justify-content: center;
-    }
-    
-    .button-close {
-      display: inline-block;
-      width: auto;
-    }
-  }
-
 </style>

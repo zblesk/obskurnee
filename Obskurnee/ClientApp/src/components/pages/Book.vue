@@ -12,7 +12,7 @@
     </div>
     <div class="buttons">
       <button @click="addReview" class="button-primary" v-if="!hideForm">Pridať</button>
-      <button @click="toggleVisibility" class="button-secondary hide-form"><span v-if="hideForm">Zobraziť</span><span v-else>Schovať</span> formulár</button>
+      <button @click="toggleVisibility" class="button-secondary"><span v-if="hideForm">Zobraziť</span><span v-else>Schovať</span> formulár</button>
     </div>
   </div>
 
