@@ -4,11 +4,7 @@
         <router-link :to="{ name: 'user', params: { email: userMailById(review.ownerId) } }" class="book__link">
           <h2 class="book__title">{{ review.ownerName }}</h2>
         </router-link>
-        <div class="book__stars" v-if="review.rating === 5">⭐⭐⭐⭐⭐</div>
-        <div class="book__stars" v-if="review.rating === 4">⭐⭐⭐⭐</div>
-        <div class="book__stars" v-if="review.rating === 3">⭐⭐⭐</div>
-        <div class="book__stars" v-if="review.rating === 2">⭐⭐</div>
-        <div class="book__stars" v-if="review.rating === 1">⭐</div>
+        <div class="book__stars" v-if="review.rating">{{ "⭐".repeat(review.rating) }}</div>
       </div>
       <p class="book__text" v-html="review.renderedReviewText"></p>
   </div> 

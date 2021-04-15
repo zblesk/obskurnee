@@ -84,6 +84,11 @@ export default {
     },
     addReview()
     {
+      if (this.newReviewData?.rating > 5 || this.newReviewData?.rating < 0)
+      {
+        this.$notifyError("Prepáč, hodnotenie musí byť 0-5.");
+        return;
+      }
       this.newReview({ bookId: this.currentBookId, review: this.newReviewData})
       .then((data => this.reviews = data))
       .catch(e => this.$notifyError(e));
