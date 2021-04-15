@@ -5,18 +5,27 @@
     </book-large-card>
   </div>
 
-  <div class="form">
-    <div class="form-text" v-if="!hideForm">
-       <input v-model="newReviewData.rating" placeholder="5" />
-       <input v-model="newReviewData.reviewText" />
+  <div class="main">
+    <div class="form-field" v-if="!hideForm">
+      <label for="review-stars">Počet hvězdiček (1–5)</label>
+      <input type="number" min="1" max="5" v-model="newReviewData.rating" id="review-stars" required />
     </div>
-    <div class="buttons">
-      <button @click="addReview" class="button-primary" v-if="!hideForm">Pridať</button>
-      <button @click="toggleVisibility" class="button-secondary"><span v-if="hideForm">Zobraziť</span><span v-else>Schovať</span> formulár</button>
+    <div class="form-field" v-if="!hideForm">
+      <label for="review-text">Text review (podporuje markdown)</label>
+      <textarea id="review-text" v-model="newReviewData.reviewText" required />
+    </div>
+    <div class="buttons" v-if="hideForm">
+      <button @click="toggleVisibility" class="button-primary">Pridať review</button>
+    </div>
+    <div class="buttons" v-if="!hideForm">
+      <button @click="addReview" class="button-primary">Pridať</button>
+      <button @click="toggleVisibility" class="button-secondary button-hide">Schovať formulár</button>
     </div>
   </div>
 
-  <books-review-card v-for="rev in bookReviews(currentBookId)" v-bind:key="rev.reviewId" v-bind:review="rev" ></books-review-card>
+  <div class="grid">
+    <books-review-card v-for="rev in bookReviews(currentBookId)" v-bind:key="rev.reviewId" v-bind:review="rev" ></books-review-card>
+  </div>
 </section>
 </template>
 
@@ -24,14 +33,29 @@
 
   .blc-wrapper {
     max-width: 800px;
-    margin: calc(var(--spacer) * 2) var(--spacer);
+    margin: calc(var(--spacer) * 2) var(--spacer) var(--spacer) var(--spacer);
   }
 
   @media screen and (min-width: 840px) {
     .blc-wrapper {
-      margin: calc(var(--spacer) * 2) auto;
+      margin: calc(var(--spacer) * 2) auto var(--spacer) auto;
     }
   }
+
+  .form-field input {
+    max-width: 380px;
+  }
+
+  .button-hide {
+    margin-top: var(--spacer);
+  }
+
+  @media screen and (min-width: 576px) {
+  .button-hide {
+    margin-top: 0;
+    margin-left: var(--spacer);
+  }
+}
 
 </style>
 
