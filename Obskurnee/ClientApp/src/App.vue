@@ -334,6 +334,24 @@ body {
   font-size: 0.875em;
 }
 
+/* utility classes */
+.u-mt-sp2 {
+  margin-top: calc(var(--spacer) * 2);
+}
+
+.u-mt-sp {
+  margin-top: var(--spacer);
+}
+
+.u-mb-sp2 {
+  margin-bottom: calc(var(--spacer) * 2);
+}
+
+.u-mb-sp05 {
+  margin-bottom: calc(var(--spacer) / 2);
+}
+
+
 /* generic styling for markdown */
 
 p {

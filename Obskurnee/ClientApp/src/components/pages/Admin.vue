@@ -27,13 +27,13 @@
         </div>
 
         <div class="section">
-            <h2 class="section-title u-mt">Založení nového uživatele</h2>
+            <h2 class="section-title u-mt-sp2">Založení nového uživatele</h2>
             <div class="form-field">
                 <label for="new-user">E-mailová adresa nového uživatele</label>
                 <input type="email" v-model="newUserEmal" id="new-user" />
             </div>
             <button @click="addUser()" class="button-primary">Vytvořit</button>
-            <div class="note mt">
+            <div class="note u-mt-sp">
                 <div class="note-pic">
                     <img src="../../assets/lamp.svg" alt="lamp icon" />
                 </div>
@@ -42,7 +42,7 @@
         </div>
 
         <div class="section">
-            <h2 class="section-title u-mt">Moderátoři</h2>
+            <h2 class="section-title u-mt-sp2">Moderátoři</h2>
             <p>Aktuální moderátoři: <span v-for="mod in mods" v-bind:key="mod.userId"><router-link :to="{ name: 'user', params: { email: mod.email } }">{{mod.name}}</router-link>, </span></p>
             <p>Přidej uživatele k moderátorům:</p>
             <div class="row" v-for="user in nonMods" v-bind:key="user.userId">
@@ -56,7 +56,7 @@
         </div>
 
         <div class="section">
-            <h2 class="section-title u-mt">Uživatelé přihlášení k odběru newsletteru</h2>
+            <h2 class="section-title u-mt-sp2">Uživatelé přihlášení k odběru newsletteru</h2>
             <p>
                 Zakladní události: 
                 <span v-for="subscriber in newsletterInfo['basicevents']" v-bind:key="subscriber">
@@ -171,16 +171,8 @@ export default {
         margin-bottom: var(--spacer);
     }
 
-    .u-mt {
-        margin-top: calc(var(--spacer) * 2);
-    }
-
     .form-field input {
         max-width: 380px;
-    }
-
-    .mt {
-        margin-top: var(--spacer);
     }
 
     .button-small {

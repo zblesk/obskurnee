@@ -10,7 +10,7 @@
     <div class="form-text">
       <div v-if="mode != 'Themes'" class="form-field">
         <label for="grlink">Odkaz na Goodreads</label>
-        <div class="note u-mb">
+        <div class="note u-mb-sp05">
           <div class="note-pic">
               <img src="../assets/lamp.svg" alt="lamp icon" />
           </div>
@@ -35,7 +35,7 @@
         <label for="pages">Počet stran*</label>
         <input type="number" v-model="newpost.pageCount" id="pages" required />
       </div>
-      <div class="form-field u-mb-not">
+      <div class="form-field u-mb-0">
         
         <div class="label-md-wrapper">
           <label for="text">Komentár k návrhu*</label>
@@ -133,17 +133,13 @@
     }
   }
 
-  .u-mb {
-    margin-bottom: calc(var(--spacer) / 2);
-  }
-
   .asterisk {
     font-size: 0.875em;
     opacity: 0.8;
     margin-top: calc(var(--spacer) /2);
   }
 
-  .form-field.u-mb-not {
+  .form-field.u-mb-0 {
     margin-bottom: 0;
   }
 

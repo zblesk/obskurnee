@@ -74,7 +74,7 @@
                     </router-link>
                 </div>
                 <div class="winner-desc">
-                    <p class="winner-book"><router-link v-if="round.bookId" :to="{ name: 'book', params: { bookId: round.bookId } }">{{ round.book?.post?.title }}</router-link></p>
+                    <p class="winner-book"><router-link v-if="round.bookId" :to="{ name: 'book', params: { bookId: round.bookId } }"><strong>{{ round.book?.post?.title }}</strong></router-link></p>
                     <p class="winner-author">{{ round.book?.post?.author }}</p>
                 </div>
             </div>
@@ -209,10 +209,6 @@ export default {
     .winner-book,
     .winner-author {
         text-align: center;
-    }
-
-    .winner-book {
-        font-weight: bold;
     }
 
     .winner-book a {

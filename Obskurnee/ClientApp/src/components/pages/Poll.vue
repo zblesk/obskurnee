@@ -29,7 +29,7 @@
   <div class="page-wrapper flex">
     <div class="main flex">
 
-      <div v-if="!poll.isClosed && poll.results && poll.results.alreadyVoted" class="u-md">
+      <div v-if="!poll.isClosed && poll.results && poll.results.alreadyVoted" class="u-mb-sp2">
        <h2 class="subtitle">Stav hlasování</h2>
         <p class="paragraph">Už hlasovalo {{ poll.results.alreadyVoted.length }} z {{users.length }} čtenářů.</p>
         <p class="paragraph">Ješte nehlasovali: <span v-for="person in yetToVote" v-bind:key="person">{{ person.name }},</span></p>
@@ -45,7 +45,7 @@
         </ol>
       </div>
 
-      <h2 v-if="poll.results" class="subtitle u-mt">Možnosti</h2>
+      <h2 v-if="poll.results" class="subtitle u-mt-sp2">Možnosti</h2>
       <ol class="poll">
         <li v-for="option in poll.options" v-bind:key="option.postId" class="poll-field">
           <input type="checkbox" :id="option.postId" :value="option.postId" v-model="checkedOptions" :disabled="iVoted || poll.isClosed" class="checkbox" />
@@ -181,14 +181,6 @@ export default {
     font-size: 1.25em;
     margin-top: 0;
     margin-bottom: calc(var(--spacer) / 2);
-  }
-  
-  .u-mt {
-    margin-top: calc(var(--spacer) * 2);
-  }
-
-  .u-md {
-    margin-bottom: calc(var(--spacer) * 2);
   }
 
   .paragraph {

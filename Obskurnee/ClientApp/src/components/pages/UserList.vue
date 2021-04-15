@@ -1,6 +1,6 @@
 <template>
 <section>
-    <h1 id="tableLabel" class="page-title u-mb">Seznam bookclubberů</h1>
+    <h1 id="tableLabel" class="page-title u-mb-sp05">Seznam bookclubberů</h1>
     <h2 class="page-note">(moderátoři mají magické schopnosti)</h2>
     
     <div class="user-grid" v-if="users">
@@ -20,7 +20,7 @@
             <div class="reading" v-if="user.currentlyReading.length">
                 <h3 class="reading-title">Právě čte:</h3>
                 <ul class="reading-list">
-                    <li v-for="review in user.currentlyReading" v-bind:key="review.ReviewId"><a :href="review.reviewUrl">{{ review.author }}: <span class="reading-book">{{ review.bookTitle }}</span></a></li>
+                    <li v-for="review in user.currentlyReading" v-bind:key="review.ReviewId"><a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.bookTitle }}</strong></a></li>
                 </ul>
             </div>
             <div  class="reading" v-else>
@@ -33,11 +33,6 @@
 </template>
 
 <style scoped>
-
-    .u-mb {
-        margin-bottom: calc(var(--spacer) / 2);
-    }
-
     .page-note {
         text-align: center;
         font-weight: normal;
@@ -91,10 +86,6 @@
     .reading-title {
         margin-top: var(--spacer);
         margin-bottom: var(--spacer);
-    }
-
-    .reading-book {
-        font-weight: bold;
     }
 
     .reading-list li {

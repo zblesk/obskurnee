@@ -6,7 +6,7 @@
         <div class="welcome-pic">
           <img src="../../assets/hi.svg" alt="hi icon">
         </div>
-        <p class="welcome-text">Vitaj, <span class="welcome-name" v-if="myProfile">{{ myProfile.name }}</span>!
+        <p class="welcome-text">Vitaj, <span v-if="myProfile"><strong>{{ myProfile.name }}</strong></span>!
           <span v-if="currentDiscussion"> Zbierame
             <router-link :to="{name: 'discussion', params: { discussionId: currentDiscussion.discussionId },}">nové návrhy</router-link>.
           </span>
@@ -170,10 +170,6 @@ export default {
     font-size: 1.2em;
     text-align: center;
     margin: var(--spacer) var(--spacer) 0 var(--spacer);
-  }
-
-  .welcome-name {
-    font-weight: bold;
   }
 
   .welcome {
