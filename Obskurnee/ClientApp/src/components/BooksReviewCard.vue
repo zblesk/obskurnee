@@ -1,9 +1,9 @@
 <template>
   <div class="book">
       <div class="book__title-wrapper">
-        <!-- router link to owner -->
+        <router-link :to="{ name: 'user', params: { email: userMailById(review.ownerId) } }">
           <h2 class="book__title">{{ review.ownerName }}</h2>
-        <!-- </router-link> -->
+        </router-link>
         <div class="book__stars" v-if="review.rating === 5">⭐⭐⭐⭐⭐</div>
         <div class="book__stars" v-if="review.rating === 4">⭐⭐⭐⭐</div>
         <div class="book__stars" v-if="review.rating === 3">⭐⭐⭐</div>
@@ -15,9 +15,14 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
     name: "UsersReviewCard",
     props: ['review'],
+    computed: 
+    {
+      ...mapGetters("users", ["userMailById"]),
+    }
 }
 </script>
 
