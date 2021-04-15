@@ -520,14 +520,6 @@ export default {
     margin-bottom: var(--spacer) * 2;
   }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 450px));
-    gap: var(--spacer);
-    margin: 0;
-    padding: var(--spacer);
-  }
-
   .recs-message {
     max-width: 800px;
     background-color: var(--c-bckgr-primary);

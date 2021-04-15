@@ -106,6 +106,16 @@ body {
   }
 }
 
+/* grid */
+/* used in: book, discussion, recommendationList, user */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 450px));
+  gap: var(--spacer);
+  margin: 0;
+  padding: var(--spacer);
+}
+
 /* buttons */
 .button-primary,
 .button-secondary {

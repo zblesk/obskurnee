@@ -92,15 +92,6 @@ export default {
     margin-bottom: var(--spacer);
   }
 
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 450px));
-    gap: var(--spacer);
-    margin: 0;
-    padding: var(--spacer);
-  }
-
   .button-close {
     display: block;
     width: 100%;
