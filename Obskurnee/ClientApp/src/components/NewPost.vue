@@ -48,26 +48,16 @@
             </div>
           </div>
         </div>
-        <textarea v-model="newpost.text" id="text" required placeholder="Markdown umoznuje jednoduche formatovanie textu. Medzi zaklady patri napriklad: 
+        <textarea v-model="newpost.text" id="text" required placeholder="Mozes pouzit Markdown na jednoduche formatovanie textu. Ak by si sa stratila, klikni na link hore.
 
-  # Najvacsi nadpis
-  ## mensi nadpis 
-
-  **tucny textt** alebo _kurziva_ 
-
-  - necislovany
-  - zoznam
-  - je 
-  - jednoduchy
-
-  1. cislovany
-  2. tiez
-  3. lahky
-
-  > takto sa pise citat
-  > **moze** obsahovat aj _**formatovanie**_
-
-  Mozes lahko pridat aj [link](https://google.sk)"></textarea>
+Medzi zaklady patri napriklad: 
+# Najvacsi nadpis
+## mensi nadpis 
+**tucny textt** alebo _kurziva_ 
+- necislovany zoznam
+1. cislovany zoznam
+> takto sa pise citat
+Mozes lahko pridat aj [link](https://google.sk)."></textarea>
       </div>
       <p class="asterisk">Pole označená * jsou povinná.</p>
       <div class="buttons">

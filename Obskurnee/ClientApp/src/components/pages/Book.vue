@@ -22,7 +22,16 @@
           </div>
         </div>
       </div>
-      <textarea id="review-text" v-model="newReviewData.reviewText" required />
+      <textarea id="review-text" v-model="newReviewData.reviewText" required placeholder="Mozes pouzit Markdown na jednoduche formatovanie textu. Ak by si sa stratila, klikni na link hore.
+
+Medzi zaklady patri napriklad: 
+# Najvacsi nadpis
+## mensi nadpis 
+**tucny textt** alebo _kurziva_ 
+- necislovany zoznam
+1. cislovany zoznam
+> takto sa pise citat
+Mozes lahko pridat aj [link](https://google.sk)."></textarea>
     </div>
     <div class="buttons" v-if="hideForm">
       <button @click="toggleVisibility" class="button-primary">Pridať recenziu</button>

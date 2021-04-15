@@ -36,28 +36,16 @@
           </div>
           <textarea id="userbio" v-model="editingUser.aboutMe" placeholder="Napis sem nieco o sebe! Ake mas rada zanre? Co su Tvoje oblubene knihy? Co naopak nemas rada? Nieco ine, co nam o sebe povies?
 
-  Mozes pouzit Markdown na jednoduche formatovanie textu. 
-  Ak by si sa stratila, klikni na help ikonku nizsie.
-  Medzi zaklady patri napriklad: 
+Mozes pouzit Markdown na jednoduche formatovanie textu. Ak by si sa stratila, klikni na link hore.
 
-  # Najvacsi nadpis
-  ## mensi nadpis 
-
-  **tucny textt** alebo _kurziva_ 
-
-  - necislovany
-  - zoznam
-  - je 
-  - jednoduchy
-
-  1. cislovany
-  2. tiez
-  3. lahky
-
-  > takto sa pise citat
-  > **moze** obsahovat aj _**formatovanie**_
-
-  Mozes lahko pridat aj [link](https://google.sk)"></textarea>
+Medzi zaklady patri napriklad: 
+# Najvacsi nadpis
+## mensi nadpis 
+**tucny textt** alebo _kurziva_ 
+- necislovany zoznam
+1. cislovany zoznam
+> takto sa pise citat
+Mozes lahko pridat aj [link](https://google.sk)."></textarea>
         </div>
         <div class="buttons">
           <a @click="updateProfile" class="button-primary" :v-if="isMod || user.userId == myUserId">Uložit změny</a>

@@ -21,7 +21,16 @@
                         </div>
                     </div>
                 </div>
-                <textarea v-model="notice" id="notice"></textarea>
+                <textarea v-model="notice" id="notice" placeholder="Mozes pouzit Markdown na jednoduche formatovanie textu. Ak by si sa stratila, klikni na link hore.
+
+Medzi zaklady patri napriklad: 
+# Najvacsi nadpis
+## mensi nadpis 
+**tucny textt** alebo _kurziva_ 
+- necislovany zoznam
+1. cislovany zoznam
+> takto sa pise citat
+Mozes lahko pridat aj [link](https://google.sk)."></textarea>
             </div>
             <button @click="updateNoticeboard()" class="button-primary">Uložit</button>
         </div>
