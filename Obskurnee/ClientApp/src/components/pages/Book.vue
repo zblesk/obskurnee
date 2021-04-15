@@ -15,11 +15,11 @@
       <textarea id="review-text" v-model="newReviewData.reviewText" required />
     </div>
     <div class="buttons" v-if="hideForm">
-      <button @click="toggleVisibility" class="button-primary">Pridať review</button>
+      <button @click="toggleVisibility" class="button-primary">Pridať recenziu</button>
     </div>
     <div class="buttons" v-if="!hideForm">
       <button @click="addReview" class="button-primary">Pridať</button>
-      <button @click="toggleVisibility" class="button-secondary button-hide">Schovať formulár</button>
+      <button @click="toggleVisibility" class="button-secondary button-hide">Skryť</button>
     </div>
   </div>
 
@@ -72,7 +72,7 @@ export default {
         currentBookId: 0,
         book: {},
         newReviewData: {},
-        hideForm: false,
+        hideForm: true,
       }
   },
   methods: {
