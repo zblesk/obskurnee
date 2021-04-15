@@ -89,6 +89,13 @@ body {
   margin-bottom: var(--spacer);
 }
 
+.alert-inline {
+  color: var(--c-accent);
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: calc(var(--spacer) / 2);
+}
+
 /* centre piece of pages */
 /* used in: admin, discussion, passwordReset, poll, recommendationList, roundList, setup, user */
 

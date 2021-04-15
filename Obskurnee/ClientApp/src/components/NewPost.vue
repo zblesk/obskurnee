@@ -17,7 +17,7 @@
           <p class="note-text">Vlož odkaz, zmáčkni enter nebo tabulátor a chvíli počkej.</p>
         </div>
         <input v-model="newpost.url" placeholder="https://www.goodreads.com/book..." @change="linkChange" id="grlink" />
-        <div v-if="fetchInProgress" class="alert">Kamo počkaj, LOADUJEM</div>
+        <p v-if="fetchInProgress" class="alert-inline">Kamo počkaj, LOADUJEM</p>
       </div>
       <div class="cover-mobile">
         <img :src="newpost.imageUrl" v-if="newpost.imageUrl" :alt="newpost.title" />
@@ -131,13 +131,6 @@
       display: block;
       margin: 0 0 0 var(--spacer);
     }
-  }
-
-  .alert {
-    color: var(--c-accent);
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-top: calc(var(--spacer) / 2);
   }
 
   .u-mb {

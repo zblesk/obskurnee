@@ -31,7 +31,7 @@
     </div>
 </div>
 
-<p v-if="!rounds"><em>Cakaj, nacitavam</em></p>
+<p v-if="!rounds" class="alert-inline">Cakaj, nacitavam</p>
 <div v-for="round of rounds" v-bind:key="round" class="round">
     <div class="round-inner">
         <h2 class="round-title">{{ round.title }}</h2>

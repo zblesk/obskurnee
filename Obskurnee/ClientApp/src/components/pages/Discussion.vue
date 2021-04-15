@@ -17,7 +17,7 @@
   </div>
 
   <div class="grid">
-    <p v-if="!discussion.title"><em>Zatial tu nic nie je</em></p>
+    <p v-if="!discussion.title" class="alert-inline">Zatial tu nic nie je</p>
 
     <book-post
       v-for="post in discussion.posts"
