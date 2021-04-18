@@ -43,7 +43,6 @@ namespace Obskurnee.Controllers
             new
             {
                 Noticeboard = _settings.GetSettingValue<string>(Setting.Keys.ModNoticeboard),
-                MailSettings = _settings.GetSetting(Setting.Keys.MailgunSettings),
             });
 
         [HttpPost]

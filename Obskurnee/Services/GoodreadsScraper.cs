@@ -185,14 +185,15 @@ namespace Obskurnee.Services
                     var relativeFilename = sanitizedName.Substring(0, Math.Min(90, sanitizedName.Length))
                         + _rand.Next(10_000, 100_000).ToString()
                         + Path.GetExtension(imgUrl) ?? ".jpg";
-                    var physicalPath = Path.Join(
-                        _hostEnv.ContentRootPath,
-                        _config.DataFolder,
-                        _config.ImageFolder,
-                        relativeFilename);
-                    var relativeUrl = '/' + _config.ImageFolder + '/' + relativeFilename;
-                    _logger.LogInformation("File downloaded, saving it at {filename}", physicalPath);
-                    await File.WriteAllBytesAsync(physicalPath, pic);
+                    var relativeUrl = "/image/" + relativeFilename;
+                    _logger.LogInformation("File downloaded, saving it as {filename}", relativeFilename);
+                    await _db.Images.AddAsync(new StoredImage()
+                    {
+                        FileName = relativeFilename,
+                        Extension = Path.GetExtension(relativeFilename),
+                        FileContents = pic,
+                    });
+                    await _db.SaveChangesAsync();
                     result.ImageUrl = relativeUrl;
                 }
             }

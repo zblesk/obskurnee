@@ -10,8 +10,8 @@ namespace Obskurnee.Models
     {
         public static class Keys
         {
-            public const string MailgunSettings = "mailgun-creds";
             public const string ModNoticeboard = "noticeboard-contents";
+            public const string SiteName = "site-name";
         }
 
         [Key]
