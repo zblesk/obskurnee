@@ -6,7 +6,6 @@ namespace Obskurnee.Models
     public class Config
     {
         public readonly string DataFolder = "data";
-        public readonly string ImageFolder = "images";
         private string _key;
         private string _baseUrl;
 

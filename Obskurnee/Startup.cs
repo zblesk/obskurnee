@@ -37,7 +37,6 @@ namespace Obskurnee
         {
             Config.Current = new Config();
             Directory.CreateDirectory(Config.Current.DataFolder);
-            Directory.CreateDirectory(Path.Combine(Config.Current.DataFolder, Config.Current.ImageFolder));
 
             services.AddControllers()
                 .AddNewtonsoftJson(o =>
