@@ -94,10 +94,10 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
           <a @click="$router.push({ name: 'passwordreset' })" class="button-secondary button-password" :v-if="isMod || user.userId == myUserId">Zmeniť heslo</a>
         </div>
 
-        <div class="reading" v-if="user.currentlyReading?.length">
+        <div class="reading" v-if="userHasCurrentlyReading(user.userId)">
           <h3 class="reading-title">Právě čte:</h3>
           <ul class="reading-list">
-              <li v-for="review in user.currentlyReading" v-bind:key="review.ReviewId"><a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.bookTitle }}</strong></a></li>
+              <li v-for="review in usersCurrentlyReading(user.userId)" v-bind:key="review.ReviewId"><a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.bookTitle }}</strong></a></li>
           </ul>
         </div>
         <div  class="reading" v-else>
@@ -160,6 +160,7 @@ export default {
   computed: {
     ...mapGetters("context", ["myUserId", "isMod", "isMe"]),
     ...mapGetters("reviews", ["userReviews"]),
+    ...mapGetters("reviews", ["usersCurrentlyReading", "userHasCurrentlyReading"]),
     subscribedBasic: function () { return this.subscriptions.includes('basicevents'); },
     subscribedAll: function () { return this.subscriptions.includes('allevents'); },
   },
@@ -175,6 +176,7 @@ export default {
     ...mapActions("users", ["getUser", "updateUser"]),
     ...mapActions("recommendations", ["fetchRecommendationsFor"]),
     ...mapActions("reviews", ["fetchUserReviews"]),
+    ...mapActions("reviews", ["fetchCurrentlyReading"]),
     updateProfile() 
     {
       this.updateUser(this.editingUser)

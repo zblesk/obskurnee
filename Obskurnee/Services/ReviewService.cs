@@ -35,23 +35,9 @@ namespace Obskurnee.Services
             _db = db ?? throw new ArgumentNullException(nameof(db));
             _config = config ?? throw new ArgumentNullException(nameof(config));
         }
-
-        //public IEnumerable<UserInfo> GetAllUsersWithReading(bool includeCurrentlyReading = false)
-        //{
-        //    var users = GetAllUsers();
-        //    users.Wait();
-        //    foreach (var user in users.Result)
-        //    {
-        //        if (includeCurrentlyReading)
-        //        {
-        //            user.CurrentlyReading = _reviews.GetCurrentlyReading(user.UserId);
-        //        }
-        //        yield return user;
-        //    }
-        //}
-
-        public IList<GoodreadsReview> GetCurrentlyReading(string userId) 
-            => _db.GoodreadsReviews.Where(r => r.OwnerId == userId && r.Kind == CurrentlyReading).ToList();
+        
+        public Task<List<GoodreadsReview>> GetAllCurrentlyReading() 
+            => _db.GoodreadsReviews.Where(r => r.Kind == CurrentlyReading).ToListAsync();
 
         public async Task FetchReviewUpdates(Bookworm user)
         {

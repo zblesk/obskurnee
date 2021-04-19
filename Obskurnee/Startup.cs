@@ -45,15 +45,7 @@ namespace Obskurnee
                     o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                     o.SerializerSettings.Converters.Add(new StringEnumConverter());
                 });
-//                .AddJsonOptions(o =>
-//                {
-//                    o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-//                    o.JsonSerializerOptions.MaxDepth = 5;
-//                    o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-//#if DEBUG
-//                    o.JsonSerializerOptions.WriteIndented = true;
-//#endif
-//                });
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp";
@@ -135,12 +127,6 @@ namespace Obskurnee
 
             app.UseRouting();
             app.UseSpaStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, Config.Current.DataFolder, Config.Current.ImageFolder)),
-                RequestPath = "/images"
-            });
 
             app.UseAuthentication();
             app.UseAuthorization();

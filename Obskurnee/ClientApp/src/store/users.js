@@ -25,11 +25,6 @@ export default {
         {
           commit('setUsers', response.data);
           return Promise.resolve();
-        })
-        .catch(function (error)
-        {
-          console.log(error);
-          return Promise.resolve(error);
         });
     },
     async getUser({ dispatch, state }, email)
@@ -45,15 +40,9 @@ export default {
     async updateUser({ dispatch }, userData)
     {
       await axios.post("/api/users/" + userData.email, userData)
-        .then((response) =>
+        .then(() =>
         {
-          console.log(response.data);
           return Promise.resolve();
-        })
-        .catch(function (error)
-        {
-          console.log(error);
-          return Promise.resolve(error);
         });
       return dispatch('getUsers');
     }

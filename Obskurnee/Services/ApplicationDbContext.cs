@@ -24,6 +24,7 @@ namespace Obskurnee.Services
         public DbSet<Round> Rounds { get; set; }
         public DbSet<BookclubReview> BookReviews { get; set; }
         public DbSet<NewsletterSubscription> NewsletterSubscriptions { get; set; }
+        public DbSet<StoredImage> Images { get; set; }
 
         public IIncludableQueryable<Poll, List<Post>> PollsWithData
             => Polls.Include(p => p.Options);

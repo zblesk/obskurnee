@@ -4,19 +4,27 @@ export default {
     namespaced: true,
     state: {
       reviews: {},
+      currentlyReading: [],
     },
     getters: {
-      bookReviews: (state) => (bookId) => 
+      bookReviews: state => bookId => 
         Object.entries(state.reviews).filter((kvp) => kvp[1].book.bookId == bookId).map((kvp) => kvp[1]),
-      userReviews: (state) => (userId) => 
+      userReviews: state => userId => 
         Object.entries(state.reviews).filter((kvp) => kvp[1].ownerId == userId).map((kvp) => kvp[1]),
+      usersCurrentlyReading: state => userId => state.currentlyReading.filter(r => r.ownerId == userId),
+      userHasCurrentlyReading: state => userId => state.currentlyReading.some(r => r.ownerId == userId),
     },
     mutations: {
-      addReviews (state, reviews) {
+      addReviews (state, reviews) 
+      {
         for (let r of reviews)
         {
           state.reviews[r.reviewId] = r;
         }
+      },
+      setCurrentlyReading (state, currentlyReading) 
+      {
+        state.currentlyReading = currentlyReading;
       }
     },
     actions: {
@@ -26,6 +34,15 @@ export default {
           .get("/api/reviews/user/" + userId)
           .then(response => {
             commit('addReviews', response.data);
+            return Promise.resolve(response.data);
+          });
+      },
+      async fetchCurrentlyReading ({ commit }) 
+      {
+        return axios
+          .get("/api/reviews/currentlyreading")
+          .then(response => {
+            commit('setCurrentlyReading', response.data);
             return Promise.resolve(response.data);
           });
       },
@@ -47,6 +64,6 @@ export default {
             commit('addReviews', [ response.data ]);
             return Promise.resolve(Object.entries(state.reviews).filter((kvp) => kvp[1].book.bookId == bookId).map((kvp) => kvp[1]));
           });
-    }
+      }
   }
 }
