@@ -1,14 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
-using Obskurnee.Models;
 using Obskurnee.Services;
-using Obskurnee.ViewModels;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace Obskurnee.Controllers
 {
@@ -26,6 +20,7 @@ namespace Obskurnee.Controllers
 
         [HttpGet]
         [Route("{imageName}")]
+        [ResponseCache(Duration = 31536000, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> Get(string imageName)
         {
             var image = await _db.Images.FirstOrDefaultAsync(i => i.FileName == imageName);
