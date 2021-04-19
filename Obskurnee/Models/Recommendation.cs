@@ -11,7 +11,7 @@ namespace Obskurnee.Models
     public class Recommendation : HeaderData
     {
         [Key]
-        public int PostId { get; set; }
+        public int RecommendationId { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
         public string Text { get; set; }

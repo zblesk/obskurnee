@@ -41,7 +41,7 @@ namespace Obskurnee.Services
 
         public async Task<Recommendation> AddRec(Recommendation rec, string userId)
         {
-            rec.PostId = 0;
+            rec.RecommendationId = 0;
             rec.OwnerId = userId;
             _db.Recommendations.Add(rec);
             await _db.SaveChangesAsync();

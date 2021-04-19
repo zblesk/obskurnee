@@ -11,8 +11,8 @@ export default {
       setRecommendations (state, recommendations) {
         state.recommendations = recommendations;
       },
-      addPost (state, post) {
-        state.recommendations.unshift(post);
+      addRec (state, rec) {
+        state.recommendations.unshift(rec);
       }
     },
     actions: {
@@ -24,13 +24,13 @@ export default {
             commit('setRecommendations', response.data);
           });
       },
-      async newRecommendation({ commit }, newPost) 
+      async newRecommendation({ commit }, newRec) 
       {
         return axios.post(
             "/api/recommendations/",
-            newPost)
+            newRec)
           .then((response) => {
-            commit('addPost', response.data);
+            commit('addRec', response.data);
           });
     },
     async fetchRecommendationsFor({ dispatch, state }, userId)

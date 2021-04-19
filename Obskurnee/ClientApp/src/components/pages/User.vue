@@ -128,7 +128,7 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
 
     <h2 class="page-subtitle">{{ user.name }} doporučuje ke čtení</h2>
     <div v-if="myRecs && myRecs.length > 0" class="grid">
-        <recommendation-card v-bind:post="rec" :showName="false" v-for="rec in myRecs" v-bind:key="rec.postId" />
+        <recommendation-card v-bind:recommendation="rec" :showName="false" v-for="rec in myRecs" v-bind:key="rec.recommendationId" />
     </div>
     <p v-else class="recs-message">Zatiaľ tu nemáme žiadne odporúčania. <span v-if="user && isMe(user.userId)">Čo tak <router-link :to="{ name: 'recommendationlist' }">nejaké pridať?</router-link></span></p>
 

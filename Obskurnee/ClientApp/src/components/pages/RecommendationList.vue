@@ -7,8 +7,8 @@
     <div class="grid">
         <recommendation-card 
             v-for="rec in recommendations" 
-            v-bind:key="rec.postId" 
-            v-bind:post="rec" />
+            v-bind:key="rec.recommendationId" 
+            v-bind:recommendation="rec" />
     </div> 
 </section>
 </template>
