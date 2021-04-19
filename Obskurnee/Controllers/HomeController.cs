@@ -42,14 +42,18 @@ namespace Obskurnee.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-               return Json(new { Books = new[] { await _bookService.GetLatestBook() } });
+                return Json(new
+                {
+                    Books = new[] { await _bookService.GetLatestBook() },
+                    SiteName = Config.Current.SiteName,
+                });
             }
             return Json(new
             {
                 Books = await _bookService.GetBooksNewestFirst(),
                 Notice = _settingsService.GetSettingValue<string>(Setting.Keys.ModNoticeboard)?.RenderMarkdown(),
                 MyProfile = await _userService.GetUserByEmail(User.FindFirstValue(ClaimTypes.Email)),
-                SiteName = "",
+                SiteName = Config.Current.SiteName,
                 CurrentPoll = await _pollService.GetLatestOpen(),
                 CurrentDiscussion = await _discussionService.GetLatestOpen(),
             });

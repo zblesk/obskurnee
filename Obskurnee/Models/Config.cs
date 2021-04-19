@@ -34,6 +34,7 @@ namespace Obskurnee.Models
         public string GlobalCulture { get; set; }
         public int GoodreadsFetchIntervalMinutes { get; set; }
         public bool UseExternalFriendlyPasswordGenerator { get; set; }
+        public string SiteName { get; set; }
 
         public SigningCredentials SigningCreds { get; private set; }
     }

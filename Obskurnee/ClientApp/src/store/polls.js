@@ -6,8 +6,6 @@ export default {
     polls: [],
     votes: [],
   },
-  getters: {
-  },
   mutations: {
     setPoll(state, poll)
     {

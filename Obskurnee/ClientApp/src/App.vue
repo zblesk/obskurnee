@@ -16,16 +16,19 @@ import NavMenu from './components/NavMenu.vue'
 
 export default {
   name: 'App',
-  components: {
-      NavMenu
+  components: 
+  {
+    NavMenu
   },
-  created () {
-    this.restoreContext()
+  created () 
+  {
+    this.reloadSiteName();
+    this.restoreContext();
   },
-  methods: {
-    ...mapActions('context', [
-      'restoreContext'
-    ])
+  methods: 
+  {
+    ...mapActions('context', ['restoreContext']),
+    ...mapActions('global', ['reloadSiteName']),
   }
 }
 </script>

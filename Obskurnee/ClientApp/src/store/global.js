@@ -8,27 +8,45 @@ export default {
     noticeboardHtml: '',
     currentPoll: null,
     currentDiscussion: null,
+    siteName: 'Obskurnee',
   },
   mutations: {
     setHomeData(state, data)
     {
-        if (data.books.length) {
-            state.currentBook = data.books.shift();
-        }
-        state.noticeboardHtml = data.notice;
-        state.currentPoll = data.currentPoll;
-        state.currentDiscussion = data.currentDiscussion;
-        state.myProfile = data.myProfile;
+      if (data.books.length) {
+          state.currentBook = data.books.shift();
+      }
+      state.noticeboardHtml = data.notice;
+      state.currentPoll = data.currentPoll;
+      state.currentDiscussion = data.currentDiscussion;
+      state.myProfile = data.myProfile;
     },
+    setSiteName(state, siteName)
+    {
+      if (siteName)
+      {
+        window.localStorage.setItem('siteName', siteName);
+        state.siteName = siteName;
+      }
+    }
   },
   actions: {
-      loadHome({ commit }) 
+    loadHome({ commit }) 
+    {
+      return axios
+      .get('/api/home')
+      .then((response) => {
+          commit('setHomeData', response.data);
+          commit('setSiteName', response.data.siteName);
+      });
+    },
+    reloadSiteName({ commit })
+    {
+      const name = window.localStorage.getItem('siteName');
+      if (name)
       {
-        return axios
-        .get('/api/home')
-        .then((response) => {
-            commit('setHomeData', response.data);
-        });
+        commit('setSiteName', name);
       }
+    }
   }
 }

@@ -2,7 +2,7 @@
     <header>
         <div class="top-shelf">
             <div class="books-left"></div>
-            <h1 class="logo">Obskurní book club</h1>
+            <h1 class="logo">{{ siteName }}</h1>
             <div class="books-right"></div>
         </div>
 
@@ -227,7 +227,7 @@
 </style>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import LoginControl from "./LoginControl.vue";
 export default {
     name: "NavMenu",
@@ -238,7 +238,8 @@ export default {
         }
     },
     computed: {
-        ...mapGetters("context", ["isAuthenticated", "isMod"])
+        ...mapGetters("context", ["isAuthenticated", "isMod"]),
+        ...mapState("global", ["siteName"])
     },
     methods: {
         collapse() {
