@@ -129,9 +129,11 @@ export default {
       margin: 0 auto calc(var(--spacer) * 2) auto;
     }
 
-    .page-optional {
-      margin-left: calc(var(--spacer) * 2);
+    .page-bottom > div + div {
+      margin-right: calc(var(--spacer) * 2);
+    }
 
+    .page-optional {
       flex-grow: 1;
       flex-basis: 100%;
 
@@ -162,6 +164,11 @@ export default {
 
     .profile-info {
       margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .page-optional > div + div {
+      margin-top: calc(var(--spacer) * 2);
     }
 
   }
