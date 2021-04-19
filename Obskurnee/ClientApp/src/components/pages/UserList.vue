@@ -17,10 +17,11 @@
                 </router-link>
                 <div class="user-bio" v-html="user.aboutMeHtml"></div>
             </div>
-            <div class="reading" v-if="user.currentlyReading.length">
-                <h3 class="reading-title">Právě čte:</h3>
+
+            <div class="reading" v-if="userHasCurrentlyReading(user.userId)" >
+                <h3 class="reading-title">Práve číta:</h3>
                 <ul class="reading-list">
-                    <li v-for="review in user.currentlyReading" v-bind:key="review.ReviewId"><a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.bookTitle }}</strong></a></li>
+                    <li v-for="review in usersCurrentlyReading(user.userId)" v-bind:key="review.ReviewId"><a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.bookTitle }}</strong></a></li>
                 </ul>
             </div>
             <div  class="reading" v-else>
@@ -117,7 +118,7 @@
 
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 export default {
     name: "UserList",
     data() {
@@ -126,12 +127,15 @@ export default {
     },
     computed: {
         ...mapState("users", ["users"]),
+        ...mapGetters("reviews", ["usersCurrentlyReading", "userHasCurrentlyReading"]),
     },
     methods: {
         ...mapActions("users", ["getUsers"]),
+        ...mapActions("reviews", ["fetchCurrentlyReading"]),
     },
     mounted() {
         this.getUsers();
+        this.fetchCurrentlyReading();
     }
 }
 </script>

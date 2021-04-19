@@ -45,5 +45,11 @@ namespace Obskurnee.Controllers
                 reviewData.Rating,
                 reviewData.ReviewText,
                 reviewData.ReviewUrl);
+
+        [HttpGet]
+        [Route("currentlyreading")]
+        public Task<List<GoodreadsReview>> GetCurrentlyReadings()
+            => _reviews.GetAllCurrentlyReading();
+
     }
 }
