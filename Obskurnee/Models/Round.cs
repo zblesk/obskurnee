@@ -1,8 +1,7 @@
-﻿
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace Obskurnee.Models
 {
@@ -57,7 +56,6 @@ namespace Obskurnee.Models
         public Poll BookTiebreakerPoll { get; set; }
 
         public int? BookId { get; set; }
-
         public Book Book { get; set; }
 
         [InverseProperty("Round")]

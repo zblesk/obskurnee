@@ -1,9 +1,8 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace Obskurnee.Models
@@ -12,16 +11,11 @@ namespace Obskurnee.Models
     [Index(nameof(DiscussionId))]
     public class Post : HeaderData
     {
-        public record OriginalPostReference(Topic topic, int entityId);
-
         [Key]
         public int PostId { get; set; }
 
         public int DiscussionId { get; set; }
         public Discussion Discussion { get; set; }
-
-        [NotMapped] //todo
-        public OriginalPostReference OriginalPost { get; set; } = null;
 
         public string Title { get; set; }
         public string Author { get; set; }

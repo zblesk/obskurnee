@@ -67,10 +67,6 @@ export default {
         .then(() =>
         {
           dispatch('login', credentials);
-        })
-        .catch(err =>
-        {
-          console.log(err);
         });
     },
     passwordResetInit(_, email)

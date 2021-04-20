@@ -31,33 +31,39 @@ export default {
       }
     },
     actions: {
-      async fetchDiscussionList ({ commit }) {
+      async fetchDiscussionList ({ commit }) 
+      {
         return axios
           .get("/api/discussions/")
           .then(response => {
             commit('setDiscussions', response.data);
-          })
-          .catch(function (error) {
-            console.log(error);
           });
       },
-      async getDiscussionData({ commit }, discussionId) {
+      async getDiscussionData({ commit }, discussionId) 
+      {
         return axios
           .get("/api/discussions/" + discussionId)
           .then((response) => {
             commit('updateDiscussion', response.data);
-          })
-          .catch(function (error) {
-            console.log(error);
           });
       },
-      async newPost({ commit }, { discussionId, newPost }) {
+      async newPost({ commit }, { discussionId, newPost }) 
+      {
         return axios.post(
             "/api/discussions/" + discussionId,
             newPost)
           .then((response) => {
             commit('addPost', { discussionId: discussionId, post: response.data });
           });
-    }
+      },
+      async getDiscussionPost({ state, dispatch }, { discussionId, postId})
+      {
+        if (!state.discussions.some(d => d.discussionId == discussionId))
+        {
+          await dispatch('getDiscussionData', discussionId);
+        }
+        let discussion = state.discussions.find(d => d.discussionId == discussionId);
+        return Promise.resolve(discussion.posts.find(p => p.postId == postId));
+      }
   }
 }
