@@ -23,10 +23,13 @@ namespace Obskurnee.Models
         public int PageCount { get; set; }
         public string Url { get; set; }
 
+        public string ImageUrl { get; set; }
+
+        public int? ParentPostId { get; set; }
+        public int? ParentRecommendationId { get; set; }
+
         [NotMapped]
         public string RenderedText { get => Text.RenderMarkdown(); }
-
-        public string ImageUrl { get; set; }
 
         [JsonIgnore]
         public ICollection<Vote> Votes { get; set; }

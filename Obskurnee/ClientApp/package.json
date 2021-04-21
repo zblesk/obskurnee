@@ -11,6 +11,7 @@
     "@meforma/vue-toaster": "^1.2.2",
     "axios": "^0.20.0-0",
     "core-js": "^3.9.0",
+    "mitt": "^2.1.0",
     "vue": "^3.0.5",
     "vue-loader-v16": "npm:vue-loader@^16.0.0-alpha.3",
     "vue-router": "^4.0.4",

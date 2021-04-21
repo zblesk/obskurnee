@@ -5,7 +5,7 @@
   </div>
   <div v-else class="form">
     <div class="cover">
-      <img :src="newpost.imageUrl" v-if="newpost.imageUrl" :alt="newpost.title" />
+      <img :src="newPost.imageUrl" v-if="newPost.imageUrl" :alt="newPost.title" />
     </div>
     <div class="form-text">
       <div v-if="mode != 'Themes'" class="form-field">
@@ -16,24 +16,24 @@
           </div>
           <p class="note-text">Vlož odkaz, zmáčkni enter nebo tabulátor a chvíli počkej.</p>
         </div>
-        <input v-model="newpost.url" placeholder="https://www.goodreads.com/book..." @change="linkChange" id="grlink" />
+        <input v-model="newPost.url" placeholder="https://www.goodreads.com/book..." @change="linkChange" id="grlink" />
         <p v-if="fetchInProgress" class="alert-inline">Kamo počkaj, LOADUJEM</p>
       </div>
       <div class="cover-mobile">
-        <img :src="newpost.imageUrl" v-if="newpost.imageUrl" :alt="newpost.title" />
+        <img :src="newPost.imageUrl" v-if="newPost.imageUrl" :alt="newPost.title" />
       </div>
       <div class="form-field">
         <label for="name" v-if="mode == 'Books' || mode == 'Recommendations'">Název knihy*</label>
         <label for="name" v-if="mode == 'Themes'">Název tématu*</label>
-        <input v-model="newpost.title" id="name" required />
+        <input v-model="newPost.title" id="name" required />
       </div>
       <div class="form-field" v-if="mode != 'Themes'">
         <label for="author">Jméno autora*</label>
-        <input v-model="newpost.author" id="autor" required />
+        <input v-model="newPost.author" id="autor" required />
       </div>
       <div class="form-field" v-if="mode != 'Themes'">
         <label for="pages">Počet stran*</label>
-        <input type="number" v-model="newpost.pageCount" id="pages" required />
+        <input type="number" v-model="newPost.pageCount" id="pages" required />
       </div>
       <div class="form-field u-mb-0">
         
@@ -48,7 +48,7 @@
             </div>
           </div>
         </div>
-        <textarea v-model="newpost.text" id="text" required placeholder="Mozes pouzit Markdown na jednoduche formatovanie textu. Ak by si sa stratila, klikni na link hore.
+        <textarea v-model="newPost.text" id="text" required placeholder="Mozes pouzit Markdown na jednoduche formatovanie textu. Ak by si sa stratila, klikni na link hore.
 
 Medzi zaklady patri napriklad: 
 # Najvacsi nadpis
@@ -161,29 +161,32 @@ export default {
   emits: ['new-post'],
   data() {
     return {
-      newpost: {},
+      newPost: {},
       fetchInProgress: false,
       hide: true,
+      parentData: null,
     };
   },
   methods: {
     addPost() {
-      this.$emit('new-post', this.newpost);
-      this.newpost = {};
+      this.$emit('new-post', 
+        this.parentData
+        ? { ... this.newPost, ... this.parentData}
+        : this.newPost);
     },
     linkChange() {
-      if (!this.newpost.url 
-        || !this.newpost.url.startsWith("https://www.goodreads.com"))
+      if (!this.newPost.url 
+        || !this.newPost.url.startsWith("https://www.goodreads.com"))
       {
         return;
       }
       this.fetchInProgress = true;
       this.$notifyNormal("Nacitavam data");
         axios.get(
-          "/api/scrape/?goodreadsUrl=" + this.newpost.url)
+          "/api/scrape/?goodreadsUrl=" + this.newPost.url)
         .then((response) => {
-          this.newpost = response.data;
-          this.newpost.text = "\n\n## Popis na Goodreads: \n\n" + response.data.description;
+          this.newPost = response.data;
+          this.newPost.text = "\n\n## Popis na Goodreads: \n\n" + response.data.description;
           this.fetchInProgress = false;
           this.$notifyInfo("Nacitane");
         })
@@ -196,6 +199,17 @@ export default {
     {
       this.hide = !this.hide;
     }
-  }
+  },
+  mounted() { 
+    this.emitter.on("prefill-post", postData => {
+      this.newPost = postData.post;
+      this.parentData = postData.parentData;
+      this.hide = false;
+    });
+    this.emitter.on("clear-post", () => {
+      this.newPost = {};
+      this.parentData = null;
+    });
+  },
 }
 </script>

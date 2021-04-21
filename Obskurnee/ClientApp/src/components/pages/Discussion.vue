@@ -70,6 +70,7 @@ export default {
     {
       const onErr = this.$notifyError;
       this.newPost({ discussionId: this.discussion.discussionId, newPost: post })
+          .then(() => this.emitter.emit('clear-post'))
           .catch(function (error) {
             console.log(error);
             onErr("Nepodarilo sa pridať príspevok");
@@ -82,7 +83,7 @@ export default {
       if (query.fromDiscussionId && query.fromPostId)
       {
         let post = await this.getDiscussionPost({ discussionId: query.fromDiscussionId, postId: query.fromPostId });
-        this.$emit('prefill-post', post);
+        this.emitter.emit('prefill-post', { post, parentData: { parentPostId: query.fromPostId } });
       }
     }
   },

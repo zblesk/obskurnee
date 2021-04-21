@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import axios from "axios";
 import Toaster from '@meforma/vue-toaster';
+import mitt from 'mitt';
 
 axios.interceptors.request.use(request => {
     if (store.state.context.jwtToken) {
@@ -12,7 +13,7 @@ axios.interceptors.request.use(request => {
     return request;
   });
 
-createApp(App)
+const app = createApp(App)
   .use(router)
   .use(store)
   .use(Toaster)
@@ -24,7 +25,9 @@ createApp(App)
       this.$notifyNormal = (text) => this.$toast.show(text.toString(), opts);
       this.$notifyInfo = (text) => this.$toast.info(text.toString(), opts);
     }
-  })
-  .mount('#app');
+  });
+const emitter = mitt();
+app.config.globalProperties.emitter = emitter;
+app.mount('#app');
 
 store.dispatch("users/getUsers");

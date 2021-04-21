@@ -36,14 +36,14 @@ namespace Obskurnee.Services
 
 
         public Task<List<Discussion>> GetAll()
-            => (from discussion in _db.Discussions
+            => (from discussion in _db.Discussions.AsNoTracking()
                 orderby discussion.CreatedOn descending
                 select discussion)
                 .ToListAsync();
 
         public async Task<Post> NewPost(int discussionId, Post post)
         {
-            var discussion = _db.Discussions.First(d => d.DiscussionId == discussionId);
+            var discussion = _db.Discussions.AsNoTracking().First(d => d.DiscussionId == discussionId);
             if (discussion.IsClosed)
             {
                 throw new Exception(_localizer["discussionClosed"]);
@@ -90,9 +90,11 @@ namespace Obskurnee.Services
         }
 
         public async Task<Discussion> GetWithPosts(int discussionId) 
-            => await _db.Discussions.Include(d => d.Posts).FirstOrDefaultAsync(d => d.DiscussionId == discussionId);
+            => await _db.Discussions.AsNoTracking()
+            .Include(d => d.Posts).FirstOrDefaultAsync(d => d.DiscussionId == discussionId);
 
         public async Task<Discussion> GetLatestOpen()
-            => await _db.Discussions.Where(d => !d.IsClosed).OrderByDescending(d => d.DiscussionId).FirstOrDefaultAsync();
+            => await _db.Discussions.AsNoTracking()
+            .Where(d => !d.IsClosed).OrderByDescending(d => d.DiscussionId).FirstOrDefaultAsync();
     }
 }
