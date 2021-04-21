@@ -152,7 +152,12 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
 import axios from "axios";
 export default {
   name: "BookPost",
-  props: ['mode'],
+  props: {
+    mode: {
+      type: String,
+      required: true,
+    },
+  },
   emits: ['new-post'],
   data() {
     return {

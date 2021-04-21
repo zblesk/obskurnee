@@ -43,14 +43,21 @@ export default {
     ...mapState("discussions", ["discussions"]),
     discussion: function () { return this.discussions.find(d => d.discussionId == this.$route.params.discussionId) ?? { posts: [] }; },
   },
+  watch: {
+    '$route' (to) {
+      if (to.name == 'discussion')
+      {
+        this.onLoad();
+      }
+    }
+  },
   methods: {
-    ...mapActions("discussions", ["getDiscussionData", "newPost"]),
+    ...mapActions("discussions", ["getDiscussionData", "newPost", "getDiscussionPost"]),
     closeDiscussion() 
     {
         axios.post(
           "/api/rounds/close-discussion/" + this.$route.params.discussionId)
         .then((response) => {
-          console.log(response.data);
             this.pollId = response.data.discussion.pollId;
             this.IsClosed = true;
             this.$router.push({ name: "poll", params: { pollId: this.pollId} });
@@ -68,9 +75,19 @@ export default {
             onErr("Nepodarilo sa pridať príspevok");
           });
     },
+    async onLoad()
+    {
+      this.getDiscussionData(this.$route.params.discussionId);
+      let query = this.$route.query;
+      if (query.fromDiscussionId && query.fromPostId)
+      {
+        let post = await this.getDiscussionPost({ discussionId: query.fromDiscussionId, postId: query.fromPostId });
+        this.$emit('prefill-post', post);
+      }
+    }
   },
   mounted() {
-    this.getDiscussionData(this.$route.params.discussionId);//.then(r => console.log(r));
+    this.onLoad();
   },
 };
 </script>
