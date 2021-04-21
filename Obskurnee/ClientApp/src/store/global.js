@@ -10,6 +10,10 @@ export default {
     currentDiscussion: null,
     siteName: 'Obskurnee',
   },
+  getters: {
+    isRepostingAllowed: state => state?.currentDiscussion?.topic == 'Books',
+    activeDiscussionId: state => state?.currentDiscussion?.discussionId,
+  },
   mutations: {
     setHomeData(state, data)
     {

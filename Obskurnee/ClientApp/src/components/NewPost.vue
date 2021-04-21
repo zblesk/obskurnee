@@ -209,6 +209,7 @@ export default {
     this.emitter.on("clear-post", () => {
       this.newPost = {};
       this.parentData = null;
+      this.hide = true;
     });
   },
 }

@@ -5,8 +5,6 @@ export default {
     state: {
       discussions: [],
     },
-    getters: {
-    },
     mutations: {
         setDiscussions (state, discussions) {
           state.discussions = discussions;
