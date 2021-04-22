@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Obskurnee
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -33,7 +33,7 @@ namespace Obskurnee
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Information)
+                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Debug)
                 .WriteTo.RollingFile(Path.Join("logs", "events.log"))
                 .WriteTo.Console()
                 .CreateLogger();

@@ -46,10 +46,7 @@ namespace Obskurnee
                     o.SerializerSettings.Converters.Add(new StringEnumConverter());
                 });
 
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "ClientApp";
-            });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp"; });
 
             Configuration.Bind(Config.Current);
 
@@ -148,6 +145,11 @@ namespace Obskurnee
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSerilogRequestLogging();
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp/";
+            });
 
             app.UseEndpoints(endpoints =>
             {
