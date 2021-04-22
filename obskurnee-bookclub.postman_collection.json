@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "73aa4586-f603-4a86-aac2-81a5dca94111",
 		"name": "obskurnee-bookclub",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -12,14 +12,23 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"email\":\"ferko3@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
+					"raw": "{\"email\":\"janka@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "{{base_url}}api/accounts/register"
+				"url": {
+					"raw": "{{base_url}}api/accounts/register",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"accounts",
+						"register"
+					]
+				}
 			},
 			"response": []
 		},
@@ -40,7 +49,17 @@
 						}
 					}
 				},
-				"url": "{{base_url}}api/admin/makemod/dva@dfdf.xx"
+				"url": {
+					"raw": "{{base_url}}api/admin/makemod/dva@dfdf.xx",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"admin",
+						"makemod",
+						"dva@dfdf.xx"
+					]
+				}
 			},
 			"response": []
 		},
@@ -58,7 +77,16 @@
 						}
 					}
 				},
-				"url": "{{base_url}}api/accounts/login"
+				"url": {
+					"raw": "{{base_url}}api/accounts/login",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"accounts",
+						"login"
+					]
+				}
 			},
 			"response": []
 		},
@@ -79,7 +107,16 @@
 						}
 					}
 				},
-				"url": "{{base_url}}api/accounts/context"
+				"url": {
+					"raw": "{{base_url}}api/accounts/context",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"accounts",
+						"context"
+					]
+				}
 			},
 			"response": []
 		},
@@ -88,7 +125,16 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "{{base_url}}api/discussions/"
+				"url": {
+					"raw": "{{base_url}}api/discussions/",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"discussions",
+						""
+					]
+				}
 			},
 			"response": []
 		},
@@ -97,7 +143,15 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "{{base_url}}api/rounds"
+				"url": {
+					"raw": "{{base_url}}api/rounds",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"rounds"
+					]
+				}
 			},
 			"response": []
 		},
@@ -106,7 +160,15 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "{{base_url}}api/books"
+				"url": {
+					"raw": "{{base_url}}api/books",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"books"
+					]
+				}
 			},
 			"response": []
 		},
@@ -115,7 +177,33 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "{{base_url}}api/polls/1"
+				"url": {
+					"raw": "{{base_url}}api/polls/1",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"polls",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get rounds",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}api/books",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"books"
+					]
+				}
 			},
 			"response": []
 		},
@@ -133,7 +221,15 @@
 						}
 					}
 				},
-				"url": "{{base_url}}api/rounds"
+				"url": {
+					"raw": "{{base_url}}api/rounds",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"rounds"
+					]
+				}
 			},
 			"response": []
 		},
@@ -145,7 +241,17 @@
 				},
 				"method": "GET",
 				"header": [],
-				"url": "{{base_url}}api/accounts/passwordreset/janka@bookclub.gov"
+				"url": {
+					"raw": "{{base_url}}api/accounts/passwordreset/janka@bookclub.gov",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"accounts",
+						"passwordreset",
+						"janka@bookclub.gov"
+					]
+				}
 			},
 			"response": []
 		},
@@ -166,7 +272,18 @@
 						}
 					}
 				},
-				"url": "{{base_url}}api/accounts/passwordreset/6011d40a19901d0335d46e1d/CfDJ8Id7Ea6mKDBNkxa8ptv8Et0uC%2f07rWJ0vscuPnCSMSCrzyvsN8p4PNp5voM9MJ72tz4WcM1O9nJ%2f7gRZ1JMqWRf7kkqI9iSjLcS6AFhooKzJlo5AyouCIZ6QnGJYUw7gf7WfLyicQNpiOvCvvjMRODbfw2CKtDRDVa4a%2fQlui0BmFTQDXinbMiTYwLbc0PMTT0NJTsYHQwxiy7Ub2p7V3ccv0udYuj3C81rlgPJHrFxy"
+				"url": {
+					"raw": "{{base_url}}api/accounts/passwordreset/6011d40a19901d0335d46e1d/CfDJ8Id7Ea6mKDBNkxa8ptv8Et0uC%2f07rWJ0vscuPnCSMSCrzyvsN8p4PNp5voM9MJ72tz4WcM1O9nJ%2f7gRZ1JMqWRf7kkqI9iSjLcS6AFhooKzJlo5AyouCIZ6QnGJYUw7gf7WfLyicQNpiOvCvvjMRODbfw2CKtDRDVa4a%2fQlui0BmFTQDXinbMiTYwLbc0PMTT0NJTsYHQwxiy7Ub2p7V3ccv0udYuj3C81rlgPJHrFxy",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"accounts",
+						"passwordreset",
+						"6011d40a19901d0335d46e1d",
+						"CfDJ8Id7Ea6mKDBNkxa8ptv8Et0uC%2f07rWJ0vscuPnCSMSCrzyvsN8p4PNp5voM9MJ72tz4WcM1O9nJ%2f7gRZ1JMqWRf7kkqI9iSjLcS6AFhooKzJlo5AyouCIZ6QnGJYUw7gf7WfLyicQNpiOvCvvjMRODbfw2CKtDRDVa4a%2fQlui0BmFTQDXinbMiTYwLbc0PMTT0NJTsYHQwxiy7Ub2p7V3ccv0udYuj3C81rlgPJHrFxy"
+					]
+				}
 			},
 			"response": []
 		},
@@ -175,7 +292,15 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "{{base_url}}api/home"
+				"url": {
+					"raw": "{{base_url}}api/home",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"home"
+					]
+				}
 			},
 			"response": []
 		},
@@ -187,7 +312,15 @@
 				},
 				"method": "GET",
 				"header": [],
-				"url": "{{base_url}}api/home"
+				"url": {
+					"raw": "{{base_url}}api/home",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"home"
+					]
+				}
 			},
 			"response": []
 		},
@@ -196,7 +329,15 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "{{base_url}}api/users"
+				"url": {
+					"raw": "{{base_url}}api/users",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"users"
+					]
+				}
 			},
 			"response": []
 		},
@@ -205,7 +346,16 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "{{base_url}}api/users/"
+				"url": {
+					"raw": "{{base_url}}api/users/",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"users",
+						""
+					]
+				}
 			},
 			"response": []
 		},
@@ -214,9 +364,13 @@
 			"request": {
 				"auth": {
 					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjYwMTg0Zjc2MmRlNDBjMGQxNDVkMjY3YyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJmZXJrbyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImZlcmtvQGJvb2tjbHViLmdvdiIsIkFzcE5ldC5JZGVudGl0eS5TZWN1cml0eVN0YW1wIjoiQTJMMkNERUVSMkxCS01IRE9CQlNWWkdJWElUUFdDQVYiLCJtb2RlcmF0b3IiOiJ0cnVlIiwiZXhwIjoxNjI4NjIyMDU5LCJpc3MiOiJvYnNrdXJuZWUiLCJhdWQiOiJvYnNrdXJuZWUifQ.tRJ-BX-hgtfUcpWT-K3ilKAbTlFMH8g9wINPOGw8nVE"
-					}
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjYwMTg0Zjc2MmRlNDBjMGQxNDVkMjY3YyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJmZXJrbyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImZlcmtvQGJvb2tjbHViLmdvdiIsIkFzcE5ldC5JZGVudGl0eS5TZWN1cml0eVN0YW1wIjoiQTJMMkNERUVSMkxCS01IRE9CQlNWWkdJWElUUFdDQVYiLCJtb2RlcmF0b3IiOiJ0cnVlIiwiZXhwIjoxNjI4NjIyMDU5LCJpc3MiOiJvYnNrdXJuZWUiLCJhdWQiOiJvYnNrdXJuZWUifQ.tRJ-BX-hgtfUcpWT-K3ilKAbTlFMH8g9wINPOGw8nVE",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
@@ -229,7 +383,16 @@
 						}
 					}
 				},
-				"url": "{{base_url}}api/admin/createuser"
+				"url": {
+					"raw": "{{base_url}}api/admin/createuser",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"admin",
+						"createuser"
+					]
+				}
 			},
 			"response": []
 		},
@@ -238,7 +401,16 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "{{base_url}}api/newsletters/"
+				"url": {
+					"raw": "{{base_url}}api/newsletters/",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"newsletters",
+						""
+					]
+				}
 			},
 			"response": []
 		},
@@ -247,7 +419,17 @@
 			"request": {
 				"method": "POST",
 				"header": [],
-				"url": "{{base_url}}api/newsletters/ahoje1/subscribe"
+				"url": {
+					"raw": "{{base_url}}api/newsletters/basicevents/subscribe",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"newsletters",
+						"basicevents",
+						"subscribe"
+					]
+				}
 			},
 			"response": []
 		},
@@ -256,7 +438,17 @@
 			"request": {
 				"method": "POST",
 				"header": [],
-				"url": "{{base_url}}api/newsletters/ahoj1/unsubscribe"
+				"url": {
+					"raw": "{{base_url}}api/newsletters/allevents/unsubscribe",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"newsletters",
+						"allevents",
+						"unsubscribe"
+					]
+				}
 			},
 			"response": []
 		},
@@ -265,7 +457,16 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "{{base_url}}api/newsletters/all"
+				"url": {
+					"raw": "{{base_url}}api/newsletters/all",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"newsletters",
+						"all"
+					]
+				}
 			},
 			"response": []
 		},
@@ -274,16 +475,73 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "{{base_url}}api/recommendations"
+				"url": {
+					"raw": "{{base_url}}api/recommendations",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"recommendations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register first admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"janka@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/accounts/registerfirstadmin",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"accounts",
+						"registerfirstadmin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make backup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}api/admin/createbackup",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"admin",
+						"createbackup"
+					]
+				}
 			},
 			"response": []
 		}
 	],
 	"auth": {
 		"type": "bearer",
-		"bearer": {
-			"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2MDE5Yzk4MGE2NmZiZjAwMzljNjgyOGUiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiamFua2EiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJqYW5rYUBib29rY2x1Yi5nb3YiLCJBc3BOZXQuSWRlbnRpdHkuU2VjdXJpdHlTdGFtcCI6IlhMSlo3RVBRWTdBQVlYWEhGRVhXU1VVWDNIN1VGSzRXIiwibW9kZXJhdG9yIjoidHJ1ZSIsImFkbWluIjoidHJ1ZSIsImV4cCI6MTYyODcxODcyMCwiaXNzIjoib2Jza3VybmVlIiwiYXVkIjoib2Jza3VybmVlIn0.ht4NbiIhSoVCjCFAoiIbtKSiEToMSnuaROs6pZl6uII"
-		}
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiJmNGU1YTk4MS1mMzQ1LTQ2NWQtYjI4My0xMTE0MTI0NGNhY2QiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiamFua2EiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJqYW5rYUBib29rY2x1Yi5nb3YiLCJBc3BOZXQuSWRlbnRpdHkuU2VjdXJpdHlTdGFtcCI6IjI0T0NaREJHUlpOQ0pYTURGSTRaWEYzTjQyNUk1T1RFIiwibW9kZXJhdG9yIjoidHJ1ZSIsImFkbWluIjoidHJ1ZSIsImV4cCI6MTYzNDcyMDg4MywiaXNzIjoib2Jza3VybmVlIiwiYXVkIjoib2Jza3VybmVlIn0.rXNV_eokLr41241h0HHem_9je8GY1IJxHc6LPrWORJ4",
+				"type": "string"
+			}
+		]
 	},
 	"event": [
 		{

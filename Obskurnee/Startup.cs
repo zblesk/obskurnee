@@ -36,7 +36,7 @@ namespace Obskurnee
             IServiceCollection services)
         {
             Config.Current = new Config();
-            Directory.CreateDirectory(Config.Current.DataFolder);
+            Directory.CreateDirectory(Config.DataFolder);
 
             services.AddControllers()
                 .AddNewtonsoftJson(o =>
@@ -64,6 +64,7 @@ namespace Obskurnee
             services.AddTransient<RecommendationService>();
             services.AddTransient<MatrixService>();
             services.AddTransient<ReviewService>();
+            services.AddTransient<BackupService>();
             services.AddHostedService<FeedFetcherService>();
 
             services.AddDbContext<ApplicationDbContext>(options =>

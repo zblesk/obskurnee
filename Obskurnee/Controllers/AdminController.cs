@@ -23,12 +23,14 @@ namespace Obskurnee.Controllers
         private readonly IMailerService _mailer;
         private static readonly Random _random = new Random();
         private readonly Config _config;
+        private readonly BackupService _backup;
 
         public AdminController(
             ILogger<AdminController> logger,
             SettingsService settings,
             UserService users,
             IMailerService mailer,
+            BackupService backup,
             Config config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -36,6 +38,7 @@ namespace Obskurnee.Controllers
             _users = users ?? throw new ArgumentNullException(nameof(users));
             _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
             _config = config ?? throw new ArgumentNullException(nameof(config));
+            _backup = backup ?? throw new ArgumentNullException(nameof(backup));
         }
 
         [HttpGet]
@@ -92,5 +95,9 @@ namespace Obskurnee.Controllers
         [HttpPost("makemod/{email}")]
         public async Task MakeModerator(string email)
             => await _users.MakeModerator(email);
+
+        [HttpPost("createbackup")]
+        public Task CreateBackup()
+            => _backup.CreateBackup($"obskurnee.{DateTime.Now.ToString("yyyyMMdd_hhmmss")}.db");
     }
 }
