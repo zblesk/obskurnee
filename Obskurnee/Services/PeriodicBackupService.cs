@@ -29,7 +29,7 @@ namespace Obskurnee.Services
                 backupIntervalHours);
             _timer = new Timer(MakeBackup,
                 null,
-                TimeSpan.Zero,
+                TimeSpan.FromHours(backupIntervalHours),
                 TimeSpan.FromHours(backupIntervalHours));
             return Task.CompletedTask;
         }
