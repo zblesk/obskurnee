@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Converters;
 using Obskurnee.Hubs;
+using Microsoft.AspNetCore.SpaServices;
 
 namespace Obskurnee
 {
@@ -152,16 +153,18 @@ namespace Obskurnee
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<EventHub>("/hubs/events");
-            });
-            Log.Information("Setting up for environment {env}", env.EnvironmentName);
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp/";
                 if (env.IsDevelopment())
                 {
-                    spa.UseVueCli(npmScript: "serve");
+                    endpoints.MapToVueCliProxy(
+                        "{*path}",
+                        new SpaOptions { SourcePath = "ClientApp" },
+                        npmScript: (System.Diagnostics.Debugger.IsAttached) ? "serve" : null,
+                        regex: "Compiled successfully",
+                        forceKill: true,
+                        wsl: false);
                 }
             });
+            Log.Information("Setting up for environment {env}", env.EnvironmentName);
 
             userService.LoadUsernameCache();
             lifetime.ApplicationStarted.Register(() => 

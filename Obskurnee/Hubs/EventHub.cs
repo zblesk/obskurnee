@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using Obskurnee.Models;
 using System.Threading.Tasks;
 
@@ -9,6 +10,7 @@ namespace Obskurnee.Hubs
         Task DiscussionChanged(Discussion discussion);
     }
 
+    [AllowAnonymous]
     public class EventHub : Hub<IEventHub>
     {
     }
