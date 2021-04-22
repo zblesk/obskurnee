@@ -6,6 +6,7 @@ import axios from "axios";
 import Toaster from '@meforma/vue-toaster';
 import mitt from 'mitt';
 import EventHub from './eventHub';
+import i18n from './locales';
 
 axios.interceptors.request.use(request => {
     if (store.state.context.jwtToken) {
@@ -14,7 +15,9 @@ axios.interceptors.request.use(request => {
     return request;
   });
 
+
 const app = createApp(App)
+  .use(i18n)
   .use(router)
   .use(store)
   .use(Toaster)

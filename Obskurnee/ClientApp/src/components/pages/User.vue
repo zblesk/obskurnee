@@ -94,6 +94,8 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
           <a @click="$router.push({ name: 'passwordreset' })" class="button-secondary button-password" :v-if="isMod || user.userId == myUserId">Zmeniť heslo</a>
         </div>
 
+        <language-selector v-if="isMe(user.userId)"></language-selector>
+
         <div class="reading" v-if="userHasCurrentlyReading(user.userId)">
           <h3 class="reading-title">Právě čte:</h3>
           <ul class="reading-list">
@@ -145,8 +147,9 @@ import { mapActions, mapGetters } from "vuex";
 import axios from 'axios';
 import RecommendationCard from '../RecommendationCard.vue';
 import UsersReviewCard from '../UsersReviewCard.vue';
+import LanguageSelector from '../LanguageSelector.vue';
 export default {
-  components: { RecommendationCard, UsersReviewCard },
+  components: { RecommendationCard, UsersReviewCard, LanguageSelector },
   name: 'User',
   data() {
       return {

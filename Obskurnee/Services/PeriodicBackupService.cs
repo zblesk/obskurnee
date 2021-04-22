@@ -13,7 +13,7 @@ namespace Obskurnee.Services
         private readonly ILogger<PeriodicBackupService> _logger;
         private Timer _timer;
         private readonly IServiceScopeFactory _scopeFactory;
-        private const int backupIntervalHours = 1;
+        private const int backupIntervalHours = 24;
 
         public PeriodicBackupService(
             ILogger<PeriodicBackupService> logger,

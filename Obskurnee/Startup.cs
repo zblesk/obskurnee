@@ -70,7 +70,6 @@ namespace Obskurnee
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("SqliteConnection")));
-            
 
             switch (Config.Current.MailerType)
             {
@@ -127,6 +126,13 @@ namespace Obskurnee
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+            app.UseCors(builder =>
+            {
+                builder.WithOrigins(Config.Current.BaseUrl, Config.Current.Urls)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
             });
 
             app.UseAuthentication();
