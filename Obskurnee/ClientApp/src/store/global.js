@@ -32,7 +32,11 @@ export default {
         window.localStorage.setItem('siteName', siteName);
         state.siteName = siteName;
       }
-    }
+    },
+    setCurrentDiscussion(state, discussion)
+    {
+      state.currentDiscussion = discussion;
+    },
   },
   actions: {
     loadHome({ commit }) 

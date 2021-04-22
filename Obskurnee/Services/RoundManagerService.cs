@@ -1,6 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using Obskurnee.Hubs;
 using Obskurnee.Models;
 using Obskurnee.ViewModels;
 using System;
@@ -20,6 +22,7 @@ namespace Obskurnee.Services
         private readonly IStringLocalizer<Strings> _localizer;
         private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
         private readonly Config _config;
+        private readonly IHubContext<EventHub, IEventHub> _eventHub;
 
         public RoundManagerService(
             ILogger<RoundManagerService> logger,
@@ -28,6 +31,7 @@ namespace Obskurnee.Services
             NewsletterService newsletter,
             IStringLocalizer<Strings> localizer,
             IStringLocalizer<NewsletterStrings> newsletterLocalizer,
+            IHubContext<EventHub, IEventHub> eventHub,
             Config config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -37,6 +41,7 @@ namespace Obskurnee.Services
             _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
             _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
             _config = config ?? throw new ArgumentNullException(nameof(config));
+            _eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
         }
 
         public async Task<IList<Round>> AllRounds()
@@ -82,6 +87,7 @@ namespace Obskurnee.Services
             _db.Rounds.Update(round);
             await _db.SaveChangesAsync();
             await SendNewDiscussionNotification(discussion);
+            await _eventHub.Clients.All.DiscussionChanged(discussion);
             return round;
         }
 
@@ -129,6 +135,7 @@ namespace Obskurnee.Services
                 await _db.SaveChangesAsync();
                 await _db.Database.CommitTransactionAsync();
                 await SendNewPollNotification(poll);
+                await _eventHub.Clients.All.DiscussionChanged(null);
             }
             catch
             {
@@ -177,6 +184,7 @@ namespace Obskurnee.Services
                             round.BookDiscussionId = result.Discussion.DiscussionId;
                             poll.FollowupLink = new Poll.FollowupReference(Poll.LinkKind.Discussion, result.Discussion.DiscussionId);
                             await SendNewDiscussionNotification(result.Discussion);
+                            await _eventHub.Clients.All.DiscussionChanged(result.Discussion);
                             break;
                     }
                 }

@@ -18,6 +18,7 @@ const app = createApp(App)
   .use(router)
   .use(store)
   .use(Toaster)
+  .use(EventHub)
   .mixin({
     created(){
       let opts = { position: "bottom-right" };
@@ -29,7 +30,6 @@ const app = createApp(App)
   });
 const emitter = mitt();
 app.config.globalProperties.emitter = emitter;
-app.use(EventHub);
 app.mount('#app');
 
 store.dispatch("users/getUsers");

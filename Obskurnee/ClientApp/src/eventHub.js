@@ -23,10 +23,7 @@ export default {
         connection.onclose(() => start());
         
         connection.on('DiscussionChanged', (data) => {
-            console.log("New hub data!", data);
-            console.log(Vue.config);
             this.onDiscussionChanged(data);
-            //
         })
 
         start();
