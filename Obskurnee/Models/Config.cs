@@ -32,7 +32,7 @@ namespace Obskurnee.Models
         public string PasswordGenerationChars { get; set; }
         public string GoodreadsRssBaseUrl { get; set; }
         public string GoodreadsProfielUrlPrevix { get; set; }
-        public string GlobalCulture { get; set; }
+        public string DefaultCulture { get; set; }
         public int GoodreadsFetchIntervalMinutes { get; set; }
         public bool UseExternalFriendlyPasswordGenerator { get; set; }
         public string SiteName { get; set; }

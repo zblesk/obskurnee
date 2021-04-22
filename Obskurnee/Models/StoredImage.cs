@@ -6,10 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Obskurnee.Models
 {
     [Table("Images")]
-    public class StoredImage //: HeaderData
+    public class StoredImage
     {
-        //public StoredImage(string ownerId) : base(ownerId) { }
-
         [Key]
         public string FileName { get; set; }
         public byte[] FileContents { get; set; }

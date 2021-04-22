@@ -95,16 +95,16 @@ namespace Obskurnee
                 {
                     var supportedCultures = new[]
                     {
-                        new CultureInfo(Config.Current.GlobalCulture)
+                        new CultureInfo(Config.Current.DefaultCulture)
                     };
 
-                    options.DefaultRequestCulture = new RequestCulture(culture: Config.Current.GlobalCulture, uiCulture: Config.Current.GlobalCulture);
+                    options.DefaultRequestCulture = new RequestCulture(culture: Config.Current.DefaultCulture, uiCulture: Config.Current.DefaultCulture);
                     options.SupportedCultures = supportedCultures;
                     options.SupportedUICultures = supportedCultures;
 
                     options.AddInitialRequestCultureProvider(
                         new CustomRequestCultureProvider(
-                            _ => Task.FromResult(new ProviderCultureResult(Config.Current.GlobalCulture))));
+                            _ => Task.FromResult(new ProviderCultureResult(Config.Current.DefaultCulture))));
                 });
             services.AddSignalR()
                 .AddNewtonsoftJsonProtocol(options =>

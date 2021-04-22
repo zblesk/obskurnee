@@ -84,6 +84,7 @@ namespace Obskurnee.Services
             {
                 UserName = creds.Email.Substring(0, creds.Email.IndexOf('@')),
                 Email = creds.Email,
+                Language = _config.DefaultCulture,
             };
             _logger.LogInformation("Registering user {email}", user.Email);
             var result = await _userManager.CreateAsync(user, creds.Password);
