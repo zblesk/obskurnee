@@ -72,7 +72,7 @@ namespace Obskurnee
                     Configuration.GetConnectionString("SqliteConnection")));
             
 
-            switch (Configuration["MailerType"])
+            switch (Config.Current.MailerType)
             {
                 case "mailgun":
                     services.AddTransient<IMailerService, MailgunMailerService>();
@@ -82,6 +82,11 @@ namespace Obskurnee
                     break;
                 default:
                     throw new ConfigurationErrorsException($"Invalid mailer type: {Configuration["MailerType"]}");
+            }
+
+            if (Config.Current.EnablePeriodicBackup)
+            {
+                services.AddHostedService<PeriodicBackupService>();
             }
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");

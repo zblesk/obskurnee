@@ -27,6 +27,7 @@ namespace Obskurnee.Models
         public string Urls { get; set; }
         public SymmetricSecurityKey SecurityKey { get; private set; }
         public string BaseUrl { get => (_baseUrl ?? "").Trim().TrimEnd('/'); set => _baseUrl = value; }
+        public string MailerType { get; set; }
         public int DefaultPasswordMinLength { get; set; }
         public string PasswordGenerationChars { get; set; }
         public string GoodreadsRssBaseUrl { get; set; }
@@ -35,6 +36,7 @@ namespace Obskurnee.Models
         public int GoodreadsFetchIntervalMinutes { get; set; }
         public bool UseExternalFriendlyPasswordGenerator { get; set; }
         public string SiteName { get; set; }
+        public bool EnablePeriodicBackup { get; set; }
 
         public SigningCredentials SigningCreds { get; private set; }
     }

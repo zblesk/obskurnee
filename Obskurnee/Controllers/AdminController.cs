@@ -98,6 +98,6 @@ namespace Obskurnee.Controllers
 
         [HttpPost("createbackup")]
         public Task CreateBackup()
-            => _backup.CreateBackup($"obskurnee.{DateTime.Now.ToString("yyyyMMdd_hhmmss")}.db");
+            => _backup.CreateBackup();
     }
 }

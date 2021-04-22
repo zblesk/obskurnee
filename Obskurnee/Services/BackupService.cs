@@ -22,8 +22,12 @@ namespace Obskurnee.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public Task CreateBackup(string filename)
+        public Task CreateBackup(string filename = null)
         {
+            if (string.IsNullOrWhiteSpace(filename))
+            {
+                filename = $"obskurnee.{DateTime.Now.ToString("yyyyMMdd_hhmmss")}.db";
+            }
             var dir = Path.Combine(Config.DataFolder, Config.BackupFolder);
             if (!Directory.Exists(dir))
             {

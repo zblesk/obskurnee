@@ -28,7 +28,7 @@ namespace Obskurnee.Services
         {
             using var scope = _scopeFactory.CreateScope();
             var config = (Config)scope.ServiceProvider.GetService(typeof(Config));
-            _logger.LogInformation("Feed fetcher service started. Fetch interval: {min} minutes",
+            _logger.LogInformation("Feed Fetcher Service started. Fetch interval: {min} minutes",
                 config.GoodreadsFetchIntervalMinutes);
             _timer = new Timer(FetchFeeds,
                 null,
@@ -70,7 +70,7 @@ namespace Obskurnee.Services
 
         public Task StopAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Timed Hosted Service is stopping.");
+            _logger.LogInformation("Feed Fetcher Service is stopping.");
 
             _timer?.Change(Timeout.Infinite, 0);
 
