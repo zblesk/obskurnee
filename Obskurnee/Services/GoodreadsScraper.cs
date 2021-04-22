@@ -192,6 +192,7 @@ namespace Obskurnee.Services
                         FileName = relativeFilename,
                         Extension = Path.GetExtension(relativeFilename),
                         FileContents = pic,
+                        Kind = StoredImage.ImageKind.BookCover,
                     });
                     await _db.SaveChangesAsync();
                     result.ImageUrl = relativeUrl;
