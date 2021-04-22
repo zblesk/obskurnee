@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@meforma/vue-toaster": "^1.2.2",
+    "@microsoft/signalr": "^5.0.5",
     "axios": "^0.20.0-0",
     "core-js": "^3.9.0",
     "mitt": "^2.1.0",

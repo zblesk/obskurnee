@@ -5,6 +5,7 @@ import store from './store'
 import axios from "axios";
 import Toaster from '@meforma/vue-toaster';
 import mitt from 'mitt';
+import EventHub from './eventHub';
 
 axios.interceptors.request.use(request => {
     if (store.state.context.jwtToken) {
@@ -28,6 +29,7 @@ const app = createApp(App)
   });
 const emitter = mitt();
 app.config.globalProperties.emitter = emitter;
+app.use(EventHub);
 app.mount('#app');
 
 store.dispatch("users/getUsers");

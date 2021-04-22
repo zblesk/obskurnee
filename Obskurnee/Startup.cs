@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Converters;
+using Obskurnee.Hubs;
 
 namespace Obskurnee
 {
@@ -101,6 +102,7 @@ namespace Obskurnee
                             _ => Task.FromResult(new ProviderCultureResult(Config.Current.GlobalCulture))));
                 });
 
+            services.AddSignalR();
             ConfigureAuthAndIdentity(services);
         }
 
@@ -134,6 +136,7 @@ namespace Obskurnee
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<EventHub>("/hubs/events");
             });
             Log.Information("Setting up for environment {env}", env.EnvironmentName);
             app.UseSpa(spa =>
