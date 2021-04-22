@@ -23,5 +23,5 @@ RUN npm run build -- --prod
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-focal-amd64
 WORKDIR /obskurnee
 COPY --from=dotnetbuild /app ./
-COPY --from=nodebuild /frontend/dist ./ClientApp
+COPY --from=nodebuild /frontend/dist ./ClientApp/dist
 ENTRYPOINT ["./Obskurnee"]

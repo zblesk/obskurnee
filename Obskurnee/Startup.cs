@@ -46,7 +46,7 @@ namespace Obskurnee
                     o.SerializerSettings.Converters.Add(new StringEnumConverter());
                 });
 
-            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp"; });
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = Path.Combine("ClientApp", "dist"); });
 
             Configuration.Bind(Config.Current);
 
@@ -159,7 +159,7 @@ namespace Obskurnee
                 {
                     endpoints.MapToVueCliProxy(
                         "{*path}",
-                        new SpaOptions { SourcePath = "ClientApp" },
+                        new SpaOptions { SourcePath = Path.Combine("ClientApp", "dist") },
                         npmScript: (System.Diagnostics.Debugger.IsAttached) ? "serve" : null,
                         regex: "Compiled successfully",
                         forceKill: true,
