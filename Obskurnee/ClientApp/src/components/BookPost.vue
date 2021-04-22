@@ -11,7 +11,7 @@
       <p v-if="post.author">{{ post.author }}</p>
       <router-link v-if="isRepostingAllowed && activeDiscussionId != post.discussionId" 
         :to="{ name: 'discussion', params: { discussionId: activeDiscussionId }, 
-        query: { fromPostId: post.postId, fromDiscussionId: post.discussionId } }">
+        query: { parentPostId: post.postId, fromDiscussionId: post.discussionId } }">
           ⬆⬆⬆
       </router-link>
       <p class="book__pages" v-if="post.pageCount">{{ post.pageCount }} strán</p>

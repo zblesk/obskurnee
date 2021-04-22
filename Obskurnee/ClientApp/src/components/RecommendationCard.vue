@@ -9,6 +9,11 @@
       <h2 class="book__title">{{ recommendation.title }}</h2>
     </a>
     <p v-if="recommendation.author">{{ recommendation.author }}</p>
+      <router-link v-if="isRepostingAllowed" 
+        :to="{ name: 'discussion', params: { discussionId: activeDiscussionId }, 
+        query: { parentRecommendationId: recommendation.recommendationId } }">
+          ⬆⬆⬆
+      </router-link>
     <p class="book__pages" v-if="recommendation.pageCount">{{ recommendation.pageCount }} strán</p>
     <p class="book__owner" v-if="showName">Doporučila {{ recommendation.ownerName }}</p>
     <p class="book__text" v-html="recommendation.renderedText"> </p>
@@ -16,6 +21,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
     name: "RecommendationCard",
     props: {
@@ -28,6 +34,9 @@ export default {
         required: false,
         default: true,
       }
+    },
+    computed: {
+      ...mapGetters("global", ["isRepostingAllowed", "activeDiscussionId"]),
     }
 }
 </script>

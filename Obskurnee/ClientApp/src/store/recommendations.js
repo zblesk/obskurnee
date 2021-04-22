@@ -44,7 +44,17 @@ export default {
         await dispatch('fetchRecommendationList');
       }
       return Promise.resolve(state.recommendations.filter(r => r.ownerId == userId));
+    },
+    async fetchRecommendationById({ dispatch, state }, recId)
+    {
+      var rec = state.recommendations?.find(r => r.recommendationId == recId);
+      if (!rec)
+      {
+        console.log('not found');
+        await dispatch('fetchRecommendationList');
+        rec = state.recommendations.find(r => r.recommendationId == recId);
+      }
+      return Promise.resolve(rec);
     }
-
   }
 }

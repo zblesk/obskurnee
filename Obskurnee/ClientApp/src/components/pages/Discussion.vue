@@ -53,6 +53,7 @@ export default {
   },
   methods: {
     ...mapActions("discussions", ["getDiscussionData", "newPost", "getDiscussionPost"]),
+    ...mapActions("recommendations", ["fetchRecommendationById"]),
     closeDiscussion() 
     {
         axios.post(
@@ -80,10 +81,15 @@ export default {
     {
       this.getDiscussionData(this.$route.params.discussionId);
       let query = this.$route.query;
-      if (query.fromDiscussionId && query.fromPostId)
+      if (query.fromDiscussionId && query.parentPostId)
       {
-        let post = await this.getDiscussionPost({ discussionId: query.fromDiscussionId, postId: query.fromPostId });
-        this.emitter.emit('prefill-post', { post, parentData: { parentPostId: query.fromPostId } });
+        let post = await this.getDiscussionPost({ discussionId: query.fromDiscussionId, postId: query.parentPostId });
+        this.emitter.emit('prefill-post', { post, parentData: { parentPostId: query.parentPostId } });
+      }
+      else if (query.parentRecommendationId)
+      {
+        let post = await this.fetchRecommendationById(query.parentRecommendationId);
+        this.emitter.emit('prefill-post', { post, parentData: { parentRecommendationId: query.parentRecommendationId } });
       }
     }
   },
