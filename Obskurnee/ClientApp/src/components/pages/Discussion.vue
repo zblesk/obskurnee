@@ -4,7 +4,7 @@
   <div class="main">
     <p v-html="discussion.renderedDescription" class="disc-desc"></p>
     <div class="form" v-if="!discussion.isClosed">
-      <new-post :mode="discussion.topic" @new-post="onNewPost"></new-post>
+      <new-post :mode="discussion.topic" @new-post="onNewPost">Pridať nový návrh</new-post>
       <div></div>
     </div>
     <div class="buttons">

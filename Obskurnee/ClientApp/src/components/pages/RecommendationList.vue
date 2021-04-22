@@ -2,7 +2,7 @@
 <section>
     <h1 id="tableLabel" class="page-title">Odporúčania</h1>
     <div class="main">
-        <new-post mode="Recommendations" @new-post="onNewRecommendation"></new-post>
+        <new-post mode="Recommendations" @new-post="onNewRecommendation">Pridať nové odporučenie</new-post>
     </div>
     <div class="grid">
         <recommendation-card 

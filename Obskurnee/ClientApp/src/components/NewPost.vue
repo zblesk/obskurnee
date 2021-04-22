@@ -1,7 +1,7 @@
 <template>
 <div>
   <div v-if="hide" class="button-show-wrapper">
-    <button @click="toggleVisibility" class="button-primary button-show">Přidat nový návrh</button>
+    <button @click="toggleVisibility" class="button-primary button-show"><slot></slot></button>
   </div>
   <div v-else class="form">
     <div class="cover">
