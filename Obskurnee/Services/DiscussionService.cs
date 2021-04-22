@@ -51,7 +51,7 @@ namespace Obskurnee.Services
             post.PostId = 0; //ensure it wasn't sent from the client
             post.DiscussionId = discussionId;
             post.Title = post.Title.Trim();
-            post.Author = post.Author.Trim();
+            post.Author = post.Author?.Trim();
             post.Text = post.Text.Trim();
             await _db.Posts.AddAsync(post);
             await _db.SaveChangesAsync();

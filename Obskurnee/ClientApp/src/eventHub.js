@@ -4,6 +4,7 @@ import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 export default {
     store: null,
+    notifier: null,
     install (Vue) 
     {
         const connection = new HubConnectionBuilder()
@@ -11,6 +12,7 @@ export default {
             .configureLogging(LogLevel.Information)
             .build();
         this.store = Vue.config.globalProperties.$store;
+        this.notifier = Vue.config.globalProperties.$toast;
         let startedPromise = null;
         function start () {
             startedPromise = connection.start().catch(err => {

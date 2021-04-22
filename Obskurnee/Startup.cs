@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Obskurnee.Models;
@@ -101,8 +100,12 @@ namespace Obskurnee
                         new CustomRequestCultureProvider(
                             _ => Task.FromResult(new ProviderCultureResult(Config.Current.GlobalCulture))));
                 });
-
-            services.AddSignalR();
+            services.AddSignalR()
+                .AddNewtonsoftJsonProtocol(options =>
+                {
+                    options.PayloadSerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    options.PayloadSerializerSettings.Converters.Add(new StringEnumConverter());
+                });
             ConfigureAuthAndIdentity(services);
         }
 
