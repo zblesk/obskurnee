@@ -2,7 +2,7 @@
 <section>
     <h1 id="tableLabel" class="page-title">Odporúčania</h1>
     <div class="main">
-        <new-post mode="Recommendations" @new-post="newRecommendation"></new-post>
+        <new-post mode="Recommendations" @new-post="onNewRecommendation"></new-post>
     </div>
     <div class="grid">
         <recommendation-card 
@@ -26,6 +26,16 @@ export default {
     },
     methods: {
         ...mapActions("recommendations", ["fetchRecommendationList", "newRecommendation"]),
+        onNewRecommendation(rec)
+        {
+            const onErr = this.$notifyError;
+            this.newRecommendation(rec)
+                .then(() => this.emitter.emit('clear-post'))
+                .catch(function (error) {
+                    console.log(error);
+                    onErr("Nepodarilo sa pridať odporučenie");
+                });
+        }
     },
     mounted() {
         this.fetchRecommendationList();
