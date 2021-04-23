@@ -36,7 +36,6 @@
         <input type="number" v-model="newPost.pageCount" id="pages" required />
       </div>
       <div class="form-field u-mb-0">
-        
         <div class="label-md-wrapper">
           <label for="text">Komentár k návrhu*</label>
           <div class="mo-md">
@@ -44,7 +43,7 @@
               <img src="../assets/Markdown-mark.svg" alt="markdown logo">
             </div>
             <div class="mo-md-link">
-              <a href="https://www.markdownguide.org/cheat-sheet/">Pomoc s Markdownom</a>
+              <markdown-help-link></markdown-help-link>
             </div>
           </div>
         </div>
@@ -150,8 +149,10 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
 
 <script>
 import axios from "axios";
+import MarkdownHelpLink from "./MarkdownHelpLink.vue";
 export default {
   name: "BookPost",
+  components: { MarkdownHelpLink },
   props: {
     mode: {
       type: String,
@@ -187,7 +188,7 @@ export default {
           "/api/scrape/?goodreadsUrl=" + this.newPost.url)
         .then((response) => {
           this.newPost = response.data;
-          this.newPost.text = "\n\n## Popis na Goodreads: \n\n" + response.data.description;
+          this.newPost.text = "\n\n### Popis na Goodreads: \n\n" + response.data.description;
           this.fetchInProgress = false;
           this.$notifyInfo("Nacitane");
         })

@@ -18,7 +18,7 @@
             <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
           </div>
           <div class="mo-md-link">
-            <a href="https://www.markdownguide.org/cheat-sheet/">Pomoc s Markdownom</a>
+            <markdown-help-link></markdown-help-link>
           </div>
         </div>
       </div>
@@ -82,9 +82,10 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
 import BookLargeCard from '../BookLargeCard.vue';
 import { mapActions, mapGetters } from "vuex";
 import BooksReviewCard from '../BooksReviewCard.vue';
+import MarkdownHelpLink from '../MarkdownHelpLink.vue';
 
 export default {
-  components: { BookLargeCard, BooksReviewCard },
+  components: { BookLargeCard, BooksReviewCard, MarkdownHelpLink },
   name: 'Book',
   data() {
       return {

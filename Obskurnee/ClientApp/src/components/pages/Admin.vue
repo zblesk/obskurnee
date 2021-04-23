@@ -17,7 +17,7 @@
                             <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
                         </div>
                         <div class="mo-md-link">
-                            <a href="https://www.markdownguide.org/cheat-sheet/">Pomoc s Markdownom</a>
+                            <markdown-help-link></markdown-help-link>
                         </div>
                     </div>
                 </div>
@@ -90,8 +90,10 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
 <script>
 import axios from 'axios';
 import { mapActions, mapState, mapGetters } from "vuex";
+import MarkdownHelpLink from '../MarkdownHelpLink.vue';
 export default {
     name: "Admin",
+    components: { MarkdownHelpLink },
     data() {
         return {
             newUserEmal: "",

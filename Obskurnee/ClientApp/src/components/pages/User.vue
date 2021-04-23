@@ -30,7 +30,7 @@
                 <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
               </div>
               <div class="mo-md-link">
-                <a href="https://www.markdownguide.org/cheat-sheet/">Pomoc s Markdownom</a>
+                <markdown-help-link></markdown-help-link>
               </div>
             </div>
           </div>
@@ -148,9 +148,10 @@ import axios from 'axios';
 import RecommendationCard from '../RecommendationCard.vue';
 import UsersReviewCard from '../UsersReviewCard.vue';
 import LanguageSelector from '../LanguageSelector.vue';
+import MarkdownHelpLink from '../MarkdownHelpLink.vue';
 export default {
-  components: { RecommendationCard, UsersReviewCard, LanguageSelector },
   name: 'User',
+  components: { RecommendationCard, UsersReviewCard, LanguageSelector, MarkdownHelpLink },
   data() {
       return {
         user: {},
