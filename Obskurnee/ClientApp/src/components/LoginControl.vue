@@ -2,30 +2,30 @@
   <div class="login">
     <div v-if="!isAuthenticated" class="not-auth">
       <div v-if="!showLoginForm" class="form-not-shown">
-        <button class="button-primary button-show" @click="showLoginForm = true">Přihlásit</button>
+        <button class="button-primary button-show" @click="showLoginForm = true">{{ $t('menus.login') }}</button>
       </div>
       <form @submit.prevent="onSubmit" @keyup.enter="onSubmit" @reset.prevent="onCancel" v-if="showLoginForm" class="login-form">
         <div class="login-form-field">
-          <label for="emailInput">E-mail</label>
+          <label for="emailInput">{{ $t('menus.email') }}</label>
           <input id="emailInput" type="email" v-model="form.email" required />
         </div>
         <div class="login-form-field">
-          <label for="passwordInput">Heslo</label>
+          <label for="passwordInput">{{ $t('menus.password') }}</label>
           <input id="passwordInput" type="password" v-model="form.password" required />
         </div>
         <div class="buttons">
-          <button class="button-primary button-login" type="submit">Přihlásit</button>
-          <button class="button-secondary button-reset" @click="goToReset">Zabudnuté heslo</button>
-          <button class="button-secondary button-cancel" type="reset">Zrušit</button>
+          <button class="button-primary button-login" type="submit">{{ $t('menus.login') }}</button>
+          <button class="button-secondary button-reset" @click="goToReset">{{ $t('menus.forgottenPwd') }}</button>
+          <button class="button-secondary button-cancel" type="reset">{{ $t('menus.cancel') }}</button>
         </div>
       </form>
     </div>
     <div v-if="isAuthenticated" class="is-auth">
       <router-link :to="{ name: 'user', params: { email: profile.email } }">
-        <div class="menu-item">Ja</div>
+        <div class="menu-item">{{ $t('menus.me') }}</div>
       </router-link>
       <div class="menu-logout">
-        <button class="button-secondary button-logout" @click="onLogout">Odhlásit</button>
+        <button class="button-secondary button-logout" @click="onLogout">{{ $t('menus.logout') }}</button>
       </div>
     </div>
   </div>
