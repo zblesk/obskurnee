@@ -14,5 +14,12 @@ Mozes lahko pridat aj [link](https://google.sk).`
     },
     home: {
         greeting: 'Vitaj, <strong>{0}</strong>!'
+    },
+    post: {
+
+    },
+    user: {
+        noneSoFar: 'Zatiaľ žiadne.',
+        wannaAddSome: 'Prečo nejaké nepridať?'
     }
 }

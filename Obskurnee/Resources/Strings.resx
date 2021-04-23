@@ -129,6 +129,9 @@
   <data name="forbiddenInDemo" xml:space="preserve">
     <value>Nepovolené v demo móde</value>
   </data>
+  <data name="invalidStarRating" xml:space="preserve">
+    <value>Počet hviezdičiek musí byť 0 - 5</value>
+  </data>
   <data name="pollTitle" xml:space="preserve">
     <value>{0:title} - hlasovanie</value>
   </data>

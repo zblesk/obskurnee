@@ -134,9 +134,12 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
     </div>
     <p v-else class="recs-message">Zatiaľ tu nemáme žiadne odporúčania. <span v-if="user && isMe(user.userId)">Čo tak <router-link :to="{ name: 'recommendationlist' }">nejaké pridať?</router-link></span></p>
 
-    <h2 v-if="userReviews(user.userId)" class="page-subtitle u-mt-sp">Knihy, které {{ user.name }} hodnotila</h2>
-    <div v-if="userReviews(user.userId)" class="grid">
+    <h2 class="page-subtitle u-mt-sp">Knihy, které {{ user.name }} hodnotila</h2>
+    <div v-if="userReviews(user.userId)?.length > 0" class="grid">
       <users-review-card v-for="rev in userReviews(user.userId)" v-bind:key="rev.reviewId" v-bind:review="rev" ></users-review-card>
+    </div>
+    <div v-else>
+      {{ $t('user.noneSoFar') }} <span v-if="isMe(user.userId)"><router-link :to="{ name: 'booklist' }">{{ $t('user.wannaAddSome') }}</router-link></span>
     </div>
   </div>
 </section>

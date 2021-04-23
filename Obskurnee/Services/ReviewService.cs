@@ -19,12 +19,14 @@ namespace Obskurnee.Services
         private readonly NewsletterService _newsletter;
         private readonly ApplicationDbContext _db;
         private readonly Config _config;
+        private readonly IStringLocalizer<Strings> _localizer;
 
         public ReviewService(
             ILogger<ReviewService> logger,
             Config config,
             GoodreadsScraper scraper,
             IStringLocalizer<NewsletterStrings> newsletterLocalizer,
+            IStringLocalizer<Strings> localizer,
             NewsletterService newsletter,
             ApplicationDbContext db)
         {
@@ -34,6 +36,7 @@ namespace Obskurnee.Services
             _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
             _db = db ?? throw new ArgumentNullException(nameof(db));
             _config = config ?? throw new ArgumentNullException(nameof(config));
+            _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
         }
         
         public Task<List<GoodreadsReview>> GetAllCurrentlyReading() 
@@ -81,6 +84,10 @@ namespace Obskurnee.Services
             string reviewText,
             string reviewUrl)
         {
+            if (rating > 5)
+            {
+                throw new ValidationException(_localizer["invalidStarRating"]);
+            }
             var book = await _db.BooksWithData.FirstAsync(b => b.BookId == bookId);
             var review = new BookclubReview(userId)
             {

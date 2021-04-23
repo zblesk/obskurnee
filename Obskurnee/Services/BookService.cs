@@ -30,7 +30,9 @@ namespace Obskurnee.Services
 
         public Task<Book> GetBook(int bookId) =>  _db.Books.FirstAsync(b => b.BookId == bookId);
 
-        public Task<Book> GetLatestBook() => _db.Books.OrderByDescending(b => b.Order).FirstOrDefaultAsync();
+        public Task<Book> GetLatestBook() => _db.BooksWithData
+            .OrderByDescending(b => b.Order)
+            .FirstOrDefaultAsync();
 
         public async Task<Book> CreateBook(Poll poll, int roundId, string ownerId)
         {
