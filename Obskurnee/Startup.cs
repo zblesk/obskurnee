@@ -164,21 +164,18 @@ namespace Obskurnee
             app.UseAuthorization();
             app.UseSerilogRequestLogging();
 
-            app.UseSpa(spa => { spa.Options.SourcePath = "ClientApp/"; });
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<EventHub>("/hubs/events");
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "ClientApp/";
                 if (env.IsDevelopment())
                 {
-                    endpoints.MapToVueCliProxy(
-                        "{*path}",
-                        new SpaOptions { SourcePath = Path.Combine("ClientApp", "dist") },
-                        npmScript: (System.Diagnostics.Debugger.IsAttached) ? "serve" : null,
-                        regex: "Compiled successfully",
-                        forceKill: true,
-                        wsl: false);
+                    spa.UseVueCli(npmScript: "serve");
                 }
             });
 
