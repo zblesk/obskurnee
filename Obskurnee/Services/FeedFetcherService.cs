@@ -52,7 +52,7 @@ namespace Obskurnee.Services
             {
                 using var scope = _scopeFactory.CreateScope();
                 var reviews = (ReviewService)scope.ServiceProvider.GetService(typeof(ReviewService));
-                var userService = (UserService)scope.ServiceProvider.GetService(typeof(UserService));
+                var userService = (UserServiceBase)scope.ServiceProvider.GetService(typeof(UserServiceBase));
                 _logger.LogInformation("Starting RSS fetch");
                 foreach (var user in userService.GetAllUsersAsBookworm())
                 {

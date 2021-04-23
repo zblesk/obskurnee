@@ -13,72 +13,34 @@ using Microsoft.Extensions.Localization;
 
 namespace Obskurnee.Services
 {
-    public class UserService
+    public sealed class UserService : UserServiceBase
     {
         private readonly ILogger<UserService> _logger;
-
         private readonly SignInManager<Bookworm> _signInManager;
-        private readonly UserManager<Bookworm> _userManager;
-
-        private readonly JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
-        private readonly IMailerService _mailer;
-        private readonly IServiceProvider _serviceProvider;
-        private readonly Config _config;
         private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
-        private readonly ApplicationDbContext _dbContext;
-        private static IReadOnlyDictionary<string, string> _userNames = new Dictionary<string, string>();
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IMailerService _mailer;
 
         private NewsletterService Newsletter { get => (NewsletterService)_serviceProvider.GetService(typeof(NewsletterService)); }
 
         public UserService(
-           UserManager<Bookworm> userManager,
-           SignInManager<Bookworm> signInManager,
            ILogger<UserService> logger,
+           SignInManager<Bookworm> signInManager,
+           IStringLocalizer<NewsletterStrings> newsletterLocalizer,
            IMailerService mailer,
            IServiceProvider serviceProvider,
-           IStringLocalizer<NewsletterStrings> newsletterLocalizer,
-           Config config,
-           ApplicationDbContext dbContext)
+           UserManager<Bookworm> userManager,
+           ApplicationDbContext dbContext,
+           Config config) : base(userManager, logger, dbContext, config)
         {
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-            _config = config ?? throw new ArgumentNullException(nameof(config));
             _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
-            _dbContext = dbContext;
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
         }
 
-        public async Task<List<UserInfo>> GetAllUsers()
-        {
-            var result = new List<UserInfo>();
-            foreach (var user in _dbContext.Users)
-            {
-                var claims = await _userManager.GetClaimsAsync(user);
-                result.Add(UserInfo.From(user, claims));
-            }
-            return result;
-        }
-
-        public void LoadUsernameCache()
-        {
-            _userNames = (from user in _dbContext.Users
-                          select new { user.Id, user.UserName })
-                         .ToDictionary(
-                            u => u.Id,
-                            u => u.UserName);
-        }
-
-        public List<Bookworm> GetAllUsersAsBookworm()
-            => _dbContext.Users.ToList();
-
-        public IList<string> GetAllUserIds()
-        {
-            return _dbContext.Users.Select(u => u.Id).ToList();
-        }
-
-        public async Task<UserInfo> Register(LoginCredentials creds)
+        public override async Task<UserInfo> Register(LoginCredentials creds)
         {
             var user = new Bookworm
             {
@@ -98,7 +60,7 @@ namespace Obskurnee.Services
             return null;
         }
 
-        public async Task<IdentityResult> MakeModerator(string email)
+        public override async Task<IdentityResult> MakeModerator(string email)
         {
             _logger.LogInformation("Making moderator of {email}", email);
             var user = await _signInManager.UserManager.FindByEmailAsync(email);
@@ -106,7 +68,7 @@ namespace Obskurnee.Services
             return identityResult;
         }
 
-        public async Task<IdentityResult> MakeAdmin(string email)
+        public override async Task<IdentityResult> MakeAdmin(string email)
         {
             _logger.LogInformation("Making admin of {email}", email);
             var user = await _signInManager.UserManager.FindByEmailAsync(email);
@@ -114,7 +76,7 @@ namespace Obskurnee.Services
             return identityResult;
         }
 
-        public async Task<UserInfo> RegisterFirstAdmin(LoginCredentials creds)
+        public override async Task<UserInfo> RegisterFirstAdmin(LoginCredentials creds)
         {
             if (GetAllUserIds().Count != 0)
             {
@@ -137,7 +99,7 @@ namespace Obskurnee.Services
             throw new Exception("Failed to make admin");
         }
 
-        public async Task<bool> ValidateLogin(LoginCredentials creds)
+        public override async Task<bool> ValidateLogin(LoginCredentials creds)
         {
             var user = await _signInManager.UserManager.FindByEmailAsync(creds.Email);
             if (user == null)
@@ -148,24 +110,13 @@ namespace Obskurnee.Services
             return signInRes.Succeeded;
         }
 
-        public async Task<ClaimsPrincipal> GetPrincipal(LoginCredentials creds)
+        public override async Task<ClaimsPrincipal> GetPrincipal(LoginCredentials creds)
         {
             var user = await _signInManager.UserManager.FindByEmailAsync(creds.Email);
             return await _signInManager.CreateUserPrincipalAsync(user);
         }
 
-        public string GetToken(ClaimsPrincipal principal)
-            => _tokenHandler.WriteToken(
-                new JwtSecurityToken(
-                    "obskurnee",
-                    "obskurnee",
-                    principal.Claims,
-                    expires: DateTime.UtcNow.AddDays(190),
-                    signingCredentials: _config.SigningCreds));
-
-        public static string GetUserName(string userId) => (_userNames?.ContainsKey(userId ?? "") ?? false) ? _userNames[userId] : "";
-
-        public async Task<bool> InitiatePasswordReset(string email)
+        public override async Task<bool> InitiatePasswordReset(string email)
         {
             _logger.LogInformation("Initiating password reset for {email}"  , email);
             var user = await _userManager.FindByEmailAsync(email);
@@ -185,54 +136,11 @@ namespace Obskurnee.Services
             return true;
         }
 
-        public async Task<IdentityResult> ResetPassword(string userId, string resetToken, string newPassword)
+        public override async Task<IdentityResult> ResetPassword(string userId, string resetToken, string newPassword)
         {
             _logger.LogInformation("Resetting password for user {userId}", userId);
             var user = await _userManager.FindByIdAsync(userId);
             return await _userManager.ResetPasswordAsync(user, resetToken, newPassword);
-        }
-
-        public async Task<UserInfo> GetUserByEmail(string email)
-        {
-            var user = _dbContext.Users.First(bw => bw.Email == email);
-            return UserInfo.From(user, await _userManager.GetClaimsAsync(user));
-        }
-     
-        public async Task<UserInfo> GetUserById(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            return UserInfo.From(user, await _userManager.GetClaimsAsync(user));
-        }
-
-        public async Task<UserInfo> UpdateUserProfile(
-            string email,
-            string name,
-            string phone,
-            string goodreadsUrl,
-            string aboutMe)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            _logger.LogInformation("Updating user profile for {userId} ({email})", user.Id, user.Email);
-            user.UserName = name;
-            user.GoodreadsProfileUrl = goodreadsUrl;
-            user.AboutMe = aboutMe;
-            var identityResult = await _userManager.UpdateAsync(user);
-            if (!identityResult.Succeeded)
-            {
-                _logger.LogError("User update failed. IdentityResult: {@identityResult}", identityResult);
-                throw new DatastoreException("User update failed");
-            }
-            if (!(await _userManager.SetPhoneNumberAsync(user, phone)).Succeeded)
-            {
-                _logger.LogError(
-                    "User update succeeded, but phone number update failed. IdentityResult: {@identityResult}",
-                    identityResult);
-                throw new DatastoreException("User update succeeded, but phone number update failed.");
-            }
-            _logger.LogInformation("User profile for {userId} ({email}) updated.", user.Id, user.Email);
-            LoadUsernameCache();
-
-            return await GetUserByEmail(email);
         }
     }
 }

@@ -14,14 +14,14 @@ namespace Obskurnee.Services
         private readonly ILogger<NewsletterService> _logger;
         private readonly IMailerService _mailer;
         private readonly ApplicationDbContext _db;
-        private readonly UserService _userService;
+        private readonly UserServiceBase _userService;
         private readonly MatrixService _matrix;
 
         public NewsletterService(
             ILogger<NewsletterService> logger,
             IMailerService mailer,
             MatrixService matrix,
-            UserService userService,
+            UserServiceBase userService,
             ApplicationDbContext db)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));

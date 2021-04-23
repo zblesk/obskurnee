@@ -156,7 +156,7 @@ export default {
     mode: {
       type: String,
       required: true,
-      default: null,
+      default: "",
     },
   },
   emits: ['new-post'],

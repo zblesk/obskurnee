@@ -17,7 +17,7 @@ namespace Obskurnee.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly SettingsService _settingsService;
         private readonly BookService _bookService;
-        private readonly UserService _userService;
+        private readonly UserServiceBase _userService;
         private readonly DiscussionService _discussionService;
         private readonly PollService _pollService;
 
@@ -25,7 +25,7 @@ namespace Obskurnee.Controllers
             ILogger<HomeController> logger, 
             SettingsService settingsService,
             BookService bookService,
-            UserService userService,
+            UserServiceBase userService,
             DiscussionService discussionService,
             PollService pollService)
         {

@@ -18,13 +18,13 @@ namespace Obskurnee.Controllers
         private readonly ILogger<PollController> _logger;
         private readonly PollService _polls;
         private readonly RoundManagerService _roundManager;
-        private readonly UserService _users;
+        private readonly UserServiceBase _users;
 
         public PollController(
             ILogger<PollController> logger,
             PollService polls,
             RoundManagerService roundManager,
-            UserService users)
+            UserServiceBase users)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _polls = polls ?? throw new ArgumentNullException(nameof(polls));

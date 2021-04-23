@@ -19,7 +19,7 @@ namespace Obskurnee.Controllers
     {
         private readonly ILogger _logger;
         private readonly SettingsService _settings;
-        private readonly UserService _users;
+        private readonly UserServiceBase _users;
         private readonly IMailerService _mailer;
         private static readonly Random _random = new Random();
         private readonly Config _config;
@@ -28,7 +28,7 @@ namespace Obskurnee.Controllers
         public AdminController(
             ILogger<AdminController> logger,
             SettingsService settings,
-            UserService users,
+            UserServiceBase users,
             IMailerService mailer,
             BackupService backup,
             Config config)

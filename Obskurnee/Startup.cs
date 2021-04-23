@@ -53,7 +53,6 @@ namespace Obskurnee
             services.AddSingleton(Config.Current);
             services.AddTransient<GoodreadsScraper>();
             services.AddTransient<PollService>();
-            services.AddTransient<UserService>();
             services.AddTransient<BookService>();
             services.AddTransient<RoundManagerService>();
             services.AddTransient<DiscussionService>();
@@ -64,6 +63,12 @@ namespace Obskurnee
             services.AddTransient<ReviewService>();
             services.AddTransient<BackupService>();
             services.AddHostedService<FeedFetcherService>();
+
+#if DEMOMODE
+            services.AddTransient<UserServiceBase, DemoUserService>();
+#else
+            services.AddTransient<UserServiceBase, UserService>();
+#endif
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
@@ -116,7 +121,7 @@ namespace Obskurnee
             IApplicationBuilder app,
             IWebHostEnvironment env,
             IHostApplicationLifetime lifetime,
-            UserService userService,
+            UserServiceBase userService,
             ApplicationDbContext dbContext)
         {
             Log.Information("Checking database");

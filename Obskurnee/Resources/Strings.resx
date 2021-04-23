@@ -126,6 +126,9 @@
   <data name="discussionClosed" xml:space="preserve">
     <value>Diskusia už bola uzavretá</value>
   </data>
+  <data name="forbiddenInDemo" xml:space="preserve">
+    <value>Nepovolené v demo móde</value>
+  </data>
   <data name="pollTitle" xml:space="preserve">
     <value>{0:title} - hlasovanie</value>
   </data>

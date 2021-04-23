@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Obskurnee</RootNamespace>
     <UserSecretsId>efac8292-c0d4-4e78-b2e5-6e78415a844b</UserSecretsId>
-    <Configurations>Debug;Release;ReleaseNoNode</Configurations>
+    <Configurations>Debug;Release;ReleaseNoNode;DemoDebug</Configurations>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -12,6 +12,10 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
     <Authors>zblesk</Authors>
     <Description>Book club software!</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DemoDebug|AnyCPU'">
+    <DefineConstants>TRACE;DEMOMODE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

@@ -14,10 +14,10 @@ namespace Obskurnee.Controllers
     public class UserController : Controller
     {
         private readonly ILogger _logger;
-        private readonly UserService _users;
+        private readonly UserServiceBase _users;
 
         public UserController(
-           UserService users,
+           UserServiceBase users,
            ILogger<UserController> logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));

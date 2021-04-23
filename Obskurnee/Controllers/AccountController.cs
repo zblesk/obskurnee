@@ -16,10 +16,10 @@ namespace Obskurnee.Controllers
     public class AccountController : Controller
     {
         private readonly ILogger _logger;
-        private readonly UserService _users;
+        private readonly UserServiceBase _users;
 
         public AccountController(
-           UserService users,
+           UserServiceBase users,
            ILogger<AccountController> logger)
         {
             _logger = logger;
