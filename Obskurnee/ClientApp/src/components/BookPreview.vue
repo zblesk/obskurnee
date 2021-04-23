@@ -5,7 +5,7 @@
         <img :src="book.post.imageUrl" :alt="book.post.title" v-if="book.post.imageUrl">
       </div>
       <div class="book-description">
-        <h2 class="book-title"><span v-if="this.$slots.default"><slot></slot></span> <span class="book-link">{{ book.post.title }}</span></h2>
+        <h2 class="book-title"><span v-if="$slots.default"><slot></slot></span> <span class="book-link">{{ book.post.title }}</span></h2>
         <p class="book-author">{{ book.post.author }}</p>
       </div>
     </router-link>
