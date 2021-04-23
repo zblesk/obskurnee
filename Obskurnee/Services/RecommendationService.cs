@@ -55,7 +55,7 @@ namespace Obskurnee.Services
             await _newsletter.SendNewsletter(
                 Newsletters.AllEvents,
                 _newsletterLocalizer.Format("newRecSubject", rec.OwnerName),
-                _newsletterLocalizer.FormatAndRender("newRecBodyMarkdown",
+                _newsletterLocalizer.Format("newRecBodyMarkdown",
                     rec.Title,
                     rec.Author,
                     rec.Text.AddMarkdownQuote(),

@@ -218,7 +218,7 @@ namespace Obskurnee
                 options.Password.RequiredLength = Config.Current.DefaultPasswordMinLength;
                 options.ClaimsIdentity.UserIdClaimType = BookclubClaims.UserId;
             })
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+               .AddEntityFrameworkStores<ApplicationDbContext>()
                .AddSignInManager<SignInManager<Bookworm>>()
                .AddDefaultTokenProviders();
 

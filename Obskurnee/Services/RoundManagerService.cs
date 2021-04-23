@@ -261,10 +261,10 @@ namespace Obskurnee.Services
             await _newsletter.SendNewsletter(
                 Newsletters.BasicEvents,
                 _newsletterLocalizer.Format("newRoundSubject", discussion.Title),
-                _newsletterLocalizer.FormatAndRender("newRoundBodyMarkdown", link)
+                _newsletterLocalizer.Format("newRoundBodyMarkdown", link)
                     + (string.IsNullOrWhiteSpace(discussion.Description)
                         ? ""
-                        : _newsletterLocalizer.FormatAndRender("additionalDescriptionMarkdown", discussion.Description)));
+                        : _newsletterLocalizer.Format("additionalDescriptionMarkdown", discussion.Description)));
         }
 
         private async Task SendNewPollNotification(Poll poll)
@@ -273,7 +273,7 @@ namespace Obskurnee.Services
             await _newsletter.SendNewsletter(
                 Newsletters.BasicEvents,
                 _newsletterLocalizer.Format("newPollSubject", poll.Title),
-                _newsletterLocalizer.FormatAndRender("newPollBodyMarkdown", link));
+                _newsletterLocalizer.Format("newPollBodyMarkdown", link));
         }
 
         private async Task SendNewBookNotification(RoundUpdateResults result)
@@ -283,7 +283,7 @@ namespace Obskurnee.Services
             await _newsletter.SendNewsletter(
                 Newsletters.BasicEvents,
                 _newsletterLocalizer["newBookSubject"],
-                _newsletterLocalizer.FormatAndRender("newBookVotedBodyMarkdown", 
+                _newsletterLocalizer.Format("newBookVotedBodyMarkdown", 
                     link,
                     post.Title,
                     post.Author,

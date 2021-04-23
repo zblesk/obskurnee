@@ -14,9 +14,9 @@ namespace Obskurnee.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public Task SendHtmlMail(string subject, string body, params string[] recipients)
+        public Task SendMail(string subject, string markdownBody, params string[] recipients)
         {
-            _logger.LogWarning("No mailer configured. Not sending newsletter:\nto: {@recipients}\nsubj: {subject}\n{body}\n\n", recipients, subject, body);
+            _logger.LogWarning("No mailer configured. Not sending newsletter:\nto: {@recipients}\nsubj: {subject}\n{body}\n\n", recipients, subject, markdownBody);
             return Task.CompletedTask;
         }
     }

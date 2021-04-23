@@ -10,6 +10,7 @@ using Flurl.Http;
 using System;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Localization;
 
 namespace Obskurnee.Controllers
 {
@@ -24,6 +25,8 @@ namespace Obskurnee.Controllers
         private static readonly Random _random = new Random();
         private readonly Config _config;
         private readonly BackupService _backup;
+        private readonly IStringLocalizer<Strings> _localizer;
+        private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
 
         public AdminController(
             ILogger<AdminController> logger,
@@ -31,6 +34,8 @@ namespace Obskurnee.Controllers
             UserServiceBase users,
             IMailerService mailer,
             BackupService backup,
+            IStringLocalizer<Strings> localizer,
+            IStringLocalizer<NewsletterStrings> newsletterLocalizer,
             Config config)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -39,6 +44,8 @@ namespace Obskurnee.Controllers
             _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
             _config = config ?? throw new ArgumentNullException(nameof(config));
             _backup = backup ?? throw new ArgumentNullException(nameof(backup));
+            _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
+            _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
         }
 
         [HttpGet]
@@ -83,9 +90,12 @@ namespace Obskurnee.Controllers
             var user = await _users.Register(new LoginCredentials { Email = email, Password = password });
             if (user != null)
             {
-                await _mailer.SendHtmlMail(
-                    $"Vitaj, {user.Name}",
-                    $"Bola si uspesne zaregistrovana.\nPrihlas sa na <a href='{_config.BaseUrl}'>{_config.BaseUrl}</a>\n\nTvoj prihlasovaci mail: {user.Email}\nDefault heslo: {password}\n\nAsi by bolo najlepsie si to heslo zmenit.",
+                await _mailer.SendMail(
+                    _newsletterLocalizer.Format("newUserSubject", user.Name),
+                    _newsletterLocalizer.Format("newUserPostBodyMarkdown",
+                        _config.BaseUrl,
+                        user.Email,
+                        password),
                     email);
                 return Json(user);
             }

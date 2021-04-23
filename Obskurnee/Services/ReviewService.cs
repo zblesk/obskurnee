@@ -108,7 +108,7 @@ namespace Obskurnee.Services
             await _newsletter.SendNewsletter(
                 Newsletters.AllEvents,
                 _newsletterLocalizer.Format("newReviewSubject", review.Book.Post.Title),
-                _newsletterLocalizer.FormatAndRender("newReviewBodyMarkdown",
+                _newsletterLocalizer.Format("newReviewBodyMarkdown",
                     link,
                     Enumerable.Range(0, review.Rating).Aggregate("", (acc, _) => $"{acc}⭐"),
                     review.Rating,

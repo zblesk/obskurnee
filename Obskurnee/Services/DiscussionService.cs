@@ -65,7 +65,7 @@ namespace Obskurnee.Services
             var body = "";
             if (discussion.Topic == Topic.Books)
             {
-                body = _newsletterLocalizer.FormatAndRender(
+                body = _newsletterLocalizer.Format(
                     "newBookPostBodyMarkdown",
                     post.Title,
                     post.Author,
@@ -77,7 +77,7 @@ namespace Obskurnee.Services
             }
             else if (discussion.Topic == Topic.Themes)
             {
-                body = _newsletterLocalizer.FormatAndRender(
+                body = _newsletterLocalizer.Format(
                     "newThemePostBodyMarkdown",
                     post.Title,
                     post.Text,

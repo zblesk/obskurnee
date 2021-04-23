@@ -4,6 +4,6 @@ namespace Obskurnee.Services
 {
     public interface IMailerService
     {
-        Task SendHtmlMail(string subject, string body, params string[] recipients);
+        Task SendMail(string subject, string markdownBody, params string[] recipients);
     }
 }

@@ -82,11 +82,11 @@ namespace Obskurnee.Services
             bool forwardSubjectToMatrix = true)
         {
             var subscribers = await GetSubscribers(newsletterName);
-            _matrix.SendMessage(
-                (forwardSubjectToMatrix 
-                ? $"# {subject} \n".RenderMarkdown()
-                : "")
-                + body).Wait();
+            await _matrix.SendMessage(
+                    (forwardSubjectToMatrix 
+                    ? $"# {subject} \n"
+                    : "")
+                    + body);
             if (subscribers.Count == 0)
             {
                 _logger.LogInformation("Not sending {newsletter} with {subject}, because there are no subscribers.", newsletterName, subject);
@@ -95,7 +95,7 @@ namespace Obskurnee.Services
             _logger.LogInformation("Sending newsletter {newsletter} with subject {subject} to {count} subscribers.", newsletterName, subject, subscribers.Count);
             try
             {
-                await _mailer.SendHtmlMail(subject, body, subscribers.ToArray());
+                await _mailer.SendMail(subject, body, subscribers.ToArray());
             }
             catch (Exception ex)
             {

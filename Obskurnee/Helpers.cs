@@ -34,7 +34,7 @@ namespace Obskurnee
             => string.Format(localizer[name], args);
 
         public static string FormatAndRender(this IStringLocalizer localizer, string name, params object[] args)
-            => localizer.Format(name, args)
+            => localizer.Format(name, args) 
                 .RenderMarkdown();
 
         public static string RemoveDiacritics(this string text)

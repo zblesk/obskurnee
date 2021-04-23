@@ -38,7 +38,7 @@ namespace Obskurnee.Services
                         msgtype = "m.text",
                         body = message,
                         format = "org.matrix.custom.html",
-                        formatted_body = message,
+                        formatted_body = message.RenderMarkdown(),
                     });
             }
             catch (Exception ex)
