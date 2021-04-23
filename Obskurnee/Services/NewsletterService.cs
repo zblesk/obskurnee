@@ -93,7 +93,17 @@ namespace Obskurnee.Services
                 return;
             }
             _logger.LogInformation("Sending newsletter {newsletter} with subject {subject} to {count} subscribers.", newsletterName, subject, subscribers.Count);
-            await _mailer.SendMail(subject, body, subscribers.ToArray());
+            try
+            {
+                await _mailer.SendMail(subject, body, subscribers.ToArray());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,
+                    "Sending mail to newsletter {newsletter} failed. \n\n {inner}",
+                    newsletterName,
+                    ex?.InnerException?.Message);
+            }
         }
 
         public Task<List<string>> GetSubscriptions(string userId)
