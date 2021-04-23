@@ -77,6 +77,9 @@ namespace Obskurnee
                 options.UseSqlite(
                     Configuration.GetConnectionString("SqliteConnection")));
 
+#if DEMOMODE
+            services.AddTransient<IMailerService, FakeMailerService>();
+#else
             switch (Config.Current.MailerType)
             {
                 case "mailgun":
@@ -93,6 +96,7 @@ namespace Obskurnee
             {
                 services.AddHostedService<PeriodicBackupService>();
             }
+#endif
 
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.Configure<RequestLocalizationOptions>(
@@ -127,8 +131,10 @@ namespace Obskurnee
             UserServiceBase userService,
             ApplicationDbContext dbContext)
         {
-            Log.Information("Checking database");
+            Log.Information("Updating database");
             dbContext.Database.Migrate();
+
+            Log.Information("Setting up for environment {env}", env.EnvironmentName);
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
@@ -154,10 +160,7 @@ namespace Obskurnee
             app.UseAuthorization();
             app.UseSerilogRequestLogging();
 
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp/";
-            });
+            app.UseSpa(spa => { spa.Options.SourcePath = "ClientApp/"; });
 
             app.UseEndpoints(endpoints =>
             {
@@ -174,12 +177,11 @@ namespace Obskurnee
                         wsl: false);
                 }
             });
-            Log.Information("Setting up for environment {env}", env.EnvironmentName);
 
             userService.LoadUsernameCache();
             lifetime.ApplicationStarted.Register(() => 
                 Log.Information("Application started at {@base}", 
-                    Config.Current.BaseUrl));
+                Config.Current.BaseUrl));
             lifetime.ApplicationStopping.Register(() => Log.Information("Application stopping"));
             lifetime.ApplicationStopped.Register(() => Log.Information("Application stopped"));
         }
