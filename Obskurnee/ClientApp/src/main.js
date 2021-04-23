@@ -29,6 +29,14 @@ const app = createApp(App)
       this.$notifySuccess = (text) => this.$toast.success(text.toString(), opts);
       this.$notifyNormal = (text) => this.$toast.show(text.toString(), opts);
       this.$notifyInfo = (text) => this.$toast.info(text.toString(), opts);
+      this.$handleApiError = error => { 
+        var msg = error?.response?.data;
+        if (!msg)
+        {
+          msg = error;
+        }
+        this.$notifyError(msg);
+      }
     }
   });
 const emitter = mitt();

@@ -21,16 +21,7 @@
                         </div>
                     </div>
                 </div>
-                <textarea v-model="notice" id="notice" placeholder="Mozes pouzit Markdown na jednoduche formatovanie textu. Ak by si sa stratila, klikni na link hore.
-
-Medzi zaklady patri napriklad: 
-# Najvacsi nadpis
-## mensi nadpis 
-**tucny textt** alebo _kurziva_ 
-- necislovany zoznam
-1. cislovany zoznam
-> takto sa pise citat
-Mozes lahko pridat aj [link](https://google.sk)."></textarea>
+                <textarea v-model="notice" id="notice" :placeholder="$t('global.markdownSamplePlaceholder')"></textarea>
             </div>
             <button @click="updateNoticeboard()" class="button-primary">Uložit</button>
         </div>
@@ -123,7 +114,7 @@ export default {
                 {
                     this.$notifySuccess(`Aktualizovane`);
                 })
-            .catch(err => this.$notifyError(err));
+            .catch(this.$handleApiError);
             
         },
         addUser()
@@ -134,7 +125,7 @@ export default {
                     this.getUsers();
                     this.$notifySuccess(`Pouzivatel vytvoreny`);
                 })
-            .catch(err => this.$notifyError(err));
+            .catch(this.$handleApiError);
         },
         makeMod(email)
         {
@@ -144,13 +135,13 @@ export default {
                     this.$notifySuccess(`${email} povyseny na moderatora`);
                     this.getUsers();
                 })
-            .catch(err => this.$notifyError(err));
+            .catch(this.$handleApiError);
         },
         getNewsletterInfo()
         {
             axios.get("/api/newsletters/all")
             .then(response => this.newsletterInfo = response.data )
-            .catch(err => this.$notifyError(err));
+            .catch(this.$handleApiError);
         }
     },
     mounted() {

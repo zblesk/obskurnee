@@ -63,9 +63,7 @@ export default {
             this.IsClosed = true;
             this.$router.push({ name: "poll", params: { pollId: this.pollId} });
         })
-        .catch(function (error) {
-          alert(error);
-        });
+        .catch(this.$handleApiError);
     },
     onNewPost(post)
     {

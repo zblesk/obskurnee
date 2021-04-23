@@ -2,7 +2,22 @@
 
 namespace Obskurnee
 {
-    public class PermissionException : Exception
+    public abstract class ObskurneeException : Exception
+    {
+        public ObskurneeException() : base()
+        {
+        }
+
+        public ObskurneeException(string message) : base(message)
+        {
+        }
+
+        public ObskurneeException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+    }
+
+    public class PermissionException : ObskurneeException
     {
         public PermissionException() : base()
         {
@@ -17,7 +32,7 @@ namespace Obskurnee
         }
     }
 
-    public class ForbiddenException : Exception
+    public class ForbiddenException : ObskurneeException
     {
         public ForbiddenException() : base()
         {
@@ -32,7 +47,7 @@ namespace Obskurnee
         }
     }
 
-    public class DatastoreException : Exception
+    public class DatastoreException : ObskurneeException
     {
         public DatastoreException() : base()
         {

@@ -1,26 +1,26 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.SpaServices;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Converters;
+using Obskurnee.Hubs;
 using Obskurnee.Models;
 using Obskurnee.Services;
 using Serilog;
 using System;
+using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using VueCliMiddleware;
-using System.Configuration;
-using System.Globalization;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Converters;
-using Obskurnee.Hubs;
-using Microsoft.AspNetCore.SpaServices;
 
 namespace Obskurnee
 {
@@ -42,11 +42,15 @@ namespace Obskurnee
             Config.Current = new Config();
             Directory.CreateDirectory(Config.DataFolder);
 
-            services.AddControllers()
-                .AddNewtonsoftJson(o =>
+            services.AddControllers(options =>
                 {
-                    o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-                    o.SerializerSettings.Converters.Add(new StringEnumConverter());
+                    options.Filters.Add(new HttpResponseExceptionFilter());
+                })
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling
+                        = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
                 });
 
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = Path.Combine("ClientApp", "dist"); });
@@ -179,8 +183,8 @@ namespace Obskurnee
             });
 
             userService.LoadUsernameCache();
-            lifetime.ApplicationStarted.Register(() => 
-                Log.Information("Application started at {@base}", 
+            lifetime.ApplicationStarted.Register(() =>
+                Log.Information("Application started at {@base}",
                 Config.Current.BaseUrl));
             lifetime.ApplicationStopping.Register(() => Log.Information("Application stopping"));
             lifetime.ApplicationStopped.Register(() => Log.Information("Application stopped"));
