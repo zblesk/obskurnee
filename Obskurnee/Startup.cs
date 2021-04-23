@@ -31,6 +31,9 @@ namespace Obskurnee
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration, sectionName: "Logging")
+                .CreateLogger();
         }
 
         public void ConfigureServices(

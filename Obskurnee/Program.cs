@@ -30,10 +30,12 @@ namespace Obskurnee
 
         private static void ConfigureLogging()
         {
+            // Set this up first to make sure even startup errors are caught. 
+            // Will be overridden by Config values later.
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Debug)
+                .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
                 .WriteTo.RollingFile(Path.Join("logs", "events.log"))
                 .WriteTo.Console()
                 .CreateLogger();
