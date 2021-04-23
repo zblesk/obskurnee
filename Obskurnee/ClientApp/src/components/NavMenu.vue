@@ -18,19 +18,19 @@
                 </div>
                 <div class="navigation-toggled" v-bind:class="{show: isExpanded}">
                     <router-link :to="{ name: 'admin' }">
-                        <div class="navigation-item" v-if="isMod">Admin</div>
+                        <div class="navigation-item" v-if="isMod">{{ $t('menus.admin') }}</div>
                     </router-link>
                     <router-link :to="{ name: 'booklist' }">
-                        <div class="navigation-item" v-if="isAuthenticated">Knihy</div>
+                        <div class="navigation-item" v-if="isAuthenticated">{{ $t('menus.books') }}</div>
                     </router-link>
                     <router-link :to="{ name: 'roundlist' }">
-                        <div class="navigation-item" v-if="isAuthenticated">Návrhy</div>
+                        <div class="navigation-item" v-if="isAuthenticated">{{ $t('menus.proposals') }}</div>
                     </router-link>
                     <router-link :to="{ name: 'recommendationlist' }">
-                        <div class="navigation-item" v-if="isAuthenticated">Odporúčania</div>
+                        <div class="navigation-item" v-if="isAuthenticated">{{ $t('menus.recs') }}</div>
                     </router-link>
                     <router-link :to="{ name: 'userlist' }">
-                        <div class="navigation-item" v-if="isAuthenticated">My</div>
+                        <div class="navigation-item" v-if="isAuthenticated">{{ $t('menus.us') }}</div>
                     </router-link>
                     <div class="navigation-login">
                         <login-control></login-control>

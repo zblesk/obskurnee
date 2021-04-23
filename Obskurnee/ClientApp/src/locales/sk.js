@@ -21,5 +21,19 @@ Mozes lahko pridat aj [link](https://google.sk).`
     user: {
         noneSoFar: 'Zatiaľ žiadne.',
         wannaAddSome: 'Prečo nejaké nepridať?'
+    },
+    menus: {
+        login: "Prihlásiť",
+        logout: "Odhlásiť",
+        email: "E-mail",
+        password: "Heslo",
+        forgottenPwd: "Zabudnuté heslo",
+        cancel: "Zrušiť",
+        me: "Ja",
+        us: "My",
+        admin: "Admin",
+        books: "Knihy",
+        recs: "Odporúčania",
+        proposals: "Návrhy",
     }
 }
