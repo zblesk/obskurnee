@@ -21,7 +21,7 @@ namespace Obskurnee.Services
             _config = config ?? throw new ArgumentNullException(nameof(config));
         }
 
-        public async Task SendMail(string subject, string body, params string[] recipients)
+        public async Task SendHtmlMail(string subject, string body, params string[] recipients)
         {
             _logger.LogInformation("Sending mail '{subject}' to {@recipients}", subject, recipients);
             var mailConfig = _config
@@ -36,7 +36,7 @@ namespace Obskurnee.Services
                     {
                         from = mailConfig.SenderEmail,
                         subject = subject,
-                        text = body,
+                        html = body,
                     });
                     foreach (var mail in recipients)
                     {

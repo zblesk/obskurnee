@@ -131,7 +131,7 @@ namespace Obskurnee.Services
                                             HttpUtility.UrlEncode(resetToken));
             var subject = _newsletterLocalizer["passwordResetSubject"];
             var body = _newsletterLocalizer.Format("passwordResetBody", callbackUrl);
-            await _mailer.SendMail(subject, body, user.Email);
+            await _mailer.SendHtmlMail(subject, body, user.Email);
             _logger.LogWarning("reset hesla body {b}", body);
             return true;
         }

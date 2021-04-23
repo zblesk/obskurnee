@@ -95,7 +95,7 @@ namespace Obskurnee.Services
             _logger.LogInformation("Sending newsletter {newsletter} with subject {subject} to {count} subscribers.", newsletterName, subject, subscribers.Count);
             try
             {
-                await _mailer.SendMail(subject, body, subscribers.ToArray());
+                await _mailer.SendHtmlMail(subject, body, subscribers.ToArray());
             }
             catch (Exception ex)
             {
@@ -114,8 +114,9 @@ namespace Obskurnee.Services
 
         public Task<List<string>> GetSubscribers(string newsletterName)
             => (from ns in _db.NewsletterSubscriptions
+                join user in _db.Users on ns.UserId equals user.Id
                 where ns.NewsletterName == newsletterName
-                select ns.NewsletterName)
+                select user.Email)
                 .ToListAsync();
     }
 }

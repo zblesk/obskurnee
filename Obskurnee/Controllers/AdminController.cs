@@ -83,7 +83,7 @@ namespace Obskurnee.Controllers
             var user = await _users.Register(new LoginCredentials { Email = email, Password = password });
             if (user != null)
             {
-                await _mailer.SendMail(
+                await _mailer.SendHtmlMail(
                     $"Vitaj, {user.Name}",
                     $"Bola si uspesne zaregistrovana.\nPrihlas sa na <a href='{_config.BaseUrl}'>{_config.BaseUrl}</a>\n\nTvoj prihlasovaci mail: {user.Email}\nDefault heslo: {password}\n\nAsi by bolo najlepsie si to heslo zmenit.",
                     email);
