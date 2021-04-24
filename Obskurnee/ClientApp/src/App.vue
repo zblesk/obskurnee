@@ -288,6 +288,10 @@ body {
   background-color: var(--c-bckgr-primary);
   overflow: hidden;
   width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .book__cover {
@@ -314,7 +318,7 @@ body {
 .book__title {
   font-size: 1.25em;
   color: var(--c-accent);
-  margin: var(--spacer) 0 calc(var(--spacer)/2) 0;
+  margin: var(--spacer) 0 calc(var(--spacer)*0.4) 0;
 }
 
 @media screen and (min-width: 400px) {
@@ -323,8 +327,12 @@ body {
   }
 }
 
+.book__author {
+  font-size: 0.875em;
+}
+
 .book__pages {
-  margin-bottom: calc(var(--spacer) / 2);
+  margin-bottom: calc(var(--spacer)*0.4);
   font-size: 0.875em;
 }
 
@@ -335,6 +343,19 @@ body {
 
 .book__text {
   font-size: 0.875em;
+}
+
+.book__repost {
+  text-align: center;
+  padding-top: calc(var(--spacer) / 2);
+  border-top: 1px solid lightgray;
+  margin-top: var(--spacer);
+}
+
+.button-repost {
+  font-size: 0.875em;
+  text-align: center;
+  padding: 5px;
 }
 
 /* utility classes */
@@ -361,7 +382,7 @@ p {
   font-size: 1em;
   line-height: 1.5;
   color: var(--c-font);
-  margin-bottom: 1em;
+  margin-bottom: calc(var(--spacer) / 2);
 }
 
 p:last-child {
@@ -378,7 +399,7 @@ p:last-child {
 }
 
 h1, h2, h3 {
-  color: var(--c-font);
+  color: #595959;
   font-weight: bold;
   margin-top: 0;
 }
@@ -400,18 +421,18 @@ h1 {
 
 h2 {
   font-size: 1.2em;
-  margin-bottom: var(--spacer);
+  margin-bottom: calc(var(--spacer) / 2);
 }
 
 h3 {
-  font-size: 1.17em;
-  margin-bottom: var(--spacer);
+  font-size: 1.15em;
+  margin-bottom: calc(var(--spacer) / 2);
 }
 
 blockquote {
   margin-left: var(--spacer);
   font-style: italic;
-  margin-bottom: var(--spacer);
+  margin-bottom: calc(var(--spacer) / 2);
 }
 
 ul,
