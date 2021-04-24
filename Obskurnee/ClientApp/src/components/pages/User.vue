@@ -138,9 +138,7 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
     <div v-if="userReviews(user.userId)?.length > 0" class="grid">
       <users-review-card v-for="rev in userReviews(user.userId)" v-bind:key="rev.reviewId" v-bind:review="rev" ></users-review-card>
     </div>
-    <div v-else>
-      {{ $t('user.noneSoFar') }} <span v-if="isMe(user.userId)"><router-link :to="{ name: 'booklist' }">{{ $t('user.wannaAddSome') }}</router-link></span>
-    </div>
+    <p v-else class="recs-message">{{ $t('user.noneSoFar') }} <span v-if="isMe(user.userId)"><router-link :to="{ name: 'booklist' }">{{ $t('user.wannaAddSome') }}</router-link></span></p>
   </div>
 </section>
 </template>
