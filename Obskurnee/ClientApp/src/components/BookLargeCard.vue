@@ -8,7 +8,7 @@
 
     <h1 class="title">
       <router-link :to="{ name: 'book', params: { bookId: book.bookId } }">
-        {{ book.post.author }}: {{ book.post.title }}
+        {{ book.post.title }}
       </router-link>
       <a :href="book.post.url" :alt="book.post.title">
         <span class="goodreads-wrapper">
@@ -16,6 +16,7 @@
         </span>
       </a>
     </h1>
+    <p class="author">{{ book.post.author }}</p>
     <p class="summary" v-html="book.post.renderedText"></p>
   </div>
 </template>
@@ -48,20 +49,29 @@
 
   .title {
     font-size: 1.5em;
-    line-height: 1.5;
     font-weight: bold;
     text-align: center;
     margin-top: var(--spacer);
-    margin-bottom: var(--spacer);
+    margin-bottom: calc(var(--spacer) / 2);
   }
 
   .title a {
     text-decoration: none;
   }
 
+  .author {
+    font-size: 1.15em;
+    text-align: center;
+    margin-bottom: var(--spacer);
+  }
+
   @media screen and (min-width: 576px) {
     .title {
       margin-top: 0;
+      text-align: left;
+    }
+
+    .author {
       text-align: left;
     }
   }

@@ -36,14 +36,15 @@ export default {
   }
 
   .book-title {
+    font-size: 1em;
     font-weight: bold;
+    text-align: center;
     margin-top: var(--spacer);
-    margin-bottom: var(--spacer);
+    margin-bottom: calc(var(--spacer) / 2);
   }
 
-  .book-title,
   .book-author {
-    font-size: 1em;
+    font-size: 0.875em;
     text-align: center;
   }
 
