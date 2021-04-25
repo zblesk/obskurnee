@@ -14,7 +14,7 @@
       <p class="book__owner" v-if="showName">Doporučila {{ recommendation.ownerName }}</p>
       <p class="book__text" v-html="recommendation.renderedText"> </p>
     </div>
-    <div class="book__repost">
+    <div class="book__repost" v-if="isRepostingAllowed">
         <router-link v-if="isRepostingAllowed" 
         :to="{ name: 'discussion', params: { discussionId: activeDiscussionId }, 
         query: { parentRecommendationId: recommendation.recommendationId } }">
