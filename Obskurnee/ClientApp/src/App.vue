@@ -457,7 +457,7 @@ hr {
 /* footer */
 .footer {
   background-color: var(--c-bckgr-primary);
-  padding: var(--spacer);
+  padding: calc(var(--spacer) / 2);
 }
 
 .attribution {
