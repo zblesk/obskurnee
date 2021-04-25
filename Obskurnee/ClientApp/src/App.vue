@@ -235,6 +235,26 @@ body {
   height: 15em;
 }
 
+.form-horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  margin-bottom: var(--spacer);
+}
+
+.form-horizontal label {
+  font-size: 1em;
+  margin-right: var(--spacer);
+  margin-bottom: calc(var(--spacer) / 3);
+}
+
+.form-horizontal select {
+  font-size: 0.875em;
+  border: 0;
+  background-color: var(--c-bckgr-secondary);
+  padding: calc(var(--spacer) / 2);
+}
+
 /* label with markdown help */
 .label-md-wrapper {
   display: flex;
