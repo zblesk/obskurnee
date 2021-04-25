@@ -133,11 +133,10 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
           </div>
           <p class="nl-text">Všetky notifikácie tiež budú zaslané do chatroomu <a href="https://matrix.to/#/#bookclub:zble.sk">#bookclub:zble.sk</a><span class="todo-l">, ale zatial idu do inej, testovacej miestnosti nech v tej 'ostrej' nie je vyvojovy spam :D</span></p>
         </div>
-
       </div>
     </div>
 
-    <h2 class="page-subtitle">{{ user.name }} doporučuje ke čtení</h2>
+    <h2 class="page-subtitle">{{ user.name }} doporučuje ke čtení<span v-if="user && isMe(user.userId)" class="recs-link"> (<router-link :to="{ name: 'recommendationlist' }">doporučit další</router-link>)</span></h2>
     <div v-if="myRecs && myRecs.length > 0" class="grid">
         <recommendation-card v-bind:recommendation="rec" :showName="false" v-for="rec in myRecs" v-bind:key="rec.recommendationId" />
     </div>
@@ -456,6 +455,11 @@ export default {
     .recs-message {
       margin: var(--spacer) auto;
     }
+  }
+
+  .recs-link {
+    font-weight: normal;
+    font-size: 0.8em;
   }
 
   .user-pic {
