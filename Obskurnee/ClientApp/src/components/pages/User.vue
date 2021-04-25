@@ -23,6 +23,10 @@
           <input type="url" id="usergr" v-model="editingUser.goodreadsUrl" />
         </div>
         <div class="form-field">
+          <label for="userpic">Nahrát profilový obrázek (100 x 100 px):</label>
+          <input type="file" id="userpic" name="userpic" accept="image/*">
+        </div>
+        <div class="form-field">
           <div class="label-md-wrapper">
             <label for="userbio" class="label-md">O mne:</label>
             <div class="mo-md">
@@ -56,6 +60,8 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
 
     <div v-if="mode != 'edit'">
       <div class="main">
+        <div class="user-pic"></div>
+
         <p v-if="user.aboutMeHtml" class="bio" v-html="user.aboutMeHtml"></p>
         <p v-else class="bio"><em>Zatiaľ nám o sebe nič nepovedala.</em></p>
 
@@ -89,7 +95,7 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
           </div>
         </div>
 
-        <div class="buttons" v-if="isMod || user.userId == myUserId">
+        <div class="buttons buttons-not-edit" v-if="isMod || user.userId == myUserId">
           <a @click="startEditing" class="button-primary" :v-if="isMod || user.userId == myUserId">Upravit údaje</a>
           <a @click="$router.push({ name: 'passwordreset' })" class="button-secondary button-password" :v-if="isMod || user.userId == myUserId">Zmeniť heslo</a>
         </div>
@@ -342,7 +348,7 @@ export default {
     }
   }
 
-  .buttons {
+  .buttons-not-edit {
     margin-bottom: calc(var(--spacer) * 2);
   }
 
@@ -449,6 +455,22 @@ export default {
   @media screen and (min-width: 840px) {
     .recs-message {
       margin: var(--spacer) auto;
+    }
+  }
+
+  .user-pic {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto var(--spacer) auto;
+    border: 0;
+    border-radius: 50%;
+    background-color: var(--c-accent);
+  }
+
+  @media screen and (min-width: 576px) {
+    .user-pic {
+      float: right;
+      margin: 0 0 var(--spacer) var(--spacer);
     }
   }
 
