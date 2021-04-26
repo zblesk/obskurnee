@@ -154,5 +154,32 @@ namespace Obskurnee.Services
             _logger.LogInformation("Changing {userId}'s language to {lang}", userId, language);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task SetUserAvatar(string userId, byte[] image, string extension)
+        {
+            try
+            {
+                await _dbContext.Database.BeginTransactionAsync();
+                var user = await _dbContext.Users.Where(user => user.Id == userId)
+                                 .FirstAsync();
+                var fname = $"{user.NormalizedUserName}.{DateTime.Now.ToString("yyyyMMdd-hhmmss")}{extension}";
+                _dbContext.Images.Add(new StoredImage
+                {
+                    FileName = fname,
+                    FileContents = image,
+                    Extension = extension,
+                    Kind = StoredImage.ImageKind.ProfilePic,
+                });
+                user.ProfilePicUrl = Helpers.MakeImageRelativePath(fname);
+                _dbContext.Users.Update(user);
+                await _dbContext.SaveChangesAsync();
+                await _dbContext.Database.CommitTransactionAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Setting avatar failed");
+                _dbContext.Database.RollbackTransaction();
+            }
+        }
     }
 }

@@ -185,7 +185,7 @@ namespace Obskurnee.Services
                     var relativeFilename = sanitizedName.Substring(0, Math.Min(90, sanitizedName.Length))
                         + _rand.Next(10_000, 100_000).ToString()
                         + Path.GetExtension(imgUrl) ?? ".jpg";
-                    var relativeUrl = "/images/" + relativeFilename;
+                    var relativeUrl = Helpers.MakeImageRelativePath(relativeFilename);
                     _logger.LogInformation("File downloaded, saving it as {filename}", relativeFilename);
                     await _db.Images.AddAsync(new StoredImage()
                     {

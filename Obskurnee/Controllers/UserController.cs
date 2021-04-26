@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
@@ -6,6 +7,7 @@ using Obskurnee.Services;
 using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Obskurnee.Controllers
@@ -54,5 +56,20 @@ namespace Obskurnee.Controllers
         [Route("language")]
         public Task SetMyLanguage([FromBody] JObject payload)
             => _users.SetUserLanguage(User.GetUserId(), payload["language"].ToString());
+
+        [HttpPost]
+        [Route("avatar")]
+        public async Task<UserInfo> SetAvatar([FromForm] IFormFile avatar)
+        {
+            using (var ms = new MemoryStream((int)avatar.Length))
+            {
+                await avatar.CopyToAsync(ms);
+                await _users.SetUserAvatar(
+                    User.GetUserId(),
+                    ms.ToArray(),
+                    Path.GetExtension(avatar.FileName));
+                return await _users.GetUserById(User.GetUserId());
+            }
+        }
     }
 }

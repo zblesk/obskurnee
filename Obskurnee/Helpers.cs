@@ -45,5 +45,8 @@ namespace Obskurnee
                                               UnicodeCategory.NonSpacingMark)
               ).Normalize(NormalizationForm.FormC);
         }
+
+        public static string MakeImageRelativePath(string imageFilename)
+            => $"/images/{imageFilename}";
     }
 }
