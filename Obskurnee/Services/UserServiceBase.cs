@@ -162,7 +162,7 @@ namespace Obskurnee.Services
                 await _dbContext.Database.BeginTransactionAsync();
                 var user = await _dbContext.Users.Where(user => user.Id == userId)
                                  .FirstAsync();
-                var fname = $"{user.NormalizedUserName}.{DateTime.Now.ToString("yyyyMMdd-hhmmss")}{extension}";
+                var fname = $"{user.UserName.Replace(" ", "")}.{DateTime.Now.ToString("yyyyMMdd-hhmmss")}{extension}";
                 _dbContext.Images.Add(new StoredImage
                 {
                     FileName = fname,
