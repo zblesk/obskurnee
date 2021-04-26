@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.SpaServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -218,6 +217,7 @@ namespace Obskurnee
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = Config.Current.DefaultPasswordMinLength;
                 options.ClaimsIdentity.UserIdClaimType = BookclubClaims.UserId;
+                options.User.AllowedUserNameCharacters = ""; // all
             })
                .AddEntityFrameworkStores<ApplicationDbContext>()
                .AddSignInManager<SignInManager<Bookworm>>()
