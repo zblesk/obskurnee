@@ -45,6 +45,14 @@ export default {
           return Promise.resolve();
         });
       return dispatch('getUsers');
+    },
+    async updateLanguage({ commit }, language)
+    {
+      return axios.post("/api/users/language", { language: language })
+        .then(() => {
+          commit("global/setLanguage", language, { root: true});
+          return Promise.resolve();
+        });
     }
   }
 }

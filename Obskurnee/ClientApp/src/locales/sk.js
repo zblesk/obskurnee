@@ -13,7 +13,7 @@ Medzi zaklady patri napriklad:
 Mozes lahko pridat aj [link](https://google.sk).`
     },
     home: {
-        greeting: 'Vitaj, <strong>{0}</strong>!'
+        greeting: 'Vitaj, <strong>{0}</strong>❣'
     },
     post: {
 
@@ -35,5 +35,8 @@ Mozes lahko pridat aj [link](https://google.sk).`
         books: "Knihy",
         recs: "Odporúčania",
         proposals: "Návrhy",
+    },
+    messages: {
+        langChangeSuccess: 'Jazyk zmenený',
     }
 }

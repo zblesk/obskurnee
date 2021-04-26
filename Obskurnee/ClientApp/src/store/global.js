@@ -9,10 +9,12 @@ export default {
     currentPoll: null,
     currentDiscussion: null,
     siteName: 'Obskurnee',
+    language: '',
   },
   getters: {
     isRepostingAllowed: state => state?.currentDiscussion?.topic == 'Books',
     activeDiscussionId: state => state?.currentDiscussion?.discussionId,
+    getLanguage: state => state.language,
   },
   mutations: {
     setHomeData(state, data)
@@ -37,6 +39,14 @@ export default {
     {
       state.currentDiscussion = discussion;
     },
+    setLanguage(state, language)
+    {
+      if (language)
+      {
+        window.localStorage.setItem('language', language);
+        state.language = language;
+      }
+    },
   },
   actions: {
     loadHome({ commit }) 
@@ -46,6 +56,7 @@ export default {
       .then((response) => {
           commit('setHomeData', response.data);
           commit('setSiteName', response.data.siteName);
+          commit('setLanguage', response.data.myProfile.language);
       });
     },
     reloadSiteName({ commit })

@@ -64,6 +64,7 @@ export default {
   },
   computed: {
     ...mapGetters('context', ['isAuthenticated']),
+    ...mapGetters('global', ['getLanguage']),
     ...mapState('global', ['myProfile', 'currentBook', 'noticeboardHtml', 'currentPoll', 'currentDiscussion']),
     userProfileIncomplete: function() {
       return (
@@ -78,7 +79,13 @@ export default {
     },
   },
   mounted() {
-    this.loadHome();
+    this.loadHome()
+      .then(() => {
+        if (this.getLanguage)
+        {
+          this.$i18n.locale = this.getLanguage;
+        }
+      });
   },
 };
 </script>

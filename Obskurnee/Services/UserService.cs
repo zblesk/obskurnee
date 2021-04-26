@@ -1,15 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using Obskurnee.Models;
 using Obskurnee.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Obskurnee.Models;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web;
-using Microsoft.Extensions.Localization;
 
 namespace Obskurnee.Services
 {
@@ -119,9 +116,9 @@ namespace Obskurnee.Services
 
         public override async Task<bool> InitiatePasswordReset(string email)
         {
-            _logger.LogInformation("Initiating password reset for {email}"  , email);
+            _logger.LogInformation("Initiating password reset for {email}", email);
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)   
+            if (user == null)
             {
                 return false;
             }
