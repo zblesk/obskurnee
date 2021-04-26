@@ -2,7 +2,7 @@
 <div>
   <h1 id="tableLabel" class="page-title">{{ discussion.title }}<span class="disc-closed" v-if="discussion.isClosed">&nbsp;Uzavreté</span></h1>
   <div class="main">
-    <p v-html="discussion.renderedDescription" class="disc-desc"></p>
+    <p v-if="discussion.renderedDescription" v-html="discussion.renderedDescription" class="disc-desc"></p>
     <div class="form" v-if="!discussion.isClosed">
       <new-post :mode="discussion.topic" @new-post="onNewPost">Pridať nový návrh</new-post>
       <div></div>
