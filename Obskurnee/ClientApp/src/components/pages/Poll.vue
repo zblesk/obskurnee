@@ -32,7 +32,7 @@
       <div v-if="!poll.isClosed && poll.results && poll.results.alreadyVoted" class="u-mb-sp2">
        <h2 class="subtitle">Stav hlasování</h2>
         <p class="paragraph">Už hlasovalo {{ poll.results.alreadyVoted.length }} z {{users.length }} čtenářů.</p>
-        <p class="paragraph">Ješte nehlasovali: <span v-for="person in yetToVote" v-bind:key="person">{{ person.name }},</span></p>
+        <p class="paragraph">Ješte nehlasovali: <span v-for="person in yetToVote" v-bind:key="person">{{ person.name }}, </span></p>
       </div>
 
       <div v-if="iVoted || (poll.isClosed && poll.results && poll.results.votes)">
