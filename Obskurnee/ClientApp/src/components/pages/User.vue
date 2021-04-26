@@ -52,7 +52,7 @@ Medzi zaklady patri napriklad:
 Mozes lahko pridat aj [link](https://google.sk)."></textarea>
         </div>
         <div class="buttons">
-          <a @click="updateProfile" class="button-primary" :v-if="isMod || user.userId == myUserId">Uložit změny</a>
+          <button @click="updateProfile" :disabled="saveInProgress" class="button-primary" :v-if="isMod || user.userId == myUserId">Uložit změny</button>
           <a @click="stopEditing" class="button-secondary button-cancel" :v-if="isMod || user.userId == myUserId">Zahodit změny</a>
         </div>
       </div>
@@ -168,6 +168,7 @@ export default {
         editingUser: {},
         subscriptions: [],
         myRecs: [],
+        saveInProgress: false,
       }
   },
   computed: {
@@ -192,21 +193,27 @@ export default {
     ...mapActions("reviews", ["fetchCurrentlyReading"]),
     updateProfile() 
     {
+      this.saveInProgress = true;
       this.updateUser(this.editingUser)
         .then(() => {
           this.fetchProfile();
           this.stopEditing();
         })
-        .catch(this.$handleApiError);
+        .catch(err => {
+          this.saveInProgress = false;
+          this.$handleApiError(err);
+        });
     },
     startEditing() 
     {
       this.editingUser = JSON.parse(JSON.stringify(this.user));
       this.mode = "edit";
+      this.saveInProgress = false;
     },
     stopEditing() 
     {
       this.mode = "default";
+      this.saveInProgress = false;
     },
     fetchProfile()
     {
