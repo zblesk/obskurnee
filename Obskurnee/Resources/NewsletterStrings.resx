@@ -174,7 +174,7 @@ _{3} strán | [link na GR]({4:url})_
 [link]({0:link})</value>
   </data>
   <data name="newReviewSubject" xml:space="preserve">
-    <value>Nová recenzia na {0:title}</value>
+    <value>Nová recenzia na {0:title} od {1:name}</value>
   </data>
   <data name="newRoundBodyMarkdown" xml:space="preserve">
     <value>Pridaj svoje návrhy! **Nemáme obmedzenia na počty - čím viac, tým väčšia sranda!**  
