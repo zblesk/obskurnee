@@ -189,8 +189,7 @@ export default {
   methods: {
     ...mapActions("users", ["getUser", "updateUser"]),
     ...mapActions("recommendations", ["fetchRecommendationsFor"]),
-    ...mapActions("reviews", ["fetchUserReviews"]),
-    ...mapActions("reviews", ["fetchCurrentlyReading"]),
+    ...mapActions("reviews", ["fetchUserReviews", "fetchCurrentlyReading"]),
     updateProfile() 
     {
       this.saveInProgress = true;
@@ -253,9 +252,9 @@ export default {
             .then(recs => this.myRecs = recs)
             .catch(this.$handleApiError);
           this.fetchUserReviews(this.user.userId)
-            .then(data => {
-              this.reviews = data;
-            })
+            .then(data => this.reviews = data)
+            .catch(this.$handleApiError);
+          this.fetchCurrentlyReading()
             .catch(this.$handleApiError);
         });
       this.fetchNewsletterSubsciptions()
