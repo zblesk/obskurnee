@@ -196,7 +196,8 @@ export default {
         .then(() => {
           this.fetchProfile();
           this.stopEditing();
-        });
+        })
+        .catch(this.$handleApiError);
     },
     startEditing() 
     {
@@ -210,7 +211,8 @@ export default {
     fetchProfile()
     {
       return this.getUser(this.$route.params.email)
-        .then(data => this.user = data);
+        .then(data => this.user = data)
+        .catch(this.$handleApiError);
     },
     async fetchNewsletterSubsciptions()
     {
@@ -219,10 +221,7 @@ export default {
         {
           this.subscriptions = response.data;
         })
-        .catch(function (error)
-        {
-          this.$notifyError(error);
-        });
+        .catch(this.$handleApiError);
     },
     async toggleSubscription(newsletter, subscribe)
     {
@@ -232,7 +231,7 @@ export default {
           {
             this.subscriptions = response.data;
           })
-          .catch((err) => this.$notifyError(err));
+          .catch(this.$handleApiError);
     },
     onLoad()
     {
@@ -245,14 +244,15 @@ export default {
           }
           this.fetchRecommendationsFor(this.user.userId)
             .then(recs => this.myRecs = recs)
-            .catch((err) => this.$notifyError(err));
+            .catch(this.$handleApiError);
           this.fetchUserReviews(this.user.userId)
             .then(data => {
               this.reviews = data;
             })
-            .catch(e => this.$notifyError(e));
+            .catch(this.$handleApiError);
         });
-      this.fetchNewsletterSubsciptions();
+      this.fetchNewsletterSubsciptions()
+        .catch(this.$handleApiError);
     },
   },
   mounted() {

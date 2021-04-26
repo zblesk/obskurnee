@@ -30,6 +30,7 @@ const app = createApp(App)
       this.$notifyNormal = (text) => this.$toast.show(text.toString(), opts);
       this.$notifyInfo = (text) => this.$toast.info(text.toString(), opts);
       this.$handleApiError = error => { 
+        console.log(error);
         var msg = error?.response?.data;
         if (!msg)
         {
