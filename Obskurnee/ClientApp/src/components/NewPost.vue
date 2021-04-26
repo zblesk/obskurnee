@@ -54,7 +54,7 @@
       </div>
     </div>
     <div class="buttons u-mt-sp">
-      <button @click="addPost" class="button-primary">Přidat</button>
+      <button @click="addPost" :disabled="saveInProgress" class="button-primary">Přidat</button>
       <button @click="toggleVisibility" class="button-secondary hide-form">Schovat formulář</button>
     </div>
   </div>
@@ -158,12 +158,14 @@ export default {
     return {
       newPost: {},
       fetchInProgress: false,
+      saveInProgress: false,
       hide: true,
       parentData: null,
     };
   },
   methods: {
     addPost() {
+      this.saveInProgress = true;
       this.$emit('new-post', 
         this.parentData
         ? { ... this.newPost, ... this.parentData}
@@ -200,11 +202,13 @@ export default {
       this.newPost = postData.post;
       this.parentData = postData.parentData;
       this.hide = false;
+      this.saveInProgress = false;
     });
     this.emitter.on("clear-post", () => {
       this.newPost = {};
       this.parentData = null;
       this.hide = true;
+      this.saveInProgress = false;
     });
   },
 }
