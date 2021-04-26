@@ -12,6 +12,9 @@ axios.interceptors.request.use(request => {
     if (store.state.context.jwtToken) {
         request.headers['Authorization'] = 'Bearer ' + store.state.context.jwtToken;
     }
+    if (store.state.global.language) {
+        request.headers['Accept-Language'] = 'Bearer ' + store.state.global.language;
+    }
     return request;
   });
 

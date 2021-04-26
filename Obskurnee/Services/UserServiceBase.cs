@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+using Obskurnee.Models;
 using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Obskurnee.Models;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
-using System.Web;
-using Microsoft.Extensions.Localization;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Obskurnee.Services
 {
@@ -99,7 +98,7 @@ namespace Obskurnee.Services
             var user = _dbContext.Users.First(bw => bw.Email == email);
             return UserInfo.From(user, await _userManager.GetClaimsAsync(user));
         }
-     
+
         public async Task<UserInfo> GetUserById(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -122,14 +121,14 @@ namespace Obskurnee.Services
             if (!identityResult.Succeeded)
             {
                 _logger.LogError("User update failed. IdentityResult: {@identityResult}", identityResult);
-                throw new DatastoreException("User update failed");
+                throw new DatastoreException(_localizer["userUpdateFailed"]);
             }
             if (!(await _userManager.SetPhoneNumberAsync(user, phone)).Succeeded)
             {
                 _logger.LogError(
                     "User update succeeded, but phone number update failed. IdentityResult: {@identityResult}",
                     identityResult);
-                throw new DatastoreException("User update succeeded, but phone number update failed.");
+                throw new DatastoreException(_localizer["userUpdateFailed"]);
             }
             _logger.LogInformation("User profile for {userId} ({email}) updated.", user.Id, user.Email);
             LoadUsernameCache();

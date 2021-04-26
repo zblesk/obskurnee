@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="atLeastOneProposalRequired" xml:space="preserve">
-    <value>Musí byť aspoň jeden návrh</value>
+    <value>ENGLIS</value>
   </data>
   <data name="bookDiscussionTitle" xml:space="preserve">
     <value>{0:title} - návrhy kníh</value>
@@ -142,10 +142,7 @@
     <value>{0:title} - návrhy tém</value>
   </data>
   <data name="unsupportedLanguage" xml:space="preserve">
-    <value>Nepodporovaný jazyk: {0:lang}</value>
-  </data>
-  <data name="userUpdateFailed" xml:space="preserve">
-    <value>Zlyhala aktualizácia používateľa</value>
+    <value>ENGLIS Nepodporovaný jazyk: {0:lang}</value>
   </data>
   <data name="votingClosed" xml:space="preserve">
     <value>Hlasovanie už skončilo</value>

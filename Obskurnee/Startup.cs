@@ -16,9 +16,10 @@ using Obskurnee.Services;
 using Serilog;
 using System;
 using System.Configuration;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Threading.Tasks;
+using System.Linq;
 using VueCliMiddleware;
 
 namespace Obskurnee
@@ -42,9 +43,9 @@ namespace Obskurnee
             Directory.CreateDirectory(Config.DataFolder);
 
             services.AddControllers(options =>
-                {
-                    options.Filters.Add(new HttpResponseExceptionFilter());
-                })
+            {
+                options.Filters.Add(new HttpResponseExceptionFilter());
+            })
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ReferenceLoopHandling
@@ -55,69 +56,13 @@ namespace Obskurnee
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = Path.Combine("ClientApp", "dist"); });
 
             Configuration.Bind(Config.Current);
+            Trace.Assert(
+                Config.SupportedLanguages.Contains(Config.Current.DefaultCulture),
+                "Unsupported Default Culture");
 
-            services.AddSingleton(Config.Current);
-            services.AddTransient<GoodreadsScraper>();
-            services.AddTransient<PollService>();
-            services.AddTransient<BookService>();
-            services.AddTransient<RoundManagerService>();
-            services.AddTransient<DiscussionService>();
-            services.AddTransient<SettingsService>();
-            services.AddTransient<NewsletterService>();
-            services.AddTransient<RecommendationService>();
-            services.AddTransient<MatrixService>();
-            services.AddTransient<ReviewService>();
-            services.AddTransient<BackupService>();
-            services.AddHostedService<FeedFetcherService>();
+            ConfigureDI(services);
+            ConfigureLocalization(services);
 
-#if DEMOMODE
-            services.AddTransient<UserServiceBase, DemoUserService>();
-#else
-            services.AddTransient<UserServiceBase, UserService>();
-#endif
-
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(
-                    Configuration.GetConnectionString("SqliteConnection")));
-
-#if DEMOMODE
-            services.AddTransient<IMailerService, FakeMailerService>();
-#else
-            switch (Config.Current.MailerType)
-            {
-                case "mailgun":
-                    services.AddTransient<IMailerService, MailgunMailerService>();
-                    break;
-                case "log-only":
-                    services.AddTransient<IMailerService, FakeMailerService>();
-                    break;
-                default:
-                    throw new ConfigurationErrorsException($"Invalid mailer type: {Configuration["MailerType"]}");
-            }
-
-            if (Config.Current.EnablePeriodicBackup)
-            {
-                services.AddHostedService<PeriodicBackupService>();
-            }
-#endif
-
-            services.AddLocalization(options => options.ResourcesPath = "Resources");
-            services.Configure<RequestLocalizationOptions>(
-                options =>
-                {
-                    var supportedCultures = new[]
-                    {
-                        new CultureInfo(Config.Current.DefaultCulture)
-                    };
-
-                    options.DefaultRequestCulture = new RequestCulture(culture: Config.Current.DefaultCulture, uiCulture: Config.Current.DefaultCulture);
-                    options.SupportedCultures = supportedCultures;
-                    options.SupportedUICultures = supportedCultures;
-
-                    options.AddInitialRequestCultureProvider(
-                        new CustomRequestCultureProvider(
-                            _ => Task.FromResult(new ProviderCultureResult(Config.Current.DefaultCulture))));
-                });
             services.AddSignalR()
                 .AddNewtonsoftJsonProtocol(options =>
                 {
@@ -138,6 +83,8 @@ namespace Obskurnee
             dbContext.Database.Migrate();
 
             Log.Information("Setting up for environment {env}", env.EnvironmentName);
+            app.UseSerilogRequestLogging();
+            app.UseRequestLocalization();
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
@@ -161,7 +108,6 @@ namespace Obskurnee
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseSerilogRequestLogging();
 
             app.UseEndpoints(endpoints =>
             {
@@ -228,6 +174,74 @@ namespace Obskurnee
                 options.AddPolicy("ModOnly", policy => policy.RequireClaim(BookclubClaims.Moderator));
                 options.AddPolicy("AdminOnly", policy => policy.RequireClaim(BookclubClaims.Admin));
             });
+        }
+
+        private void ConfigureDI(IServiceCollection services)
+        {
+            services.AddSingleton(Config.Current);
+            services.AddTransient<GoodreadsScraper>();
+            services.AddTransient<PollService>();
+            services.AddTransient<BookService>();
+            services.AddTransient<RoundManagerService>();
+            services.AddTransient<DiscussionService>();
+            services.AddTransient<SettingsService>();
+            services.AddTransient<NewsletterService>();
+            services.AddTransient<RecommendationService>();
+            services.AddTransient<MatrixService>();
+            services.AddTransient<ReviewService>();
+            services.AddTransient<BackupService>();
+            services.AddHostedService<FeedFetcherService>();
+
+#if DEMOMODE
+            services.AddTransient<UserServiceBase, DemoUserService>();
+#else
+            services.AddTransient<UserServiceBase, UserService>();
+#endif
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlite(
+                    Configuration.GetConnectionString("SqliteConnection")));
+
+#if DEMOMODE
+            services.AddTransient<IMailerService, FakeMailerService>();
+#else
+            switch (Config.Current.MailerType)
+            {
+                case "mailgun":
+                    services.AddTransient<IMailerService, MailgunMailerService>();
+                    break;
+                case "log-only":
+                    services.AddTransient<IMailerService, FakeMailerService>();
+                    break;
+                default:
+                    throw new ConfigurationErrorsException($"Invalid mailer type: {Configuration["MailerType"]}");
+            }
+
+            if (Config.Current.EnablePeriodicBackup)
+            {
+                services.AddHostedService<PeriodicBackupService>();
+            }
+#endif
+        }
+
+        private static void ConfigureLocalization(IServiceCollection services)
+        {
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.Configure<RequestLocalizationOptions>(
+                options =>
+                {
+                    var supportedCultures = Config.SupportedLanguages.Select(l => new CultureInfo(l)).ToList();
+
+                    options.DefaultRequestCulture = new RequestCulture(
+                        culture: Config.Current.DefaultCulture,
+                        uiCulture: Config.Current.DefaultCulture);
+                    options.SetDefaultCulture(Config.Current.DefaultCulture);
+                    options.SupportedCultures = supportedCultures;
+                    options.SupportedUICultures = supportedCultures;
+
+                    options.AddInitialRequestCultureProvider(
+                        new AcceptLanguageHeaderRequestCultureProvider());
+                });
         }
     }
 }
