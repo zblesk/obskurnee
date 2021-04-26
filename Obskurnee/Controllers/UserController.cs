@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 using Obskurnee.Services;
 using Obskurnee.ViewModels;
 using System;
@@ -43,5 +44,15 @@ namespace Obskurnee.Controllers
                 updateInfo.GoodreadsUrl,
                 updateInfo.AboutMe);
         }
+
+        [HttpGet]
+        [Route("language")]
+        public Task<string> GetMyLanguage()
+            => _users.GetUserLanguage(User.GetUserId());
+
+        [HttpPost]
+        [Route("language")]
+        public Task SetMyLanguage([FromBody] JObject payload)
+            => _users.SetUserLanguage(User.GetUserId(), payload["language"].ToString());
     }
 }

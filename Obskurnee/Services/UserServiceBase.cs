@@ -10,6 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Web;
 using Microsoft.Extensions.Localization;
+using Microsoft.EntityFrameworkCore;
 
 namespace Obskurnee.Services
 {
@@ -22,17 +23,20 @@ namespace Obskurnee.Services
         protected readonly Config _config;
         protected readonly ApplicationDbContext _dbContext;
         private static IReadOnlyDictionary<string, string> _userNames = new Dictionary<string, string>();
+        private readonly IStringLocalizer<Strings> _localizer;
 
         public UserServiceBase(
            UserManager<Bookworm> userManager,
            ILogger<UserServiceBase> logger,
            ApplicationDbContext dbContext,
+           IStringLocalizer<Strings> localizer,
            Config config)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _config = config ?? throw new ArgumentNullException(nameof(config));
-            _dbContext = dbContext;
+            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
         }
 
         public async Task<List<UserInfo>> GetAllUsers()
@@ -131,6 +135,25 @@ namespace Obskurnee.Services
             LoadUsernameCache();
 
             return await GetUserByEmail(email);
+        }
+
+        public Task<string> GetUserLanguage(string userId)
+            => (from u in _dbContext.Users.AsNoTracking()
+                where u.Id == userId
+                select u.Language)
+                .FirstOrDefaultAsync();
+
+        public async Task SetUserLanguage(string userId, string language)
+        {
+            if (!Config.SupportedLanguages.Contains(language))
+            {
+                throw new ValidationException(_localizer.Format("unsupportedLanguage", language));
+            }
+            var user = await _dbContext.Users.FindAsync(userId);
+            user.Language = language;
+            _dbContext.Update(user);
+            _logger.LogInformation("Changing {userId}'s language to {lang}", userId, language);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

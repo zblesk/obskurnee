@@ -141,6 +141,9 @@
   <data name="topicDiscussionTitle" xml:space="preserve">
     <value>{0:title} - návrhy tém</value>
   </data>
+  <data name="unsupportedLanguage" xml:space="preserve">
+    <value>Nepodporovaný jazyk: {0:lang}</value>
+  </data>
   <data name="votingClosed" xml:space="preserve">
     <value>Hlasovanie už skončilo</value>
   </data>

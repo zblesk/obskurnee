@@ -22,7 +22,7 @@ namespace Obskurnee.Services
            SignInManager<Bookworm> signInManager,
             IStringLocalizer<Strings> localizer,
             ApplicationDbContext dbContext,
-            Config config) : base(userManager, logger, dbContext, config)
+            Config config) : base(userManager, logger, dbContext, localizer, config)
         {
             _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));

@@ -7,6 +7,7 @@ namespace Obskurnee.Models
     {
         public const string DataFolder = "data";
         public const string BackupFolder = "backup";
+        public static readonly string[] SupportedLanguages = new[] { "sk", "en", "cs" };
         private string _key;
         private string _baseUrl;
 

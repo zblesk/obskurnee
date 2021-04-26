@@ -31,7 +31,8 @@ namespace Obskurnee.Services
            IServiceProvider serviceProvider,
            UserManager<Bookworm> userManager,
            ApplicationDbContext dbContext,
-           Config config) : base(userManager, logger, dbContext, config)
+           IStringLocalizer<Strings> localizer,
+           Config config) : base(userManager, logger, dbContext, localizer, config)
         {
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));

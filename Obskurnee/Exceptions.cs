@@ -4,6 +4,8 @@ namespace Obskurnee
 {
     public abstract class ObskurneeException : Exception
     {
+        public virtual int StatusCode { get; set; } = 500;
+
         public ObskurneeException() : base()
         {
         }
@@ -64,6 +66,8 @@ namespace Obskurnee
 
     public class ValidationException : ObskurneeException
     {
+        public override int StatusCode { get; set; } = 400;
+
         public ValidationException() : base()
         {
         }

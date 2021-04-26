@@ -17,7 +17,7 @@ namespace Obskurnee
             {
                 context.Result = new ObjectResult(exception.Message)
                 {
-                    StatusCode = 500,
+                    StatusCode = ((ObskurneeException)context.Exception).StatusCode,
                 };
                 context.ExceptionHandled = true;
             }
