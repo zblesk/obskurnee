@@ -68,7 +68,7 @@ namespace Obskurnee.Controllers
             using (var ms = new MemoryStream())
             {
                 imageFactory.Load(avatar.OpenReadStream())
-                    .Resize(new ResizeLayer(new Size(100, 100)))
+                    .Resize(new ResizeLayer(new Size(100, 100), ResizeMode.Crop))
                     .Save(ms);
                 await _users.SetUserAvatar(
                     User.GetUserId(),
