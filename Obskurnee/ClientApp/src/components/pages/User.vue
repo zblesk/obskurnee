@@ -200,6 +200,7 @@ export default {
       if (this.newAvatar)
       {
         await this.updateAvatar(this.newAvatar)
+          .catch(this.$handleApiError);
       }
       this.updateUser(this.editingUser)
         .then(() => {

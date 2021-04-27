@@ -157,6 +157,7 @@ namespace Obskurnee.Services
 
         public async Task SetUserAvatar(string userId, byte[] image, string extension)
         {
+            _logger.LogInformation("Updating avatar for {userId}", userId);
             try
             {
                 await _dbContext.Database.BeginTransactionAsync();
