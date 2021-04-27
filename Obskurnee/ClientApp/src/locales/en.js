@@ -1,5 +1,5 @@
 export default {
     home: {
-        greeting: 'Welcome, <strong>{0}</strong>!'
+        greeting: 'Welcome, <strong>{0}</strong>❣'
     }
 }

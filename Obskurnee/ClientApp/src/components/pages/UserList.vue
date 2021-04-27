@@ -6,9 +6,11 @@
     <div class="user-grid" v-if="users">
         <div class="user-card" v-for="user in users" v-bind:key="user.userId">
             <router-link :to="{ name: 'user', params: { email: user.email } }">
-                <div class="user-pic">
-                    <img v-if="user.avatarUrl" :src="user.avatarUrl" :title="user.name" :alt="user.name" />
-                    <img v-else src="../../assets/reader.svg" :title="user.name" :alt="user.name" />
+                <div v-if="user.avatarUrl" class="user-pic">
+                    <img :src="user.avatarUrl" :title="user.name" :alt="user.name" />
+                </div>
+                <div v-else class="user-pic-placeholder">
+                    <img src="../../assets/reader.svg" :title="user.name" :alt="user.name" />
                 </div>
             </router-link>
             <div class="user-desc">
@@ -50,13 +52,19 @@
         width: 100px;
         height: 100px;
         margin: 0 auto;
+    }
+
+    .user-pic-placeholder {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
         padding-top: 20px;
         border: 0;
         border-radius: 50%;
         background-color: var(--c-accent);
     }
 
-    .user-pic img {
+    .user-pic-placeholder img {
         max-width: 60%;
         display: block;
         margin: 0 auto;
