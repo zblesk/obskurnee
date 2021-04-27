@@ -7,8 +7,8 @@
         <div class="user-card" v-for="user in users" v-bind:key="user.userId">
             <router-link :to="{ name: 'user', params: { email: user.email } }">
                 <div class="user-pic">
-                    <img v-if="user.isModerator" src="../../assets/fairy-white.svg" alt="fairy icon" class="user-pic-mod">
-                    <img v-else src="../../assets/reader.svg" alt="reader icon">
+                    <img v-if="user.avatarUrl" :src="user.avatarUrl" :title="user.name" :alt="user.name" />
+                    <img v-else src="../../assets/reader.svg" :title="user.name" :alt="user.name" />
                 </div>
             </router-link>
             <div class="user-desc">

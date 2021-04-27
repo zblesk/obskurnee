@@ -18,7 +18,7 @@ namespace Obskurnee.ViewModels
         public string Token { get; set; } = null;
         public string GoodreadsUrl { get; set; }
         public string Language { get; set; }
-        public string ProfilePicUrl { get; set; }
+        public string AvatarUrl { get; set; }
 
         public static UserInfo From(ClaimsPrincipal principal, string includeToken = null)
                 => (principal?.Identity == null || !principal.Identity.IsAuthenticated)
@@ -43,7 +43,7 @@ namespace Obskurnee.ViewModels
                 AboutMeHtml = user.RenderedAboutMe,
                 GoodreadsUrl = user.GoodreadsProfileUrl,
                 Language = user.Language,
-                ProfilePicUrl = user.AvatarUrl,
+                AvatarUrl = user.AvatarUrl,
                 IsModerator = principal?.FindFirstValue(BookclubClaims.Moderator) != null,
                 IsAdmin = principal?.FindFirstValue(BookclubClaims.Admin) != null,
             };
@@ -60,7 +60,7 @@ namespace Obskurnee.ViewModels
                 AboutMeHtml = user.RenderedAboutMe,
                 GoodreadsUrl = user.GoodreadsProfileUrl,
                 Language = user.Language,
-                ProfilePicUrl = user.AvatarUrl,
+                AvatarUrl = user.AvatarUrl,
                 IsModerator = claims.Any(claim => claim.Type == BookclubClaims.Moderator),
                 IsAdmin = claims.Any(claim => claim.Type == BookclubClaims.Admin),
             };
