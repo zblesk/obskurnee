@@ -134,7 +134,14 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
               </div>
             </div>
           </div>
-          <p class="nl-text">Všetky notifikácie tiež budú zaslané do chatroomu <a href="https://matrix.to/#/#bookclub:zble.sk">#bookclub:zble.sk</a><span class="todo-l">, ale zatial idu do inej, testovacej miestnosti nech v tej 'ostrej' nie je vyvojovy spam :D</span></p>
+          <i18n-t keypath="user.matrixInfo" tag="p" class="nl-text">
+              <a :href="'https://matrix.to/#/' + matrixRoomLink">{{ matrixRoomLink }}</a>
+          </i18n-t>
+          <!-- <i18n-t keypath="user.matrixInfo" tag="p" class="nl-text">
+            <template v-slot:link>
+              <a :href="'https://matrix.to/#/' + matrixRoomLink">{{ matrixRoomLink }}</a>
+            </template>
+          </i18n-t> -->
         </div>
       </div>
     </div>
@@ -155,7 +162,7 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import axios from 'axios';
 import RecommendationCard from '../RecommendationCard.vue';
 import UsersReviewCard from '../UsersReviewCard.vue';
@@ -177,8 +184,8 @@ export default {
   },
   computed: {
     ...mapGetters("context", ["myUserId", "isMod", "isMe"]),
-    ...mapGetters("reviews", ["userReviews"]),
-    ...mapGetters("reviews", ["usersCurrentlyReading", "userHasCurrentlyReading"]),
+    ...mapGetters("reviews", ["userReviews", "usersCurrentlyReading", "userHasCurrentlyReading"]),
+    ...mapState("global", ["matrixRoomLink"]),
     subscribedBasic: function () { return this.subscriptions.includes('basicevents'); },
     subscribedAll: function () { return this.subscriptions.includes('allevents'); },
   },

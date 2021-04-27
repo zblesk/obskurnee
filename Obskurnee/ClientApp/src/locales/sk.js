@@ -20,7 +20,8 @@ Mozes lahko pridat aj [link](https://google.sk).`
     },
     user: {
         noneSoFar: 'Zatiaľ žiadne.',
-        wannaAddSome: 'Prečo nejaké nepridať?'
+        wannaAddSome: 'Prečo nejaké nepridať?',
+        matrixInfo: 'Všetky notifikácie tiež budú zaslané do chatroomu {0}.'
     },
     menus: {
         login: "Prihlásiť",

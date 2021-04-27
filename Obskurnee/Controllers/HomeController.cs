@@ -20,6 +20,7 @@ namespace Obskurnee.Controllers
         private readonly UserServiceBase _userService;
         private readonly DiscussionService _discussionService;
         private readonly PollService _pollService;
+        private readonly MatrixService _matrixService;
 
         public HomeController(
             ILogger<HomeController> logger, 
@@ -27,7 +28,8 @@ namespace Obskurnee.Controllers
             BookService bookService,
             UserServiceBase userService,
             DiscussionService discussionService,
-            PollService pollService)
+            PollService pollService,
+            MatrixService matrixService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
@@ -35,6 +37,7 @@ namespace Obskurnee.Controllers
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _discussionService = discussionService ?? throw new ArgumentNullException(nameof(discussionService));
             _pollService = pollService ?? throw new ArgumentNullException(nameof(pollService));
+            _matrixService = matrixService;
         }
 
         [HttpGet]
@@ -56,6 +59,7 @@ namespace Obskurnee.Controllers
                 SiteName = Config.Current.SiteName,
                 CurrentPoll = await _pollService.GetLatestOpen(),
                 CurrentDiscussion = await _discussionService.GetLatestOpen(),
+                MatrixRoomLink = _matrixService?.GetEnabledMatrixRoomLink(),
             });
         }
     }

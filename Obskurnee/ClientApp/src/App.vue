@@ -22,13 +22,13 @@ export default {
   },
   created () 
   {
-    this.reloadSiteName();
+    this.reloadSiteData();
     this.restoreContext();
   },
   methods: 
   {
     ...mapActions('context', ['restoreContext']),
-    ...mapActions('global', ['reloadSiteName']),
+    ...mapActions('global', ['reloadSiteData']),
   }
 }
 </script>

@@ -10,6 +10,7 @@ export default {
     currentDiscussion: null,
     siteName: 'Obskurnee',
     language: '',
+    matrixRoomLink: '',
   },
   getters: {
     isRepostingAllowed: state => state?.currentDiscussion?.topic == 'Books',
@@ -35,6 +36,11 @@ export default {
         state.siteName = siteName;
       }
     },
+    setMatrixRoomLink(state, roomLink)
+    {
+      state.matrixRoomLink = roomLink;
+      window.localStorage.setItem('matrixRoomLink', roomLink);
+    },
     setCurrentDiscussion(state, discussion)
     {
       state.currentDiscussion = discussion;
@@ -57,15 +63,17 @@ export default {
           commit('setHomeData', response.data);
           commit('setSiteName', response.data.siteName);
           commit('setLanguage', response.data.myProfile.language);
+          commit('setMatrixRoomLink', response.data.matrixRoomLink);
       });
     },
-    reloadSiteName({ commit })
+    reloadSiteData({ commit })
     {
       const name = window.localStorage.getItem('siteName');
       if (name)
       {
         commit('setSiteName', name);
       }
+      commit('setMatrixRoomLink', window.localStorage.getItem('matrixRoomLink'));
     }
   }
 }

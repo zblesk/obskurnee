@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using Flurl.Http;
+﻿using Flurl.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
+using System;
+using System.Threading.Tasks;
 
 namespace Obskurnee.Services
 {
@@ -28,7 +28,7 @@ namespace Obskurnee.Services
             {
                 _logger.LogInformation("Matrix notification disabled or not configured; not sending");
                 return;
-            }    
+            }
             try
             {
                 _logger.LogInformation("Sending a notification to Matrix");
@@ -45,6 +45,19 @@ namespace Obskurnee.Services
             {
                 _logger.LogError(ex, "Sending a message to Matrix failed");
             }
+        }
+
+        public string GetEnabledMatrixRoomLink()
+        {
+            if (!_config.Enabled)
+            {
+                return null;
+            }
+            if (!string.IsNullOrWhiteSpace(_config.RoomDisplayAddress))
+            {
+                return _config.RoomDisplayAddress;
+            }
+            return _config.RoomId;
         }
     }
 }
