@@ -52,6 +52,13 @@
         width: 100px;
         height: 100px;
         margin: 0 auto;
+        border: 0;
+        border-radius: 50%;
+    }
+
+    .user-pic img {
+        width: 100%;
+        border-radius: 50%;
     }
 
     .user-pic-placeholder {
@@ -68,11 +75,6 @@
         max-width: 60%;
         display: block;
         margin: 0 auto;
-    }
-
-    .user-pic-mod {
-        position: relative;
-        left: 8px;
     }
 
     .user-name {

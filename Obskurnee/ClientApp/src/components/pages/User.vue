@@ -60,9 +60,11 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
 
     <div v-if="mode != 'edit'">
       <div class="main">
-        <div class="user-pic">
-          <img v-if="user.avatarUrl" :src="user.avatarUrl" :title="user.name" :alt="user.name" />
-          <img v-else src="../../assets/reader.svg"  :title="user.name" :alt="user.name" />
+        <div v-if="user.avatarUrl" class="user-pic">
+          <img  :src="user.avatarUrl" :title="user.name" :alt="user.name" />
+        </div>
+        <div v-else class="user-pic-placeholder">
+          <img src="../../assets/reader.svg"  :title="user.name" :alt="user.name" />
         </div>
 
         <p v-if="user.aboutMeHtml" class="bio" v-html="user.aboutMeHtml"></p>
@@ -491,10 +493,31 @@ export default {
     margin: 0 auto var(--spacer) auto;
     border: 0;
     border-radius: 50%;
+  }
+
+  .user-pic img {
+    width: 100%;
+    border-radius: 50%;
+  }
+
+  .user-pic-placeholder {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto var(--spacer) auto;
+    padding-top: 20px;
+    border: 0;
+    border-radius: 50%;
     background-color: var(--c-accent);
   }
 
+  .user-pic-placeholder img {
+    max-width: 60%;
+    display: block;
+    margin: 0 auto;
+  }
+
   @media screen and (min-width: 576px) {
+    .user-pic-placeholder,
     .user-pic {
       float: right;
       margin: 0 0 var(--spacer) var(--spacer);
