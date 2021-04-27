@@ -191,6 +191,9 @@ Návrhy [pridávaj tu]({0:link}).</value>
 
 [link]({2:link})</value>
   </data>
+  <data name="newUserAdded" xml:space="preserve">
+    <value>Práve sa k nám pridala [{1:link}]({0:name})! Vitaj❣</value>
+  </data>
   <data name="newUserPostBodyMarkdown" xml:space="preserve">
     <value>Bola si uspesne zaregistrovana.
 Prihlas sa na [{0:url}]({0:url})

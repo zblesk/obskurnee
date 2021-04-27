@@ -23,16 +23,18 @@
                 </div>
                 <textarea v-model="notice" id="notice" :placeholder="$t('global.markdownSamplePlaceholder')"></textarea>
             </div>
-            <button @click="updateNoticeboard()" class="button-primary">Uložit</button>
+            <button @click="updateNoticeboard()" class="button-primary">{{ $t('menus.save') }}</button>
         </div>
 
         <div class="section">
-            <h2 class="section-title u-mt-sp2">Založení nového uživatele</h2>
+            <h2 class="section-title u-mt-sp2">{{ $t('admin.newUserCreation') }}</h2>
             <div class="form-field">
-                <label for="new-user">E-mailová adresa nového uživatele</label>
-                <input type="email" v-model="newUserEmal" id="new-user" />
+                <label for="new-usermail">{{ $t('admin.newUserEmail') }}*</label>
+                <input type="email" v-model="newUserEmail" id="new-usermail" />
+                <label for="new-username">{{ $t('admin.newUserName') }}</label>
+                <input type="text" v-model="newUserName" id="new-username" />
             </div>
-            <button @click="addUser()" class="button-primary">Vytvořit</button>
+            <button @click="addUser()" class="button-primary">{{ $t('menus.create') }}</button>
             <div class="note u-mt-sp">
                 <div class="note-pic">
                     <img src="../../assets/lamp.svg" alt="lamp icon" />
@@ -87,7 +89,8 @@ export default {
     components: { MarkdownHelpLink },
     data() {
         return {
-            newUserEmal: "",
+            newUserEmail: "",
+            newUserName: "",
             notice: "",
             newsletterInfo: {},
         }
@@ -112,18 +115,18 @@ export default {
             axios.post("/api/admin/noticeboard", { text: this.notice })
             .then(() => 
                 {
-                    this.$notifySuccess(`Aktualizovane`);
+                    this.$notifySuccess(this.$t('messages.updated'));
                 })
             .catch(this.$handleApiError);
             
         },
         addUser()
         {
-            axios.post("/api/admin/createuser", { email: this.newUserEmal})
+            axios.post("/api/admin/createuser", { email: this.newUserEmail, name: this.newUserName})
             .then(() => 
                 {
                     this.getUsers();
-                    this.$notifySuccess(`Pouzivatel vytvoreny`);
+                    this.$notifySuccess(this.$t('messages.userCreated'));
                 })
             .catch(this.$handleApiError);
         },

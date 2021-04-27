@@ -17,6 +17,7 @@ namespace Obskurnee.Services
         private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
         private readonly IServiceProvider _serviceProvider;
         private readonly IMailerService _mailer;
+        private readonly MatrixService _matrix;
 
         private NewsletterService Newsletter { get => (NewsletterService)_serviceProvider.GetService(typeof(NewsletterService)); }
 
@@ -27,6 +28,7 @@ namespace Obskurnee.Services
            IMailerService mailer,
            IServiceProvider serviceProvider,
            UserManager<Bookworm> userManager,
+           MatrixService matrix,
            ApplicationDbContext dbContext,
            IStringLocalizer<Strings> localizer,
            Config config) : base(userManager, logger, dbContext, localizer, config)
@@ -36,13 +38,20 @@ namespace Obskurnee.Services
             _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
+            _matrix = matrix;
         }
 
-        public override async Task<UserInfo> Register(LoginCredentials creds)
+        public override async Task<UserInfo> Register(
+            LoginCredentials creds,
+            string defaultName = null)
         {
+            if (string.IsNullOrWhiteSpace(defaultName))
+            {
+                defaultName = creds.Email.Substring(0, creds.Email.IndexOf('@'));
+            }
             var user = new Bookworm
             {
-                UserName = creds.Email.Substring(0, creds.Email.IndexOf('@')),
+                UserName = defaultName,
                 Email = creds.Email,
                 Language = _config.DefaultCulture,
             };
@@ -53,6 +62,10 @@ namespace Obskurnee.Services
                 _logger.LogInformation("User created");
                 LoadUsernameCache();
                 await Newsletter.Subscribe(user.Id, Newsletters.BasicEvents);
+                await _matrix.SendMessage(
+                    _newsletterLocalizer.Format("newUserAdded", 
+                    user.UserName,
+                    $"{_config.BaseUrl}/my/{user.Email}"));
                 return UserInfo.From(user);
             }
             return null;

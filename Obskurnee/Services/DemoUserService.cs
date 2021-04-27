@@ -41,7 +41,7 @@ namespace Obskurnee.Services
         public override Task<IdentityResult> MakeModerator(string email)
             => throw new ForbiddenException(_localizer["forbiddenInDemo"]);
 
-        public override Task<UserInfo> Register(LoginCredentials creds)
+        public override Task<UserInfo> Register(LoginCredentials creds, string defaultName = null)
             => throw new ForbiddenException(_localizer["forbiddenInDemo"]);
 
         public override Task<UserInfo> RegisterFirstAdmin(LoginCredentials creds)

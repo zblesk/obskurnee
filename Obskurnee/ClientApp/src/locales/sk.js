@@ -23,6 +23,11 @@ Mozes lahko pridat aj [link](https://google.sk).`
         wannaAddSome: 'Prečo nejaké nepridať?',
         matrixInfo: 'Všetky notifikácie tiež budú zaslané do chatroomu {0}.'
     },
+    admin: {
+        newUserCreation: "Vytvorenie nového používateľa",
+        newUserEmail: "E-mail",
+        newUserName: "Meno",
+    },
     menus: {
         login: "Prihlásiť",
         logout: "Odhlásiť",
@@ -36,8 +41,13 @@ Mozes lahko pridat aj [link](https://google.sk).`
         books: "Knihy",
         recs: "Odporúčania",
         proposals: "Návrhy",
+        create: "Vytvoriť",
+        save: "Uložiť",
+        discardChanges: "Zahodiť zmeny",
     },
     messages: {
         langChangeSuccess: 'Jazyk zmenený',
+        updated: "Aktualizované",
+        userCreated: "Používateľ vytvorený"
     }
 }

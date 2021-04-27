@@ -66,7 +66,7 @@ namespace Obskurnee.Services
             return _dbContext.Users.Select(u => u.Id).ToList();
         }
 
-        public abstract Task<UserInfo> Register(LoginCredentials creds);
+        public abstract Task<UserInfo> Register(LoginCredentials creds, string defaultName = null);
 
         public abstract Task<IdentityResult> MakeModerator(string email);
 

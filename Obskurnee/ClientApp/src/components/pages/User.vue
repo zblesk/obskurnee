@@ -52,8 +52,8 @@ Medzi zaklady patri napriklad:
 Mozes lahko pridat aj [link](https://google.sk)."></textarea>
         </div>
         <div class="buttons">
-          <button @click="updateProfile" :disabled="saveInProgress" class="button-primary" :v-if="isMod || user.userId == myUserId">Uložit změny</button>
-          <a @click="stopEditing" class="button-secondary button-cancel" :v-if="isMod || user.userId == myUserId">Zahodit změny</a>
+          <button @click="updateProfile" :disabled="saveInProgress" class="button-primary" :v-if="isMod || user.userId == myUserId">{{ $t('menus.save') }}</button>
+          <a @click="stopEditing" class="button-secondary button-cancel" :v-if="isMod || user.userId == myUserId">{{ $t('menus.discardChanges') }}</a>
         </div>
       </div>
     </div>

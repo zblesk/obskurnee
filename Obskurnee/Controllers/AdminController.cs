@@ -69,6 +69,9 @@ namespace Obskurnee.Controllers
         public async Task<IActionResult> CreateUser([FromBody] JObject payload)
         {
             var email = payload["email"].ToString();
+            var name = payload.ContainsKey("name")
+                ? payload["name"].ToString()
+                : null;
             _logger.LogInformation("Adding user {email}", email);
             var password = Enumerable.Range(1, _config.DefaultPasswordMinLength)
                 .Aggregate(
@@ -87,7 +90,9 @@ namespace Obskurnee.Controllers
                     _logger.LogWarning(ex, "Error when attempting to fetch friendly password");
                 }
 
-            var user = await _users.Register(new LoginCredentials { Email = email, Password = password });
+            var user = await _users.Register(
+                new LoginCredentials { Email = email, Password = password },
+                name);
             if (user != null)
             {
                 await _mailer.SendMail(
