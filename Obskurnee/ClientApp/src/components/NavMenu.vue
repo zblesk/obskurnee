@@ -248,6 +248,7 @@ export default {
     methods: {
         collapse() {
             this.isExpanded = false;
+            window.scrollTo(0, 0);
         },
         toggle() {
             this.isExpanded = !this.isExpanded;
