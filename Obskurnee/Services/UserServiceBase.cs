@@ -170,7 +170,7 @@ namespace Obskurnee.Services
                     Extension = extension,
                     Kind = StoredImage.ImageKind.ProfilePic,
                 });
-                user.ProfilePicUrl = Helpers.MakeImageRelativePath(fname);
+                user.AvatarUrl = Helpers.MakeImageRelativePath(fname);
                 _dbContext.Users.Update(user);
                 await _dbContext.SaveChangesAsync();
                 await _dbContext.Database.CommitTransactionAsync();

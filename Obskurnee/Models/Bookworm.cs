@@ -15,7 +15,7 @@ namespace Obskurnee.Models
                 : Regex.Match(GoodreadsProfileUrl, @"show/(\d+)").Groups[1].Value;
         }
         public string Language { get; set; }
-        public string ProfilePicUrl { get; set; }
+        public string AvatarUrl { get; set; }
         public string AboutMe { get; set; }
         public string RenderedAboutMe { get => AboutMe.RenderMarkdown(); }
         public ICollection<NewsletterSubscription> NewsletterSubscriptions { get; set; }

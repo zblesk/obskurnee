@@ -60,7 +60,7 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
 
     <div v-if="mode != 'edit'">
       <div class="main">
-        <div class="user-pic"><img :src="user.profilePicUrl" :title="user.name" :alt="user.name" /></div>
+        <div class="user-pic"><img :src="user.avatarUrl" :title="user.name" :alt="user.name" /></div>
 
         <p v-if="user.aboutMeHtml" class="bio" v-html="user.aboutMeHtml"></p>
         <p v-else class="bio"><em>Zatiaľ nám o sebe nič nepovedala.</em></p>

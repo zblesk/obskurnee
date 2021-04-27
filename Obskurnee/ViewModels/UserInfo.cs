@@ -43,7 +43,7 @@ namespace Obskurnee.ViewModels
                 AboutMeHtml = user.RenderedAboutMe,
                 GoodreadsUrl = user.GoodreadsProfileUrl,
                 Language = user.Language,
-                ProfilePicUrl = user.ProfilePicUrl,
+                ProfilePicUrl = user.AvatarUrl,
                 IsModerator = principal?.FindFirstValue(BookclubClaims.Moderator) != null,
                 IsAdmin = principal?.FindFirstValue(BookclubClaims.Admin) != null,
             };
@@ -60,7 +60,7 @@ namespace Obskurnee.ViewModels
                 AboutMeHtml = user.RenderedAboutMe,
                 GoodreadsUrl = user.GoodreadsProfileUrl,
                 Language = user.Language,
-                ProfilePicUrl = user.ProfilePicUrl,
+                ProfilePicUrl = user.AvatarUrl,
                 IsModerator = claims.Any(claim => claim.Type == BookclubClaims.Moderator),
                 IsAdmin = claims.Any(claim => claim.Type == BookclubClaims.Admin),
             };
