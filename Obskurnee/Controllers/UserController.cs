@@ -1,15 +1,14 @@
-﻿using ImageProcessor;
-using ImageProcessor.Imaging;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using Obskurnee.Services;
 using Obskurnee.ViewModels;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -64,12 +63,12 @@ namespace Obskurnee.Controllers
         [Route("avatar")]
         public async Task<UserInfo> SetAvatar([FromForm] IFormFile avatar)
         {
-            using (var imageFactory = new ImageFactory(true))
+            using (var image = Image.Load(avatar.OpenReadStream(), out var format))
             using (var ms = new MemoryStream())
             {
-                imageFactory.Load(avatar.OpenReadStream())
-                    .Resize(new ResizeLayer(new Size(100, 100), ResizeMode.Crop))
-                    .Save(ms);
+                image.Mutate(img =>
+                    img.Resize(new ResizeOptions { Mode = ResizeMode.Crop, Size = new Size(100, 100) }));
+                image.Save(ms, format);
                 await _users.SetUserAvatar(
                     User.GetUserId(),
                     ms.ToArray(),
