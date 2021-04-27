@@ -41,7 +41,6 @@
     </header>
 </template>
 
-
 <style scoped>
 
     /* Header image and logo */
@@ -237,6 +236,11 @@ export default {
             isExpanded: false
         }
     },
+    watch: {
+        '$route' () {
+            this.collapse();
+        }
+    },
     computed: {
         ...mapGetters("context", ["isAuthenticated", "isMod"]),
         ...mapState("global", ["siteName"])
@@ -245,7 +249,6 @@ export default {
         collapse() {
             this.isExpanded = false;
         },
-
         toggle() {
             this.isExpanded = !this.isExpanded;
         }
