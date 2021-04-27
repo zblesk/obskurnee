@@ -134,14 +134,9 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
               </div>
             </div>
           </div>
-          <i18n-t keypath="user.matrixInfo" tag="p" class="nl-text">
+          <i18n-t v-if="matrixRoomLink" keypath="user.matrixInfo" tag="p" class="nl-text">
               <a :href="'https://matrix.to/#/' + matrixRoomLink">{{ matrixRoomLink }}</a>
           </i18n-t>
-          <!-- <i18n-t keypath="user.matrixInfo" tag="p" class="nl-text">
-            <template v-slot:link>
-              <a :href="'https://matrix.to/#/' + matrixRoomLink">{{ matrixRoomLink }}</a>
-            </template>
-          </i18n-t> -->
         </div>
       </div>
     </div>
