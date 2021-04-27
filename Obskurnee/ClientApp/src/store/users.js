@@ -53,6 +53,15 @@ export default {
           commit("global/setLanguage", language, { root: true});
           return Promise.resolve();
         });
-    }
+    },
+    async updateAvatar(_, picData)
+    {
+      console.log("Sending", picData);
+      return axios.post("/api/users/avatar", picData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+      });
+    },
   }
 }

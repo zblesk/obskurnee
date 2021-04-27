@@ -24,7 +24,7 @@
         </div>
         <div class="form-field">
           <label for="userpic">Nahrát profilový obrázek (100 x 100 px):</label>
-          <input type="file" id="userpic" name="userpic" accept="image/*">
+          <input type="file" id="userpic" name="userpic" accept="image/*" @change="onFilePicked" />
         </div>
         <div class="form-field">
           <div class="label-md-wrapper">
@@ -60,7 +60,7 @@ Mozes lahko pridat aj [link](https://google.sk)."></textarea>
 
     <div v-if="mode != 'edit'">
       <div class="main">
-        <div class="user-pic"></div>
+        <div class="user-pic"><img :src="user.profilePicUrl" :title="user.name" :alt="user.name" /></div>
 
         <p v-if="user.aboutMeHtml" class="bio" v-html="user.aboutMeHtml"></p>
         <p v-else class="bio"><em>Zatiaľ nám o sebe nič nepovedala.</em></p>
@@ -166,6 +166,7 @@ export default {
         user: {},
         mode: "default",
         editingUser: {},
+        newAvatar: null,
         subscriptions: [],
         myRecs: [],
         saveInProgress: false,
@@ -187,12 +188,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions("users", ["getUser", "updateUser"]),
+    ...mapActions("users", ["getUser", "updateUser", "updateAvatar"]),
     ...mapActions("recommendations", ["fetchRecommendationsFor"]),
     ...mapActions("reviews", ["fetchUserReviews", "fetchCurrentlyReading"]),
-    updateProfile() 
+    async updateProfile() 
     {
       this.saveInProgress = true;
+      if (this.newAvatar)
+      {
+        await this.updateAvatar(this.newAvatar)
+      }
       this.updateUser(this.editingUser)
         .then(() => {
           this.fetchProfile();
@@ -206,6 +211,7 @@ export default {
     startEditing() 
     {
       this.editingUser = JSON.parse(JSON.stringify(this.user));
+      this.newAvatar = null;
       this.mode = "edit";
       this.saveInProgress = false;
     },
@@ -238,6 +244,11 @@ export default {
             this.subscriptions = response.data;
           })
           .catch(this.$handleApiError);
+    },
+    onFilePicked (event) {
+      const pic = event.target.files[0];
+      this.newAvatar = new FormData();
+      this.newAvatar.append("avatar", pic, pic.name);
     },
     onLoad()
     {
