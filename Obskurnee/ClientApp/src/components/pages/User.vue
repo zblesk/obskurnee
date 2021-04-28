@@ -28,7 +28,7 @@
         </div>
         <div class="form-field">
           <div class="label-md-wrapper">
-            <label for="userbio" class="label-md">O mne:</label>
+            <label for="userbio" class="label-md">{{ $t('user.aboutMe') }}</label>
             <div class="mo-md">
               <div class="mo-md-pic">
                 <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
@@ -38,18 +38,7 @@
               </div>
             </div>
           </div>
-          <textarea id="userbio" v-model="editingUser.aboutMe" placeholder="Napis sem nieco o sebe! Ake mas rada zanre? Co su Tvoje oblubene knihy? Co naopak nemas rada? Nieco ine, co nam o sebe povies?
-
-Mozes pouzit Markdown na jednoduche formatovanie textu. Ak by si sa stratila, klikni na link hore.
-
-Medzi zaklady patri napriklad: 
-# Najvacsi nadpis
-## mensi nadpis 
-**tucny textt** alebo _kurziva_ 
-- necislovany zoznam
-1. cislovany zoznam
-> takto sa pise citat
-Mozes lahko pridat aj [link](https://google.sk)."></textarea>
+          <textarea id="userbio" v-model="editingUser.aboutMe" :placeholder="$t('user.aboutMePlaceholder')"></textarea>
         </div>
         <div class="buttons">
           <button @click="updateProfile" :disabled="saveInProgress" class="button-primary" :v-if="isMod || user.userId == myUserId">{{ $t('menus.save') }}</button>

@@ -21,7 +21,11 @@ Mozes lahko pridat aj [link](https://google.sk).`
     user: {
         noneSoFar: 'Zatiaľ žiadne.',
         wannaAddSome: 'Prečo nejaké nepridať?',
-        matrixInfo: 'Všetky notifikácie tiež budú zaslané do chatroomu {0}.'
+        matrixInfo: 'Všetky notifikácie tiež budú zaslané do chatroomu {0}.',
+        aboutMePlaceholder: `Napíš sem niečo o sebe! Aké obľubuješ žánre? Čo sú Tvoje obľúbené knihy? Čo naopak radšej vynecháš? Niečo iné, čo nám chceš povedať?
+
+@:global.markdownSamplePlaceholder`,
+        aboutMe: 'O mne:'
     },
     admin: {
         newUserCreation: "Vytvorenie nového používateľa",
