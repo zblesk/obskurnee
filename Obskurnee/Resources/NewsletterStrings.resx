@@ -207,7 +207,7 @@ Odporucame heslo zmenit.</value>
     <value>Vitaj, {0:name}</value>
   </data>
   <data name="passwordResetBody" xml:space="preserve">
-    <value>Resetni si heslo tu: &lt;a href=""{0}""&gt;{0}&lt;/a&gt;</value>
+    <value>Resetni si heslo tu: [{0}]({0})</value>
   </data>
   <data name="passwordResetSubject" xml:space="preserve">
     <value>Reset hesla</value>
