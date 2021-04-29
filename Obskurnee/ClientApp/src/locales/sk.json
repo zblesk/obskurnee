@@ -39,7 +39,18 @@
   "admin": {
     "newUserCreation": "Vytvorenie nového používateľa",
     "newUserEmail": "E-mail",
-    "newUserName": "Meno"
+    "newUserName": "Meno",
+    "denied": "Je mi líto, sem má přístup pouze moderátor.",
+    "noticeboard": "Oznámení na hlavní stránce",
+    "noticeboardContent": "Text oznámení",
+    "letUserKnow": "Pro jistotu dej vědět novému čtenáři, ať zkontroluje spam, pokud nenajde registrační email v inboxu.",
+    "mods": "Moderátoři",
+    "currentMods": "Aktuální moderátoři:",
+    "addMod": "Přidej uživatele k moderátorům:",
+    "subscribers": "Uživatelé přihlášení k odběru newsletteru",
+    "basicEvents": "Zakladní události:",
+    "nobody": "momentálne nikto",
+    "allEvents": "Všechny události:"
   },
   "menus": {
     "login": "Prihlásiť",

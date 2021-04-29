@@ -1,17 +1,17 @@
 <template>
 <section>
-    <h1 id="tableLabel" class="page-title">Admin</h1>
+    <h1 id="tableLabel" class="page-title">{{$t('menus.admin')}}</h1>
     <div v-if="!isMod" class="main">
-        <h2 class="not-mod-text">Je mi líto, sem má přístup pouze moderátor.</h2>
+        <h2 class="not-mod-text">{{$t('admin.denied')}}</h2>
     </div>
     
     <div v-if="isMod" class="main">
     
         <div class="section">
-            <h2 class="section-title">Oznámení na hlavní stránce</h2>
+            <h2 class="section-title">{{$t('admin.noticeboard')}}</h2>
             <div class="form-field">
                 <div class="label-md-wrapper">
-                    <label for="notice">Text oznámení</label>
+                    <label for="notice">{{$t('admin.noticeboardContent')}}</label>
                     <div class="mo-md">
                         <div class="mo-md-pic">
                             <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
@@ -39,39 +39,39 @@
                 <div class="note-pic">
                     <img src="../../assets/lamp.svg" alt="lamp icon" />
                 </div>
-                <p class="note-text">Pro jistotu dej vědět novému čtenáři, ať zkontroluje spam, pokud nenajde registrační email v inboxu.</p>
+                <p class="note-text">{{$t('admin.letUserKnow')}}</p>
             </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title u-mt-sp2">Moderátoři</h2>
-            <p>Aktuální moderátoři: <span v-for="mod in mods" v-bind:key="mod.userId"><router-link :to="{ name: 'user', params: { email: mod.email } }">{{mod.name}}</router-link>, </span></p>
-            <p>Přidej uživatele k moderátorům:</p>
+            <h2 class="section-title u-mt-sp2">{{$t('admin.mods')}}</h2>
+            <p>{{$t('admin.currentMods')}} <span v-for="mod in mods" v-bind:key="mod.userId"><router-link :to="{ name: 'user', params: { email: mod.email } }">{{mod.name}}</router-link>, </span></p>
+            <p>{{$t('admin.addMod')}}</p>
             <div class="row" v-for="user in nonMods" v-bind:key="user.userId">
                 <div class="wannabe-mod">
                     <router-link :to="{ name: 'user', params: { email: user.email } }">{{ user.name }}</router-link> 
                 </div>
                 <div class="add-button">
-                    <button @click="makeMod(user.email)" class="button-primary button-small">Přidat</button>
+                    <button @click="makeMod(user.email)" class="button-primary button-small">{{$t('menus.add')}}</button>
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title u-mt-sp2">Uživatelé přihlášení k odběru newsletteru</h2>
+            <h2 class="section-title u-mt-sp2">{{$t('admin.subscribers')}}</h2>
             <p>
-                Zakladní události: 
+                {{$t('admin.basicEvents')}} 
                 <span v-for="subscriber in newsletterInfo['basicevents']" v-bind:key="subscriber">
                     <router-link :to="{ name: 'user', params: { email: subscriber.email } }">{{ subscriber.name }}</router-link>, 
                 </span>
-                <span v-if="!newsletterInfo['basicevents'] || newsletterInfo['basicevents'].length == 0">momentálne nikto</span>
+                <span v-if="!newsletterInfo['basicevents'] || newsletterInfo['basicevents'].length == 0">{{$t('admin.nobody')}}</span>
             </p>
             <p>
-                Všechny události: 
+                {{$t('admin.allEvents')}} 
                 <span v-for="subscriber in newsletterInfo['allevents']" v-bind:key="subscriber">
                     <router-link :to="{ name: 'user', params: { email: subscriber.email } }">{{ subscriber.name }}</router-link>, 
                 </span>
-                <span v-if="!newsletterInfo['allevents'] || newsletterInfo['allevents'].length == 0">momentálne nikto</span>
+                <span v-if="!newsletterInfo['allevents'] || newsletterInfo['allevents'].length == 0">{{$t('admin.nobody')}}</span>
             </p>
         </div>
 
