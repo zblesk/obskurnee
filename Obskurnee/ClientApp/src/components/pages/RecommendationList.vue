@@ -1,8 +1,8 @@
 <template>
 <section>
-    <h1 id="tableLabel" class="page-title">Odporúčania</h1>
+    <h1 id="tableLabel" class="page-title">{{$t('menus.recs')}}</h1>
     <div class="main">
-        <new-post mode="Recommendations" @new-post="onNewRecommendation">Pridať nové odporučenie</new-post>
+        <new-post mode="Recommendations" @new-post="onNewRecommendation">{{$t('recommendations.addNew')}}</new-post>
     </div>
     <div class="grid">
         <recommendation-card 
