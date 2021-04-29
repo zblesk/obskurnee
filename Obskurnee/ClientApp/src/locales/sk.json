@@ -3,10 +3,11 @@
     "markdownHelp": "Pomoc s Markdownom",
     "markdownSamplePlaceholder": "Mozes pouzit Markdown na jednoduche formatovanie textu. Ak by si sa stratila, klikni na link hore.\n\nMedzi zaklady patri napriklad: \n# Najvacsi nadpis\n## mensi nadpis \n**tucny textt** alebo _kurziva_ \n- necislovany zoznam\n1. cislovany zoznam\n> takto sa pise citat\nMozes lahko pridat aj [link](https://google.sk).",
     "newsletters": "Newsletters",
-    "allEvents": "Všetky udalosti: {0}"
+    "allEvents": "Všetky udalosti: {0}",
+    "basicEvents": "Základné udalosti: {0}"
   },
   "home": {
-    "greeting": "Vitaj, <strong>{0}</strong>❣"
+    "greeting": "Vitaj, {0}❣"
   },
   "post": {},
   "user": {
@@ -27,7 +28,11 @@
     "goodreads": "Goodreads",
     "noRecsYet": "Zatiaľ tu nemáme žiadne odporúčania.",
     "booksRatedBy": "Knihy, které {0} hodnotila",
-    "recommends": "{0} doporučuje ke čtení"
+    "recommends": "{0} doporučuje ke čtení",
+    "addRecommendation": "doporučit další",
+    "addFirstRec": "Čo tak {0}",
+    "addFirstRecLinkText": "nejaké pridať?",
+    "phone": "Telefon:"
   },
   "admin": {
     "newUserCreation": "Vytvorenie nového používateľa",

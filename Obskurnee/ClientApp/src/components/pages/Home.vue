@@ -5,7 +5,10 @@
         <div class="welcome-pic">
           <img src="../../assets/hi.svg" alt="hi icon">
         </div>
-        <p class="welcome-text"><span v-if="myProfile" v-html="$t('home.greeting', [ myProfile.name ])"></span>
+        <p class="welcome-text">
+          <i18n-t v-if="myProfile" tag="span" keypath="home.greeting">
+            <strong>{{ myProfile.name }}</strong>
+          </i18n-t>
           <span v-if="currentDiscussion"> Zbierame
             <router-link :to="{name: 'discussion', params: { discussionId: currentDiscussion.discussionId },}">nové návrhy</router-link>.
           </span>

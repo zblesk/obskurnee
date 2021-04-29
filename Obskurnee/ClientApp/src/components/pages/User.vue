@@ -15,7 +15,7 @@
           <input type="text" id="username" required v-model="editingUser.name" />
         </div>
         <div class="form-field">
-          <label for="userphone">Telefon:</label>
+          <label for="userphone">{{$t('user.phone')}}</label>
           <input type="tel" id="userphone" v-model="editingUser.phone" />
         </div>
         <div class="form-field">
@@ -113,7 +113,12 @@
           <h3 class="nl-title">{{$t('global.newsletters')}}</h3>
           <div class="nl-table">
             <div class="nl-row">
-              <p class="nl-current">Základné udalosti: {{ subscribedBasic ? 'Prihlásené' : 'Neprihlásené' }}</p>
+              <p class="nl-current">
+                {{$t('global.basicEvents', 
+                  [subscribedBasic 
+                    ? $t('messages.subscribed') 
+                    : $t('messages.notSubscribed')])}}
+              </p>
               <div class="nl-button">
                 <button @click="toggleSubscription('basicevents', !subscribedBasic)" class="button-primary button-small">{{ subscribedBasic ? $t('messages.unsubscribe') : $t('messages.subscribe') }}</button>
               </div>
@@ -137,11 +142,17 @@
       </div>
     </div>
 
-    <h2 class="page-subtitle">{{$t('user.recommends', [user.name])}}<span v-if="user && isMe(user.userId)" class="recs-link"> (<router-link :to="{ name: 'recommendationlist' }">doporučit další</router-link>)</span></h2>
+    <h2 class="page-subtitle">
+      {{$t('user.recommends', [user.name])}}
+      <span v-if="user && isMe(user.userId)" class="recs-link"> (<router-link :to="{ name: 'recommendationlist' }">{{$t('user.addRecommendation')}}</router-link>)</span></h2>
     <div v-if="myRecs && myRecs.length > 0" class="grid">
         <recommendation-card v-bind:recommendation="rec" :showName="false" v-for="rec in myRecs" v-bind:key="rec.recommendationId" />
     </div>
-    <p v-else class="recs-message">{{$t('user.noRecsYet')}}<span v-if="user && isMe(user.userId)">Čo tak <router-link :to="{ name: 'recommendationlist' }">nejaké pridať?</router-link></span></p>
+    <p v-else class="recs-message">{{$t('user.noRecsYet')}}
+      <i18n-t v-if="user && isMe(user.userId)" tag="span" keypath="user.addFirstRec">
+          <router-link :to="{ name: 'recommendationlist' }">{{$t('user.addFirstRecLinkText')}}</router-link>
+      </i18n-t>
+    </p>
 
     <h2 class="page-subtitle u-mt-sp">{{$t('user.booksRatedBy', [user.name])}}</h2>
     <div v-if="userReviews(user.userId)?.length > 0" class="grid">
