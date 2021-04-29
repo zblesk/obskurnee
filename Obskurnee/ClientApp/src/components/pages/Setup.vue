@@ -1,16 +1,16 @@
 <template>
 <div>
-  <h1 class="page-title">Vytvoření nového uživatele</h1>
+  <h1 class="page-title">{{$t('setup.userCreation')}}</h1>
   <form @submit.prevent="onSubmit" class="main">
     <div class="form-field">
-      <label for="emailInput">E-mailová adresa</label>
+      <label for="emailInput">{{$t('menus.email')}}</label>
       <input id="emailInput" type="email" v-model="form.email" required>
     </div>
     <div class="form-field">
-      <label for="passwordInput">Heslo</label>
+      <label for="passwordInput">{{$t('menus.password')}}</label>
       <input id="passwordInput" type="password" v-model="form.password" required>
     </div>
-    <button class="button-primary" type="submit">Zaregistrovat</button>
+    <button class="button-primary" type="submit">{{$t('menus.register')}}</button>
   </form>
 </div>
 </template>
