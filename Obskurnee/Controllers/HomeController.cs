@@ -49,6 +49,7 @@ namespace Obskurnee.Controllers
                 {
                     Books = new[] { await _bookService.GetLatestBook() },
                     SiteName = Config.Current.SiteName,
+                    DefaultLanguage = Config.Current.DefaultCulture,
                 });
             }
             return Json(new
@@ -60,6 +61,7 @@ namespace Obskurnee.Controllers
                 CurrentPoll = await _pollService.GetLatestOpen(),
                 CurrentDiscussion = await _discussionService.GetLatestOpen(),
                 MatrixRoomLink = _matrixService?.GetEnabledMatrixRoomLink(),
+                DefaultLanguage = Config.Current.DefaultCulture,
             });
         }
     }
