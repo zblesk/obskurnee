@@ -1,7 +1,7 @@
 <template>
 <section>
-    <h1 id="tableLabel" class="page-title u-mb-sp05">Seznam bookclubberů</h1>
-    <h2 class="page-note">(moderátoři mají magické schopnosti)</h2>
+    <h1 id="tableLabel" class="page-title u-mb-sp05">{{$t('user.list')}}</h1>
+    <h2 class="page-note">{{$t('user.modInfo')}}</h2>
     
     <div class="user-grid" v-if="users">
         <div class="user-card" v-for="user in users" v-bind:key="user.userId">
@@ -21,13 +21,13 @@
             </div>
 
             <div class="reading" v-if="userHasCurrentlyReading(user.userId)" >
-                <h3 class="reading-title">Práve číta:</h3>
+                <h3 class="reading-title">{{$t('user.currentlyReading')}}</h3>
                 <ul class="reading-list">
                     <li v-for="review in usersCurrentlyReading(user.userId)" v-bind:key="review.ReviewId"><a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.bookTitle }}</strong></a></li>
                 </ul>
             </div>
             <div  class="reading" v-else>
-                <h3 class="reading-title">Práve nič nečíta.</h3>
+                <h3 class="reading-title">{{$t('user.readingNothing')}}</h3>
             </div>            
         </div>
     </div>

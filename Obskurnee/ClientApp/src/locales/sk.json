@@ -23,7 +23,7 @@
     "noneAvailable": "Nemáme",
     "language": "Jazyková verze webu",
     "readingNothing": "Práve nič nečíta.",
-    "currentlyReading": "Právě čte:",
+    "currentlyReading": "Práve číta:",
     "noBioYet": "Zatiaľ nám o sebe nič nepovedala.",
     "goodreads": "Goodreads",
     "noRecsYet": "Zatiaľ tu nemáme žiadne odporúčania.",
@@ -32,7 +32,9 @@
     "addRecommendation": "doporučit další",
     "addFirstRec": "Čo tak {0}",
     "addFirstRecLinkText": "nejaké pridať?",
-    "phone": "Telefon:"
+    "phone": "Telefon:",
+    "list": "Seznam bookclubberů",
+    "modInfo": "(moderátoři mají magické schopnosti)"
   },
   "admin": {
     "newUserCreation": "Vytvorenie nového používateľa",
@@ -55,7 +57,8 @@
     "create": "Vytvoriť",
     "save": "Uložiť",
     "discardChanges": "Zahodiť zmeny",
-    "add": "Přidat"
+    "add": "Přidat",
+    "reset": "Reset"
   },
   "messages": {
     "langChangeSuccess": "Jazyk zmenený",
@@ -73,7 +76,8 @@
     "addToOngoing": "Přidej do aktuálního hlasování"
   },
   "recommendations": {
-    "recommendedBy": "Doporučila {0}"
+    "recommendedBy": "Doporučila {0}",
+    "addNew": "Pridať nové odporučenie"
   },
   "newpost": {
     "grLink": "Odkaz na Goodreads",
@@ -86,5 +90,10 @@
     "comment": "Komentár k návrhu",
     "requiredFields": "Pole označená * jsou povinná.",
     "hideForm": "Schovat formulář"
+  },
+  "passwordreset": {
+    "title": "Změna hesla",
+    "enterMail": "Zadej svůj e-mail",
+    "initiateReset": "Resetuj heslo"
   }
 }
