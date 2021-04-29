@@ -69,7 +69,8 @@
     "save": "Uložiť",
     "discardChanges": "Zahodiť zmeny",
     "add": "Přidat",
-    "reset": "Reset"
+    "reset": "Reset",
+    "register": "Zaregistrovat"
   },
   "messages": {
     "langChangeSuccess": "Jazyk zmenený",
@@ -100,11 +101,15 @@
     "pageCount": "Počet stran",
     "comment": "Komentár k návrhu",
     "requiredFields": "Pole označená * jsou povinná.",
-    "hideForm": "Schovat formulář"
+    "hideForm": "Schovat formulář",
+    "addDescriptionPlox": "Prosím, vyplň popis"
   },
   "passwordreset": {
     "title": "Změna hesla",
     "enterMail": "Zadej svůj e-mail",
     "initiateReset": "Resetuj heslo"
+  },
+  "setup": {
+    "userCreation": "Vytvoření nového uživatele"
   }
 }

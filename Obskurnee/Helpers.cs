@@ -28,7 +28,10 @@ namespace Obskurnee
         
         public static string RenderMarkdown(this string md) => string.IsNullOrWhiteSpace(md) ? "" : Markdown.ToHtml(md, _mdPipeline);
 
-        public static string AddMarkdownQuote(this string text) => text.Replace("\n", "\n> ");
+        public static string AddMarkdownQuote(this string text)
+            => string.IsNullOrWhiteSpace(text)
+                ? ""
+                : text.Replace("\n", "\n> ");
 
         public static string Format(this IStringLocalizer localizer, string name, params object[] args)
             => string.Format(localizer[name], args);

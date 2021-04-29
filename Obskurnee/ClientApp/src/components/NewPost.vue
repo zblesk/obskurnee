@@ -165,6 +165,12 @@ export default {
   },
   methods: {
     addPost() {
+      if (!this.newPost.text
+        && this.mode != 'Themes')
+      {
+        this.$notifyError(this.$t('newpost.addDescriptionPlox'));
+        return;
+      }
       this.saveInProgress = true;
       this.$emit('new-post', 
         this.parentData
