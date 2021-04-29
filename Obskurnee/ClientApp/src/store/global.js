@@ -62,8 +62,13 @@ export default {
       .then((response) => {
           commit('setHomeData', response.data);
           commit('setSiteName', response.data.siteName);
-          commit('setLanguage', response.data.myProfile.language);
-          commit('setMatrixRoomLink', response.data.matrixRoomLink);
+          let lang = response.data?.myProfile?.language;
+          if (!lang)
+          {
+            lang = response.data.defaultLanguage;
+          }
+          commit('setLanguage', lang);
+          commit('setMatrixRoomLink', response.data?.matrixRoomLink);
       });
     },
     reloadSiteData({ commit })

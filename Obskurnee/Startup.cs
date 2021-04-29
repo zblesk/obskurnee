@@ -20,6 +20,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using VueCliMiddleware;
 
 namespace Obskurnee
@@ -152,6 +153,17 @@ namespace Obskurnee
                         ValidateActor = false,
                         ValidateLifetime = true,
                         IssuerSigningKey = Config.Current.SecurityKey,
+                    }; 
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = ctx =>
+                        {
+                            if (ctx.Request.Query.ContainsKey("access_token"))
+                            {
+                                ctx.Token = ctx.Request.Query["access_token"];
+                            }
+                            return Task.CompletedTask;
+                        }
                     };
                 });
 

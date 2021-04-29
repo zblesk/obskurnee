@@ -10,7 +10,7 @@ namespace Obskurnee.Hubs
         Task DiscussionChanged(Discussion discussion);
     }
 
-    [AllowAnonymous]
+    [Authorize]
     public class EventHub : Hub<IEventHub>
     {
     }

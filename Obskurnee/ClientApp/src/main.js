@@ -47,5 +47,8 @@ const emitter = mitt();
 app.config.globalProperties.emitter = emitter;
 app.mount('#app');
 
-store.dispatch("users/getUsers");
 store.dispatch("global/loadHome");
+if (store.getters['context/isAuthenticated'])
+{
+  store.dispatch("users/getUsers");
+}
