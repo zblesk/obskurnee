@@ -1,5 +1,11 @@
 {
-    "home": {
-        "greeting": "Welcome, <strong>{0}</strong>❣"
-    }
+  "home": {
+    "greeting": "Welcome, <strong>{0}</strong>❣"
+  },
+  "user": {
+    "name": ""
+  },
+  "messages": {
+    "unsubscribe": "Odhlásiť"
+  }
 }

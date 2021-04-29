@@ -11,7 +11,7 @@
     <div v-if="mode == 'edit'">
       <div class="main">
         <div class="form-field">
-          <label for="username">Jméno (povinné):</label>
+          <label for="username">{{ $t('user.name')}} </label>
           <input type="text" id="username" required v-model="editingUser.name" />
         </div>
         <div class="form-field">
@@ -19,11 +19,11 @@
           <input type="tel" id="userphone" v-model="editingUser.phone" />
         </div>
         <div class="form-field">
-          <label for="usergr">Profil na Goodreads:</label>
+          <label for="usergr">{{$t('user.goodreadsProfile')}}</label>
           <input type="url" id="usergr" v-model="editingUser.goodreadsUrl" />
         </div>
         <div class="form-field">
-          <label for="userpic">Nahrát profilový obrázek (100 x 100 px):</label>
+          <label for="userpic">{{$t('user.uploadAvatar')}}</label>
           <input type="file" id="userpic" name="userpic" accept="image/*" @change="onFilePicked" />
         </div>
         <div class="form-field">
@@ -57,7 +57,7 @@
         </div>
 
         <p v-if="user.aboutMeHtml" class="bio" v-html="user.aboutMeHtml"></p>
-        <p v-else class="bio"><em>Zatiaľ nám o sebe nič nepovedala.</em></p>
+        <p v-else class="bio"><em>{{$t('user.noBioYet')}}</em></p>
 
         <div class="contacts">
           <div class="mo">
@@ -66,7 +66,7 @@
             </div>
             <div class="mo-text">
               <a v-if="user.email" :href="'mailto:' + user.email">{{ user.email }}</a>
-              <p v-else>Nemáme</p>
+              <p v-else>{{$t('user.noneAvailable')}}</p>
             </div>
           </div>
           <div class="mo">
@@ -75,7 +75,7 @@
             </div>
             <div class="mo-text">
               <a v-if="user.phone" :href="'tel:' + user.phone">{{ user.phone }}</a>
-              <p v-else>Nemáme</p>
+              <p v-else>{{$t('user.noneAvailable')}}</p>
             </div>
           </div>
           <div class="mo">
@@ -83,45 +83,50 @@
               <img src="../../assets/goodreads_icon_32x32.png" alt="goodreads icon">
             </div>
             <div class="mo-text">
-              <a v-if="user.goodreadsUrl" :href="user.goodreadsUrl">Goodreads</a>
-              <p v-else>Nemáme</p>
+              <a v-if="user.goodreadsUrl" :href="user.goodreadsUrl">{{$t('user.goodreads')}}</a>
+              <p v-else>{{$t('user.noneAvailable')}}</p>
             </div>
           </div>
         </div>
 
         <div class="buttons buttons-not-edit" v-if="isMod || user.userId == myUserId">
-          <a @click="startEditing" class="button-primary" :v-if="isMod || user.userId == myUserId">Upravit údaje</a>
-          <a @click="$router.push({ name: 'passwordreset' })" class="button-secondary button-password" :v-if="isMod || user.userId == myUserId">Zmeniť heslo</a>
+          <a @click="startEditing" class="button-primary" :v-if="isMod || user.userId == myUserId">{{$t('user.editInfo')}}</a>
+          <a @click="$router.push({ name: 'passwordreset' })" class="button-secondary button-password" :v-if="isMod || user.userId == myUserId">{{$t('messages.resetPassword')}}</a>
         </div>
 
         <div class="reading" v-if="userHasCurrentlyReading(user.userId)">
-          <h3 class="reading-title">Právě čte:</h3>
+          <h3 class="reading-title">{{$t('user.currentlyReading')}}</h3>
           <ul class="reading-list">
               <li v-for="review in usersCurrentlyReading(user.userId)" v-bind:key="review.ReviewId"><a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.bookTitle }}</strong></a></li>
           </ul>
         </div>
         <div  class="reading" v-else>
-          <h3 class="reading-title">Práve nič nečíta.</h3>
+          <h3 class="reading-title">{{$t('user.readingNothing')}}</h3>
         </div>
 
         <div class="languages" v-if="isMe(user.userId)">
-          <h3 class="languages-title">Jazyková verze webu</h3>
+          <h3 class="languages-title">{{$t('user.language')}}</h3>
           <language-selector v-if="isMe(user.userId)"></language-selector>
         </div>
 
         <div class="newletters" v-if="user && isMe(user.userId)">
-          <h3 class="nl-title">Newsletters</h3>
+          <h3 class="nl-title">{{$t('global.newsletters')}}</h3>
           <div class="nl-table">
             <div class="nl-row">
               <p class="nl-current">Základné udalosti: {{ subscribedBasic ? 'Prihlásené' : 'Neprihlásené' }}</p>
               <div class="nl-button">
-                <button @click="toggleSubscription('basicevents', !subscribedBasic)" class="button-primary button-small">{{ subscribedBasic ? 'Odhlásiť' : 'Prihlásiť' }}</button>
+                <button @click="toggleSubscription('basicevents', !subscribedBasic)" class="button-primary button-small">{{ subscribedBasic ? $t('messages.unsubscribe') : $t('messages.subscribe') }}</button>
               </div>
             </div>
             <div class="nl-row">
-              <p class="nl-current">Všetky udalosti: {{ subscribedAll ? 'Prihlásené' : 'Neprihlásené' }}</p>
+              <p class="nl-current">
+                  {{$t('global.allEvents', 
+                    [subscribedAll 
+                      ? $t('messages.subscribed') 
+                      : $t('messages.notSubscribed')])}}
+              </p>
               <div class="nl-button">
-                <button @click="toggleSubscription('allevents', !subscribedAll)" class="button-primary button-small">{{ subscribedAll ? 'Odhlásiť' : 'Prihlásiť' }}</button>
+                <button @click="toggleSubscription('allevents', !subscribedAll)" class="button-primary button-small">{{ subscribedAll ? $t('messages.unsubscribe') : $t('messages.subscribe') }}</button>
               </div>
             </div>
           </div>
@@ -132,13 +137,13 @@
       </div>
     </div>
 
-    <h2 class="page-subtitle">{{ user.name }} doporučuje ke čtení<span v-if="user && isMe(user.userId)" class="recs-link"> (<router-link :to="{ name: 'recommendationlist' }">doporučit další</router-link>)</span></h2>
+    <h2 class="page-subtitle">{{$t('user.recommends', [user.name])}}<span v-if="user && isMe(user.userId)" class="recs-link"> (<router-link :to="{ name: 'recommendationlist' }">doporučit další</router-link>)</span></h2>
     <div v-if="myRecs && myRecs.length > 0" class="grid">
         <recommendation-card v-bind:recommendation="rec" :showName="false" v-for="rec in myRecs" v-bind:key="rec.recommendationId" />
     </div>
-    <p v-else class="recs-message">Zatiaľ tu nemáme žiadne odporúčania. <span v-if="user && isMe(user.userId)">Čo tak <router-link :to="{ name: 'recommendationlist' }">nejaké pridať?</router-link></span></p>
+    <p v-else class="recs-message">{{$t('user.noRecsYet')}}<span v-if="user && isMe(user.userId)">Čo tak <router-link :to="{ name: 'recommendationlist' }">nejaké pridať?</router-link></span></p>
 
-    <h2 class="page-subtitle u-mt-sp">Knihy, které {{ user.name }} hodnotila</h2>
+    <h2 class="page-subtitle u-mt-sp">{{$t('user.booksRatedBy', [user.name])}}</h2>
     <div v-if="userReviews(user.userId)?.length > 0" class="grid">
       <users-review-card v-for="rev in userReviews(user.userId)" v-bind:key="rev.reviewId" v-bind:review="rev" ></users-review-card>
     </div>

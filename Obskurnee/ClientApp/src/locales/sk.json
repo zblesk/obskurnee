@@ -1,7 +1,9 @@
 {
   "global": {
     "markdownHelp": "Pomoc s Markdownom",
-    "markdownSamplePlaceholder": "Mozes pouzit Markdown na jednoduche formatovanie textu. Ak by si sa stratila, klikni na link hore.\n\nMedzi zaklady patri napriklad: \n# Najvacsi nadpis\n## mensi nadpis \n**tucny textt** alebo _kurziva_ \n- necislovany zoznam\n1. cislovany zoznam\n> takto sa pise citat\nMozes lahko pridat aj [link](https://google.sk)."
+    "markdownSamplePlaceholder": "Mozes pouzit Markdown na jednoduche formatovanie textu. Ak by si sa stratila, klikni na link hore.\n\nMedzi zaklady patri napriklad: \n# Najvacsi nadpis\n## mensi nadpis \n**tucny textt** alebo _kurziva_ \n- necislovany zoznam\n1. cislovany zoznam\n> takto sa pise citat\nMozes lahko pridat aj [link](https://google.sk).",
+    "newsletters": "Newsletters",
+    "allEvents": "Všetky udalosti: {0}"
   },
   "home": {
     "greeting": "Vitaj, <strong>{0}</strong>❣"
@@ -12,7 +14,20 @@
     "wannaAddSome": "Prečo nejaké nepridať?",
     "matrixInfo": "Všetky notifikácie tiež budú zaslané do chatroomu {0}.",
     "aboutMePlaceholder": "Napíš sem niečo o sebe! Aké obľubuješ žánre? Čo sú Tvoje obľúbené knihy? Čo naopak radšej vynecháš? Niečo iné, čo nám chceš povedať?\n\n@:global.markdownSamplePlaceholder",
-    "aboutMe": "O mne:"
+    "aboutMe": "O mne:",
+    "name": "Jméno (povinné):",
+    "goodreadsProfile": "Profil na Goodreads:",
+    "uploadAvatar": "Nahrát profilový obrázek (100 x 100 px):",
+    "editInfo": "Upravit údaje",
+    "noneAvailable": "Nemáme",
+    "language": "Jazyková verze webu",
+    "readingNothing": "Práve nič nečíta.",
+    "currentlyReading": "Právě čte:",
+    "noBioYet": "Zatiaľ nám o sebe nič nepovedala.",
+    "goodreads": "Goodreads",
+    "noRecsYet": "Zatiaľ tu nemáme žiadne odporúčania.",
+    "booksRatedBy": "Knihy, které {0} hodnotila",
+    "recommends": "{0} doporučuje ke čtení"
   },
   "admin": {
     "newUserCreation": "Vytvorenie nového používateľa",
@@ -39,6 +54,11 @@
   "messages": {
     "langChangeSuccess": "Jazyk zmenený",
     "updated": "Aktualizované",
-    "userCreated": "Používateľ vytvorený"
+    "userCreated": "Používateľ vytvorený",
+    "resetPassword": "Zmeniť heslo",
+    "subscribed": "Prihlásené",
+    "notSubscribed": "Neprihlásené",
+    "subscribe": "Prihlásiť",
+    "unsubscribe": "Odhlásiť"
   }
 }
