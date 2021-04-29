@@ -54,7 +54,8 @@
     "proposals": "Návrhy",
     "create": "Vytvoriť",
     "save": "Uložiť",
-    "discardChanges": "Zahodiť zmeny"
+    "discardChanges": "Zahodiť zmeny",
+    "add": "Přidat"
   },
   "messages": {
     "langChangeSuccess": "Jazyk zmenený",
@@ -73,5 +74,17 @@
   },
   "recommendations": {
     "recommendedBy": "Doporučila {0}"
+  },
+  "newpost": {
+    "grLink": "Odkaz na Goodreads",
+    "grLoadInstructions": "Vlož odkaz, zmáčkni enter nebo tabulátor a chvíli počkej.",
+    "waitForLoadPlox": "Kamo počkaj, LOADUJEM",
+    "bookTitle": "Název knihy",
+    "topicTitle": "Název tématu",
+    "authorName": "Jméno autora",
+    "pageCount": "Počet stran",
+    "comment": "Komentár k návrhu",
+    "requiredFields": "Pole označená * jsou povinná.",
+    "hideForm": "Schovat formulář"
   }
 }
