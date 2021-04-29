@@ -10,15 +10,15 @@
         <h2 class="book__title">{{ recommendation.title }}</h2>
       </a>
       <p v-if="recommendation.author" class="book__author">{{ recommendation.author }}</p>
-      <p class="book__pages" v-if="recommendation.pageCount">{{ recommendation.pageCount }} strán</p>
-      <p class="book__owner" v-if="showName">Doporučila {{ recommendation.ownerName }}</p>
+      <p class="book__pages" v-if="recommendation.pageCount">{{$t('bookpost.numPages', [recommendation.pageCount])}}</p>
+      <p class="book__owner" v-if="showName">{{$t('recommendations.recommendedBy', [recommendation.ownerName])}}</p>
       <p class="book__text" v-html="recommendation.renderedText"> </p>
     </div>
     <div class="book__repost" v-if="isRepostingAllowed">
         <router-link v-if="isRepostingAllowed" 
         :to="{ name: 'discussion', params: { discussionId: activeDiscussionId }, 
         query: { parentRecommendationId: recommendation.recommendationId } }">
-            <button class="button-secondary button-repost">Přidej do aktuálního hlasování</button>
+            <button class="button-secondary button-repost">{{$t('bookpost.addToOngoing')}}</button>
         </router-link>
       </div>
   </div> 

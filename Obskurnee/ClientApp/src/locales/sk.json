@@ -65,5 +65,13 @@
     "notSubscribed": "Neprihlásené",
     "subscribe": "Prihlásiť",
     "unsubscribe": "Odhlásiť"
+  },
+  "bookpost": {
+    "suggestedBy": "Navrhla {0}",
+    "numPages": "{0} strán",
+    "addToOngoing": "Přidej do aktuálního hlasování"
+  },
+  "recommendations": {
+    "recommendedBy": "Doporučila {0}"
   }
 }
