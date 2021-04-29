@@ -34,7 +34,7 @@
                 <label for="new-username">{{ $t('admin.newUserName') }}</label>
                 <input type="text" v-model="newUserName" id="new-username" />
             </div>
-            <button @click="addUser()" class="button-primary">{{ $t('menus.create') }}</button>
+            <button @click="addUser()" class="button-primary">{{ $t('menus.register') }}</button>
             <div class="note u-mt-sp">
                 <div class="note-pic">
                     <img src="../../assets/lamp.svg" alt="lamp icon" />

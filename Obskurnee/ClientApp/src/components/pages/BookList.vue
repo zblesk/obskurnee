@@ -1,6 +1,6 @@
 <template>
 <section>
-    <h1 class="page-title">Knihy</h1>
+    <h1 class="page-title">{{$t('menus.books')}}</h1>
     <div class="books-grid" v-if="books">
         <book-preview v-bind:book="book" v-for="book in books" v-bind:key="book.bookId">#{{ book.order }} </book-preview>
     </div>
