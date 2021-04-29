@@ -38,7 +38,7 @@
         </div>
         <div class="form-field u-mb-0">
           <div class="label-md-wrapper">
-            <label for="text">{{$t('newpost.comment')}}*</label>
+            <label for="text">{{$t('newpost.comment')}}<span v-if="mode != 'Themes'">*</span></label>
             <div class="mo-md">
               <div class="mo-md-pic">
                 <img src="../assets/Markdown-mark.svg" alt="markdown logo">
@@ -48,7 +48,7 @@
               </div>
             </div>
           </div>
-          <textarea v-model="newPost.text" id="text" required :placeholder="$t('global.markdownSamplePlaceholder')"></textarea>
+          <textarea v-model="newPost.text" id="text" :required="mode != 'Themes'" :placeholder="$t('global.markdownSamplePlaceholder')"></textarea>
         </div>
         <p class="asterisk">{{$t('newpost.requiredFields')}}</p>
       </div>
