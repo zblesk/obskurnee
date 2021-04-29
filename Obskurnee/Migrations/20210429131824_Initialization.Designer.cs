@@ -9,14 +9,14 @@ using Obskurnee.Services;
 namespace Obskurnee.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210414095648_poll4")]
-    partial class poll4
+    [Migration("20210429131824_Initialization")]
+    partial class Initialization
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.4");
+                .HasAnnotation("ProductVersion", "5.0.5");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -227,6 +227,9 @@ namespace Obskurnee.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("AvatarUrl")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("TEXT");
@@ -239,6 +242,9 @@ namespace Obskurnee.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("GoodreadsProfileUrl")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Language")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
@@ -488,6 +494,12 @@ namespace Obskurnee.Migrations
                     b.Property<int>("PageCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("ParentPostId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("ParentRecommendationId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Text")
                         .HasColumnType("TEXT");
 
@@ -506,7 +518,7 @@ namespace Obskurnee.Migrations
 
             modelBuilder.Entity("Obskurnee.Models.Recommendation", b =>
                 {
-                    b.Property<int>("PostId")
+                    b.Property<int>("RecommendationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -534,7 +546,7 @@ namespace Obskurnee.Migrations
                     b.Property<string>("Url")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("PostId");
+                    b.HasKey("RecommendationId");
 
                     b.HasIndex("OwnerId");
 
@@ -611,6 +623,25 @@ namespace Obskurnee.Migrations
                     b.HasKey("Key");
 
                     b.ToTable("Settings");
+                });
+
+            modelBuilder.Entity("Obskurnee.Models.StoredImage", b =>
+                {
+                    b.Property<string>("FileName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Extension")
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("FileContents")
+                        .HasColumnType("BLOB");
+
+                    b.Property<int>("Kind")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("FileName");
+
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("Obskurnee.Models.Vote", b =>
