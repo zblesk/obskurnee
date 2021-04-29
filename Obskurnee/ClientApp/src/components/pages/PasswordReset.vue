@@ -1,20 +1,20 @@
 <template>
 <section>
-    <h1 class="page-title">Změna hesla</h1>
+    <h1 class="page-title">{{$t('passwordreset.title')}}</h1>
     <div class="main">
         <div v-if="$route.params.token">
             <div class="form-field">
-                <label for="passwordInput">Heslo</label>
-                <input type="password" id="passwordInput" @keyup.enter="resetPassword" v-model="newPassword" required />
+                <label for="passwordInput">{{$t('menus.password')}}</label>
+                <input id="passwordInput" @keyup.enter="resetPassword" v-model="newPassword" required />
             </div>
-            <button @click="resetPassword" class="button-primary">Reset</button>
+            <button @click="resetPassword" class="button-primary">{{$t('menus.reset')}}</button>
         </div>
         <div v-else>
             <div class="form-field">
-                <label for="emailInput">Zadej svůj e-mail</label>
+                <label for="emailInput">{{$t('passwordreset.enterMail')}}</label>
                 <input id="emailInput" @keyup.enter="initPasswordReset" type="email" v-model="email" required />
             </div>
-            <button class="button-primary" @click="initPasswordReset">Odeslat</button>
+            <button class="button-primary" @click="initPasswordReset">{{$t('passwordreset.initiateReset')}}</button>
         </div>
     </div>
 </section>
