@@ -107,12 +107,20 @@ export default {
   },
   computed: {
     ...mapGetters("reviews", ["bookReviews"]),
+    ...mapGetters("context", ["myUserId"]),
   },
   mounted() {
     this.currentBookId = this.$route.params.bookId;
     this.getBookById(this.currentBookId)
       .then(book => this.book = book);
     this.fetchBookReviews(this.currentBookId)
+      .then(data => {
+        const myRev = data.find(r => r.ownerId == this.myUserId);
+        if (myRev)
+        {
+          this.newReviewData = myRev;
+        }
+      })
       .catch(e => this.$notifyError(e));
   }
 }

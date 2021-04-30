@@ -1,6 +1,6 @@
 {
   "home": {
-    "greeting": "Welcome, <strong>{0}</strong>❣"
+    "greeting": "Welcome, {0}❣"
   },
   "user": {
     "name": ""
