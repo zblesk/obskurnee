@@ -45,10 +45,23 @@ const app = createApp(App)
   });
 const emitter = mitt();
 app.config.globalProperties.emitter = emitter;
+
+store.subscribeAction({
+  after: (action) => {
+    // open hub connection on login or context restore
+    if ((action.type == 'context/restoreContext'
+      || action.type == 'context/login')
+      && store.getters['context/isAuthenticated'])
+    {
+      store.dispatch("users/getUsers");
+    }
+  }
+});
+
 app.mount('#app');
 
-store.dispatch("global/loadHome");
-if (store.getters['context/isAuthenticated'])
+if (store.getters['context/currentToken'])
 {
   store.dispatch("users/getUsers");
 }
+store.dispatch("global/loadHome");

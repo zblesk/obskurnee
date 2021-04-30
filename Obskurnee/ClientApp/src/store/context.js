@@ -12,6 +12,7 @@ export default {
     isAdmin: state => state.profile.isAdmin,
     myUserId: state => state.profile.userId,
     isMe: (_, getters) => (userId) => getters.myUserId == userId,
+    currentToken: () => window.localStorage.getItem('jwtToken')
   },
   mutations: {
     setProfile(state, profile)
