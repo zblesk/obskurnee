@@ -144,6 +144,9 @@
   <data name="unsupportedLanguage" xml:space="preserve">
     <value>Nepodporovaný jazyk: {0:lang}</value>
   </data>
+  <data name="usersAlreadyExist" xml:space="preserve">
+    <value>Používatelia už existujú</value>
+  </data>
   <data name="userUpdateFailed" xml:space="preserve">
     <value>Zlyhala aktualizácia používateľa</value>
   </data>

@@ -14,6 +14,7 @@ namespace Obskurnee.Services
     {
         private readonly ILogger<UserService> _logger;
         private readonly SignInManager<Bookworm> _signInManager;
+        private readonly IStringLocalizer<Strings> _localizer;
         private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
         private readonly IServiceProvider _serviceProvider;
         private readonly IMailerService _mailer;
@@ -24,13 +25,13 @@ namespace Obskurnee.Services
         public UserService(
            ILogger<UserService> logger,
            SignInManager<Bookworm> signInManager,
+           IStringLocalizer<Strings> localizer,
            IStringLocalizer<NewsletterStrings> newsletterLocalizer,
            IMailerService mailer,
            IServiceProvider serviceProvider,
            UserManager<Bookworm> userManager,
            MatrixService matrix,
            ApplicationDbContext dbContext,
-           IStringLocalizer<Strings> localizer,
            Config config) : base(userManager, logger, dbContext, localizer, config)
         {
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
@@ -39,6 +40,7 @@ namespace Obskurnee.Services
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
             _matrix = matrix;
+            _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
         }
 
         public override async Task<UserInfo> Register(
@@ -91,7 +93,7 @@ namespace Obskurnee.Services
         {
             if (GetAllUserIds().Count != 0)
             {
-                throw new ForbiddenException("Users already exist");
+                throw new ForbiddenException(_localizer["usersAlreadyExist"]);
             }
             _logger.LogInformation("Creating first admin with {email}", creds.Email);
             var newUser = await Register(creds);
@@ -143,7 +145,6 @@ namespace Obskurnee.Services
             var subject = _newsletterLocalizer["passwordResetSubject"];
             var body = _newsletterLocalizer.Format("passwordResetBody", callbackUrl);
             await _mailer.SendMail(subject, body, user.Email);
-            _logger.LogWarning("reset hesla body {b}", body);
             return true;
         }
 

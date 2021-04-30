@@ -116,12 +116,11 @@ namespace Obskurnee.Services
                 Newsletters.AllEvents,
                 _newsletterLocalizer.Format("newReviewSubject",
                     review.Book.Post.Title,
-                    review.Book.Post.OwnerName),
+                    review.OwnerName),
                 _newsletterLocalizer.Format("newReviewBodyMarkdown",
                     link,
                     Enumerable.Range(0, review.Rating).Aggregate("", (acc, _) => $"{acc}⭐"),
-                    review.Rating,
-                    review.ReviewText,
+                    review.ReviewText.AddMarkdownQuote(),
                     review.OwnerName));
         }
     }
