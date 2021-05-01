@@ -219,7 +219,7 @@ body {
 }
 
 .form-field input {
-  font-size: 0.875em;
+  font-size: 14px; /*0.875em;*/
   width: 100%;
   border: 0;
   background-color: var(--c-bckgr-secondary);
@@ -227,7 +227,7 @@ body {
 }
 
 .form-field textarea {
-  font-size: 0.875em;
+  font-size: 14px; /*0.875em;*/
   border: 0;
   background-color: var(--c-bckgr-secondary);
   padding: calc(var(--spacer) / 2);
