@@ -14,8 +14,10 @@
         <p class="book__owner">{{$t('bookpost.suggestedBy', [post.ownerName])}}</p>
         <div class="book__text" v-html="post.renderedText"> </div>
       </div>
-      <div class="book__repost" v-if="isRepostingAllowed && activeDiscussionId != post.discussionId">
-        <router-link v-if="isRepostingAllowed && activeDiscussionId != post.discussionId" 
+      <div class="book__repost" v-if="isRepostingAllowed 
+        && activeDiscussionId != post.discussionId
+        && topic == 'Books'">
+        <router-link 
           :to="{ name: 'discussion', params: { discussionId: activeDiscussionId }, 
           query: { parentPostId: post.postId, fromDiscussionId: post.discussionId } }">
             <button class="button-secondary button-repost">{{$t('bookpost.addToOngoing')}}</button>
@@ -28,7 +30,16 @@
 import { mapGetters } from 'vuex'
     export default {
         name: "BookPost",
-        props: ['post'],
+        props: {
+          post: {
+            type: Object,
+            required: true,
+          },
+          topic: {
+            type: String,
+            required: false,
+          }
+        },
         computed: {
           ...mapGetters("global", ["isRepostingAllowed", "activeDiscussionId"]),
         }

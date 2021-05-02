@@ -22,7 +22,8 @@
     <book-post
       v-for="post in discussion.posts"
       v-bind:key="post.postId"
-      v-bind:post="post">
+      v-bind:post="post"
+      v-bind:topic="discussion.topic">
     </book-post>
   </div> 
 </div>
