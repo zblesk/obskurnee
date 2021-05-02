@@ -26,7 +26,7 @@ namespace Obskurnee.Services
         {
             if (string.IsNullOrWhiteSpace(filename))
             {
-                filename = $"obskurnee.{DateTime.Now.ToString("yyyyMMdd_hhmmss")}.db";
+                filename = $"obskurnee.{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.db";
             }
             var dir = Path.Combine(Config.DataFolder, Config.BackupFolder);
             if (!Directory.Exists(dir))
