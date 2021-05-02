@@ -39,7 +39,14 @@ namespace Obskurnee.Services
             using var scope = _scopeFactory.CreateScope();
             var backups = (BackupService)scope.ServiceProvider.GetService(typeof(BackupService));
             _logger.LogInformation("Starting Periodic backup");
-            backups.CreateBackup();
+            try
+            {
+                backups.CreateBackup();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Backup creation failed");
+            }
         }
 
         public Task StopAsync(CancellationToken stoppingToken)
