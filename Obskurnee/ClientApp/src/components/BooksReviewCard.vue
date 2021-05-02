@@ -1,5 +1,6 @@
 <template>
   <div class="book">
+    <div class="book__top">
       <div class="book__title-wrapper">
         <router-link :to="{ name: 'user', params: { email: userMailById(review.ownerId) } }" class="book__link">
           <h2 class="book__title">{{ review.ownerName }}</h2>
@@ -7,6 +8,7 @@
         <div class="book__stars" v-if="review.rating">{{ "⭐".repeat(review.rating) }}</div>
       </div>
       <p class="book__text" v-html="review.renderedReviewText"></p>
+    </div>
   </div> 
 </template>
 
