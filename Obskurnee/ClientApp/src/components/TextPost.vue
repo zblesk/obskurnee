@@ -1,6 +1,6 @@
 <template>
  <div class="card">
-  <h2 v-if="this.$slots.default" class="slot"><slot></slot></h2>
+  <h2 v-if="$slots.default" class="slot"><slot></slot></h2>
   <div class="container">
     <h3 class="title">{{ post.title }}</h3>
     <p v-html="post.renderedText" class="desc"></p>

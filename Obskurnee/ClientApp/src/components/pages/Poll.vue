@@ -1,21 +1,21 @@
 <template>
 <section>
   <h1 id="tableLabel" class="page-title">
-    {{ poll.title }}<span class="poll-closed" v-if="poll.isClosed">&nbsp;Uzavreté</span>
+    {{ poll.title }}<span class="poll-closed" v-if="poll.isClosed">&nbsp;{{$t('poll.closed')}}</span>
   </h1>
   <div v-if="poll.isClosed" class="main"> 
     <div v-if="poll.followupLink?.kind == 'Poll'">
-      <h2 class="winner-title">Rozstrel</h2>
-      <p class="tiebreaker-text">Máme několik vítězů se stejným počtem hlasů:</p>
+      <h2 class="winner-title">{{$t('poll.tiebreaker')}}</h2>
+      <p class="tiebreaker-text">{{$t('poll.tiebreakerDescription')}}</p>
       <ul class="tiebreaker-list">
         <li v-for="vote in poll.results.votes.filter(v => v.votes == poll.results.votes[0].votes)" v-bind:key="vote">{{ poll.options.find(o => o.postId == vote.postId).title }}</li>
       </ul>
       <router-link :to="{ name: 'poll', params: { pollId: poll.followupLink.entityId } }">
-        <button class="button-primary">Přejít na rozstřelové hlasování</button>
+        <button class="button-primary">{{$t('poll.goToTiebreaker')}}</button>
       </router-link>
     </div>
     <div v-else>
-      <h2 class="winner-title">Víťaz</h2>
+      <h2 class="winner-title">{{$t('poll.winner')}}</h2>
       <book-preview v-if="poll.followupLink?.kind == 'Book'" 
         :book="{ bookId: poll.followupLink.entityId, post: poll.options.find(o => o.postId == poll.results.winnerPostId) }">
       </book-preview>
@@ -30,22 +30,22 @@
     <div class="main flex">
 
       <div v-if="!poll.isClosed && poll.results && poll.results.alreadyVoted" class="u-mb-sp2">
-       <h2 class="subtitle">Stav hlasování</h2>
-        <p class="paragraph">Už hlasovalo {{ poll.results.alreadyVoted.length }} z {{users.length }} čtenářů.</p>
-        <p class="paragraph">Ješte nehlasovali: <span v-for="person in yetToVote" v-bind:key="person">{{ person.name }}, </span></p>
+       <h2 class="subtitle">{{$t('poll.pollProgress')}}</h2>
+        <p class="paragraph">{{$t('poll.alreadyVoted', [poll.results.alreadyVoted.length, users.length])}}</p>
+        <p class="paragraph">{{$t('poll.notYetVoted')}} <span v-for="person in yetToVote" v-bind:key="person">{{ person.name }}, </span></p>
       </div>
 
       <div v-if="iVoted || (poll.isClosed && poll.results && poll.results.votes)">
-        <h2 class="subtitle">Výsledky</h2>
+        <h2 class="subtitle">{{$t('poll.results')}}</h2>
         <ol class="poll">
           <li class="poll-field" v-for="vote in poll.results.votes" v-bind:key="vote">
             {{ poll.options.find(o => o.postId == vote.postId).title }}:
-             {{ vote.votes }} hlasy - {{ vote.percentage }}%
+             {{$t('poll.resultLine', [vote.votes, vote.percentage])}}
           </li>
         </ol>
       </div>
 
-      <h2 v-if="poll.results" class="subtitle u-mt-sp2">Možnosti</h2>
+      <h2 v-if="poll.results" class="subtitle u-mt-sp2">{{$t('poll.options')}}</h2>
       <ol class="poll">
         <li v-for="option in poll.options" v-bind:key="option.postId" class="poll-field">
           <input type="checkbox" :id="option.postId" :value="option.postId" v-model="checkedOptions" :disabled="iVoted || poll.isClosed" class="checkbox" />
@@ -54,8 +54,8 @@
       </ol>
 
       <div class="buttons buttons-poll">
-        <button @click="vote" :disabled="!checkedOptions?.length" class="button-primary" v-if="!iVoted && !poll.isClosed">Hlasovat</button>
-        <button v-if="isMod && !poll.isClosed" @click="doClosePoll" class="button-secondary poll-to-close">Zavřít hlasování hned</button>
+        <button @click="vote" :disabled="!checkedOptions?.length" class="button-primary" v-if="!iVoted && !poll.isClosed">{{$t('poll.vote')}}</button>
+        <button v-if="isMod && !poll.isClosed" @click="doClosePoll" class="button-secondary poll-to-close">{{$t('poll.closeVote')}}</button>
       </div>
       
     </div>
@@ -66,7 +66,7 @@
           <div class="note-pic">
             <img src="../../assets/lamp.svg" alt="lamp icon" />
           </div>
-          <p class="note-text">Klikni na název některé z možností v hlasování a zde se objeví podrobnější popis.</p>
+          <p class="note-text">{{$t('poll.previewInfo')}}</p>
         </div>
       </div>
       <book-post v-if="previewId" v-bind:key="previewId.postId" v-bind:post="previewId" ></book-post>

@@ -70,7 +70,8 @@
     "discardChanges": "Zahodiť zmeny",
     "add": "Přidat",
     "reset": "Reset",
-    "register": "Zaregistrovat"
+    "register": "Zaregistrovat",
+    "hide": "Skryť"
   },
   "messages": {
     "langChangeSuccess": "Jazyk zmenený",
@@ -111,5 +112,27 @@
   },
   "setup": {
     "userCreation": "Vytvoření nového uživatele"
+  },
+  "review": {
+    "starCount": "Počet hvězdiček (1–5)",
+    "text": "Text review",
+    "add": "Pridať recenziu",
+    "wrongStarCount": "Prepáč, hodnotenie musí byť 0-5."
+  },
+  "poll": {
+    "closed": "Uzavreté",
+    "tiebreaker": "Rozstrel",
+    "tiebreakerDescription": "Máme několik vítězů se stejným počtem hlasů:",
+    "goToTiebreaker": "Přejít na rozstřelové hlasování",
+    "winner": "Víťaz",
+    "pollProgress": "Stav hlasování",
+    "alreadyVoted": "Už hlasovalo {0} z {1} čtenářů.",
+    "notYetVoted": "Ješte nehlasovali:",
+    "results": "Výsledky",
+    "resultLine": "{0} hlasy - {1}%",
+    "options": "Možnosti",
+    "vote": "Hlasovat",
+    "closeVote": "Zavřít hlasování hned",
+    "previewInfo": "Klikni na název některé z možností v hlasování a zde se objeví podrobnější popis."
   }
 }
