@@ -120,7 +120,7 @@ body {
 /* used in: book, discussion, recommendationList, user */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 450px));
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: var(--spacer);
   margin: 0;
   padding: var(--spacer);
