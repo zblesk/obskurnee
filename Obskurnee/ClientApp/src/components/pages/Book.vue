@@ -7,12 +7,12 @@
 
   <div class="main">
     <div class="form-field" v-if="!hideForm">
-      <label for="review-stars">Počet hvězdiček (1–5)</label>
+      <label for="review-stars">{{$t('review.starCount')}}</label>
       <input type="number" min="1" max="5" v-model="newReviewData.rating" id="review-stars" required />
     </div>
     <div class="form-field" v-if="!hideForm">
       <div class="label-md-wrapper">
-        <label for="review-text">Text review</label>
+        <label for="review-text">{{$t('review.text')}}</label>
         <div class="mo-md">
           <div class="mo-md-pic">
             <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
@@ -25,11 +25,11 @@
       <textarea id="review-text" v-model="newReviewData.reviewText" required :placeholder="$t('global.markdownSamplePlaceholder')"></textarea>
     </div>
     <div class="buttons" v-if="hideForm">
-      <button @click="toggleVisibility" class="button-primary">Pridať recenziu</button>
+      <button @click="toggleVisibility" class="button-primary">{{$t('review.add')}}</button>
     </div>
     <div class="buttons" v-if="!hideForm">
-      <button @click="addReview" class="button-primary">Pridať</button>
-      <button @click="toggleVisibility" class="button-secondary button-hide">Skryť</button>
+      <button @click="addReview" class="button-primary">{{$t('menus.add')}}</button>
+      <button @click="toggleVisibility" class="button-secondary button-hide">{{$t('menus.hide')}}</button>
     </div>
   </div>
 
@@ -97,7 +97,7 @@ export default {
     {
       if (this.newReviewData?.rating > 5 || this.newReviewData?.rating < 0)
       {
-        this.$notifyError("Prepáč, hodnotenie musí byť 0-5.");
+        this.$notifyError(this.$t('review.wrongStarCount'));
         return;
       }
       this.newReview({ bookId: this.currentBookId, review: this.newReviewData})
