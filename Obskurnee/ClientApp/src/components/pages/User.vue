@@ -12,19 +12,19 @@
       <div class="main">
         <div class="form-field">
           <label for="username">{{ $t('user.name')}} </label>
-          <input type="text" id="username" required v-model="editingUser.name" />
+          <input type="text" id="username" required v-model="editingUser.name" tabindex="1" />
         </div>
         <div class="form-field">
           <label for="userphone">{{$t('user.phone')}}</label>
-          <input type="tel" id="userphone" v-model="editingUser.phone" />
+          <input type="tel" id="userphone" v-model="editingUser.phone" tabindex="2" />
         </div>
         <div class="form-field">
           <label for="usergr">{{$t('user.goodreadsProfile')}}</label>
-          <input type="url" id="usergr" v-model="editingUser.goodreadsUrl" />
+          <input type="url" id="usergr" v-model="editingUser.goodreadsUrl" tabindex="3" />
         </div>
         <div class="form-field">
           <label for="userpic">{{$t('user.uploadAvatar')}}</label>
-          <input type="file" id="userpic" name="userpic" accept="image/*" @change="onFilePicked" />
+          <input type="file" id="userpic" name="userpic" accept="image/*" @change="onFilePicked" tabindex="4" />
         </div>
         <div class="form-field">
           <div class="label-md-wrapper">
@@ -34,15 +34,15 @@
                 <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
               </div>
               <div class="mo-md-link">
-                <markdown-help-link></markdown-help-link>
+                <markdown-help-link tabindex="8"></markdown-help-link>
               </div>
             </div>
           </div>
-          <textarea id="userbio" v-model="editingUser.aboutMe" :placeholder="$t('user.aboutMePlaceholder')"></textarea>
+          <textarea id="userbio" v-model="editingUser.aboutMe" :placeholder="$t('user.aboutMePlaceholder')" tabindex="5"></textarea>
         </div>
         <div class="buttons">
-          <button @click="updateProfile" :disabled="saveInProgress" class="button-primary" :v-if="isMod || user.userId == myUserId">{{ $t('menus.save') }}</button>
-          <a @click="stopEditing" class="button-secondary button-cancel" :v-if="isMod || user.userId == myUserId">{{ $t('menus.discardChanges') }}</a>
+          <button @click="updateProfile" :disabled="saveInProgress" class="button-primary" :v-if="isMod || user.userId == myUserId" tabindex="6">{{ $t('menus.save') }}</button>
+          <a @click="stopEditing" class="button-secondary button-cancel" :v-if="isMod || user.userId == myUserId" tabindex="7">{{ $t('menus.discardChanges') }}</a>
         </div>
       </div>
     </div>

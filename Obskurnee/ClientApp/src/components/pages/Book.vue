@@ -8,7 +8,7 @@
   <div class="main">
     <div class="form-field" v-if="!hideForm">
       <label for="review-stars">Počet hvězdiček (1–5)</label>
-      <input type="number" min="1" max="5" v-model="newReviewData.rating" id="review-stars" required />
+      <input type="number" min="1" max="5" v-model="newReviewData.rating" id="review-stars" required tabindex="1" />
     </div>
     <div class="form-field" v-if="!hideForm">
       <div class="label-md-wrapper">
@@ -18,18 +18,18 @@
             <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
           </div>
           <div class="mo-md-link">
-            <markdown-help-link></markdown-help-link>
+            <markdown-help-link tabindex="4"></markdown-help-link>
           </div>
         </div>
       </div>
-      <textarea id="review-text" v-model="newReviewData.reviewText" required :placeholder="$t('global.markdownSamplePlaceholder')"></textarea>
+      <textarea id="review-text" v-model="newReviewData.reviewText" required :placeholder="$t('global.markdownSamplePlaceholder')" tabindex="2"></textarea>
     </div>
     <div class="buttons" v-if="hideForm">
       <button @click="toggleVisibility" class="button-primary">Pridať recenziu</button>
     </div>
     <div class="buttons" v-if="!hideForm">
-      <button @click="addReview" class="button-primary">Pridať</button>
-      <button @click="toggleVisibility" class="button-secondary button-hide">Skryť</button>
+      <button @click="addReview" class="button-primary" tabindex="3">Pridať</button>
+      <button @click="toggleVisibility" class="button-secondary button-hide" tabindex="5">Skryť</button>
     </div>
   </div>
 
