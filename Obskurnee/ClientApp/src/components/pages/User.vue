@@ -142,8 +142,8 @@
       </div>
     </div>
 
-    <h2 class="page-subtitle">
-      {{$t('user.recommends', [user.name])}}
+    <h2 class="page-subtitle page-subtitle--recs">
+      <span>{{$t('user.recommends', [user.name])}}</span>
       <span v-if="user && isMe(user.userId)" class="recs-link"> (<router-link :to="{ name: 'recommendationlist' }">{{$t('user.addRecommendation')}}</router-link>)</span></h2>
     <div v-if="myRecs && myRecs.length > 0" class="grid">
         <recommendation-card v-bind:recommendation="rec" :showName="false" v-for="rec in myRecs" v-bind:key="rec.recommendationId" />
@@ -487,9 +487,17 @@ export default {
     }
   }
 
+  .page-subtitle--recs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
   .recs-link {
     font-weight: normal;
     font-size: 0.8em;
+    margin-left: calc(var(--spacer) / 2);
   }
 
   .user-pic {
@@ -528,6 +536,5 @@ export default {
       margin: 0 0 var(--spacer) var(--spacer);
     }
   }
-
 
 </style>
