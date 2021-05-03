@@ -243,12 +243,17 @@ namespace Obskurnee.Services
             Round round)
         {
             var winnerPost = _db.Posts.First(p => p.PostId == poll.Results.WinnerPostId);
+            var description = $"**{winnerPost.Title}**";
+            if (!string.IsNullOrWhiteSpace(winnerPost.Text))
+            {
+                description += $" - {winnerPost.Text}";
+            }
             var bookDiscussion = new Discussion(currentUserId)
             {
                 RoundId = round.RoundId,
                 Topic = Topic.Books,
                 Title = _localizer.Format("bookDiscussionTitle", round.Title),
-                Description = $"**{winnerPost.Title}** - {winnerPost.Text}",
+                Description = description,
             };
             await _db.Discussions.AddAsync(bookDiscussion);
             await _db.SaveChangesAsync();
