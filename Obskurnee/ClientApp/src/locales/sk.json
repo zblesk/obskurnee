@@ -87,7 +87,8 @@
     "notSubscribed": "Neprihlásené",
     "subscribe": "Prihlásiť",
     "closed": "Uzavreté",
-    "unsubscribe": "Odhlásiť"
+    "unsubscribe": "Odhlásiť",
+    "or": "nebo"
   },
   "bookpost": {
     "suggestedBy": "Navrhla {0}",
@@ -146,5 +147,21 @@
     "noneSoFar": "Zatial tu nic nie je",
     "goToPoll": "Jít na hlasování",
     "failedToAddPost": "Nepodarilo sa pridať príspevok"
+  },
+  "roundlist": {
+    "rounds": "Kolá návrhov",
+    "startNew": "Založit nové kolo",
+    "newRoundInit": "Založení nového kola",
+    "startWith": "Začít s",
+    "startBooks": "knihami",
+    "startThemes": "tématy",
+    "roundTitle": "Názov (napr. 'Kniha IXY')",
+    "description": "Popis",
+    "newRound": "Nové kolo",
+    "waitForLoad": "Cakaj, nacitavam",
+    "themeSuggestions": "Návrhy tém",
+    "themePoll": "Hlasovanie o témach",
+    "bookSuggestions": "Návrhy kníh",
+    "bookPoll": "Hlasovanie o knihách"
   }
 }

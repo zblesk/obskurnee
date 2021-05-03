@@ -1,37 +1,37 @@
 <template>
 <section>
-<h1 id="tableLabel" class="page-title">Kolá návrhov</h1>
-<button v-if="isMod && hide" class="button-primary new-round" @click="toggleVisibility">Založit nové kolo</button>
+<h1 id="tableLabel" class="page-title">{{$t('roundlist.rounds')}}</h1>
+<button v-if="isMod && hide" class="button-primary new-round" @click="toggleVisibility">{{$t('roundlist.startNew')}}</button>
 
 <div v-if="isMod && !hide" class="main">
-    <h2 class="form-heading">Založení nového kola</h2>
+    <h2 class="form-heading">{{$t('roundlist.newRoundInit')}}</h2>
     <div class="form-field form-flex">
-        <span>Začít s </span>
+        <span>{{$t('roundlist.startWith')}} </span>
         <div class="form-field-radios">
             <input type="radio" id="Books" value="Books" v-model="newRound.topic">
-            <label for="Books" class="label-radio">knihami</label>
+            <label for="Books" class="label-radio">{{$t('roundlist.startBooks')}}</label>
         </div>
-        <span class="radio-between">nebo</span>
+        <span class="radio-between">{{$t('messages.or')}}</span>
         <div class="form-field-radios">
             <input type="radio" id="Themes" value="Themes" v-model="newRound.topic">
-            <label for="Themes" class="label-radio">tématy</label>
+            <label for="Themes" class="label-radio">{{$t('roundlist.startThemes')}}</label>
         </div>
     </div>
     <div class="form-field">
-        <label for="name">Názov (napr. 'Kniha IXY')</label>
+        <label for="name">{{$t('roundlist.roundTitle')}}</label>
         <input v-model="newRound.title" id="name" required />
     </div>
     <div class="form-field">
-        <label for="description">Popis</label>
+        <label for="description">{{$t('roundlist.description')}}</label>
         <textarea v-model="newRound.description" id="description"></textarea>
     </div>
     <div class="buttons">
-        <button @click="cNewRound" class="button-primary">Nové kolo</button>
-        <button class="button-secondary hide-form" @click="toggleVisibility">Schovat formulář</button>
+        <button @click="cNewRound" class="button-primary">{{$t('roundlist.newRound')}}</button>
+        <button class="button-secondary hide-form" @click="toggleVisibility">{{$t('newpost.hideForm')}}</button>
     </div>
 </div>
 
-<p v-if="!rounds" class="alert-inline">Cakaj, nacitavam</p>
+<p v-if="!rounds" class="alert-inline">{{$t('roundlist.waitForLoad')}}</p>
 <div v-for="round of rounds" v-bind:key="round" class="round">
     <div class="round-inner">
         <h2 class="round-title">{{ round.title }}</h2>
@@ -43,10 +43,10 @@
                     </div>
                     <div class="mo-text">
                         <p class="mo-link">
-                            <router-link v-if="round.themeDiscussionId" :to="{ name: 'discussion', params: { discussionId: round.themeDiscussionId } }">Návrhy tém</router-link>
+                            <router-link v-if="round.themeDiscussionId" :to="{ name: 'discussion', params: { discussionId: round.themeDiscussionId } }">{{$t('roundlist.themeSuggestions')}}</router-link>
                         </p>
                         <p class="mo-link">
-                            <router-link v-if="round.themePollId" :to="{ name: 'poll', params: { pollId: round.themePollId } }">Hlasovanie o témach</router-link>
+                            <router-link v-if="round.themePollId" :to="{ name: 'poll', params: { pollId: round.themePollId } }">{{$t('roundlist.themePoll')}}</router-link>
                         </p>
                     </div>
                 </div>
@@ -56,10 +56,10 @@
                     </div>
                     <div class="mo-text">
                         <p class="mo-link">
-                            <router-link v-if="round.bookDiscussionId" :to="{ name: 'discussion', params: { discussionId: round.bookDiscussionId } }">Návrhy kníh</router-link>
+                            <router-link v-if="round.bookDiscussionId" :to="{ name: 'discussion', params: { discussionId: round.bookDiscussionId } }">{{$t('roundlist.bookSuggestions')}}</router-link>
                         </p>
                         <p class="mo-link">
-                            <router-link v-if="round.bookPollId" :to="{ name: 'poll', params: { pollId: round.bookPollId } }">Hlasovanie o knihách</router-link>
+                            <router-link v-if="round.bookPollId" :to="{ name: 'poll', params: { pollId: round.bookPollId } }">{{$t('roundlist.bookPoll')}}</router-link>
                         </p>
                     </div>
                 </div>
