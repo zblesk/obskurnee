@@ -4,7 +4,8 @@
     "markdownSamplePlaceholder": "Mozes pouzit Markdown na jednoduche formatovanie textu. Ak by si sa stratila, klikni na link hore.\n\nMedzi zaklady patri napriklad: \n# Najvacsi nadpis\n## mensi nadpis \n**tucny textt** alebo _kurziva_ \n- necislovany zoznam\n1. cislovany zoznam\n> takto sa pise citat\nMozes lahko pridat aj [link](https://google.sk).",
     "newsletters": "Newsletters",
     "allEvents": "Všetky udalosti: {0}",
-    "basicEvents": "Základné udalosti: {0}"
+    "basicEvents": "Základné udalosti: {0}",
+    "mod": "mod"
   },
   "home": {
     "greeting": "Vitaj, {0}❣"

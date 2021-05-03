@@ -46,11 +46,11 @@
       <div class="main">
         <div v-if="user.avatarUrl" class="user-pic">
           <img  :src="user.avatarUrl" :title="user.name" :alt="user.name" />
-          <p class="mod-text" v-if="user.isModerator">mod</p>
+          <p class="mod-text" v-if="user.isModerator">{{$t('global.mod')}}</p>
         </div>
         <div v-else class="user-pic-placeholder">
           <img src="../../assets/reader.svg"  :title="user.name" :alt="user.name" />
-          <p class="mod-text" v-if="user.isModerator">mod</p>
+          <p class="mod-text" v-if="user.isModerator">{{$t('global.mod')}}</p>
         </div>
 
         <p v-if="user.aboutMeHtml" class="bio" v-html="user.aboutMeHtml"></p>
