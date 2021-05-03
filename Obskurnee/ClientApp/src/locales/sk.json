@@ -34,7 +34,11 @@
     "addFirstRecLinkText": "nejaké pridať?",
     "phone": "Telefon:",
     "list": "Seznam bookclubberů",
-    "modInfo": "(moderátoři mají magické schopnosti)"
+    "modInfo": "(moderátoři mají magické schopnosti)",
+    "showRecs": "Ukaž doporučení",
+    "hideRecs": "Skryj doporučení",
+    "showReviews": "Ukaž recenze",
+    "hideReviews": "Skryj recenze"
   },
   "admin": {
     "newUserCreation": "Vytvorenie nového používateľa",

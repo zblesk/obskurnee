@@ -143,15 +143,15 @@
       <span>{{$t('user.recommends', [user.name])}}</span>
       <span v-if="user && isMe(user.userId)" class="recs-link"> (<router-link :to="{ name: 'recommendationlist' }">{{$t('user.addRecommendation')}}</router-link>)</span></h2>
     <div v-if="myRecs && myRecs.length > 0">
-      <!--<div v-if="hide">
-        <button class="button-primary">Ukaž doporučení</button>
+      <div v-if="!showRecs">
+        <button class="button-primary" @click="showRecs = true">{{$t('user.showRecs')}}</button>
       </div>
       <div v-else>
-        <button class="button-secondary">Skryj doporučení</button>-->
+        <button class="button-secondary" @click="showRecs = false">{{$t('user.hideRecs')}}</button>
         <div class="grid">
           <recommendation-card v-bind:recommendation="rec" :showName="false" v-for="rec in myRecs" v-bind:key="rec.recommendationId" />
         </div>
-      <!--</div>-->
+      </div>
     </div>
     <p v-else class="recs-message">{{$t('user.noRecsYet')}}
       <i18n-t v-if="user && isMe(user.userId)" tag="span" keypath="user.addFirstRec">
@@ -161,15 +161,15 @@
 
     <h2 class="page-subtitle u-mt-sp">{{$t('user.booksRatedBy', [user.name])}}</h2>
     <div v-if="userReviews(user.userId)?.length > 0">
-      <!--<div v-if="hide">
-        <button class="button-primary">Ukaž recenze</button>
+      <div v-if="!showReviews">
+        <button class="button-primary" @click="showReviews = true">{{$t('user.showReviews')}}</button>
       </div>
       <div v-else>
-        <button class="button-secondary">Skryj recenze</button>-->
+        <button class="button-secondary" @click="showReviews = false">{{$t('user.hideReviews')}}</button>
         <div class="grid">
           <users-review-card v-for="rev in userReviews(user.userId)" v-bind:key="rev.reviewId" v-bind:review="rev" ></users-review-card>
         </div>
-      <!--</div>-->
+      </div>
     </div>
     <p v-else class="recs-message">{{ $t('user.noneSoFar') }} <span v-if="isMe(user.userId)"><router-link :to="{ name: 'booklist' }">{{ $t('user.wannaAddSome') }}</router-link></span></p>
   </div>
@@ -195,6 +195,8 @@ export default {
         subscriptions: [],
         myRecs: [],
         saveInProgress: false,
+        showRecs: true,
+        showReviews: true
       }
   },
   computed: {
