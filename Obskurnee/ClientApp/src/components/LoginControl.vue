@@ -165,7 +165,7 @@ export default {
         }
       )
       .catch((err) => {
-          this.$notifyError("Prihlásenie zlyhalo :( ");
+          this.$notifyError(this.$t('messages.loginFailed'));
           console.log(err);
         }
       );

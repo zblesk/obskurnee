@@ -50,7 +50,8 @@
     "showRecs": "Ukaž doporučení",
     "hideRecs": "Skryj doporučení",
     "showReviews": "Ukaž recenze",
-    "hideReviews": "Skryj recenze"
+    "hideReviews": "Skryj recenze",
+    "selectPreferredLanguage": "Vyber preferovaný jazyk"
   },
   "admin": {
     "newUserCreation": "Vytvorenie nového používateľa",
@@ -66,7 +67,8 @@
     "subscribers": "Uživatelé přihlášení k odběru newsletteru",
     "basicEvents": "Zakladní události:",
     "nobody": "momentálne nikto",
-    "allEvents": "Všechny události:"
+    "allEvents": "Všechny události:",
+    "promotedToMod": "{0} povyseny na moderatora"
   },
   "menus": {
     "login": "Prihlásiť",
@@ -87,7 +89,8 @@
     "add": "Přidat",
     "reset": "Reset",
     "register": "Zaregistrovat",
-    "hide": "Skryť"
+    "hide": "Skryť",
+    "home": "Domov"
   },
   "messages": {
     "langChangeSuccess": "Jazyk zmenený",
@@ -99,7 +102,8 @@
     "subscribe": "Prihlásiť",
     "closed": "Uzavreté",
     "unsubscribe": "Odhlásiť",
-    "or": "nebo"
+    "or": "nebo",
+    "loginFailed": "Prihlásenie zlyhalo :("
   },
   "bookpost": {
     "suggestedBy": "Navrhla {0}",
@@ -108,7 +112,8 @@
   },
   "recommendations": {
     "recommendedBy": "Doporučila {0}",
-    "addNew": "Pridať nové odporučenie"
+    "addNew": "Pridať nové odporučenie",
+    "failedToAddRec": "Nepodarilo sa pridať odporučenie"
   },
   "newpost": {
     "grLink": "Odkaz na Goodreads",
@@ -121,12 +126,18 @@
     "comment": "Komentár k návrhu",
     "requiredFields": "Pole označená * jsou povinná.",
     "hideForm": "Schovat formulář",
-    "addDescriptionPlox": "Prosím, vyplň popis"
+    "addDescriptionPlox": "Prosím, vyplň popis",
+    "loadingData": "Nacitavam data",
+    "prefilledDescriptionFormat": "\n\n### Popis na Goodreads: \n\n{0}",
+    "loaded": "Nacitane"
   },
   "passwordreset": {
     "title": "Změna hesla",
     "enterMail": "Zadej svůj e-mail",
-    "initiateReset": "Resetuj heslo"
+    "initiateReset": "Resetuj heslo",
+    "enterPassword": "Zadaj heslo",
+    "changeSuccess": "Zmenené",
+    "checkYourMail": "Pozri mail"
   },
   "setup": {
     "userCreation": "Vytvoření nového uživatele"

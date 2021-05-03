@@ -137,7 +137,7 @@ export default {
             axios.post("/api/admin/makemod/" + email)
             .then(() => 
                 {
-                    this.$notifySuccess(`${email} povyseny na moderatora`);
+                    this.$notifySuccess(this.$t('admin.promotedToMod', [email]));
                     this.getUsers();
                 })
             .catch(this.$handleApiError);

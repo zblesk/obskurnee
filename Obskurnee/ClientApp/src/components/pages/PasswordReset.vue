@@ -43,7 +43,7 @@ export default {
         {
             if (!this.newPassword)
             {
-                this.$notifyError('Zadaj heslo');
+                this.$notifyError(this.$t('passwordreset.enterPassword'));
                 return;
             }
             this.passwordResetFinish({ 
@@ -51,23 +51,20 @@ export default {
                 userId: this.$route.params.userId, 
                 token: this.$route.params.token})
                 .then(() => {
-                    this.$notifySuccess("Zmenené");
+                    this.$notifySuccess(this.$t('passwordreset.changeSuccess'));
                     this.$router.push({ name: 'home' });
                 })
-                .catch((err, p) =>{ 
-                    console.log('aaaaaaaaaaaa koniec', err, p);
-                    console.log(err); 
-                    this.$notifyError(err?.response?.data); });
+                .catch(this.$handleApiError);
         },
         initPasswordReset() 
         {
             if (!this.email)
             {
-                this.$notifyError('Zadaj email');
+                this.$notifyError(this.$t('passwordreset.enterMail'));
                 return;
             }
             this.passwordResetInit(this.email)
-                .then(() => this.$notifySuccess('Pozri mail'))
+                .then(() => this.$notifySuccess(this.$t('passwordreset.checkYourMail')))
                 .catch((err) => this.$notifyError(err));
         },
     },

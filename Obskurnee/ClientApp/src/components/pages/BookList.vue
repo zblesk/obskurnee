@@ -18,7 +18,6 @@
 
 </style>
 
-
 <script>
 import { mapActions, mapState } from "vuex";
 import BookPreview from '../BookPreview.vue';

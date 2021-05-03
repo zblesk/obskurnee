@@ -10,7 +10,7 @@
             <nav class="navigation">
                 <div class="navigation-visible">
                     <router-link :to="{ name: 'home' }">
-                        <div class="navigation-home">Domov</div>
+                        <div class="navigation-home">{{$t('menus.home')}}</div>
                     </router-link>
                     <button type="button" class="navigation-toggler" @click="toggle">
                         <img src="../assets/menu.svg" alt="menu icon">

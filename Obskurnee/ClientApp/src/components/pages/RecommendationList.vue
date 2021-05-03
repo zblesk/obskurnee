@@ -13,7 +13,6 @@
 </section>
 </template>
 
-
 <script>
 import { mapActions, mapState } from "vuex";
 import RecommendationCard from '../RecommendationCard.vue'
@@ -33,7 +32,7 @@ export default {
                 .then(() => this.emitter.emit('clear-post'))
                 .catch(function (error) {
                     console.log(error);
-                    onErr("Nepodarilo sa pridať odporučenie");
+                    onErr(this.$t('recommendations.failedToAddRec'));
                 });
         }
     },
@@ -42,7 +41,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-</style>

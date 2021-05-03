@@ -184,14 +184,14 @@ export default {
         return;
       }
       this.fetchInProgress = true;
-      this.$notifyNormal("Nacitavam data");
+      this.$notifyNormal(this.$t('newpost.loadingData'));
         axios.get(
           "/api/scrape/?goodreadsUrl=" + this.newPost.url)
         .then((response) => {
           this.newPost = response.data;
-          this.newPost.text = "\n\n### Popis na Goodreads: \n\n" + response.data.description;
+          this.newPost.text = this.$t('newpost.prefilledDescriptionFormat', response.data.description);
           this.fetchInProgress = false;
-          this.$notifyInfo("Nacitane");
+          this.$notifyInfo(this.$t('newpost.loaded'));
         })
         .catch(function (error) {
           this.$notifyError(error);
