@@ -1,12 +1,7 @@
 <template>
 <section>
   <div v-if="user">
-    <div class="page-title-wrapper">
-      <div class="mod" v-if="user.isModerator">
-        <img src="../../assets/fairy.svg" alt="fairy icon">
-      </div>
-      <h1 class="page-title-user">{{ user.name }}</h1>
-    </div>
+    <h1 class="page-title">{{ user.name }}</h1>
 
     <div v-if="mode == 'edit'">
       <div class="main">
@@ -51,9 +46,11 @@
       <div class="main">
         <div v-if="user.avatarUrl" class="user-pic">
           <img  :src="user.avatarUrl" :title="user.name" :alt="user.name" />
+          <p class="mod-text" v-if="user.isModerator">mod</p>
         </div>
         <div v-else class="user-pic-placeholder">
           <img src="../../assets/reader.svg"  :title="user.name" :alt="user.name" />
+          <p class="mod-text" v-if="user.isModerator">mod</p>
         </div>
 
         <p v-if="user.aboutMeHtml" class="bio" v-html="user.aboutMeHtml"></p>
@@ -309,30 +306,6 @@ export default {
 
 <style scoped>
 
-  .page-title-wrapper {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-top: calc(1.5 * var(--spacer));
-    margin-bottom: var(--spacer);
-  }
-
-  .mod {
-    width: 36px;
-    margin-right: var(--spacer);
-  }
-
-  .mod img {
-    width: 100%;
-  }
-
-  .page-title-user {
-    font-size: 2em;
-    font-weight: bold;
-    margin-bottom: 0;
-  }
-
   .button-cancel {
     margin-top: var(--spacer);
   }
@@ -522,6 +495,7 @@ export default {
     margin: 0 auto var(--spacer) auto;
     border: 0;
     border-radius: 50%;
+    position: relative;
   }
 
   .user-pic img {
@@ -537,6 +511,7 @@ export default {
     border: 0;
     border-radius: 50%;
     background-color: var(--c-accent);
+    position: relative;
   }
 
   .user-pic-placeholder img {
@@ -551,6 +526,17 @@ export default {
       float: right;
       margin: 0 0 var(--spacer) var(--spacer);
     }
+  }
+
+  .mod-text {
+    color: var(--c-accent);
+    font-variant: small-caps;
+    font-size: 1.25rem;
+    font-weight: bold;
+    transform: rotate(40deg);
+    position: absolute;
+    top: -10px;
+    right: -10px;
   }
 
 </style>
