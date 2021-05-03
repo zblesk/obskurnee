@@ -9,12 +9,12 @@
           <i18n-t v-if="myProfile" tag="span" keypath="home.greeting">
             <strong>{{ myProfile.name }}</strong>
           </i18n-t>
-          <span v-if="currentDiscussion"> Zbierame
-            <router-link :to="{name: 'discussion', params: { discussionId: currentDiscussion.discussionId },}">nové návrhy</router-link>.
-          </span>
-          <span v-if="currentPoll"> Práve beží
-            <router-link :to="{ name: 'poll', params: { pollId: currentPoll.pollId } }">hlasovanie</router-link>.
-          </span>
+          <i18n-t tag="span" v-if="currentDiscussion" keypath="home.ongoingDiscussion"> 
+            <router-link :to="{name: 'discussion', params: { discussionId: currentDiscussion.discussionId },}">{{$t('home.ongoingDiscussionPosts')}}</router-link> 
+          </i18n-t>
+          <i18n-t tag="span" v-if="currentPoll" keypath="home.ongoingPoll"> 
+            <router-link :to="{ name: 'poll', params: { pollId: currentPoll.pollId } }">{{$t('home.ongoingPollVote')}}</router-link> 
+          </i18n-t>
         </p>
       </div>
 
@@ -29,13 +29,15 @@
               <img src="../../assets/information.svg" alt="information bubble icon">
             </div>
             <div class="info-text">
-              <p>Ještě nemáš vyplněný profil. <router-link :to="{name: 'user', params: { email: myProfile.email, mode: 'edit' },}">Prosím, doplň ho.</router-link></p>
-              <p>Zbývá ti doplnit:</p>
+              <i18n-t tag="p" keypath="home.profileInfoMissing">
+                <router-link :to="{name: 'user', params: { email: myProfile.email, mode: 'edit' },}">{{$t('home.pleaseFillInfo')}}</router-link>
+              </i18n-t>
+              <p>{{$t('home.stillMissing')}}</p>
               <ul>
-                <li v-if="!myProfile.name">jméno</li>
-                <li v-if="!myProfile.phone">telefon (kontakt na whatsapp)</li>
-                <li v-if="!myProfile.aboutMe">bio</li>
-                <li v-if="!myProfile.goodreadsUrl">odkaz na tvůj profil na Goodreads</li>
+                <li v-if="!myProfile.name">{{$t('home.mName')}}</li>
+                <li v-if="!myProfile.phone">{{$t('home.mPhone')}}</li>
+                <li v-if="!myProfile.aboutMe">{{$t('home.mBio')}}</li>
+                <li v-if="!myProfile.goodreadsUrl">{{$t('home.mGoodreads')}}</li>
               </ul>
             </div>
           </div>
@@ -45,7 +47,7 @@
         </div>
 
         <div class="blc-wrapper" v-if="currentBook && currentBook.post">
-          <h2 class="blc-heading">Momentálne čítame knihu #{{ currentBook.order }}</h2>
+          <h2 class="blc-heading">{{$t('home.currentlyReadingBook', [currentBook.order])}}</h2>
           <book-large-card :book="currentBook" v-if="currentBook && currentBook.post"></book-large-card>
         </div>
 

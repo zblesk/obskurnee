@@ -8,9 +8,20 @@
     "mod": "mod"
   },
   "home": {
-    "greeting": "Vitaj, {0}❣"
+    "greeting": "Vitaj, {0}❣",
+    "mName": "jméno",
+    "mPhone": "telefon (kontakt na whatsapp)",
+    "mBio": "bio",
+    "mGoodreads": "odkaz na tvůj profil na Goodreads",
+    "stillMissing": "Zbývá ti doplnit:",
+    "profileInfoMissing": "Ještě nemáš vyplněný profil. {0}",
+    "pleaseFillInfo": "Prosím, doplň ho.",
+    "ongoingDiscussion": "Zbierame {0}. ",
+    "ongoingDiscussionPosts": "nové návrhy",
+    "ongoingPoll": "Práve beží {0}. ",
+    "ongoingPollVote": "hlasovanie",
+    "currentlyReadingBook": "Momentálne čítame knihu #{0}"
   },
-  "post": {},
   "user": {
     "noneSoFar": "Zatiaľ žiadne.",
     "wannaAddSome": "Prečo nejaké nepridať?",
