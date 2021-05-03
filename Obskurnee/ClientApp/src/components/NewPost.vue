@@ -17,7 +17,7 @@
             </div>
             <p class="note-text">{{$t('newpost.grLoadInstructions')}}</p>
           </div>
-          <input v-model="newPost.url" placeholder="https://www.goodreads.com/book..." @change="linkChange" id="grlink" />
+          <input v-model="newPost.url" placeholder="https://www.goodreads.com/book..." @change="linkChange" id="grlink" tabindex="1" />
           <p v-if="fetchInProgress" class="alert-inline">{{$t('newpost.waitForLoadPlox')}}</p>
         </div>
         <div class="cover-mobile">
@@ -26,15 +26,15 @@
         <div class="form-field">
           <label for="name" v-if="mode == 'Books' || mode == 'Recommendations'">{{$t('newpost.bookTitle')}}*</label>
           <label for="name" v-if="mode == 'Themes'">{{$t('newpost.topicTitle')}}*</label>
-          <input v-model="newPost.title" id="name" required />
+          <input v-model="newPost.title" id="name" required tabindex="2" />
         </div>
         <div class="form-field" v-if="mode != 'Themes'">
           <label for="author">{{$t('newpost.authorName')}}*</label>
-          <input v-model="newPost.author" id="autor" required />
+          <input v-model="newPost.author" id="autor" required tabindex="3" />
         </div>
         <div class="form-field" v-if="mode != 'Themes'">
           <label for="pages">{{$t('newpost.pageCount')}}*</label>
-          <input type="number" v-model="newPost.pageCount" id="pages" required />
+          <input type="number" v-model="newPost.pageCount" id="pages" required tabindex="4" />
         </div>
         <div class="form-field u-mb-0">
           <div class="label-md-wrapper">
@@ -44,18 +44,18 @@
                 <img src="../assets/Markdown-mark.svg" alt="markdown logo">
               </div>
               <div class="mo-md-link">
-                <markdown-help-link></markdown-help-link>
+                <markdown-help-link tabindex="7"></markdown-help-link>
               </div>
             </div>
           </div>
-          <textarea v-model="newPost.text" id="text" :required="mode != 'Themes'" :placeholder="$t('global.markdownSamplePlaceholder')"></textarea>
+          <textarea v-model="newPost.text" id="text" :required="mode != 'Themes'" :placeholder="$t('global.markdownSamplePlaceholder')" tabindex="5"></textarea>
         </div>
         <p class="asterisk">{{$t('newpost.requiredFields')}}</p>
       </div>
     </div>
     <div class="buttons u-mt-sp">
-      <button @click="addPost" :disabled="saveInProgress" class="button-primary">{{$t('menus.add')}}</button>
-      <button @click="toggleVisibility" class="button-secondary hide-form">{{$t('newpost.hideForm')}}</button>
+      <button @click="addPost" :disabled="saveInProgress" class="button-primary" tabindex="6">{{$t('menus.add')}}</button>
+      <button @click="toggleVisibility" class="button-secondary hide-form" tabindex="8">{{$t('newpost.hideForm')}}</button>
     </div>
   </div>
 </div>

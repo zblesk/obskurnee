@@ -1,7 +1,7 @@
 <template>
 <section>
   <h1 id="tableLabel" class="page-title">
-    {{ poll.title }}<span class="poll-closed" v-if="poll.isClosed">&nbsp;{{$t('poll.closed')}}</span>
+    {{ poll.title }}<span class="poll-closed" v-if="poll.isClosed">&nbsp;{{$t('messages.closed')}}</span>
   </h1>
   <div v-if="poll.isClosed" class="main"> 
     <div v-if="poll.followupLink?.kind == 'Poll'">

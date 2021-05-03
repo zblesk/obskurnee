@@ -81,6 +81,7 @@
     "subscribed": "Prihlásené",
     "notSubscribed": "Neprihlásené",
     "subscribe": "Prihlásiť",
+    "closed": "Uzavreté",
     "unsubscribe": "Odhlásiť"
   },
   "bookpost": {
@@ -120,7 +121,6 @@
     "wrongStarCount": "Prepáč, hodnotenie musí byť 0-5."
   },
   "poll": {
-    "closed": "Uzavreté",
     "tiebreaker": "Rozstrel",
     "tiebreakerDescription": "Máme několik vítězů se stejným počtem hlasů:",
     "goToTiebreaker": "Přejít na rozstřelové hlasování",

@@ -120,7 +120,7 @@ body {
 /* used in: book, discussion, recommendationList, user */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 450px));
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: var(--spacer);
   margin: 0;
   padding: var(--spacer);
@@ -219,7 +219,7 @@ body {
 }
 
 .form-field input {
-  font-size: 14px; /*0.875em;*/
+  font-size: 0.875rem;
   width: 100%;
   border: 0;
   background-color: var(--c-bckgr-secondary);
@@ -227,7 +227,7 @@ body {
 }
 
 .form-field textarea {
-  font-size: 14px; /*0.875em;*/
+  font-size: 0.875rem;
   border: 0;
   background-color: var(--c-bckgr-secondary);
   padding: calc(var(--spacer) / 2);
@@ -249,7 +249,7 @@ body {
 }
 
 .form-horizontal select {
-  font-size: 0.875em;
+  font-size: 0.875rem;
   border: 0;
   background-color: var(--c-bckgr-secondary);
   padding: calc(var(--spacer) / 2);

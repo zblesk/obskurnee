@@ -1,16 +1,17 @@
 <template>
 <section>
-    <h1 id="tableLabel" class="page-title u-mb-sp05">{{$t('user.list')}}</h1>
-    <h2 class="page-note">{{$t('user.modInfo')}}</h2>
+    <h1 id="tableLabel" class="page-title">{{$t('user.list')}}</h1>
     
     <div class="user-grid" v-if="users">
         <div class="user-card" v-for="user in users" v-bind:key="user.userId">
             <router-link :to="{ name: 'user', params: { email: user.email } }">
                 <div v-if="user.avatarUrl" class="user-pic">
                     <img :src="user.avatarUrl" :title="user.name" :alt="user.name" />
+                    <p class="mod-text" v-if="user.isModerator">mod</p>
                 </div>
                 <div v-else class="user-pic-placeholder">
                     <img src="../../assets/reader.svg" :title="user.name" :alt="user.name" />
+                    <p class="mod-text" v-if="user.isModerator">mod</p>
                 </div>
             </router-link>
             <div class="user-desc">
@@ -36,11 +37,6 @@
 </template>
 
 <style scoped>
-    .page-note {
-        text-align: center;
-        font-weight: normal;
-        margin-bottom: var(--spacer);
-    }
 
     .user-card {
         background-color: var(--c-bckgr-primary);
@@ -54,6 +50,7 @@
         margin: 0 auto;
         border: 0;
         border-radius: 50%;
+        position: relative;
     }
 
     .user-pic img {
@@ -69,12 +66,24 @@
         border: 0;
         border-radius: 50%;
         background-color: var(--c-accent);
+        position: relative;
     }
 
     .user-pic-placeholder img {
         max-width: 60%;
         display: block;
         margin: 0 auto;
+    }
+
+    .mod-text {
+        color: var(--c-accent);
+        font-variant: small-caps;
+        font-size: 1.25rem;
+        font-weight: bold;
+        transform: rotate(40deg);
+        position: absolute;
+        top: -10px;
+        right: -10px;
     }
 
     .user-name {

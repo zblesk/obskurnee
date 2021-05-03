@@ -1,30 +1,25 @@
 <template>
 <section>
   <div v-if="user">
-    <div class="page-title-wrapper">
-      <div class="mod" v-if="user.isModerator">
-        <img src="../../assets/fairy.svg" alt="fairy icon">
-      </div>
-      <h1 class="page-title-user">{{ user.name }}</h1>
-    </div>
+    <h1 class="page-title">{{ user.name }}</h1>
 
     <div v-if="mode == 'edit'">
       <div class="main">
         <div class="form-field">
           <label for="username">{{ $t('user.name')}} </label>
-          <input type="text" id="username" required v-model="editingUser.name" />
+          <input type="text" id="username" required v-model="editingUser.name" tabindex="1" />
         </div>
         <div class="form-field">
           <label for="userphone">{{$t('user.phone')}}</label>
-          <input type="tel" id="userphone" v-model="editingUser.phone" />
+          <input type="tel" id="userphone" v-model="editingUser.phone" tabindex="2" />
         </div>
         <div class="form-field">
           <label for="usergr">{{$t('user.goodreadsProfile')}}</label>
-          <input type="url" id="usergr" v-model="editingUser.goodreadsUrl" />
+          <input type="url" id="usergr" v-model="editingUser.goodreadsUrl" tabindex="3" />
         </div>
         <div class="form-field">
           <label for="userpic">{{$t('user.uploadAvatar')}}</label>
-          <input type="file" id="userpic" name="userpic" accept="image/*" @change="onFilePicked" />
+          <input type="file" id="userpic" name="userpic" accept="image/*" @change="onFilePicked" tabindex="4" />
         </div>
         <div class="form-field">
           <div class="label-md-wrapper">
@@ -34,15 +29,15 @@
                 <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
               </div>
               <div class="mo-md-link">
-                <markdown-help-link></markdown-help-link>
+                <markdown-help-link tabindex="8"></markdown-help-link>
               </div>
             </div>
           </div>
-          <textarea id="userbio" v-model="editingUser.aboutMe" :placeholder="$t('user.aboutMePlaceholder')"></textarea>
+          <textarea id="userbio" v-model="editingUser.aboutMe" :placeholder="$t('user.aboutMePlaceholder')" tabindex="5"></textarea>
         </div>
         <div class="buttons">
-          <button @click="updateProfile" :disabled="saveInProgress" class="button-primary" :v-if="isMod || user.userId == myUserId">{{ $t('menus.save') }}</button>
-          <a @click="stopEditing" class="button-secondary button-cancel" :v-if="isMod || user.userId == myUserId">{{ $t('menus.discardChanges') }}</a>
+          <button @click="updateProfile" :disabled="saveInProgress" class="button-primary" :v-if="isMod || user.userId == myUserId" tabindex="6">{{ $t('menus.save') }}</button>
+          <a @click="stopEditing" class="button-secondary button-cancel" :v-if="isMod || user.userId == myUserId" tabindex="7">{{ $t('menus.discardChanges') }}</a>
         </div>
       </div>
     </div>
@@ -51,9 +46,11 @@
       <div class="main">
         <div v-if="user.avatarUrl" class="user-pic">
           <img  :src="user.avatarUrl" :title="user.name" :alt="user.name" />
+          <p class="mod-text" v-if="user.isModerator">mod</p>
         </div>
         <div v-else class="user-pic-placeholder">
           <img src="../../assets/reader.svg"  :title="user.name" :alt="user.name" />
+          <p class="mod-text" v-if="user.isModerator">mod</p>
         </div>
 
         <p v-if="user.aboutMeHtml" class="bio" v-html="user.aboutMeHtml"></p>
@@ -142,11 +139,19 @@
       </div>
     </div>
 
-    <h2 class="page-subtitle">
-      {{$t('user.recommends', [user.name])}}
+    <h2 class="page-subtitle page-subtitle--recs">
+      <span>{{$t('user.recommends', [user.name])}}</span>
       <span v-if="user && isMe(user.userId)" class="recs-link"> (<router-link :to="{ name: 'recommendationlist' }">{{$t('user.addRecommendation')}}</router-link>)</span></h2>
-    <div v-if="myRecs && myRecs.length > 0" class="grid">
-        <recommendation-card v-bind:recommendation="rec" :showName="false" v-for="rec in myRecs" v-bind:key="rec.recommendationId" />
+    <div v-if="myRecs && myRecs.length > 0">
+      <!--<div v-if="hide">
+        <button class="button-primary">Ukaž doporučení</button>
+      </div>
+      <div v-else>
+        <button class="button-secondary">Skryj doporučení</button>-->
+        <div class="grid">
+          <recommendation-card v-bind:recommendation="rec" :showName="false" v-for="rec in myRecs" v-bind:key="rec.recommendationId" />
+        </div>
+      <!--</div>-->
     </div>
     <p v-else class="recs-message">{{$t('user.noRecsYet')}}
       <i18n-t v-if="user && isMe(user.userId)" tag="span" keypath="user.addFirstRec">
@@ -155,8 +160,16 @@
     </p>
 
     <h2 class="page-subtitle u-mt-sp">{{$t('user.booksRatedBy', [user.name])}}</h2>
-    <div v-if="userReviews(user.userId)?.length > 0" class="grid">
-      <users-review-card v-for="rev in userReviews(user.userId)" v-bind:key="rev.reviewId" v-bind:review="rev" ></users-review-card>
+    <div v-if="userReviews(user.userId)?.length > 0">
+      <!--<div v-if="hide">
+        <button class="button-primary">Ukaž recenze</button>
+      </div>
+      <div v-else>
+        <button class="button-secondary">Skryj recenze</button>-->
+        <div class="grid">
+          <users-review-card v-for="rev in userReviews(user.userId)" v-bind:key="rev.reviewId" v-bind:review="rev" ></users-review-card>
+        </div>
+      <!--</div>-->
     </div>
     <p v-else class="recs-message">{{ $t('user.noneSoFar') }} <span v-if="isMe(user.userId)"><router-link :to="{ name: 'booklist' }">{{ $t('user.wannaAddSome') }}</router-link></span></p>
   </div>
@@ -292,30 +305,6 @@ export default {
 </script>
 
 <style scoped>
-
-  .page-title-wrapper {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    align-items: center;
-    margin-top: calc(1.5 * var(--spacer));
-    margin-bottom: var(--spacer);
-  }
-
-  .mod {
-    width: 36px;
-    margin-right: var(--spacer);
-  }
-
-  .mod img {
-    width: 100%;
-  }
-
-  .page-title-user {
-    font-size: 2em;
-    font-weight: bold;
-    margin-bottom: 0;
-  }
 
   .button-cancel {
     margin-top: var(--spacer);
@@ -487,9 +476,17 @@ export default {
     }
   }
 
+  .page-subtitle--recs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
   .recs-link {
     font-weight: normal;
     font-size: 0.8em;
+    margin-left: calc(var(--spacer) / 2);
   }
 
   .user-pic {
@@ -498,6 +495,7 @@ export default {
     margin: 0 auto var(--spacer) auto;
     border: 0;
     border-radius: 50%;
+    position: relative;
   }
 
   .user-pic img {
@@ -513,6 +511,7 @@ export default {
     border: 0;
     border-radius: 50%;
     background-color: var(--c-accent);
+    position: relative;
   }
 
   .user-pic-placeholder img {
@@ -529,5 +528,15 @@ export default {
     }
   }
 
+  .mod-text {
+    color: var(--c-accent);
+    font-variant: small-caps;
+    font-size: 1.25rem;
+    font-weight: bold;
+    transform: rotate(40deg);
+    position: absolute;
+    top: -10px;
+    right: -10px;
+  }
 
 </style>

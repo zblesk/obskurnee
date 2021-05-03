@@ -31,6 +31,8 @@
             <div class="form-field">
                 <label for="new-usermail">{{ $t('admin.newUserEmail') }}*</label>
                 <input type="email" v-model="newUserEmail" id="new-usermail" />
+            </div>
+            <div class="form-field">
                 <label for="new-username">{{ $t('admin.newUserName') }}</label>
                 <input type="text" v-model="newUserName" id="new-username" />
             </div>
