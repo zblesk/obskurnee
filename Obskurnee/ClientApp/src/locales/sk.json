@@ -139,5 +139,12 @@
     "vote": "Hlasovat",
     "closeVote": "Zavřít hlasování hned",
     "previewInfo": "Klikni na název některé z možností v hlasování a zde se objeví podrobnější popis."
+  },
+  "discussion": {
+    "addNewPitch": "Pridať nový návrh",
+    "closeCreatePoll": "Uzavřít diskuzi a vytvořit hlasování",
+    "noneSoFar": "Zatial tu nic nie je",
+    "goToPoll": "Jít na hlasování",
+    "failedToAddPost": "Nepodarilo sa pridať príspevok"
   }
 }

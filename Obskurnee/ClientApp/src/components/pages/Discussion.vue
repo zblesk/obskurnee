@@ -4,20 +4,20 @@
   <div class="main">
     <p v-if="discussion.renderedDescription" v-html="discussion.renderedDescription" class="disc-desc"></p>
     <div class="form" v-if="!discussion.isClosed">
-      <new-post :mode="discussion.topic" @new-post="onNewPost">Pridať nový návrh</new-post>
+      <new-post :mode="discussion.topic" @new-post="onNewPost">{{$t('discussion.addNewPitch')}}</new-post>
       <div></div>
     </div>
     <div class="buttons">
-      <button @click="closeDiscussion" v-if="isMod && discussion.posts?.length && !discussion.isClosed" class="button-secondary">Uzavřít diskuzi a vytvořit hlasování</button>
+      <button @click="closeDiscussion" v-if="isMod && discussion.posts?.length && !discussion.isClosed" class="button-secondary">{{$t('discussion.closeCreatePoll')}}</button>
     </div>
 
     <div class="form" v-if="discussion.pollId">
-      <router-link :to="{ name: 'poll', params: { pollId: discussion.pollId } }" class="button-primary">Jít na hlasování</router-link>
+      <router-link :to="{ name: 'poll', params: { pollId: discussion.pollId } }" class="button-primary">{{$t('discussion.goToPoll')}}</router-link>
     </div>
   </div>
 
   <div class="grid">
-    <p v-if="!discussion.title" class="alert-inline">Zatial tu nic nie je</p>
+    <p v-if="!discussion.title" class="alert-inline">{{$t('discussion.noneSoFar')}}</p>
 
     <book-post
       v-for="post in discussion.posts"
@@ -73,7 +73,7 @@ export default {
           .then(() => this.emitter.emit('clear-post'))
           .catch(function (error) {
             console.log(error);
-            onErr("Nepodarilo sa pridať príspevok");
+            onErr(this.$t('discussion.failedToAddPost'));
           });
     },
     async onLoad()
