@@ -142,7 +142,7 @@ _{4} pages | [GR link]({6:url})_
 _{4} pages | [GR link]({6:url}) | suggested by {5:suggestedby}_</value>
   </data>
   <data name="newPollBodyMarkdown" xml:space="preserve">
-    <value>New poll! **You can vote for multiple options - or all of them, if you like.**
+    <value>New poll! **You can choose multiple options - or all of them, if you like.**
 
 Hlasovanie [je tu]({0:link}).</value>
   </data>
@@ -174,12 +174,12 @@ _{3} strán | [link na GR]({4:url})_
 [link]({0:link})</value>
   </data>
   <data name="newReviewSubject" xml:space="preserve">
-    <value>New review for {0:title} od {1:name}</value>
+    <value>New review for {0:title} from {1:name}</value>
   </data>
   <data name="newRoundBodyMarkdown" xml:space="preserve">
-    <value>Add your suggestions **No limit to the number of suggestions - the more the merrier!**  
+    <value>Add your suggestions **No limit to the number of suggestions - the more the better!**  
 
-Návrhy [pridávaj tu]({0:link}).</value>
+Add your suggestions [here]({0:link}).</value>
   </data>
   <data name="newRoundSubject" xml:space="preserve">
     <value>New round - {0:title}</value>
