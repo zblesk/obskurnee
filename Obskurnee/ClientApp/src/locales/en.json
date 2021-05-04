@@ -47,9 +47,9 @@
 		"ongoingDiscussionPosts": "new suggestions",
 		"ongoingPoll": "This is our current {0}. ",
 		"ongoingPollVote": "poll",
-		"pleaseFillInfo": "",
-		"profileInfoMissing": "",
-		"stillMissing": ""
+		"pleaseFillInfo": "Please fill in.",
+		"profileInfoMissing": "Your profile is incomplete. {0}",
+		"stillMissing": "Still missing:"
 	},
 	"menus": {
 		"add": "Add",
@@ -62,16 +62,16 @@
 		"forgottenPwd": "Forgotten password",
 		"hide": "Hide",
 		"home": "Home",
-		"login": "",
-		"logout": "",
-		"me": "",
-		"password": "",
-		"proposals": "",
-		"recs": "",
-		"register": "",
-		"reset": "",
-		"save": "",
-		"us": ""
+		"login": "Login",
+		"logout": "Logout",
+		"me": "I",
+		"password": "Password",
+		"proposals": "Suggestions",
+		"recs": "Recommendations",
+		"register": "Register",
+		"reset": "Reset",
+		"save": "Save",
+		"us": "We"
 	},
 	"messages": {
 		"closed": "Closed",
@@ -82,9 +82,9 @@
 		"resetPassword": "Change password",
 		"subscribe": "Login",
 		"subscribed": "Subscribed",
-		"unsubscribe": "Odhlásiť",
-		"updated": "",
-		"userCreated": ""
+		"unsubscribe": "Unsubscribe",
+		"updated": "Updated",
+		"userCreated": "User created"
 	},
 	"newpost": {
 		"addDescriptionPlox": "Fill in the description please",
@@ -121,9 +121,9 @@
 		"resultLine": "{0} votes - {1}%",
 		"results": "Results",
 		"tiebreaker": "Tiebreak",
-		"tiebreakerDescription": "",
-		"vote": "",
-		"winner": ""
+		"tiebreakerDescription": "We have several winners with the same number of votes:",
+		"vote": "Vote",
+		"winner": "Winner"
 	},
 	"recommendations": {
 		"addNew": "Add a new recommendation",
@@ -147,10 +147,10 @@
 		"startBooks": "books",
 		"startNew": "Start a new round with",
 		"startThemes": "topics",
-		"startWith": "",
-		"themePoll": "",
-		"themeSuggestions": "",
-		"waitForLoad": ""
+		"startWith": "Start with",
+		"themePoll": "Topics poll",
+		"themeSuggestions": "Topic suggestions",
+		"waitForLoad": "Wait, loading"
 	},
 	"setup": {
 		"userCreation": "Create a new user"

@@ -118,39 +118,39 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="atLeastOneProposalRequired" xml:space="preserve">
-    <value>Musí byť aspoň jeden návrh</value>
+    <value>At least one suggestion</value>
   </data>
   <data name="bookDiscussionTitle" xml:space="preserve">
-    <value>{0:title} - návrhy kníh</value>
+    <value>{0:title} - book suggestions</value>
   </data>
   <data name="discussionClosed" xml:space="preserve">
-    <value>Diskusia už bola uzavretá</value>
+    <value>Discussion closed</value>
   </data>
   <data name="forbiddenInDemo" xml:space="preserve">
-    <value>Nepovolené v demo móde</value>
+    <value>Forbidden in demo mode</value>
   </data>
   <data name="invalidStarRating" xml:space="preserve">
-    <value>Počet hviezdičiek musí byť 0 - 5</value>
+    <value>Only 0 to 5 stars allowed</value>
   </data>
   <data name="pollTitle" xml:space="preserve">
-    <value>{0:title} - hlasovanie</value>
+    <value>{0:title} - poll</value>
   </data>
   <data name="tiebreakerTitle" xml:space="preserve">
-    <value>Rozstrel: {0:title}</value>
+    <value>Tiebreak: {0:title}</value>
   </data>
   <data name="topicDiscussionTitle" xml:space="preserve">
-    <value>{0:title} - návrhy tém</value>
+    <value>{0:title} - topic suggestions</value>
   </data>
   <data name="unsupportedLanguage" xml:space="preserve">
-    <value>Nepodporovaný jazyk: {0:lang}</value>
+    <value>Unsupported language: {0:lang}</value>
   </data>
   <data name="usersAlreadyExist" xml:space="preserve">
-    <value>Používatelia už existujú</value>
+    <value>Users already exist</value>
   </data>
   <data name="userUpdateFailed" xml:space="preserve">
-    <value>Zlyhala aktualizácia používateľa</value>
+    <value>User update failed</value>
   </data>
   <data name="votingClosed" xml:space="preserve">
-    <value>Hlasovanie už skončilo</value>
+    <value>Voting is closed</value>
   </data>
 </root>

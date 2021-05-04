@@ -127,30 +127,30 @@
 
 &gt; {2:text}
 
-_{4} strán | [link na GR]({6:url})_
+_{4} pages | [GR link]({6:url})_
 
 [Návrhy]({3:link})</value>
   </data>
   <data name="newBookSubject" xml:space="preserve">
-    <value>A víťazom sa stáva...</value>
+    <value>And the winner is...</value>
   </data>
   <data name="newBookVotedBodyMarkdown" xml:space="preserve">
     <value># [{1:title} - {2:author}]({0:link})
 
 &gt; {3:description}
 
-_{4} strán | [link na GR]({6:url}) | navrhla {5:suggestedby}_</value>
+_{4} pages | [GR link]({6:url}) | suggested by {5:suggestedby}_</value>
   </data>
   <data name="newPollBodyMarkdown" xml:space="preserve">
-    <value>Začalo nové hlasovanie! **Môžeš hlasovať za ľubovoľný počet možností, pokojne aj všetky.**
+    <value>New poll! **You can vote for multiple options - or all of them, if you like.**
 
 Hlasovanie [je tu]({0:link}).</value>
   </data>
   <data name="newPollSubject" xml:space="preserve">
-    <value>Začalo nové hlasovanie - {0:title}</value>
+    <value>New poll - {0:title}</value>
   </data>
   <data name="newPostSubject" xml:space="preserve">
-    <value>{0:name} pridala nový návrh</value>
+    <value>{0:name} added a new suggestion</value>
   </data>
   <data name="newRecBodyMarkdown" xml:space="preserve">
     <value>## {0:title} - {1:author}
@@ -162,7 +162,7 @@ _{3} strán | [link na GR]({4:url})_
 [Odporúčania]({5:link})</value>
   </data>
   <data name="newRecSubject" xml:space="preserve">
-    <value>{0:name} odporučila knihu</value>
+    <value>{0:name} suggested a book</value>
   </data>
   <data name="newReviewBodyMarkdown" xml:space="preserve">
     <value>_{3:name}:_
@@ -174,15 +174,15 @@ _{3} strán | [link na GR]({4:url})_
 [link]({0:link})</value>
   </data>
   <data name="newReviewSubject" xml:space="preserve">
-    <value>Nová recenzia na {0:title} od {1:name}</value>
+    <value>New review for {0:title} od {1:name}</value>
   </data>
   <data name="newRoundBodyMarkdown" xml:space="preserve">
-    <value>Pridaj svoje návrhy! **Nemáme obmedzenia na počty - čím viac, tým väčšia sranda!**  
+    <value>Add your suggestions **No limit to the number of suggestions - the more the merrier!**  
 
 Návrhy [pridávaj tu]({0:link}).</value>
   </data>
   <data name="newRoundSubject" xml:space="preserve">
-    <value>Začalo nové kolo - {0:title}</value>
+    <value>New round - {0:title}</value>
   </data>
   <data name="newThemePostBodyMarkdown" xml:space="preserve">
     <value>## {0:title} 
@@ -192,24 +192,24 @@ Návrhy [pridávaj tu]({0:link}).</value>
 [link]({2:link})</value>
   </data>
   <data name="newUserAdded" xml:space="preserve">
-    <value>Práve sa k nám pridala [{0:name}]({1:link})! Vitaj❣</value>
+    <value>[{0:name}]({1:link}) joined us! Welcome❣</value>
   </data>
   <data name="newUserPostBodyMarkdown" xml:space="preserve">
-    <value>Bola si uspesne zaregistrovana.
-Prihlas sa na [{0:url}]({0:url})
+    <value>You have been successfully registered.
+Ĺogin here [{0:url}]({0:url})
 
-Tvoj prihlasovaci mail: {1:mail}
-Default heslo: {2:heslo}
+Your login email: {1:mail}
+Default password: {2:heslo}
 
-Odporucame heslo zmenit.</value>
+We recommend you change your password.</value>
   </data>
   <data name="newUserSubject" xml:space="preserve">
-    <value>Vitaj, {0:name}</value>
+    <value>Welcome, {0:name}</value>
   </data>
   <data name="passwordResetBody" xml:space="preserve">
-    <value>Resetni si heslo tu: [{0}]({0})</value>
+    <value>Reset your password here: [{0}]({0})</value>
   </data>
   <data name="passwordResetSubject" xml:space="preserve">
-    <value>Reset hesla</value>
+    <value>Reset password</value>
   </data>
 </root>

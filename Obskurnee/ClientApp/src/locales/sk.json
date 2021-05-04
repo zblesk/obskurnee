@@ -48,8 +48,8 @@
 		"ongoingPoll": "Práve beží {0}. ",
 		"ongoingPollVote": "hlasovanie",
 		"pleaseFillInfo": "Prosím, doplň ho.",
-		"profileInfoMissing": "Ještě nemáš vyplněný profil. {0}",
-		"stillMissing": "Zbývá ti doplnit:"
+		"profileInfoMissing": "Ešte nemáš vyplnený profil. {0}",
+		"stillMissing": "Ešte treba doplnit:"
 	},
 	"menus": {
 		"add": "Pridať",
@@ -121,8 +121,8 @@
 		"resultLine": "{0} hlasy - {1}%",
 		"results": "Výsledky",
 		"tiebreaker": "Rozstrel",
-		"tiebreakerDescription": "Máme několik vítězů se stejným počtem hlasů:",
-		"vote": "Hlasovat",
+		"tiebreakerDescription": "Máme niekoľko víťazov s rovnakým počtom hlasov:",
+		"vote": "Hlasovať",
 		"winner": "Víťaz"
 	},
 	"recommendations": {
@@ -146,11 +146,11 @@
 		"rounds": "Kolá návrhov",
 		"startBooks": "knihami",
 		"startNew": "Založit nové kolo",
-		"startThemes": "tématy",
-		"startWith": "Začít s",
+		"startThemes": "témy",
+		"startWith": "Začať s",
 		"themePoll": "Hlasovanie o témach",
 		"themeSuggestions": "Návrhy tém",
-		"waitForLoad": "Cakaj, nacitavam"
+		"waitForLoad": "Čakaj, načítavam"
 	},
 	"setup": {
 		"userCreation": "Vytvorenie nového užívateľa"

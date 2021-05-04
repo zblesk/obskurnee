@@ -196,12 +196,12 @@ Návrhy [pridávaj tu]({0:link}).</value>
   </data>
   <data name="newUserPostBodyMarkdown" xml:space="preserve">
     <value>Bola si uspesne zaregistrovana.
-Prihlas sa na [{0:url}]({0:url})
+Prihlás sa na [{0:url}]({0:url})
 
-Tvoj prihlasovaci mail: {1:mail}
+Tvoj prihlasovací mail: {1:mail}
 Default heslo: {2:heslo}
 
-Odporucame heslo zmenit.</value>
+Odporúčame heslo zmeniť.</value>
   </data>
   <data name="newUserSubject" xml:space="preserve">
     <value>Vitaj, {0:name}</value>
