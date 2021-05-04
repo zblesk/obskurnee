@@ -117,40 +117,99 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="atLeastOneProposalRequired" xml:space="preserve">
-    <value>Musí byť aspoň jeden návrh</value>
+  <data name="additionalDescriptionMarkdown" xml:space="preserve">
+    <value>
+
+&gt; {0:description}</value>
   </data>
-  <data name="bookDiscussionTitle" xml:space="preserve">
-    <value>{0:title} - návrhy kníh</value>
+  <data name="newBookPostBodyMarkdown" xml:space="preserve">
+    <value>## {0:title} - {1:author}
+
+&gt; {2:text}
+
+_{4} strán | [link na GR]({6:url})_
+
+[Návrhy]({3:link})</value>
   </data>
-  <data name="discussionClosed" xml:space="preserve">
-    <value>Diskusia už bola uzavretá</value>
+  <data name="newBookSubject" xml:space="preserve">
+    <value>A víťazom sa stáva...</value>
   </data>
-  <data name="forbiddenInDemo" xml:space="preserve">
-    <value>Nepovolené v demo móde</value>
+  <data name="newBookVotedBodyMarkdown" xml:space="preserve">
+    <value># [{1:title} - {2:author}]({0:link})
+
+&gt; {3:description}
+
+_{4} strán | [link na GR]({6:url}) | navrhla {5:suggestedby}_</value>
   </data>
-  <data name="invalidStarRating" xml:space="preserve">
-    <value>Počet hviezdičiek musí byť 0 - 5</value>
+  <data name="newPollBodyMarkdown" xml:space="preserve">
+    <value>Začalo nové hlasovanie! **Môžeš hlasovať za ľubovoľný počet možností, pokojne aj všetky.**
+
+Hlasovanie [je tu]({0:link}).</value>
   </data>
-  <data name="pollTitle" xml:space="preserve">
-    <value>{0:title} - hlasovanie</value>
+  <data name="newPollSubject" xml:space="preserve">
+    <value>Začalo nové hlasovanie - {0:title}</value>
   </data>
-  <data name="tiebreakerTitle" xml:space="preserve">
-    <value>Rozstrel: {0:title}</value>
+  <data name="newPostSubject" xml:space="preserve">
+    <value>{0:name} pridala nový návrh</value>
   </data>
-  <data name="topicDiscussionTitle" xml:space="preserve">
-    <value>{0:title} - návrhy tém</value>
+  <data name="newRecBodyMarkdown" xml:space="preserve">
+    <value>## {0:title} - {1:author}
+
+&gt; {2:text}
+
+_{3} strán | [link na GR]({4:url})_
+
+[Odporúčania]({5:link})</value>
   </data>
-  <data name="unsupportedLanguage" xml:space="preserve">
-    <value>Nepodporovaný jazyk: {0:lang}</value>
+  <data name="newRecSubject" xml:space="preserve">
+    <value>{0:name} odporučila knihu</value>
   </data>
-  <data name="usersAlreadyExist" xml:space="preserve">
-    <value>Používatelia už existujú</value>
+  <data name="newReviewBodyMarkdown" xml:space="preserve">
+    <value>_{3:name}:_
+
+{1}
+
+{2:text}
+
+[link]({0:link})</value>
   </data>
-  <data name="userUpdateFailed" xml:space="preserve">
-    <value>Zlyhala aktualizácia používateľa</value>
+  <data name="newReviewSubject" xml:space="preserve">
+    <value>Nová recenzia na {0:title} od {1:name}</value>
   </data>
-  <data name="votingClosed" xml:space="preserve">
-    <value>Hlasovanie už skončilo</value>
+  <data name="newRoundBodyMarkdown" xml:space="preserve">
+    <value>Pridaj svoje návrhy! **Nemáme obmedzenia na počty - čím viac, tým väčšia sranda!**  
+
+Návrhy [pridávaj tu]({0:link}).</value>
+  </data>
+  <data name="newRoundSubject" xml:space="preserve">
+    <value>Začalo nové kolo - {0:title}</value>
+  </data>
+  <data name="newThemePostBodyMarkdown" xml:space="preserve">
+    <value>## {0:title} 
+
+&gt; {1:text}
+
+[link]({2:link})</value>
+  </data>
+  <data name="newUserAdded" xml:space="preserve">
+    <value>Práve sa k nám pridala [{0:name}]({1:link})! Vitaj❣</value>
+  </data>
+  <data name="newUserPostBodyMarkdown" xml:space="preserve">
+    <value>Bola si uspesne zaregistrovana.
+Prihlas sa na [{0:url}]({0:url})
+
+Tvoj prihlasovaci mail: {1:mail}
+Default heslo: {2:heslo}
+
+Odporucame heslo zmenit.</value>
+  </data>
+  <data name="newUserSubject" xml:space="preserve">
+    <value>Vitaj, {0:name}</value>
+  </data>
+  <data name="passwordResetBody" xml:space="preserve">
+    <value>Resetni si heslo tu: [{0}]({0})</value>
+  </data>
+  <data name="passwordResetSubject" xml:space="preserve">
+    <value>Reset hesla</value>
   </data>
 </root>
