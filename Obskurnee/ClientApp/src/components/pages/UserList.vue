@@ -24,7 +24,12 @@
             <div class="reading" v-if="userHasCurrentlyReading(user.userId)" >
                 <h3 class="reading-title">{{$t('user.currentlyReading')}}</h3>
                 <ul class="reading-list">
-                    <li v-for="review in usersCurrentlyReading(user.userId)" v-bind:key="review.ReviewId"><a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.bookTitle }}</strong></a></li>
+                    <li v-for="review in getTruncedReadingList(user.userId)" v-bind:key="review.ReviewId">
+                        <a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.bookTitle }}</strong></a>
+                    </li>
+                    <li v-if="wasReadingListTruncedList(user.userId)">
+                        ... a ďalšie.
+                    </li>
                 </ul>
             </div>
             <div  class="reading" v-else>
@@ -151,6 +156,8 @@ export default {
     methods: {
         ...mapActions("users", ["getUsers"]),
         ...mapActions("reviews", ["fetchCurrentlyReading"]),
+        getTruncedReadingList(userId) { return this.usersCurrentlyReading(userId).slice(0, 4); },
+        wasReadingListTruncedList(userId) { return this.usersCurrentlyReading(userId).length > 4; },
     },
     mounted() {
         this.getUsers();
