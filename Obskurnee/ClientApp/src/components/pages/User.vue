@@ -551,6 +551,19 @@ export default {
     transform: rotate(270deg);
   }
 
+  /*
+  .toggler {
+    width: 0.9em;
+    margin-left: calc(var(--spacer) / 2);
+    transition-property: transform;
+    transition-duration: 0.2s;
+  }
+
+  .toggler--hidden {
+    transform: rotate(-90deg);
+  }
+  */
+
   .reviews-wrapper:empty {
     margin-bottom: var(--spacer);
   }
