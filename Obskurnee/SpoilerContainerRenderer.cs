@@ -35,11 +35,14 @@ namespace Obskurnee
     {
         protected override void Write(HtmlRenderer renderer, CustomContainerInline obj)
         {
-            var attr = obj.TryGetAttributes() ?? new HtmlAttributes { Classes = new List<string>() };
-            if (!attr.Classes.Contains("spoiler"))
+            if (obj != null)
             {
-                attr.AddClass("spoiler");
-                obj.SetAttributes(attr);
+                var attr = obj.TryGetAttributes() ?? new HtmlAttributes { Classes = new List<string>() };
+                if (!attr.Classes.Contains("spoiler"))
+                {
+                    attr.AddClass("spoiler");
+                    obj.SetAttributes(attr);
+                }
             }
             renderer.Write("<span").WriteAttributes(obj).Write('>');
             renderer.WriteChildren(obj);
