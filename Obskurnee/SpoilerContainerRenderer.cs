@@ -35,14 +35,11 @@ namespace Obskurnee
     {
         protected override void Write(HtmlRenderer renderer, CustomContainerInline obj)
         {
-            if (obj != null)
+            var attr = obj.TryGetAttributes() ?? new ();
+            if ((attr.Classes?.Count ?? 0) == 0)
             {
-                var attr = obj.TryGetAttributes() ?? new HtmlAttributes { Classes = new List<string>() };
-                if (!attr.Classes.Contains("spoiler"))
-                {
-                    attr.AddClass("spoiler");
-                    obj.SetAttributes(attr);
-                }
+                attr.AddClass("spoiler");
+                obj.SetAttributes(attr);
             }
             renderer.Write("<span").WriteAttributes(obj).Write('>');
             renderer.WriteChildren(obj);
@@ -50,7 +47,7 @@ namespace Obskurnee
         }
     }
 
-    public class CustomContainerExtension : IMarkdownExtension
+    public class SpoilerContainerExtension : IMarkdownExtension
     {
         public void Setup(MarkdownPipelineBuilder pipeline)
         {

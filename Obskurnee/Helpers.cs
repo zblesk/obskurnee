@@ -16,7 +16,7 @@ namespace Obskurnee
         static Helpers()
         {
             var b = new MarkdownPipelineBuilder();
-            b.Extensions.Insert(0, new CustomContainerExtension());
+            b.Extensions.Insert(0, new SpoilerContainerExtension());
             b.UseAbbreviations()
                 .UseAutoIdentifiers()
                 .UseCitations()
