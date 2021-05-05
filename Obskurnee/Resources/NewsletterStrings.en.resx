@@ -144,7 +144,7 @@ _{4} pages | [GR link]({6:url}) | suggested by {5:suggestedby}_</value>
   <data name="newPollBodyMarkdown" xml:space="preserve">
     <value>New poll! **You can choose multiple options - or all of them, if you like.**
 
-Hlasovanie [je tu]({0:link}).</value>
+Vote [here]({0:link}).</value>
   </data>
   <data name="newPollSubject" xml:space="preserve">
     <value>New poll - {0:title}</value>

@@ -15,9 +15,9 @@ namespace Obskurnee
 
         static Helpers()
         {
-            var b = new MarkdownPipelineBuilder();
-            b.Extensions.Insert(0, new SpoilerContainerExtension());
-            b.UseAbbreviations()
+            var builder = new MarkdownPipelineBuilder();
+            builder.Extensions.Insert(0, new SpoilerContainerExtension());
+            builder.UseAbbreviations()
                 .UseAutoIdentifiers()
                 .UseCitations()
                 .UseDefinitionLists()
@@ -34,7 +34,7 @@ namespace Obskurnee
                 .UseDiagrams()
                 .UseAutoLinks()
                 .UseGenericAttributes();
-            _mdPipeline = b.Build();
+            _mdPipeline = builder.Build();
         }
 
         public static T SetOwner<T>(this T data, ClaimsPrincipal fromUserClaims)  where T : HeaderData
