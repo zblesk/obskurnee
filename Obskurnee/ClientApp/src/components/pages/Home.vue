@@ -8,9 +8,9 @@
         <p class="welcome-text">
           <i18n-t v-if="myProfile" tag="span" keypath="home.greeting">
             <strong>{{ myProfile.name }}</strong>
-          </i18n-t>
+          </i18n-t>&nbsp;
           <i18n-t tag="span" v-if="currentDiscussion" keypath="home.ongoingDiscussion"> 
-            <router-link :to="{name: 'discussion', params: { discussionId: currentDiscussion.discussionId },}">{{$t('home.ongoingDiscussionPosts')}}</router-link> 
+            <router-link :to="{name: 'discussion', params: { discussionId: currentDiscussion.discussionId },}">{{$t('home.ongoingDiscussionPosts')}}</router-link>&nbsp;
           </i18n-t>
           <i18n-t tag="span" v-if="currentPoll" keypath="home.ongoingPoll"> 
             <router-link :to="{ name: 'poll', params: { pollId: currentPoll.pollId } }">{{$t('home.ongoingPollVote')}}</router-link> 
