@@ -94,7 +94,9 @@
         <div class="reading" v-if="userHasCurrentlyReading(user.userId)">
           <h3 class="reading-title">{{$t('user.currentlyReading')}}</h3>
           <ul class="reading-list">
-              <li v-for="review in usersCurrentlyReading(user.userId)" v-bind:key="review.ReviewId"><a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.bookTitle }}</strong></a></li>
+              <li v-for="review in usersCurrentlyReading(user.userId)" v-bind:key="review.ReviewId">
+                <a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.bookTitle }}</strong></a>
+              </li>
           </ul>
         </div>
         <div  class="reading" v-else>
@@ -128,7 +130,10 @@
                       : $t('messages.notSubscribed')])}}
               </p>
               <div class="nl-button">
-                <button @click="toggleSubscription('allevents', !subscribedAll)" class="button-primary button-small">{{ subscribedAll ? $t('messages.unsubscribe') : $t('messages.subscribe') }}</button>
+                <button @click="toggleSubscription('allevents', !subscribedAll)" 
+                  class="button-primary button-small">
+                    {{ subscribedAll ? $t('messages.unsubscribe') : $t('messages.subscribe') }}
+                </button>
               </div>
             </div>
           </div>
@@ -141,14 +146,20 @@
 
     <h2 class="page-subtitle page-subtitle--flex">
       <span>{{$t('user.recommends', [user.name])}}</span>
-      <span v-if="user && isMe(user.userId)" class="recs-link"> (<router-link :to="{ name: 'recommendationlist' }">{{$t('user.addRecommendation')}}</router-link>)</span>
-      <img src="../../assets/download.svg" alt="hide recommendations icon" v-if="myRecs && myRecs.length > 0 && showRecs" @click="showRecs = false" class="shown-icon">
-      <img src="../../assets/download.svg" alt="show recommendations icon" v-if="myRecs && myRecs.length > 0 && !showRecs" @click="showRecs = true" class="hidden-icon">
+      <span v-if="user && isMe(user.userId)" class="recs-link"> 
+        (<router-link :to="{ name: 'recommendationlist' }">{{$t('user.addRecommendation')}}</router-link>)
+      </span>
+      <img src="../../assets/download.svg" alt="hide recommendations icon" 
+        v-if="myRecs && myRecs.length > 0 && showRecs" @click="showRecs = false" class="shown-icon">
+      <img src="../../assets/download.svg" alt="show recommendations icon" 
+        v-if="myRecs && myRecs.length > 0 && !showRecs" @click="showRecs = true" class="hidden-icon">
       </h2>
     <div v-if="myRecs && myRecs.length > 0">
       <div v-if="showRecs">
         <div class="grid">
-          <recommendation-card v-bind:recommendation="rec" :showName="false" v-for="rec in myRecs" v-bind:key="rec.recommendationId" />
+          <recommendation-card v-bind:recommendation="rec" :showName="false" 
+            v-for="rec in myRecs" 
+            v-bind:key="rec.recommendationId" />
         </div>
       </div>
     </div>
@@ -160,17 +171,27 @@
 
     <h2 class="page-subtitle page-subtitle--flex u-mt-sp">
       <span>{{$t('user.booksRatedBy', [user.name])}}</span>
-      <img src="../../assets/download.svg" alt="hide reviews icon" v-if="userReviews(user.userId)?.length > 0 && showReviews" @click="showReviews = false" class="shown-icon">
-      <img src="../../assets/download.svg" alt="show reviews icon" v-if="userReviews(user.userId)?.length > 0 && !showReviews" @click="showReviews = true" class="hidden-icon">
+      <img src="../../assets/download.svg" alt="hide reviews icon" 
+        v-if="userReviews(user.userId)?.length > 0 && showReviews" 
+        @click="showReviews = false" class="shown-icon">
+      <img src="../../assets/download.svg" alt="show reviews icon" 
+        v-if="userReviews(user.userId)?.length > 0 && !showReviews" 
+        @click="showReviews = true" class="hidden-icon">
     </h2>
     <div v-if="userReviews(user.userId)?.length > 0" class="reviews-wrapper">
       <div v-if="showReviews">
         <div class="grid">
-          <users-review-card v-for="rev in userReviews(user.userId)" v-bind:key="rev.reviewId" v-bind:review="rev" ></users-review-card>
+          <users-review-card v-for="rev in userReviews(user.userId)" 
+            v-bind:key="rev.reviewId" 
+            v-bind:review="rev" ></users-review-card>
         </div>
       </div>
     </div>
-    <p v-else class="recs-message">{{ $t('user.noneSoFar') }} <span v-if="isMe(user.userId)"><router-link :to="{ name: 'booklist' }">{{ $t('user.wannaAddSome') }}</router-link></span></p>
+    <p v-else class="recs-message">{{ $t('user.noneSoFar') }} 
+      <span v-if="isMe(user.userId)">
+        <router-link :to="{ name: 'booklist' }">{{ $t('user.wannaAddSome') }}</router-link>
+      </span>
+    </p>
   </div>
 </section>
 </template>
