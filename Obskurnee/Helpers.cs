@@ -15,7 +15,26 @@ namespace Obskurnee
 
         static Helpers()
         {
-            _mdPipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+            var b = new MarkdownPipelineBuilder();
+            b.Extensions.Insert(0, new CustomContainerExtension());
+            b.UseAbbreviations()
+                .UseAutoIdentifiers()
+                .UseCitations()
+                .UseDefinitionLists()
+                .UseEmphasisExtras()
+                .UseFigures()
+                .UseFooters()
+                .UseFootnotes()
+                .UseGridTables()
+                .UseMathematics()
+                .UseMediaLinks()
+                .UsePipeTables()
+                .UseListExtras()
+                .UseTaskLists()
+                .UseDiagrams()
+                .UseAutoLinks()
+                .UseGenericAttributes();
+            _mdPipeline = b.Build();
         }
 
         public static T SetOwner<T>(this T data, ClaimsPrincipal fromUserClaims)  where T : HeaderData

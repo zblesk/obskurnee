@@ -57,6 +57,7 @@ export default {
   --c-accent-secondary: #999999;
   --c-bckgr-primary: #FFFFFF;
   --c-bckgr-secondary: #F5F5F5;
+  --c-spoiler-mask: darkorange;
 }
 
 html {
@@ -472,6 +473,16 @@ img {
 hr {
   margin-top: var(--spacer);
   margin-bottom: var(--spacer);
+}
+
+.spoiler {
+  color: var(--c-spoiler-mask);
+  background-color: var(--c-spoiler-mask);
+}
+
+
+.spoiler:hover, .spoiler:active {
+  background-color: var(--c-bckgr-primary);
 }
 
 /* footer */
