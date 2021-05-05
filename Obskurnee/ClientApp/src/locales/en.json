@@ -1,16 +1,16 @@
 {
 	"admin": {
-		"addMod": "Add user to mods:",
+		"addMod": "Promote user to mod:",
 		"allEvents": "All events:",
 		"basicEvents": "Basic events:",
 		"currentMods": "Current mods:",
 		"denied": "Sorry, this is a mods-only area",
-		"letUserKnow": "Please remind the new reader to check their spam folder in case they didn't find a registration email in their inbox.",
+		"letUserKnow": "Please remind the new reader to check their spam folder, in case they didn't find a registration email in their inbox.",
 		"mods": "Mods",
-		"newUserCreation": "Create new user",
+		"newUserCreation": "Create a new user",
 		"newUserEmail": "Email",
 		"newUserName": "Name",
-		"nobody": "no one",
+		"nobody": "currently no one",
 		"noticeboard": "Homepage message",
 		"noticeboardContent": "Message text",
 		"promotedToMod": "{0} promoted to mod",
@@ -37,16 +37,16 @@
 		"newsletters": "Newsletters"
 	},
 	"home": {
-		"currentlyReadingBook": "",
+		"currentlyReadingBook": "We're currently reading book  #{0}",
 		"greeting": "Welcome, {0}❣",
-		"mBio": "",
+		"mBio": "bio",
 		"mGoodreads": "link to your Goodreads profile",
 		"mName": "name",
 		"mPhone": "phone number (for WhatsApp)",
 		"ongoingDiscussion": "We're looking for {0}. ",
 		"ongoingDiscussionPosts": "new suggestions",
 		"ongoingPoll": "{0} is now open. ",
-		"ongoingPollVote": "poll",
+		"ongoingPollVote": "Voting",
 		"pleaseFillInfo": "Please fill in the missing details.",
 		"profileInfoMissing": "Your profile is incomplete. {0}",
 		"stillMissing": "Still missing:"
@@ -66,7 +66,7 @@
 		"logout": "Logout",
 		"me": "About me",
 		"password": "Password",
-		"proposals": "Suggestions",
+		"proposals": "Voting",
 		"recs": "Recommendations",
 		"register": "Register",
 		"reset": "Reset",
@@ -134,22 +134,22 @@
 		"add": "Add a review",
 		"starCount": "Stars (1-5)",
 		"text": "Review text",
-		"wrongStarCount": "Sorry, you can only rate 0 to 5 stars."
+		"wrongStarCount": "Sorry, you can only give 0 to 5 stars."
 	},
 	"roundlist": {
-		"bookPoll": "Book poll",
-		"bookSuggestions": "Book suggestions",
+		"bookPoll": "Voting",
+		"bookSuggestions": "Suggested books",
 		"description": "Description",
 		"newRound": "New round",
 		"newRoundInit": "Start a new round",
 		"roundTitle": "Title (e.g. 'Book IXY')",
-		"rounds": "Suggestion rounds",
+		"rounds": "Voting rounds",
 		"startBooks": "books",
 		"startNew": "Start a new round",
 		"startThemes": "topics",
 		"startWith": "Start with",
-		"themePoll": "Topics poll",
-		"themeSuggestions": "Topic suggestions",
+		"themePoll": "Voting",
+		"themeSuggestions": "Suggested topics",
 		"waitForLoad": "Loading"
 	},
 	"setup": {
@@ -166,11 +166,9 @@
 		"editInfo": "Edit info",
 		"goodreads": "Goodreads",
 		"goodreadsProfile": "Goodreads profile:",
-		"hideRecs": "Hide recommendations",
-		"hideReviews": "Hide reviews",
 		"language": "Language settings",
 		"list": "List of bookclubbers",
-		"matrixInfo": "All notifications will also be sent to the chatroom {0}.",
+		"matrixInfo": "All notifications will also be sent to chatroom {0}.",
 		"modInfo": "(mods have magic abilities) {0}.",
 		"name": "Name (mandatory):",
 		"noBioYet": "No info yet.",
@@ -181,9 +179,8 @@
 		"readingNothing": "Currently not reading anything.",
 		"recommends": "{0} recommends",
 		"selectPreferredLanguage": "Choose language",
-		"showRecs": "Show recommendations",
-		"showReviews": "Show reviews",
 		"uploadAvatar": "Upload profile pic (100 x 100 px):",
-		"wannaAddSome": "Why not add some?"
+		"wannaAddSome": "Why not add some?",
+		"andMore": "... and more."
 	}
 }

@@ -28,7 +28,7 @@
                         <a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.bookTitle }}</strong></a>
                     </li>
                     <li v-if="wasReadingListTruncedList(user.userId)">
-                        ... a ďalšie.
+                        {{$t('user.andMore')}}
                     </li>
                 </ul>
             </div>
