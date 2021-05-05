@@ -139,15 +139,14 @@
       </div>
     </div>
 
-    <h2 class="page-subtitle page-subtitle--recs">
+    <h2 class="page-subtitle page-subtitle--flex">
       <span>{{$t('user.recommends', [user.name])}}</span>
-      <span v-if="user && isMe(user.userId)" class="recs-link"> (<router-link :to="{ name: 'recommendationlist' }">{{$t('user.addRecommendation')}}</router-link>)</span></h2>
+      <span v-if="user && isMe(user.userId)" class="recs-link"> (<router-link :to="{ name: 'recommendationlist' }">{{$t('user.addRecommendation')}}</router-link>)</span>
+      <img src="../../assets/download.svg" alt="hide recommendations icon" v-if="myRecs && myRecs.length > 0 && showRecs" @click="showRecs = false" class="shown-icon">
+      <img src="../../assets/download.svg" alt="show recommendations icon" v-if="myRecs && myRecs.length > 0 && !showRecs" @click="showRecs = true" class="hidden-icon">
+      </h2>
     <div v-if="myRecs && myRecs.length > 0">
-      <div v-if="!showRecs">
-        <button class="button-primary" @click="showRecs = true">{{$t('user.showRecs')}}</button>
-      </div>
-      <div v-else>
-        <button class="button-secondary" @click="showRecs = false">{{$t('user.hideRecs')}}</button>
+      <div v-if="showRecs">
         <div class="grid">
           <recommendation-card v-bind:recommendation="rec" :showName="false" v-for="rec in myRecs" v-bind:key="rec.recommendationId" />
         </div>
@@ -159,13 +158,13 @@
       </i18n-t>
     </p>
 
-    <h2 class="page-subtitle u-mt-sp">{{$t('user.booksRatedBy', [user.name])}}</h2>
-    <div v-if="userReviews(user.userId)?.length > 0">
-      <div v-if="!showReviews">
-        <button class="button-primary" @click="showReviews = true">{{$t('user.showReviews')}}</button>
-      </div>
-      <div v-else>
-        <button class="button-secondary" @click="showReviews = false">{{$t('user.hideReviews')}}</button>
+    <h2 class="page-subtitle page-subtitle--flex u-mt-sp">
+      <span>{{$t('user.booksRatedBy', [user.name])}}</span>
+      <img src="../../assets/download.svg" alt="hide reviews icon" v-if="userReviews(user.userId)?.length > 0 && showReviews" @click="showReviews = false" class="shown-icon">
+      <img src="../../assets/download.svg" alt="show reviews icon" v-if="userReviews(user.userId)?.length > 0 && !showReviews" @click="showReviews = true" class="hidden-icon">
+    </h2>
+    <div v-if="userReviews(user.userId)?.length > 0" class="reviews-wrapper">
+      <div v-if="showReviews">
         <div class="grid">
           <users-review-card v-for="rev in userReviews(user.userId)" v-bind:key="rev.reviewId" v-bind:review="rev" ></users-review-card>
         </div>
@@ -478,7 +477,7 @@ export default {
     }
   }
 
-  .page-subtitle--recs {
+  .page-subtitle--flex {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -539,6 +538,21 @@ export default {
     position: absolute;
     top: -10px;
     right: -10px;
+  }
+
+  .shown-icon {
+    width: 0.9em;
+    margin-left: calc(var(--spacer) / 2);
+  }
+
+  .hidden-icon {
+    width: 0.9em;
+    margin-left: calc(var(--spacer) / 2);
+    transform: rotate(270deg);
+  }
+
+  .reviews-wrapper:empty {
+    margin-bottom: var(--spacer);
   }
 
 </style>
