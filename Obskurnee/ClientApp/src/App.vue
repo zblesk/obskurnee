@@ -57,7 +57,6 @@ export default {
   --c-accent-secondary: #999999;
   --c-bckgr-primary: #FFFFFF;
   --c-bckgr-secondary: #F5F5F5;
-  --c-spoiler-mask: darkorange;
 }
 
 html {
@@ -475,14 +474,17 @@ hr {
   margin-bottom: var(--spacer);
 }
 
-.spoiler {
-  color: var(--c-spoiler-mask);
-  background-color: var(--c-spoiler-mask);
+.spoiler,
+.spoiler p {
+  color: lightgray;
+  background-color: lightgray;
 }
 
-
-.spoiler:hover, .spoiler:active {
+.spoiler:hover, .spoiler:active,
+.spoiler p:hover, .spoiler p:active {
   background-color: var(--c-bckgr-primary);
+  color: var(--c-font);
+  text-decoration: underline solid lightgray;
 }
 
 /* footer */
