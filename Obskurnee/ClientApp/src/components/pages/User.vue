@@ -142,8 +142,9 @@
     <h2 class="page-subtitle page-subtitle--flex">
       <span>{{$t('user.recommends', [user.name])}}</span>
       <span v-if="user && isMe(user.userId)" class="recs-link"> (<router-link :to="{ name: 'recommendationlist' }">{{$t('user.addRecommendation')}}</router-link>)</span>
-      <img src="../../assets/download.svg" alt="hide recommendations icon" v-if="myRecs && myRecs.length > 0 && showRecs" @click="showRecs = false" class="shown-icon">
-      <img src="../../assets/download.svg" alt="show recommendations icon" v-if="myRecs && myRecs.length > 0 && !showRecs" @click="showRecs = true" class="hidden-icon">
+      <img src="../../assets/download.svg" alt="toggle recommendations icon" 
+        v-if="myRecs && myRecs.length > 0" @click="showRecs = !showRecs" 
+        class="toggler" :class="{ 'toggler--hidden': !showRecs }">
       </h2>
     <div v-if="myRecs && myRecs.length > 0">
       <div v-if="showRecs">
@@ -160,8 +161,9 @@
 
     <h2 class="page-subtitle page-subtitle--flex u-mt-sp">
       <span>{{$t('user.booksRatedBy', [user.name])}}</span>
-      <img src="../../assets/download.svg" alt="hide reviews icon" v-if="userReviews(user.userId)?.length > 0 && showReviews" @click="showReviews = false" class="shown-icon">
-      <img src="../../assets/download.svg" alt="show reviews icon" v-if="userReviews(user.userId)?.length > 0 && !showReviews" @click="showReviews = true" class="hidden-icon">
+      <img src="../../assets/download.svg" alt="toggle reviews icon" 
+        v-if="userReviews(user.userId)?.length > 0" @click="showReviews = !showReviews" 
+        class="toggler" :class="{ 'toggler--hidden': !showReviews }">
     </h2>
     <div v-if="userReviews(user.userId)?.length > 0" class="reviews-wrapper">
       <div v-if="showReviews">
@@ -540,18 +542,6 @@ export default {
     right: -10px;
   }
 
-  .shown-icon {
-    width: 0.9em;
-    margin-left: calc(var(--spacer) / 2);
-  }
-
-  .hidden-icon {
-    width: 0.9em;
-    margin-left: calc(var(--spacer) / 2);
-    transform: rotate(270deg);
-  }
-
-  /*
   .toggler {
     width: 0.9em;
     margin-left: calc(var(--spacer) / 2);
@@ -562,7 +552,6 @@ export default {
   .toggler--hidden {
     transform: rotate(-90deg);
   }
-  */
 
   .reviews-wrapper:empty {
     margin-bottom: var(--spacer);
