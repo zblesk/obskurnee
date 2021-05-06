@@ -480,6 +480,10 @@ hr {
   background-color: lightgray;
 }
 
+div.spoiler:not(:last-child) {
+  margin-bottom: calc(var(--spacer) / 2);
+}
+
 .spoiler:hover, .spoiler:active,
 .spoiler p:hover, .spoiler p:active {
   background-color: var(--c-bckgr-primary);
