@@ -118,12 +118,19 @@ body {
 
 /* grid */
 /* used in: book, discussion, recommendationList, user */
+
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--spacer);
   margin: 0;
   padding: var(--spacer);
+}
+
+@media screen and (min-width: 400px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
 }
 
 /* buttons */
