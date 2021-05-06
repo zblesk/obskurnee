@@ -83,10 +83,15 @@
 
   .login-form-field label {
     display: block;
-    margin-bottom: 0;
+    font-size: 1em;
+    margin-bottom: calc(var(--spacer) / 3);
   }
 
   .login-form-field input {
+    font-size: 0.875rem;
+    border: 0;
+    background-color: var(--c-bckgr-secondary);
+    padding: calc(var(--spacer) / 2);
     width: 100%;
     max-width: 20em;
   }
@@ -117,6 +122,7 @@
 
     .login-form-field label {
       margin-right: calc(var(--spacer) / 2);
+      margin-bottom: 0;
       line-height: 40px;
     }
 
