@@ -464,6 +464,7 @@ export default {
     text-align: center;
     margin-top: calc(var(--spacer) * 2);
     margin-bottom: var(--spacer) * 2;
+    padding: 0 var(--spacer);
   }
 
   .recs-message {
