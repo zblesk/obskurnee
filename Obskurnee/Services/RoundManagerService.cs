@@ -287,7 +287,7 @@ namespace Obskurnee.Services
             var post = _db.Posts.First(p => p.PostId == result.Book.Post.PostId);
             await _newsletter.SendNewsletter(
                 Newsletters.BasicEvents,
-                _newsletterLocalizer["newBookSubject"],
+                _newsletterLocalizer.Format("newBookSubject"),
                 _newsletterLocalizer.Format("newBookVotedBodyMarkdown", 
                     link,
                     post.Title,
