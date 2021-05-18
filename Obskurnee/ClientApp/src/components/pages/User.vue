@@ -26,7 +26,7 @@
             <label for="userbio" class="label-md">{{ $t('user.aboutMe') }}</label>
             <div class="mo-md">
               <div class="mo-md-pic">
-                <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
+                <img src="../../assets/Markdown-mark.svg" alt="null">
               </div>
               <div class="mo-md-link">
                 <markdown-help-link tabindex="8"></markdown-help-link>
@@ -65,7 +65,7 @@
         <div class="contacts">
           <div class="mo">
             <div class="mo-pic">
-              <img src="../../assets/email.svg" alt="email icon">
+              <img src="../../assets/email.svg" alt="null">
             </div>
             <div class="mo-text">
               <a v-if="user.email" :href="'mailto:' + user.email">{{ user.email }}</a>
@@ -74,7 +74,7 @@
           </div>
           <div class="mo">
             <div class="mo-pic">
-              <img src="../../assets/WhatsApp_Logo_1.png" alt="whatsapp logo">
+              <img src="../../assets/WhatsApp_Logo_1.png" alt="null">
             </div>
             <div class="mo-text">
               <a v-if="user.phone" :href="'tel:' + user.phone">{{ user.phone }}</a>
@@ -83,7 +83,7 @@
           </div>
           <div class="mo">
             <div class="mo-pic">
-              <img src="../../assets/goodreads_icon_32x32.png" alt="goodreads icon">
+              <img src="../../assets/goodreads_icon_32x32.png" alt="null">
             </div>
             <div class="mo-text">
               <a v-if="user.goodreadsUrl" :href="user.goodreadsUrl">{{$t('user.goodreads')}}</a>
@@ -155,7 +155,7 @@
       <span v-if="user && isMe(user.userId)" class="recs-link"> 
         (<router-link :to="{ name: 'recommendationlist' }">{{$t('user.addRecommendation')}}</router-link>)
       </span>
-      <img src="../../assets/download.svg" alt="toggle recommendations icon" 
+      <img src="../../assets/download.svg" alt="toggle recommendations" 
         v-if="myRecs && myRecs.length > 0" @click="showRecs = !showRecs" 
         class="toggler" :class="{ 'toggler--hidden': !showRecs }">
       </h2>
@@ -176,7 +176,7 @@
 
     <h2 class="page-subtitle page-subtitle--flex u-mt-sp">
       <span>{{$t('user.booksRatedBy', [user.name])}}</span>
-      <img src="../../assets/download.svg" alt="toggle reviews icon" 
+      <img src="../../assets/download.svg" alt="toggle reviews" 
         v-if="userReviews(user.userId)?.length > 0" @click="showReviews = !showReviews" 
         class="toggler" :class="{ 'toggler--hidden': !showReviews }">
     </h2>

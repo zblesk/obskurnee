@@ -13,7 +13,7 @@
           <label for="grlink">{{$t('newpost.grLink')}}</label>
           <div class="note u-mb-sp05">
             <div class="note-pic">
-                <img src="../assets/lamp.svg" alt="lamp icon" />
+                <img src="../assets/lamp.svg" alt="null" />
             </div>
             <p class="note-text">{{$t('newpost.grLoadInstructions')}}</p>
           </div>
@@ -41,7 +41,7 @@
             <label for="text">{{$t('newpost.comment')}}<span v-if="mode != 'Themes'">*</span></label>
             <div class="mo-md">
               <div class="mo-md-pic">
-                <img src="../assets/Markdown-mark.svg" alt="markdown logo">
+                <img src="../assets/Markdown-mark.svg" alt="null">
               </div>
               <div class="mo-md-link">
                 <markdown-help-link tabindex="7"></markdown-help-link>

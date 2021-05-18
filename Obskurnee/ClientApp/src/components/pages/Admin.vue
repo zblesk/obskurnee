@@ -14,7 +14,7 @@
                     <label for="notice">{{$t('admin.noticeboardContent')}}</label>
                     <div class="mo-md">
                         <div class="mo-md-pic">
-                            <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
+                            <img src="../../assets/Markdown-mark.svg" alt="null">
                         </div>
                         <div class="mo-md-link">
                             <markdown-help-link></markdown-help-link>

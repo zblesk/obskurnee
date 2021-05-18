@@ -13,7 +13,7 @@
                         <div class="navigation-home">{{$t('menus.home')}}</div>
                     </router-link>
                     <button type="button" class="navigation-toggler" @click="toggle">
-                        <img src="../assets/menu.svg" alt="menu icon">
+                        <img src="../assets/menu.svg" alt="menu toggler">
                     </button>
                 </div>
                 <div class="navigation-toggled" v-bind:class="{show: isExpanded}">

@@ -64,7 +64,7 @@
       <div class="book-post-empty" v-if="!previewId">
         <div class="note note--poll">
           <div class="note-pic">
-            <img src="../../assets/lamp.svg" alt="lamp icon" />
+            <img src="../../assets/lamp.svg" alt="null" />
           </div>
           <p class="note-text">{{$t('poll.previewInfo')}}</p>
         </div>

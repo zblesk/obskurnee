@@ -12,7 +12,7 @@
       </router-link>
       <a :href="book.post.url" :alt="book.post.title">
         <span class="goodreads-wrapper">
-          <img src="../assets/goodreads_icon_32x32.png" alt="goodreads icon" class="goodreads-icon">
+          <img src="../assets/goodreads_icon_32x32.png" alt="link to goodreads" class="goodreads-icon">
         </span>
       </a>
     </h1>
