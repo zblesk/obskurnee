@@ -127,9 +127,9 @@ body {
   padding: var(--spacer);
 }
 
-@media screen and (min-width: 400px) {
+@media screen and (min-width: 450px) {
   .grid {
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   }
 }
 
@@ -346,11 +346,13 @@ body {
   font-size: 1.25em;
   color: var(--c-accent);
   margin: var(--spacer) 0 calc(var(--spacer)*0.4) 0;
+  text-align: center;
 }
 
 @media screen and (min-width: 400px) {
   .book__title {
     margin-top: 0;
+    text-align: left;
   }
 }
 
