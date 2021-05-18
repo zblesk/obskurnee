@@ -324,18 +324,23 @@ body {
 .book__cover {
   width: 100%;
   max-width: 150px;
-  margin: 0 auto;
+  margin: 0 auto var(--spacer) auto;
 }
 
 @media screen and (min-width: 400px) {
   .book__cover {
     float: left;
-    margin: 0 var(--spacer) 0 0;
+    max-width: 170px;
+    margin: 0;
+    padding-right: var(--spacer);
+    padding-bottom: var(--spacer);
+    background-color: var(--c-bckgr-primary);
   }
 }
 
 .book__cover img {
   width: 100%;
+  display: block;
 }
 
 .book__link {
@@ -345,13 +350,12 @@ body {
 .book__title {
   font-size: 1.25em;
   color: var(--c-accent);
-  margin: var(--spacer) 0 calc(var(--spacer)*0.4) 0;
+  margin: 0 0 calc(var(--spacer)*0.4) 0;
   text-align: center;
 }
 
 @media screen and (min-width: 400px) {
   .book__title {
-    margin-top: 0;
     text-align: left;
   }
 }
