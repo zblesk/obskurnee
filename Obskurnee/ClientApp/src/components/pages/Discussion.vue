@@ -12,7 +12,9 @@
     </div>
 
     <div class="form" v-if="discussion.pollId">
+      <div class="buttons">
       <router-link :to="{ name: 'poll', params: { pollId: discussion.pollId } }" class="button-primary">{{$t('discussion.goToPoll')}}</router-link>
+      </div>
     </div>
   </div>
 
@@ -111,7 +113,7 @@ export default {
     margin-bottom: var(--spacer);
   }
 
-  .form {
+  .form:not(:last-child) {
     margin-bottom: var(--spacer);
   }
 </style>
