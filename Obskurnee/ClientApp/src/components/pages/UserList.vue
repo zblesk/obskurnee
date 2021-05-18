@@ -93,7 +93,7 @@
 
     .user-name {
         color: var(--c-primary);
-        font-size: 1.5em;
+        font-size: 1.5rem;
         font-weight: bold;
         text-align: center;
         margin-top: var(--spacer);
@@ -101,7 +101,7 @@
     }
 
     .user-bio {
-        font-size: 1em;
+        font-size: 1rem;
     }
 
     .user-card a {

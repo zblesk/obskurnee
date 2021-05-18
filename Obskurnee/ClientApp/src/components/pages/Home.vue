@@ -185,7 +185,7 @@ export default {
   }
 
   .blc-heading {
-    font-size: 1.2em;
+    font-size: 1.2rem;
     text-align: center;
     margin: var(--spacer) var(--spacer) 0 var(--spacer);
   }

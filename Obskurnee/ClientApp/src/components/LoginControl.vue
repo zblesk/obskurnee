@@ -83,7 +83,7 @@
 
   .login-form-field label {
     display: block;
-    font-size: 1em;
+    font-size: 1rem;
     margin-bottom: calc(var(--spacer) / 3);
   }
 

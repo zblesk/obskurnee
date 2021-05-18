@@ -107,7 +107,7 @@ export default {
   }
 
   .disc-desc {
-    font-size: 1.2em;
+    font-size: 1.2rem;
     margin-bottom: var(--spacer);
   }
 

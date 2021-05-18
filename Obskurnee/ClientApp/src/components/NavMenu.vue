@@ -89,8 +89,8 @@
         margin: 0.5em 0 0 0;
         padding: 0 var(--spacer) 0 var(--spacer);
 
-        font-family: 'Special Elite', cursive;
-        font-size: 2em;
+        font-family: 'Special Elite', 'Courier New', serif;
+        font-size: 2rem;
         text-align: center;
     }
 

@@ -48,7 +48,7 @@
   }
 
   .title {
-    font-size: 1.5em;
+    font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
     margin-top: var(--spacer);
@@ -60,7 +60,7 @@
   }
 
   .author {
-    font-size: 1.15em;
+    font-size: 1.15rem;
     text-align: center;
     margin-bottom: var(--spacer);
   }
@@ -77,7 +77,7 @@
   }
 
   .summary {
-    font-size: 1em;
+    font-size: 1rem;
   }
 
   .goodreads-wrapper {

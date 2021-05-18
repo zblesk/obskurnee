@@ -36,7 +36,7 @@ export default {
   }
 
   .book-title {
-    font-size: 1em;
+    font-size: 1rem;
     font-weight: bold;
     text-align: center;
     margin-top: var(--spacer);
@@ -44,7 +44,7 @@ export default {
   }
 
   .book-author {
-    font-size: 0.875em;
+    font-size: 0.875rem;
     text-align: center;
   }
 

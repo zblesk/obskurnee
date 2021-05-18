@@ -142,7 +142,7 @@ export default {
 
 
     .form-heading {
-        font-size: 1.5em;
+        font-size: 1.5rem;
         padding: 0;
         margin-top: 0;
         margin-bottom: var(--spacer);

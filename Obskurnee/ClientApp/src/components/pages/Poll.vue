@@ -178,7 +178,7 @@ export default {
   }
 
   .subtitle {
-    font-size: 1.25em;
+    font-size: 1.25rem;
     margin-top: 0;
     margin-bottom: calc(var(--spacer) / 2);
   }
@@ -193,7 +193,7 @@ export default {
 
   .winner-title {
     text-align: center;
-    font-size: 1.25em;
+    font-size: 1.25rem;
     margin-top: 0;
     margin-bottom: 0;
   }

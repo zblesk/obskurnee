@@ -159,7 +159,7 @@ export default {
 
 <style scoped>
     .not-mod-text {
-        font-size: 1.2em;
+        font-size: 1.2rem;
         font-weight: normal;
         text-align: center;
         margin-bottom: 0;

@@ -36,13 +36,13 @@ export default {
 <style>
 
 .todo {
-  margin: 2em;
+  margin: 2rem;
   color: orangered;
   text-align: center;
 }
 
 .todo-l {
-  margin: 2em;
+  margin: 2rem;
   color: darkred;
   text-align: center;
 }
@@ -85,7 +85,7 @@ body {
 }
 
 .page-title {
-  font-size: 2em;
+  font-size: 2rem;
   font-weight: bold;
   text-align: center;
   margin-top: calc(1.5 * var(--spacer));
@@ -94,7 +94,7 @@ body {
 
 .alert-inline {
   color: var(--c-accent);
-  font-size: 1.2em;
+  font-size: 1.2rem;
   font-weight: bold;
   margin-top: calc(var(--spacer) / 2);
 }
@@ -137,10 +137,10 @@ body {
 .button-primary,
 .button-secondary {
   border-radius: 4px;
-  font-size: 1em;
+  font-size: 1rem;
   font-weight: bold;
   text-decoration: none;
-  padding: 0.625em 1.25em;
+  padding: 0.625rem 1.25rem;
   cursor: pointer;
   display: inline-block;
 }
@@ -207,7 +207,7 @@ body {
 }
 
 .note-text {
-  font-size: 0.875em;
+  font-size: 0.875rem;
   opacity: 0.8;
   margin: 0 0 0 calc(var(--spacer) / 2);
 }
@@ -221,7 +221,7 @@ body {
 
 .form-field label {
   display: block;
-  font-size: 1em;
+  font-size: 1rem;
   margin-bottom: calc(var(--spacer) / 3);
 }
 
@@ -239,7 +239,7 @@ body {
   background-color: var(--c-bckgr-secondary);
   padding: calc(var(--spacer) / 2);
   width: 100%;
-  height: 15em;
+  height: 15rem;
 }
 
 .form-horizontal {
@@ -250,7 +250,7 @@ body {
 }
 
 .form-horizontal label {
-  font-size: 1em;
+  font-size: 1rem;
   margin-right: var(--spacer);
   margin-bottom: calc(var(--spacer) / 3);
 }
@@ -302,7 +302,7 @@ body {
 }
 
 .mo-md-link {
-  font-size: 0.875em;
+  font-size: 0.875rem;
   margin: 0 0 0 calc(var(--spacer) / 2);
   text-decoration: underline;
   font-weight: normal;
@@ -348,7 +348,7 @@ body {
 }
 
 .book__title {
-  font-size: 1.25em;
+  font-size: 1.25rem;
   color: var(--c-accent);
   margin: 0 0 calc(var(--spacer)*0.4) 0;
   text-align: center;
@@ -361,21 +361,21 @@ body {
 }
 
 .book__author {
-  font-size: 0.875em;
+  font-size: 0.875rem;
 }
 
 .book__pages {
   margin-bottom: calc(var(--spacer)*0.4);
-  font-size: 0.875em;
+  font-size: 0.875rem;
 }
 
 .book__owner {
   margin-bottom: var(--spacer);
-  font-size: 0.875em;
+  font-size: 0.875rem;
 }
 
 .book__text {
-  font-size: 0.875em;
+  font-size: 0.875rem;
 }
 
 .book__repost {
@@ -386,7 +386,7 @@ body {
 }
 
 .button-repost {
-  font-size: 0.875em;
+  font-size: 0.875rem;
   text-align: center;
   padding: 5px;
 }
@@ -412,7 +412,7 @@ body {
 /* generic styling for markdown */
 
 p {
-  font-size: 1em;
+  font-size: 1rem;
   line-height: 1.5;
   color: var(--c-font);
   margin-bottom: calc(var(--spacer) / 2);
@@ -423,12 +423,12 @@ p:last-child {
 }
 
 .book__pitch p {
-  font-size: 0.875em;
+  font-size: 0.875rem;
 }
 
 .book__pitch h2 {
-  font-size: 1em;
-  margin: 0 0 0.5em 0;
+  font-size: 1rem;
+  margin: 0 0 0.5rem 0;
 }
 
 h1, h2, h3 {
@@ -448,17 +448,17 @@ a:active {
 }
 
 h1 {
-  font-size: 1.5em;
+  font-size: 1.5rem;
   margin-bottom: var(--spacer);
 }
 
 h2 {
-  font-size: 1.2em;
+  font-size: 1.2rem;
   margin-bottom: calc(var(--spacer) / 2);
 }
 
 h3 {
-  font-size: 1.15em;
+  font-size: 1.15rem;
   margin-bottom: calc(var(--spacer) / 2);
 }
 
@@ -511,7 +511,7 @@ div.spoiler:not(:last-child) {
 }
 
 .attribution {
-  font-size: 0.9em;
+  font-size: 0.875rem;
   text-align: center;
 }
 

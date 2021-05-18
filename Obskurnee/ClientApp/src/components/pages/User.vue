@@ -481,7 +481,7 @@ export default {
   }
 
   .page-subtitle {
-    font-size: 1.5em;
+    font-size: 1.5rem;
     text-align: center;
     margin-top: calc(var(--spacer) * 2);
     margin-bottom: var(--spacer) * 2;
