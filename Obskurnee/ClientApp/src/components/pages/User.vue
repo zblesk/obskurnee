@@ -46,11 +46,17 @@
       <div class="main">
         <div v-if="user.avatarUrl" class="user-pic">
           <img  :src="user.avatarUrl" :title="user.name" :alt="user.name" />
-          <p class="mod-text" v-if="user.isModerator">{{$t('global.mod')}}</p>
+          <p class="mod-text" v-if="user.isModerator">
+            {{$t('global.mod')}}
+            <span class="mod-tooltip">Tento uživatel je moderátor.</span>
+          </p>
         </div>
         <div v-else class="user-pic-placeholder">
           <img src="../../assets/reader.svg"  :title="user.name" :alt="user.name" />
-          <p class="mod-text" v-if="user.isModerator">{{$t('global.mod')}}</p>
+          <p class="mod-text" v-if="user.isModerator">
+            {{$t('global.mod')}}
+            <span class="mod-tooltip">Tento uživatel je moderátor.</span>
+          </p>
         </div>
 
         <p v-if="user.aboutMeHtml" class="bio" v-html="user.aboutMeHtml"></p>
@@ -556,6 +562,28 @@ export default {
     position: absolute;
     top: -10px;
     right: -10px;
+  }
+
+  .mod-tooltip {
+    visibility: hidden;
+    position: absolute;
+    top: 0px;
+    right: -20px;
+    z-index: 1;
+    transform: rotate(-40deg);
+    width: 12rem;
+
+    color: white;
+    background-color: var(--c-accent);
+    font-variant: normal;
+    font-size: 0.875rem;
+    font-weight: normal;
+    padding: 5px;
+    border-radius: 10px;
+  }
+
+  .mod-text:hover .mod-tooltip {
+    visibility: visible;
   }
 
   .toggler {
