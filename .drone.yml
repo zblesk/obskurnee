@@ -28,3 +28,37 @@ steps:
 trigger:
   branch:
   - master
+  event:
+  - tag
+
+---
+kind: pipeline
+type: docker
+name: Build Dev
+
+steps:
+
+- name: docker build
+  image: plugins/docker
+  settings:
+    username: 
+      from_secret: docker_username
+    password: 
+      from_secret: docker_password
+    repo: 
+      from_secret: docker_reponame
+    tags: dev
+
+- name: notify
+  image: plugins/matrix
+  settings:
+    homeserver: https://matrix.zble.sk
+    roomid: '!natRBEGfTHBIwfWmtk:zble.sk'
+    username:
+      from_secret: matrix_username
+    password:
+      from_secret: matrix_password
+
+trigger:
+  branch:
+    - frontend
