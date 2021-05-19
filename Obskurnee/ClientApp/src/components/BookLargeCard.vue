@@ -39,6 +39,7 @@
   @media screen and (min-width: 576px) {
     .cover {
       float: left;
+      width: auto;
       margin: 0;
       padding-right: var(--spacer);
       padding-bottom: var(--spacer);

@@ -488,7 +488,8 @@ hr {
 }
 
 .spoiler,
-.spoiler p {
+.spoiler p,
+.spoiler h3 {
   color: lightgray;
   background-color: lightgray;
 }
@@ -498,7 +499,8 @@ div.spoiler:not(:last-child) {
 }
 
 .spoiler:hover, .spoiler:active,
-.spoiler p:hover, .spoiler p:active {
+.spoiler p:hover, .spoiler p:active,
+.spoiler h3:hover, .spoiler h3:active {
   background-color: var(--c-bckgr-primary);
   color: var(--c-font);
   text-decoration: underline solid lightgray;
