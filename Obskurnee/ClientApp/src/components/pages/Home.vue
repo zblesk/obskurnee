@@ -3,7 +3,7 @@
     <div class="homepage">
       <div v-if="isAuthenticated" class="welcome">
         <div class="welcome-pic">
-          <img src="../../assets/hi.svg" alt="hi icon">
+          <img src="../../assets/hi.svg" alt="null">
         </div>
         <p class="welcome-text">
           <i18n-t v-if="myProfile" tag="span" keypath="home.greeting">
@@ -26,7 +26,7 @@
 
           <div v-if="isAuthenticated && userProfileIncomplete" class="profile-info">
             <div class="info-pic">
-              <img src="../../assets/information.svg" alt="information bubble icon">
+              <img src="../../assets/information.svg" alt="null">
             </div>
             <div class="info-text">
               <i18n-t tag="p" keypath="home.profileInfoMissing">
@@ -185,7 +185,7 @@ export default {
   }
 
   .blc-heading {
-    font-size: 1.2em;
+    font-size: 1.2rem;
     text-align: center;
     margin: var(--spacer) var(--spacer) 0 var(--spacer);
   }

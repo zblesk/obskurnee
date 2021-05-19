@@ -26,7 +26,7 @@
             <label for="userbio" class="label-md">{{ $t('user.aboutMe') }}</label>
             <div class="mo-md">
               <div class="mo-md-pic">
-                <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
+                <img src="../../assets/Markdown-mark.svg" alt="null">
               </div>
               <div class="mo-md-link">
                 <markdown-help-link tabindex="8"></markdown-help-link>
@@ -46,11 +46,17 @@
       <div class="main">
         <div v-if="user.avatarUrl" class="user-pic">
           <img  :src="user.avatarUrl" :title="user.name" :alt="user.name" />
-          <p class="mod-text" v-if="user.isModerator">{{$t('global.mod')}}</p>
+          <p class="mod-text" v-if="user.isModerator">
+            {{$t('global.mod')}}
+            <span class="mod-tooltip">Tento uživatel je moderátor.</span>
+          </p>
         </div>
         <div v-else class="user-pic-placeholder">
           <img src="../../assets/reader.svg"  :title="user.name" :alt="user.name" />
-          <p class="mod-text" v-if="user.isModerator">{{$t('global.mod')}}</p>
+          <p class="mod-text" v-if="user.isModerator">
+            {{$t('global.mod')}}
+            <span class="mod-tooltip">Tento uživatel je moderátor.</span>
+          </p>
         </div>
 
         <p v-if="user.aboutMeHtml" class="bio" v-html="user.aboutMeHtml"></p>
@@ -59,7 +65,7 @@
         <div class="contacts">
           <div class="mo">
             <div class="mo-pic">
-              <img src="../../assets/email.svg" alt="email icon">
+              <img src="../../assets/email.svg" alt="null">
             </div>
             <div class="mo-text">
               <a v-if="user.email" :href="'mailto:' + user.email">{{ user.email }}</a>
@@ -68,7 +74,7 @@
           </div>
           <div class="mo">
             <div class="mo-pic">
-              <img src="../../assets/WhatsApp_Logo_1.png" alt="whatsapp logo">
+              <img src="../../assets/WhatsApp_Logo_1.png" alt="null">
             </div>
             <div class="mo-text">
               <a v-if="user.phone" :href="'tel:' + user.phone">{{ user.phone }}</a>
@@ -77,7 +83,7 @@
           </div>
           <div class="mo">
             <div class="mo-pic">
-              <img src="../../assets/goodreads_icon_32x32.png" alt="goodreads icon">
+              <img src="../../assets/goodreads_icon_32x32.png" alt="null">
             </div>
             <div class="mo-text">
               <a v-if="user.goodreadsUrl" :href="user.goodreadsUrl">{{$t('user.goodreads')}}</a>
@@ -149,7 +155,7 @@
       <span v-if="user && isMe(user.userId)" class="recs-link"> 
         (<router-link :to="{ name: 'recommendationlist' }">{{$t('user.addRecommendation')}}</router-link>)
       </span>
-      <img src="../../assets/download.svg" alt="toggle recommendations icon" 
+      <img src="../../assets/download.svg" alt="toggle recommendations" 
         v-if="myRecs && myRecs.length > 0" @click="showRecs = !showRecs" 
         class="toggler" :class="{ 'toggler--hidden': !showRecs }">
       </h2>
@@ -170,7 +176,7 @@
 
     <h2 class="page-subtitle page-subtitle--flex u-mt-sp">
       <span>{{$t('user.booksRatedBy', [user.name])}}</span>
-      <img src="../../assets/download.svg" alt="toggle reviews icon" 
+      <img src="../../assets/download.svg" alt="toggle reviews" 
         v-if="userReviews(user.userId)?.length > 0" @click="showReviews = !showReviews" 
         class="toggler" :class="{ 'toggler--hidden': !showReviews }">
     </h2>
@@ -475,7 +481,7 @@ export default {
   }
 
   .page-subtitle {
-    font-size: 1.5em;
+    font-size: 1.5rem;
     text-align: center;
     margin-top: calc(var(--spacer) * 2);
     margin-bottom: var(--spacer) * 2;
@@ -556,6 +562,28 @@ export default {
     position: absolute;
     top: -10px;
     right: -10px;
+  }
+
+  .mod-tooltip {
+    visibility: hidden;
+    position: absolute;
+    top: 0px;
+    right: -20px;
+    z-index: 1;
+    transform: rotate(-40deg);
+    width: 12rem;
+
+    color: white;
+    background-color: var(--c-accent);
+    font-variant: normal;
+    font-size: 0.875rem;
+    font-weight: normal;
+    padding: 5px;
+    border-radius: 10px;
+  }
+
+  .mod-text:hover .mod-tooltip {
+    visibility: visible;
   }
 
   .toggler {

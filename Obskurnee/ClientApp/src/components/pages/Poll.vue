@@ -64,7 +64,7 @@
       <div class="book-post-empty" v-if="!previewId">
         <div class="note note--poll">
           <div class="note-pic">
-            <img src="../../assets/lamp.svg" alt="lamp icon" />
+            <img src="../../assets/lamp.svg" alt="null" />
           </div>
           <p class="note-text">{{$t('poll.previewInfo')}}</p>
         </div>
@@ -178,7 +178,7 @@ export default {
   }
 
   .subtitle {
-    font-size: 1.25em;
+    font-size: 1.25rem;
     margin-top: 0;
     margin-bottom: calc(var(--spacer) / 2);
   }
@@ -193,7 +193,7 @@ export default {
 
   .winner-title {
     text-align: center;
-    font-size: 1.25em;
+    font-size: 1.25rem;
     margin-top: 0;
     margin-bottom: 0;
   }

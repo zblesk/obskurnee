@@ -12,7 +12,7 @@
       </router-link>
       <a :href="book.post.url" :alt="book.post.title">
         <span class="goodreads-wrapper">
-          <img src="../assets/goodreads_icon_32x32.png" alt="goodreads icon" class="goodreads-icon">
+          <img src="../assets/goodreads_icon_32x32.png" alt="link to goodreads" class="goodreads-icon">
         </span>
       </a>
     </h1>
@@ -39,19 +39,24 @@
   @media screen and (min-width: 576px) {
     .cover {
       float: left;
-      margin-right: var(--spacer);
+      width: auto;
+      margin: 0;
+      padding-right: var(--spacer);
+      padding-bottom: var(--spacer);
+      background-color: var(--c-bckgr-primary);
     }
   }
 
   .cover img {
     max-width: 100%;
+    display: block;
   }
 
   .title {
-    font-size: 1.5em;
+    font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
-    margin-top: var(--spacer);
+    margin-top: 0;
     margin-bottom: calc(var(--spacer) / 2);
   }
 
@@ -60,14 +65,13 @@
   }
 
   .author {
-    font-size: 1.15em;
+    font-size: 1.15rem;
     text-align: center;
     margin-bottom: var(--spacer);
   }
 
   @media screen and (min-width: 576px) {
     .title {
-      margin-top: 0;
       text-align: left;
     }
 
@@ -77,7 +81,7 @@
   }
 
   .summary {
-    font-size: 1em;
+    font-size: 1rem;
   }
 
   .goodreads-wrapper {

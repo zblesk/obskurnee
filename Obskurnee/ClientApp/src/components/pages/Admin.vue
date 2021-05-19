@@ -14,7 +14,7 @@
                     <label for="notice">{{$t('admin.noticeboardContent')}}</label>
                     <div class="mo-md">
                         <div class="mo-md-pic">
-                            <img src="../../assets/Markdown-mark.svg" alt="markdown logo">
+                            <img src="../../assets/Markdown-mark.svg" alt="null">
                         </div>
                         <div class="mo-md-link">
                             <markdown-help-link></markdown-help-link>
@@ -159,7 +159,7 @@ export default {
 
 <style scoped>
     .not-mod-text {
-        font-size: 1.2em;
+        font-size: 1.2rem;
         font-weight: normal;
         text-align: center;
         margin-bottom: 0;

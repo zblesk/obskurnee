@@ -39,7 +39,7 @@
             <div class="mo-wrapper">
                 <div class="mo mo-theme" v-if="round.themeDiscussionId">
                     <div class="mo-icon">
-                        <img src="../../assets/book-shelves.svg" alt="book shelves icon">
+                        <img src="../../assets/book-shelves.svg" alt="null">
                     </div>
                     <div class="mo-text">
                         <p class="mo-link">
@@ -52,7 +52,7 @@
                 </div>
                 <div class="mo" v-if="round.bookDiscussionId">
                     <div class="mo-icon">
-                        <img src="../../assets/magic-book.svg" alt="magic book icon">
+                        <img src="../../assets/magic-book.svg" alt="null">
                     </div>
                     <div class="mo-text">
                         <p class="mo-link">
@@ -142,7 +142,7 @@ export default {
 
 
     .form-heading {
-        font-size: 1.5em;
+        font-size: 1.5rem;
         padding: 0;
         margin-top: 0;
         margin-bottom: var(--spacer);

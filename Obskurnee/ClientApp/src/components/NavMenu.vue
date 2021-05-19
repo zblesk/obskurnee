@@ -13,7 +13,7 @@
                         <div class="navigation-home">{{$t('menus.home')}}</div>
                     </router-link>
                     <button type="button" class="navigation-toggler" @click="toggle">
-                        <img src="../assets/menu.svg" alt="menu icon">
+                        <img src="../assets/menu.svg" alt="menu toggler">
                     </button>
                 </div>
                 <div class="navigation-toggled" v-bind:class="{show: isExpanded}">
@@ -89,8 +89,8 @@
         margin: 0.5em 0 0 0;
         padding: 0 var(--spacer) 0 var(--spacer);
 
-        font-family: 'Special Elite', cursive;
-        font-size: 2em;
+        font-family: 'Special Elite', 'Courier New', serif;
+        font-size: 2rem;
         text-align: center;
     }
 

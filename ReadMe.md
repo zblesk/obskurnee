@@ -1,5 +1,7 @@
 # Obskurnee Book Club
 
+![logo](./logo.png)
+
 [![Build Status](https://bzzz.zble.sk/api/badges/zblesk/Obskurnee/status.svg)](https://bzzz.zble.sk/zblesk/Obskurnee)
 
 # Info chat room
