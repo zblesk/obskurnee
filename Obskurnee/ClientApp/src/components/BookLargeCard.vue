@@ -39,19 +39,23 @@
   @media screen and (min-width: 576px) {
     .cover {
       float: left;
-      margin-right: var(--spacer);
+      margin: 0;
+      padding-right: var(--spacer);
+      padding-bottom: var(--spacer);
+      background-color: var(--c-bckgr-primary);
     }
   }
 
   .cover img {
     max-width: 100%;
+    display: block;
   }
 
   .title {
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
-    margin-top: var(--spacer);
+    margin-top: 0;
     margin-bottom: calc(var(--spacer) / 2);
   }
 
@@ -67,7 +71,6 @@
 
   @media screen and (min-width: 576px) {
     .title {
-      margin-top: 0;
       text-align: left;
     }
 
