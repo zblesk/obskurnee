@@ -1,6 +1,28 @@
 kind: pipeline
 type: docker
-name: Build & Deploy
+name: Build Master
+
+steps:
+
+- name: docker build
+  image: plugins/docker
+  settings:
+    username: 
+      from_secret: docker_username
+    password: 
+      from_secret: docker_password
+    repo: 
+      from_secret: docker_reponame
+    tags: latest
+
+trigger:
+  branch:
+  - master
+
+---
+kind: pipeline
+type: docker
+name: Build Tags
 
 steps:
 
@@ -16,19 +38,7 @@ steps:
       from_secret: docker_reponame
     tags: latest
 
-- name: notify
-  image: plugins/matrix
-  settings:
-    homeserver: https://matrix.zble.sk
-    roomid: '!natRBEGfTHBIwfWmtk:zble.sk'
-    username:
-      from_secret: matrix_username
-    password:
-      from_secret: matrix_password
-
 trigger:
-  branch:
-  - master
   event:
   - tag
 
@@ -50,16 +60,29 @@ steps:
       from_secret: docker_reponame
     tags: dev
 
+trigger:
+  branch:
+    - frontend
+
+---
+kind: pipeline
+type: docker
+name: Notify
+
+steps:
+
 - name: notify
   image: plugins/matrix
   settings:
     homeserver: https://matrix.zble.sk
-    roomid: '!natRBEGfTHBIwfWmtk:zble.sk'
+    roomid: 
+      from_secret: matrix_roomid
     username:
       from_secret: matrix_username
     password:
       from_secret: matrix_password
-
-trigger:
-  branch:
-    - frontend
+  
+depends_on:
+- Build Dev
+- Build Master
+- Build Tags
