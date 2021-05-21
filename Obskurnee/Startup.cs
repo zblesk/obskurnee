@@ -78,7 +78,8 @@ namespace Obskurnee
             IWebHostEnvironment env,
             IHostApplicationLifetime lifetime,
             UserServiceBase userService,
-            ApplicationDbContext dbContext)
+            ApplicationDbContext dbContext,
+            BackupService backupService)
         {
             Log.Information("Updating database");
             dbContext.Database.Migrate();
@@ -126,11 +127,38 @@ namespace Obskurnee
             });
 
             userService.LoadUsernameCache();
-            lifetime.ApplicationStarted.Register(() =>
-                Log.Information("Application started at {@base}",
-                Config.Current.BaseUrl));
-            lifetime.ApplicationStopping.Register(() => Log.Information("Application stopping"));
+            lifetime.ApplicationStarted.Register(OnAppStarted);
+            lifetime.ApplicationStopping.Register(OnAppStopping, backupService);
             lifetime.ApplicationStopped.Register(() => Log.Information("Application stopped"));
+        }
+
+        private static void OnAppStarted()
+        {
+            Log.Information("Application started at {@base}",
+                Config.Current.BaseUrl);
+        }
+
+        private static void OnAppStopping(object data)
+        {
+            Log.Information("Application stopping");
+            Log.Information("Data type passed: {type}", data.GetType());
+            var backupService = data as BackupService;
+            if (backupService != null)
+            {
+                Log.Information("Creating a backup on shutdown");
+                try
+                {
+                    backupService.CreateBackup($"obskurnee.{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.shutdown.db");
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Error while creating backup");
+                }
+            }
+            else
+            {
+                Log.Warning("Backup service unavailable on shutdown");
+            }
         }
 
         private static void ConfigureAuthAndIdentity(IServiceCollection services)

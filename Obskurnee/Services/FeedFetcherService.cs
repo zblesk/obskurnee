@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@ namespace Obskurnee.Services
         private Timer _timer;
         private bool isRunning = false;
         private readonly object @lock = new object();
+        private Stopwatch timer = null;
         private readonly IServiceScopeFactory _scopeFactory;
 
         public FeedFetcherService(
@@ -43,13 +45,23 @@ namespace Obskurnee.Services
             {
                 if (isRunning)
                 {
-                    _logger.LogWarning("Previous job still running. Exitting.");
+                    _logger.LogWarning("Previous job still running. Has been running for {time} minutes ({time_h} hours). Exitting.", 
+                        timer?.Elapsed.TotalMinutes, timer?.Elapsed.TotalHours);
                     return;
                 }
                 isRunning = true;
             }
             try
             {
+                if (timer != null)
+                {
+                    timer.Stop();
+                }
+                else
+                {
+                    timer = new Stopwatch();
+                }
+                timer.Restart();
                 using var scope = _scopeFactory.CreateScope();
                 var reviews = (ReviewService)scope.ServiceProvider.GetService(typeof(ReviewService));
                 var userService = (UserServiceBase)scope.ServiceProvider.GetService(typeof(UserServiceBase));
@@ -58,6 +70,8 @@ namespace Obskurnee.Services
                 {
                     reviews.FetchReviewUpdates(user).Wait();
                 }
+                _logger.LogInformation("RSS fetch finished after {time} seconds", timer.Elapsed.TotalSeconds);
+                timer.Stop();
             }
             finally
             {

@@ -21,7 +21,6 @@ namespace Obskurnee.Services
     {
         private static Random _rand = new Random();
         private readonly ILogger<GoodreadsScraper> _logger;
-        private readonly IWebHostEnvironment _hostEnv;
         private readonly Config _config;
         private readonly ApplicationDbContext _db;
 
@@ -32,7 +31,6 @@ namespace Obskurnee.Services
             ApplicationDbContext db)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _hostEnv = hostEnv ?? throw new ArgumentNullException(nameof(hostEnv));
             _config = config ?? throw new ArgumentNullException(nameof(config));
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }
