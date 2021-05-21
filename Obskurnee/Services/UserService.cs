@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.ViewModels;
 using System;
+using System.Globalization;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -64,13 +65,23 @@ namespace Obskurnee.Services
                 _logger.LogInformation("User created");
                 LoadUsernameCache();
                 await Newsletter.Subscribe(user.Id, Newsletters.BasicEvents);
-                await _matrix.SendMessage(
-                    _newsletterLocalizer.Format("newUserAdded", 
-                    user.UserName,
-                    $"{_config.BaseUrl}/my/{user.Email}"));
+                _ = SendDefaultLanguageNotification(user)
+                    .ContinueWith(t => _logger.LogError(t.Exception, "Sending Matrix notification failed"),
+                        TaskContinuationOptions.OnlyOnFaulted);
                 return UserInfo.From(user);
             }
             return null;
+        }
+
+        private async Task SendDefaultLanguageNotification(Bookworm user)
+        {
+            var origCulture = CultureInfo.CurrentCulture;
+            CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture = _config.DefaultCultureInfo;
+            await _matrix.SendMessage(
+                _newsletterLocalizer.Format("newUserAdded",
+                user.UserName,
+                $"{_config.BaseUrl}/my/{user.Email}"));
+            CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture = origCulture;
         }
 
         public override async Task<IdentityResult> MakeModerator(string email)
@@ -142,7 +153,7 @@ namespace Obskurnee.Services
                                             _config.BaseUrl,
                                             HttpUtility.UrlEncode(user.Id),
                                             HttpUtility.UrlEncode(resetToken));
-            var subject = _newsletterLocalizer["passwordResetSubject"];
+            var subject = _newsletterLocalizer.Format("passwordResetSubject");
             var body = _newsletterLocalizer.Format("passwordResetBody", callbackUrl);
             await _mailer.SendMail(subject, body, user.Email);
             return true;

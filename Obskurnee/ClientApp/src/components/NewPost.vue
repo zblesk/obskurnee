@@ -189,7 +189,7 @@ export default {
           "/api/scrape/?goodreadsUrl=" + this.newPost.url)
         .then((response) => {
           this.newPost = response.data;
-          this.newPost.text = this.$t('newpost.prefilledDescriptionFormat', response.data.description);
+          this.newPost.text = this.$t('newpost.prefilledDescriptionFormat', [ response.data.description ]);
           this.fetchInProgress = false;
           this.$notifyInfo(this.$t('newpost.loaded'));
         })

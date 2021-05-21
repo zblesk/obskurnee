@@ -1,4 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
 using System.Text;
 
 namespace Obskurnee.Models
@@ -10,7 +11,6 @@ namespace Obskurnee.Models
         public static readonly string[] SupportedLanguages = new[] { "sk", "en", "cs" };
         private string _key;
         private string _baseUrl;
-
         public static Config Current;
 
         public string SymmetricSecurityKey
@@ -38,6 +38,8 @@ namespace Obskurnee.Models
         public bool UseExternalFriendlyPasswordGenerator { get; set; }
         public string SiteName { get; set; }
         public bool EnablePeriodicBackup { get; set; }
+
+        public CultureInfo DefaultCultureInfo => new CultureInfo(DefaultCulture);
 
         public SigningCredentials SigningCreds { get; private set; }
     }

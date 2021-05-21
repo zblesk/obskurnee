@@ -53,11 +53,25 @@ namespace Obskurnee
                 : text.Replace("\n", "\n> ");
 
         public static string Format(this IStringLocalizer localizer, string name, params object[] args)
-            => string.Format(localizer[name], args);
+        {
+            var origCulture = CultureInfo.CurrentCulture;
+            CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture = Config.Current.DefaultCultureInfo;
+            var str = localizer[name, args];
+            CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture = origCulture;
+            return str;
+        }
 
         public static string FormatAndRender(this IStringLocalizer localizer, string name, params object[] args)
-            => localizer.Format(name, args) 
+        {
+            var origCulture = CultureInfo.CurrentCulture;
+            CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture = Config.Current.DefaultCultureInfo;
+            var str = localizer[name, args]
+                .Value
                 .RenderMarkdown();
+            CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture = origCulture;
+            return str;
+        }
+                
 
         public static string RemoveDiacritics(this string text)
         {
