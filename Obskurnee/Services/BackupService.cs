@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,6 +21,12 @@ namespace Obskurnee.Services
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+        public BackupService(
+            ApplicationDbContext db)
+        {
+            _db = db ?? throw new ArgumentNullException(nameof(db));
+            _logger = (ILogger<BackupService>)Log.ForContext<BackupService>();
         }
 
         public Task CreateBackup(string filename = null)

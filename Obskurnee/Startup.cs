@@ -78,8 +78,7 @@ namespace Obskurnee
             IWebHostEnvironment env,
             IHostApplicationLifetime lifetime,
             UserServiceBase userService,
-            ApplicationDbContext dbContext,
-            BackupService backupService)
+            ApplicationDbContext dbContext)
         {
             Log.Information("Updating database");
             dbContext.Database.Migrate();
@@ -128,7 +127,7 @@ namespace Obskurnee
 
             userService.LoadUsernameCache();
             lifetime.ApplicationStarted.Register(OnAppStarted);
-            lifetime.ApplicationStopping.Register(OnAppStopping, backupService);
+            lifetime.ApplicationStopping.Register(OnAppStopping);
             lifetime.ApplicationStopped.Register(() => Log.Information("Application stopped"));
         }
 
@@ -138,26 +137,18 @@ namespace Obskurnee
                 Config.Current.BaseUrl);
         }
 
-        private static void OnAppStopping(object data)
+        private static void OnAppStopping()
         {
             Log.Information("Application stopping");
-            Log.Information("Data type passed: {type}", data.GetType());
-            var backupService = data as BackupService;
-            if (backupService != null)
+            var backupService = new BackupService(new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>()));
+            Log.Information("Creating a backup on shutdown");
+            try
             {
-                Log.Information("Creating a backup on shutdown");
-                try
-                {
-                    backupService.CreateBackup($"obskurnee.{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.shutdown.db");
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(ex, "Error while creating backup");
-                }
+                backupService.CreateBackup($"obskurnee.{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.shutdown.db");
             }
-            else
+            catch (Exception ex)
             {
-                Log.Warning("Backup service unavailable on shutdown");
+                Log.Error(ex, "Error while creating backup");
             }
         }
 
