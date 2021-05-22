@@ -13,10 +13,10 @@ namespace Obskurnee.Services
     public class BackupService
     {
         private readonly ApplicationDbContext _db;
-        private readonly ILogger<BackupService> _logger;
+        private readonly Serilog.ILogger _logger;
 
         public BackupService(
-            ILogger<BackupService> logger,
+            Serilog.ILogger logger,
             ApplicationDbContext db)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
@@ -26,7 +26,7 @@ namespace Obskurnee.Services
             ApplicationDbContext db)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
-            _logger = (ILogger<BackupService>)Log.ForContext<BackupService>();
+            _logger = Log.Logger;
         }
 
         public Task CreateBackup(string filename = null)
@@ -38,11 +38,11 @@ namespace Obskurnee.Services
             var dir = Path.Combine(Config.DataFolder, Config.BackupFolder);
             if (!Directory.Exists(dir))
             {
-                _logger.LogInformation("Creating Backup directory at {backupDir}", dir);
+                _logger.Information("Creating Backup directory at {backupDir}", dir);
                 Directory.CreateDirectory(dir);
             }
             var path = Path.Combine(dir, filename);
-            _logger.LogInformation("Backing up to {fname}", path);
+            _logger.Information("Backing up to {fname}", path);
             return _db.Database.ExecuteSqlRawAsync($"VACUUM INTO '{path}';");
         }
     }
