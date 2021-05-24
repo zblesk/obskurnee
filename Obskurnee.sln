@@ -9,6 +9,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		DemoDebug|Any CPU = DemoDebug|Any CPU
+		DemoReleaseNoNode|Any CPU = DemoReleaseNoNode|Any CPU
 		Release|Any CPU = Release|Any CPU
 		ReleaseNoNode|Any CPU = ReleaseNoNode|Any CPU
 	EndGlobalSection
@@ -17,6 +18,8 @@ Global
 		{6762CA56-D57E-45A7-A8BC-FFA20346A7B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6762CA56-D57E-45A7-A8BC-FFA20346A7B1}.DemoDebug|Any CPU.ActiveCfg = DemoDebug|Any CPU
 		{6762CA56-D57E-45A7-A8BC-FFA20346A7B1}.DemoDebug|Any CPU.Build.0 = DemoDebug|Any CPU
+		{6762CA56-D57E-45A7-A8BC-FFA20346A7B1}.DemoReleaseNoNode|Any CPU.ActiveCfg = DemoReleaseNoNode|Any CPU
+		{6762CA56-D57E-45A7-A8BC-FFA20346A7B1}.DemoReleaseNoNode|Any CPU.Build.0 = DemoReleaseNoNode|Any CPU
 		{6762CA56-D57E-45A7-A8BC-FFA20346A7B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6762CA56-D57E-45A7-A8BC-FFA20346A7B1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6762CA56-D57E-45A7-A8BC-FFA20346A7B1}.ReleaseNoNode|Any CPU.ActiveCfg = ReleaseNoNode|Any CPU

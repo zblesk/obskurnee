@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>Obskurnee</RootNamespace>
     <UserSecretsId>efac8292-c0d4-4e78-b2e5-6e78415a844b</UserSecretsId>
-    <Configurations>Debug;Release;ReleaseNoNode;DemoDebug</Configurations>
+    <Configurations>Debug;Release;ReleaseNoNode;DemoDebug;DemoReleaseNoNode</Configurations>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -15,6 +15,14 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DemoDebug|AnyCPU'">
+    <DefineConstants>TRACE;DEMOMODE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseNoNode|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DemoReleaseNoNode|AnyCPU'">
     <DefineConstants>TRACE;DEMOMODE</DefineConstants>
   </PropertyGroup>
 
