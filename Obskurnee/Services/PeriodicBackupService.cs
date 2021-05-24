@@ -40,7 +40,7 @@ namespace Obskurnee.Services
             _logger.LogInformation("Starting Periodic backup");
             try
             {
-                backups.CreateBackup();
+                backups.CreateBackup().Wait();
             }
             catch (Exception ex)
             {

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,23 +12,17 @@ namespace Obskurnee.Services
     public class BackupService
     {
         private readonly ApplicationDbContext _db;
-        private readonly Serilog.ILogger _logger;
+        private readonly ILogger<BackupService> _logger;
 
         public BackupService(
-            Serilog.ILogger logger,
+            ILogger<BackupService> logger,
             ApplicationDbContext db)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-        public BackupService(
-            ApplicationDbContext db)
-        {
-            _db = db ?? throw new ArgumentNullException(nameof(db));
-            _logger = Log.Logger;
-        }
 
-        public Task CreateBackup(string filename = null)
+        public async Task CreateBackup(string filename = null)
         {
             if (string.IsNullOrWhiteSpace(filename))
             {
@@ -38,12 +31,13 @@ namespace Obskurnee.Services
             var dir = Path.Combine(Config.DataFolder, Config.BackupFolder);
             if (!Directory.Exists(dir))
             {
-                _logger.Information("Creating Backup directory at {backupDir}", dir);
+                _logger.LogInformation("Creating Backup directory at {backupDir}", dir);
                 Directory.CreateDirectory(dir);
             }
             var path = Path.Combine(dir, filename);
-            _logger.Information("Backing up to {fname}", path);
-            return _db.Database.ExecuteSqlRawAsync($"VACUUM INTO '{path}';");
+            _logger.LogInformation("Backing up to {fname}", path);
+            await _db.Database.ExecuteSqlRawAsync($"VACUUM INTO '{path}';");
+            _logger.LogInformation("Backup to {fname} finished", path);
         }
     }
 }

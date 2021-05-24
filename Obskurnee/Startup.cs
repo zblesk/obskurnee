@@ -140,16 +140,6 @@ namespace Obskurnee
         private static void OnAppStopping()
         {
             Log.Information("Application stopping");
-            var backupService = new BackupService(new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>()));
-            Log.Information("Creating a backup on shutdown");
-            try
-            {
-                backupService.CreateBackup($"obskurnee.{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.shutdown.db");
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Error while creating backup");
-            }
         }
 
         private static void ConfigureAuthAndIdentity(IServiceCollection services)
