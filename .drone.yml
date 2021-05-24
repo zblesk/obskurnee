@@ -67,6 +67,29 @@ trigger:
 ---
 kind: pipeline
 type: docker
+name: Build Demo
+
+steps:
+
+- name: docker build
+  image: plugins/docker
+  settings:
+    username: 
+      from_secret: docker_username
+    password: 
+      from_secret: docker_password
+    repo: 
+      from_secret: docker_reponame
+    dockerfile: Demo.Dockerfile
+    tags: demo
+
+trigger:
+  branch:
+  - master
+
+---
+kind: pipeline
+type: docker
 name: Notify
 
 steps:
@@ -87,26 +110,3 @@ depends_on:
 - Build Master
 - Build Tags
 - Build Demo
-
----
-kind: pipeline
-type: docker
-name: Build Demo
-
-steps:
-
-- name: docker build
-  image: plugins/docker
-  settings:
-    username: 
-      from_secret: docker_username
-    password: 
-      from_secret: docker_password
-    repo: 
-      from_secret: docker_reponame
-    dockerfile: Demo.Dockerfile
-    tags: demo
-
-trigger:
-  branch:
-  - master
