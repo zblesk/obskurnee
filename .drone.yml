@@ -62,7 +62,7 @@ steps:
 
 trigger:
   branch:
-    - frontend
+    - develop
 
 ---
 kind: pipeline
