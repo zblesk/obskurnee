@@ -85,10 +85,6 @@ namespace Obskurnee
             dbContext.Database.Migrate();
 
             Log.Information("Setting up for environment {env}", env.EnvironmentName);
-            app.UseSerilogRequestLogging(opts =>
-            {
-                opts.EnrichDiagnosticContext = PushSerilogProperties;
-            });
             app.UseRequestLocalization();
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -114,6 +110,10 @@ namespace Obskurnee
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseSerilogRequestLogging(opts =>
+            {
+                opts.EnrichDiagnosticContext = PushSerilogProperties;
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
