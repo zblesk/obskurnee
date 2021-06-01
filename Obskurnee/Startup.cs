@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -84,7 +85,10 @@ namespace Obskurnee
             dbContext.Database.Migrate();
 
             Log.Information("Setting up for environment {env}", env.EnvironmentName);
-            app.UseSerilogRequestLogging();
+            app.UseSerilogRequestLogging(opts =>
+            {
+                opts.EnrichDiagnosticContext = PushSerilogProperties;
+            });
             app.UseRequestLocalization();
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -268,6 +272,12 @@ namespace Obskurnee
                     options.AddInitialRequestCultureProvider(
                         new AcceptLanguageHeaderRequestCultureProvider());
                 });
+        }
+
+        public void PushSerilogProperties(IDiagnosticContext diagnosticContext, HttpContext httpContext)
+        {
+            diagnosticContext.Set("AspNetUserName", httpContext?.User?.Identity?.Name);
+            diagnosticContext.Set("AspNetUserId", httpContext?.User?.GetUserId());
         }
     }
 }
