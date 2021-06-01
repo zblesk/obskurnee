@@ -128,7 +128,7 @@ namespace Obskurnee
             userService.LoadUsernameCache();
             lifetime.ApplicationStarted.Register(OnAppStarted);
             lifetime.ApplicationStopping.Register(OnAppStopping);
-            lifetime.ApplicationStopped.Register(() => Log.Information("Application stopped"));
+            lifetime.ApplicationStopped.Register(OnAppStopped);
         }
 
         private static void OnAppStarted()
@@ -140,6 +140,11 @@ namespace Obskurnee
         private static void OnAppStopping()
         {
             Log.Information("Application stopping");
+        }
+        private static void OnAppStopped()
+        {
+            Log.Information("Application stopped");
+            Log.CloseAndFlush();
         }
 
         private static void ConfigureAuthAndIdentity(IServiceCollection services)

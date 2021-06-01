@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using System.Collections.Generic;
 
@@ -8,8 +9,11 @@ namespace Obskurnee.Services
 {
     public class ApplicationDbContext : IdentityDbContext<Bookworm>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts) : base(opts)
+        private readonly ILoggerFactory _loggerFactory;
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts, ILoggerFactory loggerFactory) : base(opts)
         {
+            _loggerFactory = loggerFactory;
         }
 
         public DbSet<Setting> Settings { get; set; }
@@ -34,5 +38,11 @@ namespace Obskurnee.Services
 
         public IIncludableQueryable<BookclubReview, Post> BookReviewsWithData
             => BookReviews.Include(br => br.Book).ThenInclude(b => b.Post);
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLoggerFactory(_loggerFactory);
+            base.OnConfiguring(optionsBuilder);
+        }
     }
 }
