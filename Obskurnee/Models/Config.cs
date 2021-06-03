@@ -38,6 +38,7 @@ namespace Obskurnee.Models
         public bool UseExternalFriendlyPasswordGenerator { get; set; }
         public string SiteName { get; set; }
         public bool EnablePeriodicBackup { get; set; }
+        public int PeriodicBackupIntervalHours { get; set; }
 
         public CultureInfo DefaultCultureInfo => new CultureInfo(DefaultCulture);
 

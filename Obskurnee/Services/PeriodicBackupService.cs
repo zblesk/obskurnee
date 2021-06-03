@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Obskurnee.Models;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +13,6 @@ namespace Obskurnee.Services
         private readonly ILogger<PeriodicBackupService> _logger;
         private Timer _timer;
         private readonly IServiceScopeFactory _scopeFactory;
-        private const int backupIntervalHours = 12;
 
         public PeriodicBackupService(
             ILogger<PeriodicBackupService> logger,
@@ -25,11 +25,11 @@ namespace Obskurnee.Services
         public Task StartAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Periodic Backup Service started. Backup interval: every {hrs} hours",
-                backupIntervalHours);
+                Config.Current.PeriodicBackupIntervalHours);
             _timer = new Timer(MakeBackup,
                 null,
-                TimeSpan.FromHours(backupIntervalHours),
-                TimeSpan.FromHours(backupIntervalHours));
+                TimeSpan.FromHours(Config.Current.PeriodicBackupIntervalHours),
+                TimeSpan.FromHours(Config.Current.PeriodicBackupIntervalHours));
             return Task.CompletedTask;
         }
 

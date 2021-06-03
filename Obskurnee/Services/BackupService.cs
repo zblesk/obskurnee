@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Obskurnee.Services
@@ -36,7 +37,7 @@ namespace Obskurnee.Services
             }
             var path = Path.Combine(dir, filename);
             _logger.LogInformation("Backing up to {fname}", path);
-            await _db.Database.ExecuteSqlRawAsync($"VACUUM INTO '{path}';");
+            await _db.Database.ExecuteSqlRawAsync($"VACUUM INTO '{path}';", (CancellationToken)new CancellationTokenSource(200).Token);
             _logger.LogInformation("Backup to {fname} finished", path);
         }
     }
