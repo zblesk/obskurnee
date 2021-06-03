@@ -23,7 +23,7 @@ namespace Obskurnee.Controllers
         [ResponseCache(Duration = 31536000, Location = ResponseCacheLocation.Any)]
         public async Task<IActionResult> Get(string imageName)
         {
-            var image = await _db.Images.FirstOrDefaultAsync(i => i.FileName == imageName);
+            var image = await _db.Images.AsNoTracking().FirstOrDefaultAsync(i => i.FileName == imageName);
             if (image != null)
             {
                 return File(image.FileContents, ExtensionToMime(image.Extension));
