@@ -72,7 +72,6 @@ namespace Obskurnee
             return str;
         }
                 
-
         public static string RemoveDiacritics(this string text)
         {
             return string.Concat(
