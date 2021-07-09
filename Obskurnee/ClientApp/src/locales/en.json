@@ -113,14 +113,14 @@
 	"poll": {
 		"alreadyVoted": "{0} out of {1} readers have voted.",
 		"closeVote": "Close voting now",
-		"goToTiebreaker": "Go to tiebreak",
+		"goToTiebreaker": "Go to tiebreaker",
 		"notYetVoted": "Yet to vote:",
 		"options": "Options",
 		"pollProgress": "Voting progress",
 		"previewInfo": "Click on one of the titles for a detailed description.",
 		"resultLine": "{0} votes - {1}%",
 		"results": "Results",
-		"tiebreaker": "Tiebreak",
+		"tiebreaker": "Tiebreaker",
 		"tiebreakerDescription": "We have several winners with the same number of votes:",
 		"vote": "Vote",
 		"winner": "Winner"
