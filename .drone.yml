@@ -87,6 +87,9 @@ trigger:
   branch:
   - master
 
+depends_on:
+- Build Master
+
 ---
 kind: pipeline
 type: docker
