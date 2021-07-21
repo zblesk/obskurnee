@@ -137,8 +137,14 @@ namespace Obskurnee
 
         private static void OnAppStarted()
         {
+#if DEMOMODE
+            Log.Warning("Application started at {@base} IN DEMO MODE",
+                Config.Current.BaseUrl);
+#else
             Log.Information("Application started at {@base}",
                 Config.Current.BaseUrl);
+#endif
+
         }
 
         private static void OnAppStopping()

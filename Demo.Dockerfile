@@ -25,6 +25,7 @@ WORKDIR /obskurnee
 COPY --from=dotnetbuild /app ./
 COPY --from=nodebuild /frontend/dist ./ClientApp/dist
 COPY Demo/obskurnee.db ./data/
+COPY Demo/appsettings.json ./
 
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 RUN apk add --no-cache icu-libs

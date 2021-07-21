@@ -6,23 +6,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-
+    
 namespace Obskurnee.Services
 {
     public class BookService
     {
         private readonly ILogger<BookService> _logger;
         private readonly ApplicationDbContext _db;
-        private readonly UserServiceBase _users;
 
         public BookService(
             ILogger<BookService> logger,
-            ApplicationDbContext database,
-            UserServiceBase users)
+            ApplicationDbContext database)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _db = database ?? throw new ArgumentNullException(nameof(database));
-            _users = users ?? throw new ArgumentNullException(nameof(users));
         }
 
         public Task<List<Book>> GetBooksNewestFirst()

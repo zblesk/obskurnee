@@ -4,8 +4,6 @@ using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -30,7 +28,7 @@ namespace Obskurnee.Services
 
         public override async Task<ClaimsPrincipal> GetPrincipal(LoginCredentials creds)
             => await _signInManager.CreateUserPrincipalAsync(
-                await _userManager.FindByEmailAsync("janka@bookclub.gov"));
+                await _userManager.FindByEmailAsync("janka@fake.mail"));
 
         public override Task<bool> InitiatePasswordReset(string email)
             => throw new ForbiddenException(_localizer["forbiddenInDemo"]);
