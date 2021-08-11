@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-    
+
 namespace Obskurnee.Services
 {
     public class BookService
@@ -25,7 +25,7 @@ namespace Obskurnee.Services
         public Task<List<Book>> GetBooksNewestFirst()
             => _db.BooksWithData.OrderByDescending(b => b.Order).ToListAsync();
 
-        public Task<Book> GetBook(int bookId) =>  _db.Books.FirstAsync(b => b.BookId == bookId);
+        public Task<Book> GetBook(int bookId) => _db.Books.FirstAsync(b => b.BookId == bookId);
 
         public Task<Book> GetLatestBook() => _db.BooksWithData
             .OrderByDescending(b => b.Order)
@@ -35,7 +35,7 @@ namespace Obskurnee.Services
         {
             _logger.LogInformation("Creating book for poll {pollId}", poll.PollId);
             Trace.Assert(poll.IsClosed);
-            var previousBookNo = _db.Books.Count() == 0
+            var previousBookNo = !_db.Books.Any()
                 ? 0
                 : _db.Books.Max(b => b.Order);
             var book = new Book(ownerId)
@@ -43,7 +43,7 @@ namespace Obskurnee.Services
                 BookDiscussionId = poll.DiscussionId,
                 BookPollId = poll.PollId,
                 Order = previousBookNo + 1,
-                RoundId = roundId ,
+                RoundId = roundId,
                 PostId = poll.Results.WinnerPostId,
             };
             await _db.SaveChangesAsync();

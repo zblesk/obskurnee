@@ -1,10 +1,12 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace Obskurnee.Models
 {
     [Table("GoodreadsReviews")]
+    [DebuggerDisplay("{BookTitle} - {Author}")]
     public class GoodreadsReview : HeaderData
     {
         public enum ReviewKind { Read, CurrentlyReading };

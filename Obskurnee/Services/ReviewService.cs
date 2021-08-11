@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
-using Obskurnee.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +10,7 @@ using static Obskurnee.Models.GoodreadsReview.ReviewKind;
 
 namespace Obskurnee.Services
 {
+
     public class ReviewService
     {
         private readonly ILogger<ReviewService> _logger;
@@ -20,6 +20,8 @@ namespace Obskurnee.Services
         private readonly ApplicationDbContext _db;
         private readonly Config _config;
         private readonly IStringLocalizer<Strings> _localizer;
+        private static readonly ReviewIdComparer _comparer = new();
+        private readonly MatrixService _matrix;
 
         public ReviewService(
             ILogger<ReviewService> logger,
@@ -28,6 +30,7 @@ namespace Obskurnee.Services
             IStringLocalizer<NewsletterStrings> newsletterLocalizer,
             IStringLocalizer<Strings> localizer,
             NewsletterService newsletter,
+            MatrixService matrix,
             ApplicationDbContext db)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -37,33 +40,28 @@ namespace Obskurnee.Services
             _db = db ?? throw new ArgumentNullException(nameof(db));
             _config = config ?? throw new ArgumentNullException(nameof(config));
             _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
+            _matrix = matrix ?? throw new ArgumentNullException(nameof(matrix));
         }
-        
-        public Task<List<GoodreadsReview>> GetAllCurrentlyReading() 
+
+        public Task<List<GoodreadsReview>> GetAllCurrentlyReading()
             => _db.GoodreadsReviews.Where(r => r.Kind == CurrentlyReading).ToListAsync();
 
         public async Task FetchReviewUpdates(Bookworm user)
         {
             try
             {
-                _logger.LogInformation("Updating GR review from shelf RSS for {userId}", user.Id);
-                _db.GoodreadsReviews.RemoveRange(
-                    _db.GoodreadsReviews
-                        .Where(r => r.OwnerId == user.Id
-                                    && r.Kind == CurrentlyReading));
+                var newCurrent = await UpdateCurrentlyReading(user);
+                var newReviews = await UpdateRead(user);
                 await _db.SaveChangesAsync();
-                var reading = _scraper.GetCurrentlyReadingBooks(user).ToList();
-                _logger.LogInformation("Adding {count} Currently Reading for {userId}", reading.Count, user.Id);
-                await _db.GoodreadsReviews.AddRangeAsync(reading);
-                var readBooks = _scraper.GetReadBooks(user).ToList();
-                var ids = readBooks.Select(r => r.ReviewId);
-                var existing = _db.GoodreadsReviews.Where(r => ids.Contains(r.ReviewId)).ToArray();
-                _logger.LogInformation("Deleting {count} Read for {userId}", existing.Length, user.Id);
-                _db.GoodreadsReviews.RemoveRange(existing);
-                await _db.SaveChangesAsync();
-                _logger.LogInformation("Adding {count} Read for {userId}", readBooks.Count, user.Id);
-                await _db.GoodreadsReviews.AddRangeAsync(readBooks);
-                await _db.SaveChangesAsync();
+
+                foreach (var r in newCurrent)
+                {
+                    await _matrix.SendMessage($"{user.UserName} cita {r.BookTitle} - {r.Author} ([GR link]({r.ReviewUrl}))");
+                }
+                foreach (var r in newReviews.Take(10))
+                {
+                    await _matrix.SendMessage($"{user.UserName} hodnotila {r.BookTitle} - {r.Author} na: \n {r.Rating}\n{r.ReviewText.AddMarkdownQuote()}\n ([GR link]({r.ReviewUrl}))");
+                }
             }
             catch (Exception ex)
             {
@@ -122,6 +120,61 @@ namespace Obskurnee.Services
                     Enumerable.Range(0, review.Rating).Aggregate("", (acc, _) => $"{acc}⭐"),
                     review.ReviewText.AddMarkdownQuote(),
                     review.OwnerName));
+        }
+
+        /// <summary>
+        /// Updates the user's Currently Reading shelf
+        /// </summary>
+        /// <returns>Returns a sequence of _newly added_ reviews.</returns>
+        private async Task<IEnumerable<GoodreadsReview>> UpdateCurrentlyReading(Bookworm user)
+        {
+            _logger.LogInformation("Updating GR review from shelf RSS for {userId}", user.Id);
+            
+            var existing = _db.GoodreadsReviews
+                            .Where(r => r.OwnerId == user.Id
+                                        && r.Kind == CurrentlyReading
+                                        && r.GoodreadsBookId != null)
+                            .ToHashSet(_comparer);
+            var currentlyReading = _scraper
+                            .GetCurrentlyReadingBooks(user)
+                            .Where(r => !string.IsNullOrWhiteSpace(r.GoodreadsBookId))
+                            .ToHashSet(_comparer);
+
+            var existingCopy = new HashSet<GoodreadsReview>(existing, _comparer);
+            existing.ExceptWith(currentlyReading);
+            currentlyReading.ExceptWith(existingCopy);
+            
+            _logger.LogInformation("Removing {count} Currently Reading for {userId}", existing.Count, user.Id);
+            _db.GoodreadsReviews.RemoveRange(existing);
+            _logger.LogInformation("Adding {count} Currently Reading for {userId}", currentlyReading.Count, user.Id);
+            await _db.GoodreadsReviews.AddRangeAsync(currentlyReading);
+            return currentlyReading;
+        }
+
+        /// <summary>
+        /// Updates the user's Currently Read
+        /// </summary>
+        /// <returns>Returns a sequence of _newly added_ reviews.</returns>
+        private async Task<IEnumerable<GoodreadsReview>> UpdateRead(Bookworm user)
+        {
+            var readBooks = _scraper
+                            .GetReadBooks(user)
+                            .Where(r => !string.IsNullOrWhiteSpace(r.GoodreadsBookId))
+                            .ToHashSet(_comparer);
+            var readIds = readBooks.Select(r => r.GoodreadsBookId);
+
+            var existing = (from r in _db.GoodreadsReviews
+                            where r.OwnerId == user.Id
+                                 && r.Kind == Read
+                                 && r.GoodreadsBookId != null
+                                 && readIds.Contains(r.GoodreadsBookId)
+                            select r)
+                           .ToHashSet(_comparer);
+            readBooks.ExceptWith(existing);
+
+            _logger.LogInformation("Adding {count} Read for {userId}", readBooks.Count, user.Id);
+            await _db.GoodreadsReviews.AddRangeAsync(readBooks);
+            return readBooks;
         }
     }
 }
