@@ -122,14 +122,28 @@
 
 &gt; {0:description}</value>
   </data>
+  <data name="newBookCurrentlyReadingNotification" xml:space="preserve">
+    <value>**{0}** číta **{1} - {2}** ([GR link]({3}))</value>
+  </data>
   <data name="newBookPostBodyMarkdown" xml:space="preserve">
     <value>## {0:title} - {1:author}
 
-&gt; {2:text}
+{2:text}
 
 _{4} strán | [link na GR]({6:url})_
 
 [Návrhy]({3:link})</value>
+  </data>
+  <data name="newBookReadNotificationNoReview" xml:space="preserve">
+    <value>**{0}** hodnotí **{1} - {2}** na {3} ([GR link]({4}))</value>
+  </data>
+  <data name="newBookReadNotificationReview" xml:space="preserve">
+    <value>**{0}** hodnotí **{1} - {2}**:  
+{3}  
+{4}  
+
+([GR link]({5}))
+</value>
   </data>
   <data name="newBookSubject" xml:space="preserve">
     <value>A víťazom sa stáva...</value>
@@ -137,7 +151,7 @@ _{4} strán | [link na GR]({6:url})_
   <data name="newBookVotedBodyMarkdown" xml:space="preserve">
     <value># [{1:title} - {2:author}]({0:link})
 
-&gt; {3:description}
+{3:description}
 
 _{4} strán | [link na GR]({6:url}) | navrhla {5:suggestedby}_</value>
   </data>
@@ -155,7 +169,7 @@ Hlasovanie [je tu]({0:link}).</value>
   <data name="newRecBodyMarkdown" xml:space="preserve">
     <value>## {0:title} - {1:author}
 
-&gt; {2:text}
+{2:text}
 
 _{3} strán | [link na GR]({4:url})_
 
@@ -187,7 +201,7 @@ Návrhy [pridávaj tu]({0:link}).</value>
   <data name="newThemePostBodyMarkdown" xml:space="preserve">
     <value>## {0:title} 
 
-&gt; {1:text}
+{1:text}
 
 [link]({2:link})</value>
   </data>

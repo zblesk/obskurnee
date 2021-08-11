@@ -122,6 +122,9 @@
 
 &gt; {0:description}</value>
   </data>
+  <data name="newBookCurrentlyReadingNotification" xml:space="preserve">
+    <value>**{0}** is reading **{1} - {2}** ([GR link]({3}))</value>
+  </data>
   <data name="newBookPostBodyMarkdown" xml:space="preserve">
     <value>## {0:title} - {1:author}
 
@@ -130,6 +133,16 @@
 _{4} pages | [GR link]({6:url})_
 
 [Návrhy]({3:link})</value>
+  </data>
+  <data name="newBookReadNotificationNoReview" xml:space="preserve">
+    <value>**{0}** rates **{1} - {2}** with {3} ([GR link]({4}))</value>
+  </data>
+  <data name="newBookReadNotificationReview" xml:space="preserve">
+    <value>**{0}** rates **{1} - {2}**:  
+{3}  
+{4}  
+
+([GR link]({5}))</value>
   </data>
   <data name="newBookSubject" xml:space="preserve">
     <value>And the winner is...</value>

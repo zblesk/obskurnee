@@ -56,11 +56,36 @@ namespace Obskurnee.Services
 
                 foreach (var r in newCurrent)
                 {
-                    await _matrix.SendMessage($"{user.UserName} cita {r.BookTitle} - {r.Author} ([GR link]({r.ReviewUrl}))");
+                    await _matrix.SendMessage(
+                        _newsletterLocalizer.Format("newBookCurrentlyReadingNotification",
+                            user.UserName,
+                            r.BookTitle,
+                            r.Author,
+                            r.ReviewUrl));
                 }
                 foreach (var r in newReviews.Take(10))
                 {
-                    await _matrix.SendMessage($"{user.UserName} hodnotila {r.BookTitle} - {r.Author} na: \n {r.Rating}\n{r.ReviewText.AddMarkdownQuote()}\n ([GR link]({r.ReviewUrl}))");
+                    if (!string.IsNullOrWhiteSpace(r.ReviewText))
+                    {
+                        await _matrix.SendMessage(
+                            _newsletterLocalizer.Format("newBookReadNotificationReview",
+                                user.UserName,
+                                r.BookTitle,
+                                r.Author,
+                                new string('⭐', r.Rating),
+                                r.ReviewText.AddMarkdownQuote(),
+                                r.ReviewUrl));
+                    }
+                    else
+                    {
+                        await _matrix.SendMessage(
+                            _newsletterLocalizer.Format("newBookReadNotificationNoReview",
+                                user.UserName,
+                                r.BookTitle,
+                                r.Author,
+                                new string('⭐', r.Rating),
+                                r.ReviewUrl));
+                    }
                 }
             }
             catch (Exception ex)
@@ -154,7 +179,7 @@ namespace Obskurnee.Services
         /// <summary>
         /// Updates the user's Currently Read
         /// </summary>
-        /// <returns>Returns a sequence of _newly added_ reviews.</returns>
+        /// <returns>Returns a sequence of _newly added_ reviews that at least have a rating or a review.</returns>
         private async Task<IEnumerable<GoodreadsReview>> UpdateRead(Bookworm user)
         {
             var readBooks = _scraper
@@ -174,7 +199,8 @@ namespace Obskurnee.Services
 
             _logger.LogInformation("Adding {count} Read for {userId}", readBooks.Count, user.Id);
             await _db.GoodreadsReviews.AddRangeAsync(readBooks);
-            return readBooks;
+            return readBooks
+                    .Where(r => r.Rating > 0 || !string.IsNullOrWhiteSpace(r.ReviewText));
         }
     }
 }
