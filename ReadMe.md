@@ -10,7 +10,7 @@ Obskurnee is a simple, user-friendly web app that will help you decide on your b
 
 Our aim was to make the app user friendly and intuitive to use. 
 
->  ℹ Keep in mind: there is no 'central service' where you could register and just start using the app, at least not for now. You have to run the web app yourself. If you just want to check it out, have a look at the demo. Simply log in with any made-up email address and password.
+>  ℹ Keep in mind: there is no 'central service' where you could register and just start using the app, at least not for now. You have to run the web app yourself. If you just want to check it out, have a look at the [demo](https://obskurnee.zblesk.net/). Simply log in with any made-up email address and password.
 
 >  ℹ The [GitHub](https://github.com/zblesk/obskurnee) repository is a mirror. 
 
@@ -48,9 +48,9 @@ The easiest way to add a book is to copy and paste a Goodreads URL and wait for 
 
 Only **moderators can add new users** (though this is disabled in the demo). Once logged in, **new users are prompted to fill out their profiles** - especially their Goodreads profile (which is also used to **load their "Currently Reading" shelf**), phone number (since we mainly communicate over Whatsapp), and a brief bio about themselves and/or their reading preferences. Each user's page also shows their reviews and recommendations.
 
-# Try the demo
+# [Try the demo](https://obskurnee.zblesk.net/)
 
-sorry, demo not ready yet. Hopefully, soon.
+**Enter *any* email and password.**
 
 # Setup and tech info
 
