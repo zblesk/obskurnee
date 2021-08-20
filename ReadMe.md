@@ -54,11 +54,46 @@ Only **moderators can add new users** (though this is disabled in the demo). Onc
 
 # Setup and tech info
 
+## Quickstart
+
 To try it out, run `docker run -p 8080:8080 -e DefaultCulture=en zblesk/obskurnee`.
 
 Then navigate to http://localhost:8080/setup and create the first user.
 
-More complete setup info to come later.
+## Docker-compose
+
+The above doesn't persist your data, so while good for giving Obskurnee a try, don't run it in prod like that. 
+
+A minimal setup with persistence and mailing via Mailgun looks like this:
+
+```yaml
+version: "3"
+
+services:
+  obskurnee:
+    image: zblesk/obskurnee:latest
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - ./data:/obskurnee/data
+    environment:
+      - SiteName=Book club!
+      - BaseUrl=https://obskurnee.mydomain.com
+      - DefaultCulture=en
+      - SymmetricSecurityKey=87965trfvbh86somebigrandomsecuritykeyhere
+      - MailerType=mailgun
+      - Mailgun__EndpointUri=https://api.mailgun.net/v3/
+      - Mailgun__SenderEmail=Bookclub <bookclub@mydomain.com>
+      - Mailgun__SenderDomainName=mydomain.com
+      - Mailgun__ApiKey=key-super1337secret
+```
+
+
+
+Save it as `docker-compose.yml` and start with `docker-compose up`. 
+
+Then navigate to http://localhost:8080/setup and create the first user.
 
 # Development 
 
