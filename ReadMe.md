@@ -95,6 +95,58 @@ Save it as `docker-compose.yml` and start with `docker-compose up`.
 
 Then navigate to http://localhost:8080/setup and create the first user.
 
+## nginx reverse proxy config
+
+[Here's a blog post](https://zblesk.net/blog/putting-obskurnee-behind-a-proxy/) with some technical background. The important part right now is that some features use Signlar, which uses WebSockets, so the proxy must needs take that into account.
+
+```conf
+map $http_connection $connection_upgrade {
+    "~*Upgrade" $http_connection;
+    default keep-alive;
+}
+
+server {
+    server_name obskurnee.mydomain.com;
+
+    location /hubs {
+       proxy_pass http://127.0.0.1:8080;
+       proxy_set_header Upgrade $http_upgrade;
+       proxy_set_header Connection $connection_upgrade;
+       proxy_cache off;
+       proxy_buffering off;
+       proxy_read_timeout 100s;
+
+       proxy_set_header Host $host;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_set_header X-Forwarded-Proto $scheme;
+     }
+
+    location / {
+       proxy_pass http://127.0.0.1:8080;
+
+       proxy_http_version 1.1;
+       proxy_set_header Upgrade $http_upgrade;
+       proxy_set_header Connection keep-alive;
+       proxy_set_header Host $host;
+       proxy_cache_bypass $http_upgrade;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_set_header X-Forwarded-Proto $scheme;
+
+       proxy_connect_timeout 100s;
+       proxy_read_timeout 100s;
+
+       gzip_types application/json application/javascript;
+       gzip_proxied no-cache no-store private expired auth;
+     }
+}
+```
+
+
+
+
+
+
+
 # Development 
 
 You will need .NET 5.0 and Node (we run on 14.x).
