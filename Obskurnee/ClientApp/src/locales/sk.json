@@ -181,6 +181,7 @@
     "selectPreferredLanguage": "Vyber preferovaný jazyk",
     "uploadAvatar": "Nahrať profilový obrázok (100 x 100 px):",
     "wannaAddSome": "Prečo nejaké nepridať?",
-    "andMore": "... a ďalšie."
+    "andMore": "... a ďalšie.",
+    "userIsMod": "Tento používateľ je moderátor."
   }
 }

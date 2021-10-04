@@ -48,14 +48,14 @@
           <img  :src="user.avatarUrl" :title="user.name" :alt="user.name" />
           <p class="mod-text" v-if="user.isModerator">
             {{$t('global.mod')}}
-            <span class="mod-tooltip">Tento uživatel je moderátor.</span>
+            <span class="mod-tooltip">{{ $t('user.userIsMod') }}</span>
           </p>
         </div>
         <div v-else class="user-pic-placeholder">
           <img src="../../assets/reader.svg"  :title="user.name" :alt="user.name" />
           <p class="mod-text" v-if="user.isModerator">
             {{$t('global.mod')}}
-            <span class="mod-tooltip">Tento uživatel je moderátor.</span>
+            <span class="mod-tooltip">{{ $t('user.userIsMod') }}</span>
           </p>
         </div>
 
