@@ -11,7 +11,7 @@
         </a> 
         <p v-if="post.author" class="book__author">{{ post.author }}</p>
         <p class="book__pages" v-if="post.pageCount">{{$t('bookpost.numPages', [post.pageCount])}}</p>
-        <p class="book__owner">{{$t('bookpost.suggestedBy', [post.ownerName])}}</p>
+        <p class="book__owner">{{$t('bookpost.suggestedBy')}} <user-link :userId="post.ownerId" :userName="post.ownerName" /></p>
         <div class="book__text" v-html="post.renderedText"> </div>
       </div>
       <div class="book__repost" v-if="isRepostingAllowed 
@@ -28,7 +28,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import UserLink from './UserLink.vue'
     export default {
+        components: { UserLink },
         name: "BookPost",
         props: {
           post: {
