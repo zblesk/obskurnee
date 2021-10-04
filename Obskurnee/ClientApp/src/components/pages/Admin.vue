@@ -48,13 +48,16 @@
         <div class="section">
             <h2 class="section-title u-mt-sp2">{{$t('admin.mods')}}</h2>
             <p>{{$t('admin.currentMods')}} <span v-for="mod in mods" v-bind:key="mod.userId"><router-link :to="{ name: 'user', params: { email: mod.email } }">{{mod.name}}</router-link>, </span></p>
-            <p>{{$t('admin.addMod')}}</p>
-            <div class="row" v-for="user in nonMods" v-bind:key="user.userId">
-                <div class="wannabe-mod">
-                    <router-link :to="{ name: 'user', params: { email: user.email } }">{{ user.name }}</router-link> 
-                </div>
-                <div class="add-button">
-                    <button @click="makeMod(user.email)" class="button-primary button-small">{{$t('menus.add')}}</button>
+            
+            <div v-if="nonMods.length">
+                <p>{{$t('admin.addMod')}}</p>
+                <div class="row" v-for="user in nonMods" v-bind:key="user.userId">
+                    <div class="wannabe-mod">
+                        <router-link :to="{ name: 'user', params: { email: user.email } }">{{ user.name }}</router-link> 
+                    </div>
+                    <div class="add-button">
+                        <button @click="makeMod(user.email)" class="button-primary button-small">{{$t('menus.add')}}</button>
+                    </div>
                 </div>
             </div>
         </div>
