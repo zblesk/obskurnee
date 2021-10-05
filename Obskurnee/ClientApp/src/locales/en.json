@@ -14,7 +14,8 @@
     "noticeboard": "Homepage message",
     "noticeboardContent": "Message text",
     "promotedToMod": "{0} promoted to mod",
-    "subscribers": "Newsletter subscriptions"
+    "subscribers": "Newsletter subscriptions",
+    "confirmAddMod": "Really make {0} a moderator?"
   },
   "bookpost": {
     "addToOngoing": "Add to the current voting round",
@@ -26,7 +27,8 @@
     "closeCreatePoll": "Close discussion and create poll",
     "failedToAddPost": "Failed to add suggestion",
     "goToPoll": "Go to poll",
-    "noneSoFar": "Nothing here yet"
+    "noneSoFar": "Nothing here yet",
+    "confirmClose": "Do you really want to close this discussion?"
   },
   "global": {
     "allEvents": "All events: {0}",
@@ -108,7 +110,8 @@
     "enterMail": "Enter your email",
     "enterPassword": "Enter your password",
     "initiateReset": "Reset your password",
-    "title": "Change your password"
+    "title": "Change your password",
+    "confirmClose": "Do you really want to close this poll?"
   },
   "poll": {
     "alreadyVoted": "{0} out of {1} readers have voted.",

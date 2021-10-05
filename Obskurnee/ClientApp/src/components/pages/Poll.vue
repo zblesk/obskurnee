@@ -140,10 +140,13 @@ export default {
     },
     doClosePoll()
     {
-      this.closePoll(this.poll.pollId)
-        .then((data) => {
-          this.poll = data.poll;
-        });
+      if (confirm(this.$t('poll.confirmClose')))
+      {
+        this.closePoll(this.poll.pollId)
+          .then((data) => {
+            this.poll = data.poll;
+          });
+      }
     }
   },
   watch: {

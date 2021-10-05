@@ -137,6 +137,8 @@ export default {
         },
         makeMod(email)
         {
+           if (confirm(this.$t('admin.confirmAddMod', [email])))
+           {
             axios.post("/api/admin/makemod/" + email)
             .then(() => 
                 {
@@ -144,6 +146,7 @@ export default {
                     this.getUsers();
                 })
             .catch(this.$handleApiError);
+           }
         },
         getNewsletterInfo()
         {

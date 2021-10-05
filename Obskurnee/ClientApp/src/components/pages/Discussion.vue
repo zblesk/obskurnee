@@ -59,6 +59,8 @@ export default {
     ...mapActions("recommendations", ["fetchRecommendationById"]),
     closeDiscussion() 
     {
+      if (confirm(this.$t('discussion.confirmClose')))
+      {
         axios.post(
           "/api/rounds/close-discussion/" + this.$route.params.discussionId)
         .then((response) => {
@@ -67,6 +69,7 @@ export default {
             this.$router.push({ name: "poll", params: { pollId: this.pollId} });
         })
         .catch(this.$handleApiError);
+      }
     },
     onNewPost(post)
     {

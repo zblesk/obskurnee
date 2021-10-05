@@ -14,7 +14,8 @@
     "noticeboard": "Oznámenie na hlavnej stránke",
     "noticeboardContent": "Text oznámení",
     "promotedToMod": "{0} povýšená na moderátora",
-    "subscribers": "Užívatelia prihlásení k odberu newslettera"
+    "subscribers": "Užívatelia prihlásení k odberu newslettera",
+    "confirmAddMod": "Naozaj urobiť z {0} moderátora?"
   },
   "bookpost": {
     "addToOngoing": "Pridaj do aktuálneho hlasovania",
@@ -26,7 +27,8 @@
     "closeCreatePoll": "Uzavrieť diskusiu a vytvoriť hlasovanie",
     "failedToAddPost": "Nepodarilo sa pridať príspevok",
     "goToPoll": "Prejsť na hlasovanie",
-    "noneSoFar": "Zatial tu nič nie je"
+    "noneSoFar": "Zatial tu nič nie je",
+    "confirmClose": "Naozaj chceš uzavrieť diskusiu?"
   },
   "global": {
     "allEvents": "Všetky udalosti: {0}",
@@ -123,7 +125,8 @@
     "tiebreaker": "Rozstrel",
     "tiebreakerDescription": "Máme niekoľko víťazov s rovnakým počtom hlasov:",
     "vote": "Hlasovať",
-    "winner": "Víťaz"
+    "winner": "Víťaz",
+    "confirmClose": "Naozaj chceš uzavrieť hlasovanie?"
   },
   "recommendations": {
     "addNew": "Pridať nové odporučenie",
