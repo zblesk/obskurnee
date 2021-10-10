@@ -374,6 +374,11 @@ body {
   font-size: 0.875rem;
 }
 
+.book__owner a {
+  text-decoration: none;
+  font-weight: bold;
+}
+
 .book__text {
   font-size: 0.875rem;
 }
