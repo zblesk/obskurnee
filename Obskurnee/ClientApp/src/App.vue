@@ -5,7 +5,7 @@
     <router-view />
   </div>
   <footer class="footer">
-    <p class="attribution">Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> and <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>.</p>
+    <p class="attribution">Icons made by <a href="https://www.freepik.com" title="Freepik">Freepik</a> and <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect">Pixel perfect</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>. | Powered by <a href="https://github.com/zblesk/obskurnee" title="Obskurnee">Obskurnee</a> 💚</p>
   </footer>
 </div>
 </template>
