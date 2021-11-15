@@ -1,5 +1,5 @@
 # Build BE
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS dotnetbuild
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS dotnetbuild
 WORKDIR /source
 
 COPY *.sln .
@@ -20,7 +20,7 @@ COPY Obskurnee/ClientApp/ .
 RUN npm run build -- --prod
 
 # final image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine-amd64
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine-amd64
 WORKDIR /obskurnee
 COPY --from=dotnetbuild /app ./
 COPY --from=nodebuild /frontend/dist ./ClientApp/dist
