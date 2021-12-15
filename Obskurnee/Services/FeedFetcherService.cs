@@ -30,6 +30,15 @@ namespace Obskurnee.Services
         {
             using var scope = _scopeFactory.CreateScope();
             var config = (Config)scope.ServiceProvider.GetService(typeof(Config));
+            if (config.GoodreadsFetchIntervalMinutes < 1)
+            {
+                _logger.LogInformation("Feed Fetcher Service disabled.");
+                return Task.CompletedTask;
+            }
+#if DEMOMODE
+                _logger.LogInformation("Feed Fetcher Service disabled in DEMO mode.");
+                return Task.CompletedTask;
+#endif
             _logger.LogInformation("Feed Fetcher Service started. Fetch interval: {min} minutes",
                 config.GoodreadsFetchIntervalMinutes);
             _timer = new Timer(FetchFeeds,
