@@ -18,6 +18,9 @@ namespace Obskurnee.Models
         public string AvatarUrl { get; set; }
         public string AboutMe { get; set; }
         public string RenderedAboutMe { get => AboutMe.RenderMarkdown(); }
+        public bool LoginEnabled { get; set; }
+        public bool IsBot { get; set; }
+        public bool IsActiveParticipant => LoginEnabled && !IsBot;
         public ICollection<NewsletterSubscription> NewsletterSubscriptions { get; set; }
     }
 }
