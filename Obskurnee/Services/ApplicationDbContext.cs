@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Obskurnee.Services
 {
@@ -38,6 +39,9 @@ namespace Obskurnee.Services
 
         public IIncludableQueryable<BookclubReview, Post> BookReviewsWithData
             => BookReviews.Include(br => br.Book).ThenInclude(b => b.Post);
+
+        public IQueryable<Bookworm> UsersExceptBots
+            => Users.Where(u => !u.IsBot);
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

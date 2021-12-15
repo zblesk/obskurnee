@@ -41,7 +41,7 @@ namespace Obskurnee.Services
         public async Task<List<UserInfo>> GetAllUsers()
         {
             var result = new List<UserInfo>();
-            foreach (var user in _dbContext.Users)
+            foreach (var user in _dbContext.UsersExceptBots)
             {
                 var claims = await _userManager.GetClaimsAsync(user);
                 result.Add(UserInfo.From(user, claims));
@@ -51,7 +51,7 @@ namespace Obskurnee.Services
 
         public void LoadUsernameCache()
         {
-            _userNames = (from user in _dbContext.Users
+            _userNames = (from user in _dbContext.UsersExceptBots
                           select new { user.Id, user.UserName })
                          .ToDictionary(
                             u => u.Id,
@@ -59,7 +59,7 @@ namespace Obskurnee.Services
         }
 
         public List<Bookworm> GetAllUsersAsBookworm()
-            => _dbContext.Users.ToList();
+            => _dbContext.UsersExceptBots.ToList();
 
         public IList<string> GetAllUserIds()
         {
@@ -67,6 +67,8 @@ namespace Obskurnee.Services
         }
 
         public abstract Task<UserInfo> Register(LoginCredentials creds, string defaultName = null);
+
+        public abstract Task<UserInfo> RegisterBot(LoginCredentials creds, string defaultName = null);
 
         public abstract Task<IdentityResult> MakeModerator(string email);
 

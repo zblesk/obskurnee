@@ -48,16 +48,7 @@ namespace Obskurnee.Services
             LoginCredentials creds,
             string defaultName = null)
         {
-            if (string.IsNullOrWhiteSpace(defaultName))
-            {
-                defaultName = creds.Email.Substring(0, creds.Email.IndexOf('@'));
-            }
-            var user = new Bookworm
-            {
-                UserName = defaultName,
-                Email = creds.Email,
-                Language = _config.DefaultCulture,
-            };
+            Bookworm user = MakeNamedBookworm(creds, defaultName, isBot: false);
             _logger.LogInformation("Registering user {email}", user.Email);
             var result = await _userManager.CreateAsync(user, creds.Password);
             if (result.Succeeded)
@@ -71,6 +62,39 @@ namespace Obskurnee.Services
                 return UserInfo.From(user);
             }
             return null;
+        }
+
+        public override async Task<UserInfo> RegisterBot(
+            LoginCredentials creds,
+            string defaultName = null)
+        {
+            Bookworm user = MakeNamedBookworm(creds, defaultName, isBot: true);
+            _logger.LogInformation("Registering bot {email}", user.Email);
+            var result = await _userManager.CreateAsync(user, creds.Password);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("Bot created");
+                var identityResult = await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Bot, "true"));
+                return UserInfo.From(user);
+            }
+            return null;
+        }
+
+        private Bookworm MakeNamedBookworm(LoginCredentials creds, string defaultName, bool isBot)
+        {
+            if (string.IsNullOrWhiteSpace(defaultName))
+            {
+                defaultName = creds.Email.Substring(0, creds.Email.IndexOf('@'));
+            }
+            var user = new Bookworm
+            {
+                UserName = defaultName,
+                Email = creds.Email,
+                Language = _config.DefaultCulture,
+                IsBot = isBot,
+                LoginEnabled = true,
+            };
+            return user;
         }
 
         private async Task SendDefaultLanguageNotification(Bookworm user)

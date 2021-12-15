@@ -114,7 +114,7 @@ namespace Obskurnee.Services
 
         public Task<List<string>> GetSubscribers(string newsletterName)
             => (from ns in _db.NewsletterSubscriptions
-                join user in _db.Users on ns.UserId equals user.Id
+                join user in _db.UsersExceptBots on ns.UserId equals user.Id
                 where ns.NewsletterName == newsletterName
                 select user.Email)
                 .ToListAsync();

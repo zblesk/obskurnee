@@ -58,6 +58,18 @@ namespace Obskurnee.Controllers
             return ValidationProblem("Registration failed");
         }
 
+        [HttpPost("registerbot")]
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> RegisterBot([FromBody] LoginCredentials creds)
+        {
+            var user = await _users.RegisterBot(creds);
+            if (user != null)
+            {
+                return Json(user);
+            }
+            return ValidationProblem("Registration failed");
+        }
+
         [HttpPost("registerfirstadmin")]
         [AllowAnonymous]
         public async Task<JsonResult> RegisterFirstAdmin([FromBody] LoginCredentials creds)

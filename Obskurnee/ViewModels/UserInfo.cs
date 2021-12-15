@@ -33,6 +33,9 @@ namespace Obskurnee.ViewModels
                         Email = principal.FindFirstValue(ClaimTypes.Email),
                         IsModerator = principal.FindFirstValue(BookclubClaims.Moderator) != null,
                         IsAdmin = principal.FindFirstValue(BookclubClaims.Admin) != null,
+                        LoginEnabled = true,
+                        IsBot = principal.FindFirstValue(BookclubClaims.Bot) != null,
+                        IsActiveParticipant = principal.FindFirstValue(BookclubClaims.Bot) == null,
                         Token = includeToken,
                     };
 
