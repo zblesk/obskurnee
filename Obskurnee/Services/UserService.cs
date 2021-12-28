@@ -74,7 +74,7 @@ namespace Obskurnee.Services
             if (result.Succeeded)
             {
                 _logger.LogInformation("Bot created");
-                var identityResult = await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Bot, "true"));
+                await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Bot, "true"));
                 return UserInfo.From(user);
             }
             return null;
