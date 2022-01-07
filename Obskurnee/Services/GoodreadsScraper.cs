@@ -19,14 +19,13 @@ namespace Obskurnee.Services
 {
     public class GoodreadsScraper
     {
-        private static Random _rand = new Random();
+        private static readonly Random _rand = new();
         private readonly ILogger<GoodreadsScraper> _logger;
         private readonly Config _config;
         private readonly ApplicationDbContext _db;
 
         public GoodreadsScraper(
             ILogger<GoodreadsScraper> logger,
-            IWebHostEnvironment hostEnv,
             Config config,
             ApplicationDbContext db)
         {
@@ -67,7 +66,7 @@ namespace Obskurnee.Services
         {
             if (string.IsNullOrWhiteSpace(user.GoodreadsUserId))
             {
-                _logger.LogInformation("Triggered RSS feed fetch for user {userId}, but no Goodreads User ID is available. Exitting.", user.Id);
+                _logger.LogDebug("Triggered RSS feed fetch for user {userId}, but no Goodreads User ID is available. Exitting.", user.Id);
                 return Enumerable.Empty<GoodreadsReview>();
             }
 

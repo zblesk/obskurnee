@@ -190,7 +190,8 @@ namespace Obskurnee.Services
                 }
                 else
                 {
-                    _logger.LogInformation("There are {count} winning posts with {max} votes. A tiebreaker round is needed.");
+                    _logger.LogInformation("There are {count} winning posts. A tiebreaker round is needed.",
+                        winners.Count);
                     var posts = await (from post in _db.Posts
                                        where winners.Contains(post.PostId)
                                        orderby post.PostId

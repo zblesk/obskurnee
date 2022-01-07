@@ -54,7 +54,7 @@ export default {
             commit('addPost', { discussionId: discussionId, post: response.data });
           });
       },
-      async getDiscussionPost({ state, dispatch }, { discussionId, postId})
+      async getDiscussionPost({ state, dispatch }, { discussionId, postId })
       {
         if (!state.discussions.some(d => d.discussionId == discussionId))
         {
