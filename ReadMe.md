@@ -141,15 +141,9 @@ server {
 }
 ```
 
-
-
-
-
-
-
 # Development 
 
-You will need .NET 5.0 and Node (we run on 14.x).
+You will need .NET 6.0 and Node (we run on 16.13.x LTS).
 
 1. Clone repo
 2. `cd .\Obskurnee\ClientApp\`
