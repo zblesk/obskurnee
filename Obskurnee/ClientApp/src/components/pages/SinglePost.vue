@@ -31,7 +31,6 @@ export default {
     this.discussionId = this.$route.params.discussionId;
     this.postId = this.$route.params.postId;
     this.post = await this.getDiscussionPost({ discussionId: this.discussionId, postId: this.postId });
-    console.log('got post', this.post);
   }
 }
 </script>

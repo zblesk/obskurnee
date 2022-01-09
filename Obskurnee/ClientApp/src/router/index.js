@@ -12,6 +12,7 @@ import BookList from "@/components/pages/BookList.vue";
 import Book from "@/components/pages/Book.vue";
 import PasswordReset from "@/components/pages/PasswordReset.vue";
 import SinglePost from "@/components/pages/SinglePost.vue";
+import SingleRecommendation from "@/components/pages/SingleRecommendation.vue";
 
 const routes = [
     {
@@ -53,6 +54,11 @@ const routes = [
         path: "/odporucania",
         name: "recommendationlist",
         component: RecommendationList,
+    },
+    {
+        path: "/odporucania/:recommendationId",
+        name: "singlerecommendation",
+        component: SingleRecommendation,
     },
     {
         path: "/knihy",

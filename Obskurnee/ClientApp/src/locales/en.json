@@ -132,7 +132,8 @@
   "recommendations": {
     "addNew": "Add a new recommendation",
     "failedToAddRec": "Unable to add recommendation",
-    "recommendedBy": "Suggested by {0}"
+    "recommendedBy": "Suggested by {0}",
+    "backToRecommendations": "Back to recommendations"
   },
   "review": {
     "add": "Add a review",

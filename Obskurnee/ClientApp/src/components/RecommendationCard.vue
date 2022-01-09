@@ -1,18 +1,20 @@
 <template>
-  <div class="book">
-    <div class="book__top">
+  <div class="book rel">
+    <div class="book__top" v-if="recommendation">
       <div class="book__cover" v-if="recommendation.imageUrl">
         <a :href="recommendation.url" class="book__link">
           <img :src="recommendation.imageUrl" :alt="recommendation.title">
         </a>
       </div>
+      <router-link class="topright" v-if="recommendation.recommendationId"
+        :to="{ name: 'singlerecommendation', params: { recommendationId: recommendation.recommendationId } }">🔗</router-link> 
       <a :href="recommendation.url" class="book__link">
         <h2 class="book__title">{{ recommendation.title }}</h2>
       </a>
       <p v-if="recommendation.author" class="book__author">{{ recommendation.author }}</p>
       <p class="book__pages" v-if="recommendation.pageCount">{{$t('bookpost.numPages', [recommendation.pageCount])}}</p>
       <p class="book__owner" v-if="showName">{{$t('recommendations.recommendedBy')}}
-        <user-link :userId="recommendation.ownerId" :userName="recommendation.ownerName" />
+        <user-link v-if="recommendation.ownerId" :userId="recommendation.ownerId" :userName="recommendation.ownerName" />
       </p>
       <p class="book__text" v-html="recommendation.renderedText"> </p>
     </div>
@@ -49,8 +51,15 @@ export default {
 }
 </script>
 
+
 <style scoped>
+.topright {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+}
 
-
+.rel {
+  position: relative;
+}
 </style>
-

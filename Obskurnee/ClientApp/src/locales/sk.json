@@ -132,7 +132,8 @@
   "recommendations": {
     "addNew": "Pridať nové odporučenie",
     "failedToAddRec": "Nepodarilo sa pridať odporučenie",
-    "recommendedBy": "Doporučila {0}"
+    "recommendedBy": "Doporučila {0}",
+    "backToRecommendations": "Späť na odporúčania"
   },
   "review": {
     "add": "Pridať recenziu",
