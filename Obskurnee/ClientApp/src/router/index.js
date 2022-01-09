@@ -29,56 +29,67 @@ const routes = [
         path: "/navrhy",
         name: "roundlist",
         component: RoundList,
+        meta: { requiresAuth: true }
     },
     {
         path: "/navrhy/:discussionId",
         name: "discussion",
         component: Discussion,
+        meta: { requiresAuth: true }
     },
     {
         path: "/navrhy/:discussionId/:postId",
         name: "singlepost",
         component: SinglePost,
+        meta: { requiresAuth: true }
     },
     {
         path: "/hlasovania/:pollId",
         name: "poll",
         component: Poll,
+        meta: { requiresAuth: true }
     },
     {
         path: "/admin",
         name: "admin",
         component: Admin,
+        meta: { requiresAuth: true }
     },
     {
         path: "/odporucania",
         name: "recommendationlist",
         component: RecommendationList,
+        meta: { requiresAuth: true }
     },
     {
         path: "/odporucania/:recommendationId",
         name: "singlerecommendation",
         component: SingleRecommendation,
+        meta: { requiresAuth: true }
     },
     {
         path: "/knihy",
         name: "booklist",
         component: BookList,
+        meta: { requiresAuth: true }
     },
     {
         path: "/knihy/:bookId",
         name: "book",
         component: Book,
+        meta: { requiresAuth: true }
     },
     {
         path: "/my",
         name: "userlist",
         component: UserList,
+        meta: { requiresAuth: true }
     },
     {
         path: "/my/:email/:mode?",
         name: "user",
         component: User,
+        meta: { requiresAuth: true }
     },
     {
         path: "/passwordreset/:userId?/:token(.*)?",
@@ -92,4 +103,20 @@ const router = createRouter({
     routes,
 });
 
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+      if (localStorage.getItem('jwtToken') == null) {
+        next({
+          name: 'home',
+          params: { nextUrl: to.fullPath }
+        })
+      } else {
+          // already authorized
+          next()
+        }
+      } else {
+          // no auth required
+          next()
+      }
+    });
 export default router;
