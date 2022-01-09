@@ -189,6 +189,10 @@ body {
   }
 }
 
+.buttons--padding {
+  padding: 0 var(--spacer) var(--spacer) var(--spacer);
+}
+
 /* note */
 /* used in: admin, poll, newPost */
 .note {
@@ -352,6 +356,7 @@ body {
   color: var(--c-accent);
   margin: 0 0 calc(var(--spacer)*0.4) 0;
   text-align: center;
+  padding-right: 25px;
 }
 
 @media screen and (min-width: 400px) {
@@ -394,6 +399,32 @@ body {
   font-size: 0.875rem;
   text-align: center;
   padding: 5px;
+}
+
+.book__top {
+  position: relative;
+}
+
+.book__permalink {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  text-decoration: none;
+  color: var(--c-accent);
+}
+
+/* wrapper for wide book posts */
+/* Used in: SinglePost, SingleRecommendation, Book */
+.wrapper {
+  max-width: 800px;
+  margin: calc(var(--spacer) * 2) var(--spacer) var(--spacer) var(--spacer);
+  background-color: var(--c-bckgr-primary);
+}
+
+@media screen and (min-width: 840px) {
+  .wrapper {
+    margin: calc(var(--spacer) * 2) auto var(--spacer) auto;
+  }
 }
 
 /* utility classes */

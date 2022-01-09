@@ -1,12 +1,12 @@
 <template>
-  <div class="book rel">
+  <div class="book">
     <div class="book__top" v-if="recommendation">
       <div class="book__cover" v-if="recommendation.imageUrl">
         <a :href="recommendation.url" class="book__link">
           <img :src="recommendation.imageUrl" :alt="recommendation.title">
         </a>
       </div>
-      <router-link class="topright" v-if="recommendation.recommendationId"
+      <router-link class="book__permalink" v-if="recommendation.recommendationId"
         :to="{ name: 'singlerecommendation', params: { recommendationId: recommendation.recommendationId } }">🔗</router-link> 
       <a :href="recommendation.url" class="book__link">
         <h2 class="book__title">{{ recommendation.title }}</h2>
@@ -50,16 +50,3 @@ export default {
     }
 }
 </script>
-
-
-<style scoped>
-.topright {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-}
-
-.rel {
-  position: relative;
-}
-</style>

@@ -1,11 +1,14 @@
 <template>
 <section>
-  <div v-if="post">
-    <router-link v-if="post.discussionId"
-      :to="{ name: 'discussion', params: { discussionId: post.discussionId } }" >
-        ◀ {{ $t("discussion.backToSuggestions")}}
-    </router-link>
+  <router-link v-if="post.discussionId"
+    :to="{ name: 'discussion', params: { discussionId: post.discussionId } }" >
+      ◀ {{ $t("discussion.backToSuggestions")}}
+  </router-link>
+  <div v-if="post" class="wrapper">
     <book-post v-bind:post="post"></book-post>
+    <div class="buttons buttons--padding">
+      <button class="button-primary">{{ $t("discussion.backToSuggestions")}}</button>
+    </div>
   </div>
 </section>
 </template>

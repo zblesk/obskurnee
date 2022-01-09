@@ -1,8 +1,11 @@
 <template>
 <section>
     <router-link :to="{ name: 'recommendationlist' }" >◀ {{ $t("recommendations.backToRecommendations")}}</router-link>
-    <div v-if="recommendation" class="grid">
+    <div v-if="recommendation" class="wrapper">
       <recommendation-card :recommendation="recommendation" />
+      <div class="buttons buttons--padding">
+        <button class="button-primary">{{ $t("recommendations.backToRecommendations")}}</button>
+      </div>
     </div> 
 </section>
 </template>

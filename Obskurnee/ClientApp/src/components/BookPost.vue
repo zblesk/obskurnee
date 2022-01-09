@@ -1,5 +1,5 @@
 <template>
-    <div class="book rel" v-if="post && post.discussionId">
+    <div class="book" v-if="post && post.discussionId">
       <div class="book__top">
         <div class="book__cover" v-if="post.imageUrl">
           <a :href="post.url" class="book__link">
@@ -9,7 +9,7 @@
         <a :href="post.url" class="book__link">
           <h2 class="book__title">{{ post.title }}</h2>
         </a> 
-        <router-link class="topright" 
+        <router-link class="book__permalink" 
           :to="{ name: 'singlepost', params: { discussionId: post.discussionId, postId: post.postId } }">
             🔗
         </router-link> 
@@ -51,15 +51,3 @@ import UserLink from './UserLink.vue'
         }
     }
 </script>
-
-<style scoped>
-.topright {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-}
-
-.rel {
-  position: relative;
-}
-</style>

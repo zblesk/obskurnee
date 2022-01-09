@@ -1,6 +1,6 @@
 <template>
 <section>
-  <div class="blc-wrapper">
+  <div class="wrapper">
     <book-large-card :book="book" v-if="book && book.post">
     </book-large-card>
   </div>
@@ -40,18 +40,6 @@
 </template>
 
 <style scoped>
-
-  .blc-wrapper {
-    max-width: 800px;
-    margin: calc(var(--spacer) * 2) var(--spacer) var(--spacer) var(--spacer);
-  }
-
-  @media screen and (min-width: 840px) {
-    .blc-wrapper {
-      margin: calc(var(--spacer) * 2) auto var(--spacer) auto;
-    }
-  }
-
   .form-field input {
     max-width: 380px;
   }
