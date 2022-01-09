@@ -168,6 +168,9 @@ export default {
       this.login(this.form)
         .then(() => {
           this.$notifySuccess("Vitaj späť");
+          if (this.$route.params.nextUrl != null) {
+            this.$router.push(this.$route.params.nextUrl)
+          }
         }
       )
       .catch((err) => {
