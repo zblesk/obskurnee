@@ -11,6 +11,7 @@ import Setup from "@/components/pages/Setup.vue";
 import BookList from "@/components/pages/BookList.vue";
 import Book from "@/components/pages/Book.vue";
 import PasswordReset from "@/components/pages/PasswordReset.vue";
+import SinglePost from "@/components/pages/SinglePost.vue";
 
 const routes = [
     {
@@ -32,6 +33,11 @@ const routes = [
         path: "/navrhy/:discussionId",
         name: "discussion",
         component: Discussion,
+    },
+    {
+        path: "/navrhy/:discussionId/:postId",
+        name: "singlepost",
+        component: SinglePost,
     },
     {
         path: "/hlasovania/:pollId",

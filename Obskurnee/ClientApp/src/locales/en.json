@@ -28,7 +28,8 @@
     "failedToAddPost": "Failed to add suggestion",
     "goToPoll": "Go to poll",
     "noneSoFar": "Nothing here yet",
-    "confirmClose": "Do you really want to close this discussion?"
+    "confirmClose": "Do you really want to close this discussion?",
+    "backToSuggestions": "Back to suggestions"
   },
   "global": {
     "allEvents": "All events: {0}",

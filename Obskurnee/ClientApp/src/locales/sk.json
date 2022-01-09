@@ -28,7 +28,8 @@
     "failedToAddPost": "Nepodarilo sa pridať príspevok",
     "goToPoll": "Prejsť na hlasovanie",
     "noneSoFar": "Zatial tu nič nie je",
-    "confirmClose": "Naozaj chceš uzavrieť diskusiu?"
+    "confirmClose": "Naozaj chceš uzavrieť diskusiu?",
+    "backToSuggestions": "Späť na návrhy"
   },
   "global": {
     "allEvents": "Všetky udalosti: {0}",

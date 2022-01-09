@@ -1,5 +1,5 @@
 <template>
-    <div  class="book">
+    <div class="book rel" v-if="post && post.discussionId">
       <div class="book__top">
         <div class="book__cover" v-if="post.imageUrl">
           <a :href="post.url" class="book__link">
@@ -9,6 +9,10 @@
         <a :href="post.url" class="book__link">
           <h2 class="book__title">{{ post.title }}</h2>
         </a> 
+        <router-link class="topright" 
+          :to="{ name: 'singlepost', params: { discussionId: post.discussionId, postId: post.postId } }">
+            🔗
+        </router-link> 
         <p v-if="post.author" class="book__author">{{ post.author }}</p>
         <p class="book__pages" v-if="post.pageCount">{{$t('bookpost.numPages', [post.pageCount])}}</p>
         <p class="book__owner">{{$t('bookpost.suggestedBy')}} <user-link :userId="post.ownerId" :userName="post.ownerName" /></p>
@@ -47,3 +51,15 @@ import UserLink from './UserLink.vue'
         }
     }
 </script>
+
+<style scoped>
+.topright {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+}
+
+.rel {
+  position: relative;
+}
+</style>
