@@ -30,7 +30,7 @@
             </div>
             <div class="info-text">
               <i18n-t tag="p" keypath="home.profileInfoMissing">
-                <router-link :to="{name: 'user', params: { email: myProfile.email, mode: 'edit' },}">{{$t('home.pleaseFillInfo')}}</router-link>
+                <router-link v-if="myProfile.email" :to="{name: 'user', params: { email: myProfile.email, mode: 'edit' },}">{{$t('home.pleaseFillInfo')}}</router-link>
               </i18n-t>
               <p>{{$t('home.stillMissing')}}</p>
               <ul>
