@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
 using Obskurnee.Hubs;
 using Obskurnee.Models;
@@ -71,6 +72,10 @@ namespace Obskurnee
                     options.PayloadSerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                     options.PayloadSerializerSettings.Converters.Add(new StringEnumConverter());
                 });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Obskurnee API", Version = "v1" });
+            });
             ConfigureAuthAndIdentity(services);
         }
 
@@ -106,6 +111,8 @@ namespace Obskurnee
 
             app.UseRouting();
             app.UseSpaStaticFiles();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("v1/swagger.json", "Obskurnee API"));
 
             app.UseAuthentication();
             app.UseAuthorization();
