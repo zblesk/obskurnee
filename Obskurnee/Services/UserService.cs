@@ -151,10 +151,9 @@ namespace Obskurnee.Services
         public override async Task<bool> ValidateLogin(LoginCredentials creds)
         {
             var user = await _signInManager.UserManager.FindByEmailAsync(creds.Email);
-            if (user == null)
-            {
+            if (user == null || !user.LoginEnabled)
                 return false;
-            }
+
             var signInRes = await _signInManager.CheckPasswordSignInAsync(user, creds.Password, lockoutOnFailure: false);
             return signInRes.Succeeded;
         }
