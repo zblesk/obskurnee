@@ -2,8 +2,8 @@
 <section>
     <h1 id="tableLabel" class="page-title">{{$t('user.list')}}</h1>
     
-    <div class="user-grid" v-if="users">
-        <div class="user-card" v-for="user in users" v-bind:key="user.userId">
+    <div class="user-grid" v-if="activeUsers">
+        <div class="user-card" v-for="user in activeUsers" v-bind:key="user.userId">
             <router-link :to="{ name: 'user', params: { email: user.email } }">
                 <div v-if="user.avatarUrl" class="user-pic">
                     <img :src="user.avatarUrl" :title="user.name" :alt="user.name" />
@@ -140,9 +140,8 @@
 
 </style>
 
-
 <script>
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
     name: "UserList",
     data() {
@@ -150,7 +149,7 @@ export default {
         }
     },
     computed: {
-        ...mapState("users", ["users"]),
+        ...mapGetters("users", ["activeUsers"]),
         ...mapGetters("reviews", ["usersCurrentlyReading", "userHasCurrentlyReading"]),
     },
     methods: {

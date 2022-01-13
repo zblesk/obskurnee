@@ -33,6 +33,7 @@ namespace Obskurnee.ViewModels
                         Email = principal.FindFirstValue(ClaimTypes.Email),
                         IsModerator = principal.IsInRole(BookclubRoles.Moderator),
                         IsAdmin = principal.IsInRole(BookclubRoles.Admin),
+                        // This only gets called by the user it pertains to; so if the user is logged in, this is always true.
                         LoginEnabled = true,
                         IsBot = principal.IsInRole(BookclubRoles.Bot),
                         IsActiveParticipant = !principal.IsInRole(BookclubRoles.Bot),
