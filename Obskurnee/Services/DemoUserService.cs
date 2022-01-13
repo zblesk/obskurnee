@@ -17,7 +17,7 @@ namespace Obskurnee.Services
         public DemoUserService(
             ILogger<UserServiceBase> logger,
             UserManager<Bookworm> userManager,
-           SignInManager<Bookworm> signInManager,
+            SignInManager<Bookworm> signInManager,
             IStringLocalizer<Strings> localizer,
             ApplicationDbContext dbContext,
             Config config) : base(userManager, logger, dbContext, localizer, config)

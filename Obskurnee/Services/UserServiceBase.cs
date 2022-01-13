@@ -43,7 +43,7 @@ namespace Obskurnee.Services
             var result = new List<UserInfo>();
             foreach (var user in _dbContext.UsersExceptBots)
             {
-                var claims = await _userManager.GetClaimsAsync(user);
+                var claims = await _userManager.GetRolesAsync(user);
                 result.Add(UserInfo.From(user, claims));
             }
             return result;
@@ -98,13 +98,13 @@ namespace Obskurnee.Services
         public async Task<UserInfo> GetUserByEmail(string email)
         {
             var user = _dbContext.Users.First(bw => bw.Email == email);
-            return UserInfo.From(user, await _userManager.GetClaimsAsync(user));
+            return UserInfo.From(user, await _userManager.GetRolesAsync(user));
         }
 
         public async Task<UserInfo> GetUserById(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            return UserInfo.From(user, await _userManager.GetClaimsAsync(user));
+            return UserInfo.From(user, await _userManager.GetRolesAsync(user));
         }
 
         public async Task<UserInfo> UpdateUserProfile(

@@ -74,7 +74,7 @@ namespace Obskurnee.Services
             if (result.Succeeded)
             {
                 _logger.LogInformation("Bot created");
-                await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Bot, "true"));
+                await _userManager.AddToRoleAsync(user, BookclubRoles.Bot);
                 return UserInfo.From(user);
             }
             return null;
@@ -112,7 +112,7 @@ namespace Obskurnee.Services
         {
             _logger.LogInformation("Making moderator of {email}", email);
             var user = await _signInManager.UserManager.FindByEmailAsync(email);
-            var identityResult = await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Moderator, "true"));
+            var identityResult = await _userManager.AddToRoleAsync(user, BookclubRoles.Moderator);
             return identityResult;
         }
 
@@ -120,7 +120,7 @@ namespace Obskurnee.Services
         {
             _logger.LogInformation("Making admin of {email}", email);
             var user = await _signInManager.UserManager.FindByEmailAsync(email);
-            var identityResult = await _userManager.AddClaimAsync(user, new Claim(BookclubClaims.Admin, "true"));
+            var identityResult = await _userManager.AddToRoleAsync(user, BookclubRoles.Admin);
             return identityResult;
         }
 

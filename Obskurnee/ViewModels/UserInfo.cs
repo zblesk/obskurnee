@@ -31,11 +31,11 @@ namespace Obskurnee.ViewModels
                         UserId = principal.GetUserId(),
                         Name = principal.Identity.Name,
                         Email = principal.FindFirstValue(ClaimTypes.Email),
-                        IsModerator = principal.FindFirstValue(BookclubClaims.Moderator) != null,
-                        IsAdmin = principal.FindFirstValue(BookclubClaims.Admin) != null,
+                        IsModerator = principal.IsInRole(BookclubRoles.Moderator),
+                        IsAdmin = principal.IsInRole(BookclubRoles.Admin),
                         LoginEnabled = true,
-                        IsBot = principal.FindFirstValue(BookclubClaims.Bot) != null,
-                        IsActiveParticipant = principal.FindFirstValue(BookclubClaims.Bot) == null,
+                        IsBot = principal.IsInRole(BookclubRoles.Bot),
+                        IsActiveParticipant = !principal.IsInRole(BookclubRoles.Bot),
                         Token = includeToken,
                     };
 
@@ -53,12 +53,12 @@ namespace Obskurnee.ViewModels
                 IsBot = user.IsBot,
                 LoginEnabled = user.LoginEnabled,
                 IsActiveParticipant = user.IsActiveParticipant,
-                IsModerator = principal?.FindFirstValue(BookclubClaims.Moderator) != null,
-                IsAdmin = principal?.FindFirstValue(BookclubClaims.Admin) != null,
+                IsModerator = principal?.IsInRole(BookclubRoles.Moderator) ?? false,
+                IsAdmin = principal?.IsInRole(BookclubRoles.Admin) ?? false,
             };
 
 
-        public static UserInfo From(Bookworm user, IList<Claim> claims)
+        public static UserInfo From(Bookworm user, IList<string> roles)
             => new()
             {
                 UserId = user.Id,
@@ -73,8 +73,8 @@ namespace Obskurnee.ViewModels
                 IsBot = user.IsBot,
                 LoginEnabled = user.LoginEnabled,
                 IsActiveParticipant = user.IsActiveParticipant,
-                IsModerator = claims.Any(claim => claim.Type == BookclubClaims.Moderator),
-                IsAdmin = claims.Any(claim => claim.Type == BookclubClaims.Admin),
+                IsModerator = roles.Contains(BookclubRoles.Moderator),
+                IsAdmin = roles.Contains(BookclubRoles.Moderator),
             };
     }
 }

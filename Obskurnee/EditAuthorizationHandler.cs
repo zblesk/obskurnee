@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Obskurnee.Models;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Obskurnee
@@ -12,8 +13,10 @@ namespace Obskurnee
                                                        HeaderData data)
         {
             if (context.User.Identity.Name == data.OwnerId
-                || context.User.HasClaim(c => c.Type == BookclubClaims.Moderator 
-                                                || c.Type == BookclubClaims.Admin))
+                || context.User.HasClaim(c => 
+                                        c.Type == ClaimTypes.Role
+                                            && (c.Value == BookclubRoles.Moderator 
+                                                || c.Value == BookclubRoles.Admin)))
             {
                 context.Succeed(requirement);
             }

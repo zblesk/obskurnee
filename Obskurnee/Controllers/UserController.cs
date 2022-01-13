@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using Obskurnee.Models;
 using Obskurnee.Services;
 using Obskurnee.ViewModels;
 using SixLabors.ImageSharp;
@@ -10,6 +12,7 @@ using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Obskurnee.Controllers
@@ -20,13 +23,20 @@ namespace Obskurnee.Controllers
     {
         private readonly ILogger _logger;
         private readonly UserServiceBase _users;
+        UserManager<Bookworm> _userManager;
 
         public UserController(
            UserServiceBase users,
+#if DEBUG
+           UserManager<Bookworm> userManager,
+#endif
            ILogger<UserController> logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _users = users ?? throw new ArgumentNullException(nameof(users));
+#if DEBUG
+            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+#endif
         }
 
         [HttpGet]
@@ -76,5 +86,21 @@ namespace Obskurnee.Controllers
                 return await _users.GetUserById(User.GetUserId());
             }
         }
+
+#if DEBUG
+        [HttpGet]
+        [Route("claims")]
+        public IActionResult GetMyClaims()
+            => Json(User.Claims.Select(claim => new { claim.Type, claim.Value }).ToArray());
+
+        [HttpGet]
+        [Route("roles")]
+        public async Task<IActionResult> GetMyRoles()
+        {
+            var u = await _userManager.GetUserAsync(User);
+            return Json(await _userManager.GetRolesAsync(u));
+        }
+
+#endif
     }
 }

@@ -5,6 +5,7 @@
     <RootNamespace>Obskurnee</RootNamespace>
     <UserSecretsId>efac8292-c0d4-4e78-b2e5-6e78415a844b</UserSecretsId>
     <Configurations>Debug;Release;ReleaseNoNode;DemoDebug;DemoReleaseNoNode</Configurations>
+	<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
   </PropertyGroup>
 
   <PropertyGroup>

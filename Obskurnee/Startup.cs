@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using VueCliMiddleware;
 
@@ -84,12 +85,15 @@ namespace Obskurnee
             IWebHostEnvironment env,
             IHostApplicationLifetime lifetime,
             UserServiceBase userService,
-            ApplicationDbContext dbContext)
+            ApplicationDbContext dbContext,
+            RoleManager<IdentityRole> roleManager,
+            UserManager<Bookworm> userManager)
         {
             Log.Information("Updating database");
             dbContext.Database.Migrate();
 
             Log.Information("Setting up for environment {env}", env.EnvironmentName);
+            EnsureRoles(roleManager, userManager).Wait();
             app.UseRequestLocalization();
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
@@ -158,6 +162,7 @@ namespace Obskurnee
         {
             Log.Information("Application stopping");
         }
+
         private static void OnAppStopped()
         {
             Log.Information("Application stopped");
@@ -208,15 +213,73 @@ namespace Obskurnee
                 options.ClaimsIdentity.UserIdClaimType = BookclubClaims.UserId;
                 options.User.AllowedUserNameCharacters = ""; // all
             })
+               .AddRoles<IdentityRole>()
                .AddEntityFrameworkStores<ApplicationDbContext>()
+               .AddRoleManager<RoleManager<IdentityRole>>()
                .AddSignInManager<SignInManager<Bookworm>>()
+
                .AddDefaultTokenProviders();
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ModOnly", policy => policy.RequireClaim(BookclubClaims.Moderator));
-                options.AddPolicy("AdminOnly", policy => policy.RequireClaim(BookclubClaims.Admin));
+                options.AddPolicy("ModOnly", policy => policy.RequireRole(BookclubRoles.Moderator));
+                options.AddPolicy("AdminOnly", policy => policy.RequireRole(BookclubRoles.Admin));
+                options.AddPolicy("CanUpdate", policy => policy.RequireClaim(BookclubClaims.Operation, "global.write"));
             });
+        }
+
+        private async Task EnsureRoles(RoleManager<IdentityRole> roleManager, UserManager<Bookworm> userManager)
+        {
+            await EnsureRoleExists(roleManager,
+                       BookclubRoles.Bookworm,
+                       new Claim(BookclubClaims.Operation, "global.read"),
+                       new Claim(BookclubClaims.Operation, "global.write"));
+            await EnsureRoleExists(roleManager,
+                       BookclubRoles.Admin);
+            await EnsureRoleExists(roleManager,
+                       BookclubRoles.Moderator);
+
+            await EnsureRoleExists(roleManager,
+                       BookclubRoles.Bot,
+                       new Claim(BookclubClaims.Operation, "global.read"));
+
+
+            // temp - migration
+           foreach (var u in userManager.Users)
+            {
+                var r = await userManager.GetRolesAsync(u);
+                if (r.Contains(BookclubRoles.Bot))
+                    continue;
+                if (!r.Contains(BookclubRoles.Bookworm))
+                    await userManager.AddToRoleAsync(u, BookclubRoles.Bookworm);
+                var cl = await userManager.GetClaimsAsync(u);
+                if (cl.Any(cl => cl.Type == "moderator"))
+                {
+                    await userManager.AddToRoleAsync(u, BookclubRoles.Moderator);
+                    await userManager.RemoveClaimsAsync(u, cl.Where(cl => cl.Type == "moderator"));
+                }
+                if (cl.Any(cl => cl.Type == "admin"))
+                { 
+                    await userManager.AddToRoleAsync(u, BookclubRoles.Admin);
+                    await userManager.RemoveClaimsAsync(u, cl.Where(cl => cl.Type == "admin"));
+                }
+            }
+        }
+
+        private async Task EnsureRoleExists(
+            RoleManager<IdentityRole> roleManager,
+            string roleName,
+            params Claim[] claims)
+        {
+            var role = await roleManager.FindByNameAsync(roleName);
+            if (role == null)
+            {
+                role = new IdentityRole(roleName);
+                await roleManager.CreateAsync(role);
+                if (claims?.Length > 0)
+                    Task.WaitAll(
+                        claims.Select(claim => roleManager.AddClaimAsync(role, claim)).ToArray());
+            }
         }
 
         private void ConfigureDI(IServiceCollection services)
