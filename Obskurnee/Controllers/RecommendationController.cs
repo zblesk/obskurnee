@@ -33,6 +33,7 @@ namespace Obskurnee.Controllers
         public IList<Recommendation> GetRecs(string userId) => _recommendations.GetRecs(userId);
 
         [HttpPost]
+        [Authorize(Policy = "CanUpdate")]
         public async Task<Recommendation> AddRec([FromBody] Recommendation post) 
             => await _recommendations.AddRec(post, User.GetUserId());
     }

@@ -41,6 +41,7 @@ namespace Obskurnee.Controllers
 
         [HttpPost]
         [Route("{pollId:int}/vote")]
+        [Authorize(Policy = "CanUpdate")]
         public async Task<RoundUpdateResults> CastVote(int pollId, Vote vote)
         {
             vote.PollId = pollId;

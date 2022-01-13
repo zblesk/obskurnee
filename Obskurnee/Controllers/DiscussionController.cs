@@ -34,6 +34,7 @@ namespace Obskurnee.Controllers
 
         [HttpPost]
         [Route("{discussionId:int}")]
+        [Authorize(Policy = "CanUpdate")]
         public Task<Post> NewPost(int discussionId, Post post)
             => _discussions.NewPost(discussionId, post.SetOwner(User));
     }

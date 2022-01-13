@@ -38,6 +38,7 @@ namespace Obskurnee.Controllers
 
         [HttpPost]
         [Route("book/{bookId:int}")]
+        [Authorize(Policy = "CanUpdate")]
         public Task<BookclubReview> UpsertReview(int bookId, [FromBody] BookclubReview reviewData)
             => _reviews.UpsertBookclubBookReview(
                 bookId,

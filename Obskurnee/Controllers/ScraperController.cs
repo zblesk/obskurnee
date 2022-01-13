@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Obskurnee.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "CanUpdate")]
     [ApiController]
     [Route("api/scrape")]
     public class ScraperController : Controller

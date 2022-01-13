@@ -48,6 +48,7 @@ namespace Obskurnee.Controllers
 
         [HttpPost]
         [Route("{email}")]
+        [Authorize(Policy = "CanUpdate")]
         public Task<UserInfo> UpdateUser(string email, [FromBody] UserInfo updateInfo)
         {
             // todo: auth
@@ -71,6 +72,7 @@ namespace Obskurnee.Controllers
 
         [HttpPost]
         [Route("avatar")]
+        [Authorize(Policy = "CanUpdate")]
         public async Task<UserInfo> SetAvatar([FromForm] IFormFile avatar)
         {
             using (var image = Image.Load(avatar.OpenReadStream(), out var format))

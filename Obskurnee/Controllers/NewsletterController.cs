@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Obskurnee.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "CanUpdate")]
     [Route("api/newsletters")]
     public class NewsletterController : Controller
     {

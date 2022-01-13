@@ -54,6 +54,7 @@ namespace Obskurnee.Services
             if (result.Succeeded)
             {
                 _logger.LogInformation("User created");
+                await _userManager.AddToRoleAsync(user, BookclubRoles.Bookworm);
                 LoadUsernameCache();
                 await Newsletter.Subscribe(user.Id, Newsletters.BasicEvents);
                 _ = SendDefaultLanguageNotification(user)
