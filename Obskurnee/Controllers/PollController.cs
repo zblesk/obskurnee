@@ -47,7 +47,7 @@ namespace Obskurnee.Controllers
             vote.PollId = pollId;
             var poll = await _polls.CastPollVote(vote.SetOwner(User));
             _logger.LogInformation("User {userId} voted in poll {pollId}", User.GetUserId(), pollId);
-            if (poll.Results.AlreadyVoted.Count == (await _users.GetAllUsers()).Count)
+            if (poll.Results.AlreadyVoted.Count == _users.GetAllActiveUserCount())
             {
                 return await _roundManager.ClosePoll(pollId, User.GetUserId());
             }

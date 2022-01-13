@@ -43,6 +43,9 @@ namespace Obskurnee.Services
         public IQueryable<Bookworm> UsersExceptBots
             => Users.Where(u => !u.IsBot);
 
+        public IQueryable<Bookworm> ActiveUsers
+            => Users.Where(u => u.LoginEnabled && !u.IsBot);
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLoggerFactory(_loggerFactory);

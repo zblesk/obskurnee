@@ -49,6 +49,9 @@ namespace Obskurnee.Services
             return result;
         }
 
+        public int GetAllActiveUserCount()
+            => _dbContext.ActiveUsers.Count();
+
         public void LoadUsernameCache()
         {
             _userNames = (from user in _dbContext.UsersExceptBots

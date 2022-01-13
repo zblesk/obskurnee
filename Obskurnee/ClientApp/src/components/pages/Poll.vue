@@ -31,7 +31,7 @@
 
       <div v-if="!poll.isClosed && poll.results && poll.results.alreadyVoted" class="u-mb-sp2">
        <h2 class="subtitle">{{$t('poll.pollProgress')}}</h2>
-        <p class="paragraph">{{$t('poll.alreadyVoted', [poll.results.alreadyVoted.length, users.length])}}</p>
+        <p class="paragraph">{{$t('poll.alreadyVoted', [poll.results.alreadyVoted.length, activeUsers.length])}}</p>
         <p class="paragraph">{{$t('poll.notYetVoted')}} <span v-for="person in yetToVote" v-bind:key="person">{{ person.name }}, </span></p>
       </div>
 
@@ -96,9 +96,8 @@ export default {
   computed: {
     ...mapGetters("context", ["isMod"]),
     ...mapState("polls", ["polls", "votes"]),
-    ...mapState("users", ["users"]),
-    ...mapGetters("users", ["totalUsers"]),
-    yetToVote: function() { return this.users.filter(user => !this.poll.results.alreadyVoted.some(u => u == user.userId)); }
+    ...mapGetters("users", ["totalUsers", "activeUsers"]),
+    yetToVote: function() { return this.activeUsers.filter(user => !this.poll.results.alreadyVoted.some(u => u == user.userId)); }
   },
   methods: {
     ...mapActions("polls", ["getPollData", "sendVote", "closePoll"]),
