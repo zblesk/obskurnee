@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "73aa4586-f603-4a86-aac2-81a5dca94111",
+		"_postman_id": "118dbb83-525c-4632-acc9-2edd7a7bb06d",
 		"name": "obskurnee-bookclub",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -27,6 +27,33 @@
 					"path": [
 						"accounts",
 						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register bot",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"botka@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/accounts/registerbot",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"accounts",
+						"registerbot"
 					]
 				}
 			},
@@ -70,7 +97,34 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"email\":\"ferko@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
+					"raw": "{\"email\":\"zblesk@protonmail.com\",\"password\":\"sdfsdfsdf\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/accounts/login",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"accounts",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login bot",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"botka@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -139,7 +193,7 @@
 			"response": []
 		},
 		{
-			"name": "get discussions Copy",
+			"name": "get rounds",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -191,7 +245,7 @@
 			"response": []
 		},
 		{
-			"name": "get rounds",
+			"name": "get books",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -531,6 +585,42 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "get claims [debug only]",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}api/users/claims",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"users",
+						"claims"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get roles [debug only]",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}api/users/roles",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"users",
+						"roles"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
@@ -538,7 +628,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiJmNGU1YTk4MS1mMzQ1LTQ2NWQtYjI4My0xMTE0MTI0NGNhY2QiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiamFua2EiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJqYW5rYUBib29rY2x1Yi5nb3YiLCJBc3BOZXQuSWRlbnRpdHkuU2VjdXJpdHlTdGFtcCI6IjI0T0NaREJHUlpOQ0pYTURGSTRaWEYzTjQyNUk1T1RFIiwibW9kZXJhdG9yIjoidHJ1ZSIsImFkbWluIjoidHJ1ZSIsImV4cCI6MTYzNDcyMDg4MywiaXNzIjoib2Jza3VybmVlIiwiYXVkIjoib2Jza3VybmVlIn0.rXNV_eokLr41241h0HHem_9je8GY1IJxHc6LPrWORJ4",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiJhYWE2MGRjMS0zY2ZlLTRmZjgtODlmMi1lMTAzMTI2N2VkZjciLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiemJsZXNrIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiemJsZXNrQHByb3Rvbm1haWwuY29tIiwiQXNwTmV0LklkZW50aXR5LlNlY3VyaXR5U3RhbXAiOiJXVlVBVURQUFpXR1k0TzUzVzJTR0xaVzVGTUZSTktaTiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJhZG1pbiIsIm1vZGVyYXRvciIsImJvb2t3b3JtIl0sIm9wZXJhdGlvbiI6WyJnbG9iYWwucmVhZCIsImdsb2JhbC53cml0ZSJdLCJleHAiOjE2NTg0ODQ2NjQsImlzcyI6Im9ic2t1cm5lZSIsImF1ZCI6Im9ic2t1cm5lZSJ9.WWMSj28PJsDgARFFj8mQaDRjbC6xU0VFTIIEp0mOfbM",
 				"type": "string"
 			}
 		]
