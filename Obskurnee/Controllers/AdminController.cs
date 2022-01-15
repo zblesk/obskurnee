@@ -65,7 +65,7 @@ namespace Obskurnee.Controllers
         }
 
         [HttpPost]
-        [Route("createuser")]
+        [Route("registeruser")]
         public async Task<IActionResult> CreateUser([FromBody] JObject payload)
         {
             var email = payload["email"].ToString();
@@ -105,6 +105,24 @@ namespace Obskurnee.Controllers
                 return Json(user);
             }
             return ValidationProblem("Registration failed");
+        }
+
+        [HttpPost("registerbot")]
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> RegisterBot([FromBody] JObject payload)
+        {
+            var registrationResult = await _users.RegisterBot(
+                new LoginCredentials
+                {
+                    Email = payload["email"].ToString(),
+                    Password = payload["password"].ToString()
+                },
+                payload["name"].ToString());
+            if (registrationResult.user != null)
+            {
+                return Json(registrationResult);
+            }
+            return ValidationProblem($"Registration failed: {registrationResult.error}");
         }
 
         [HttpPost("makemod/{email}")]

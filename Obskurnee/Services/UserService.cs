@@ -5,6 +5,7 @@ using Obskurnee.Models;
 using Obskurnee.ViewModels;
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -65,7 +66,7 @@ namespace Obskurnee.Services
             return null;
         }
 
-        public override async Task<UserInfo> RegisterBot(
+        public override async Task<(UserInfo user, string error)> RegisterBot(
             LoginCredentials creds,
             string defaultName = null)
         {
@@ -76,9 +77,9 @@ namespace Obskurnee.Services
             {
                 _logger.LogInformation("Bot created");
                 await _userManager.AddToRoleAsync(user, BookclubRoles.Bot);
-                return UserInfo.From(user);
+                return (UserInfo.From(user), "");
             }
-            return null;
+            return (null, result.Errors.FirstOrDefault()?.Description);
         }
 
         private Bookworm MakeNamedBookworm(LoginCredentials creds, string defaultName, bool isBot)

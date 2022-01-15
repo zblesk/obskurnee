@@ -80,6 +80,29 @@
             </p>
         </div>
 
+        <div v-if="isAdmin" class="section">
+            <h2 class="section-title u-mt-sp2">{{ $t('admin.newBotCreation') }}</h2>
+            <div class="note u-mt-sp">
+                <div class="note-pic">
+                    <img src="../../assets/lamp.svg" alt="lamp icon" />
+                </div>
+                <p class="note-text">{{ $t('admin.botDescription') }}</p>
+            </div>
+            <div class="form-field">
+                <label for="new-botmail">{{ $t('admin.newUserEmail') }}*</label>
+                <input type="email" v-model="newBotEmail" id="new-botmail" />
+            </div>
+            <div class="form-field">
+                <label for="new-botname">{{ $t('admin.newUserName') }}</label>
+                <input type="text" v-model="newBotName" id="new-botname" />
+            </div>
+            <div class="form-field">
+                <label for="new-botpassword">{{ $t('menus.password') }}</label>
+                <input type="text" v-model="newBotPassword" id="new-botpassword" />
+            </div>
+            <button @click="addBot()" class="button-primary">{{ $t('admin.newBotCreation') }}</button>
+        </div>
+
     </div>
 </section>
 </template>
@@ -97,6 +120,9 @@ export default {
             newUserEmail: "",
             newUserName: "",
             notice: "",
+            newBotEmail: "",
+            newBotName: "",
+            newBotPassword: "",
             newsletterInfo: {},
         }
     },
@@ -127,7 +153,7 @@ export default {
         },
         addUser()
         {
-            axios.post("/api/admin/createuser", { email: this.newUserEmail, name: this.newUserName})
+            axios.post("/api/admin/registeruser", { email: this.newUserEmail, name: this.newUserName})
             .then(() => 
                 {
                     this.getUsers();
@@ -153,7 +179,20 @@ export default {
             axios.get("/api/newsletters/all")
             .then(response => this.newsletterInfo = response.data )
             .catch(this.$handleApiError);
-        }
+        },
+        addBot()
+        {
+            axios.post("/api/admin/registerbot", { email: this.newBotEmail, name: this.newBotName, password: this.newBotPassword})
+            .then(() => 
+                {
+                    this.$notifySuccess(this.$t('messages.userCreated'));
+                    this.newBotEmail = this.newBotName = this.newBotPassword = "";
+                })
+            .catch((err) => 
+            {
+                this.$notifyError(err?.response?.data?.detail);
+            });
+        },
     },
     mounted() {
         this.getUsers();

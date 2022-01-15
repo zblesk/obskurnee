@@ -10,6 +10,8 @@
     "newUserCreation": "Create a new user",
     "newUserEmail": "Email",
     "newUserName": "Name",
+    "newBotCreation": "Create a new bot",
+    "botDescription": "Unlike a regular user, a bot has read-only access and doesn't show up in the UI. For use in integrations.",
     "nobody": "currently no one",
     "noticeboard": "Homepage message",
     "noticeboardContent": "Message text",
@@ -87,7 +89,8 @@
     "subscribed": "Subscribed",
     "unsubscribe": "Unsubscribe",
     "updated": "Updated",
-    "userCreated": "User created"
+    "userCreated": "User created",
+    "botCreated": "Bot created"
   },
   "newpost": {
     "addDescriptionPlox": "Add description",

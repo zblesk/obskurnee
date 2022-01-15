@@ -71,7 +71,7 @@ namespace Obskurnee.Services
 
         public abstract Task<UserInfo> Register(LoginCredentials creds, string defaultName = null);
 
-        public abstract Task<UserInfo> RegisterBot(LoginCredentials creds, string defaultName = null);
+        public abstract Task<(UserInfo user, string error)> RegisterBot(LoginCredentials creds, string defaultName = null);
 
         public abstract Task<IdentityResult> MakeModerator(string email);
 

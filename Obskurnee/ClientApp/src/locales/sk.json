@@ -10,6 +10,8 @@
     "newUserCreation": "Vytvorenie nového používateľa",
     "newUserEmail": "E-mail",
     "newUserName": "Meno",
+    "newBotCreation": "Vytvorenie nového bota",
+    "botDescription": "Na rozdiel od bežného používateľa, bot môže dáta iba čítať a nezobrazuje sa nikde v UI. Pre použitie v integráciách.",
     "nobody": "momentálne nikto",
     "noticeboard": "Oznámenie na hlavnej stránke",
     "noticeboardContent": "Text oznámení",
@@ -87,7 +89,8 @@
     "subscribed": "Prihlásené",
     "unsubscribe": "Odhlásiť",
     "updated": "Aktualizované",
-    "userCreated": "Používateľ vytvorený"
+    "userCreated": "Používateľ vytvorený",
+    "botCreated": "Bot vytvorený"
   },
   "newpost": {
     "addDescriptionPlox": "Prosím, vyplň popis",
