@@ -187,5 +187,15 @@ namespace Obskurnee.Services
                 _dbContext.Database.RollbackTransaction();
             }
         }
+
+        public IEnumerable<BotInfo> GetBots()
+            => from user in _dbContext.Users
+               where user.IsBot
+               select new BotInfo
+               {
+                   Name = user.UserName,
+                   Email = user.Email,
+                   LoginEnabled = user.LoginEnabled
+               };
     }
 }

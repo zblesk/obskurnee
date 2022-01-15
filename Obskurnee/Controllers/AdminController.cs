@@ -125,6 +125,11 @@ namespace Obskurnee.Controllers
             return ValidationProblem($"Registration failed: {registrationResult.error}");
         }
 
+        [HttpGet("bots")]
+        [Authorize(Policy = "AdminOnly")]
+        public IEnumerable<string> GetBots()
+            => _users.GetBots().Select(b => b.Name);
+
         [HttpPost("makemod/{email}")]
         public async Task MakeModerator(string email)
             => await _users.MakeModerator(email);

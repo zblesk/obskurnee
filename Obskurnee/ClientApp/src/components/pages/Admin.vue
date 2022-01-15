@@ -72,7 +72,7 @@
                 <span v-if="!newsletterInfo['basicevents'] || newsletterInfo['basicevents'].length == 0">{{$t('admin.nobody')}}</span>
             </p>
             <p>
-                {{$t('admin.allEvents')}} 
+                {{ $t('admin.allEvents') }} 
                 <span v-for="subscriber in newsletterInfo['allevents']" v-bind:key="subscriber">
                     <router-link :to="{ name: 'user', params: { email: subscriber.email } }">{{ subscriber.name }}</router-link>, 
                 </span>
@@ -101,6 +101,9 @@
                 <input type="text" v-model="newBotPassword" id="new-botpassword" />
             </div>
             <button @click="addBot()" class="button-primary">{{ $t('admin.newBotCreation') }}</button>
+            <div>
+                {{ $t('admin.bots') }} <span v-for="bot in bots" v-bind:key="bot">{{ bot }}, </span>
+            </div>
         </div>
 
     </div>
@@ -124,6 +127,7 @@ export default {
             newBotName: "",
             newBotPassword: "",
             newsletterInfo: {},
+            bots: {},
         }
     },
     computed: {
@@ -180,6 +184,14 @@ export default {
             .then(response => this.newsletterInfo = response.data )
             .catch(this.$handleApiError);
         },
+        getBots()
+        {
+            axios.get("/api/admin/bots")
+            .then((payload) => 
+                {
+                    this.bots = payload.data;
+                })
+        },
         addBot()
         {
             axios.post("/api/admin/registerbot", { email: this.newBotEmail, name: this.newBotName, password: this.newBotPassword})
@@ -187,6 +199,7 @@ export default {
                 {
                     this.$notifySuccess(this.$t('messages.userCreated'));
                     this.newBotEmail = this.newBotName = this.newBotPassword = "";
+                    this.getBots();
                 })
             .catch((err) => 
             {
@@ -198,6 +211,7 @@ export default {
         this.getUsers();
         this.getInfo();
         this.getNewsletterInfo();
+        this.getBots();
     }
 }
 </script>

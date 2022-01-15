@@ -12,6 +12,7 @@
     "newUserName": "Meno",
     "newBotCreation": "Vytvorenie nového bota",
     "botDescription": "Na rozdiel od bežného používateľa, bot môže dáta iba čítať a nezobrazuje sa nikde v UI. Pre použitie v integráciách.",
+    "bots": "Boti:",
     "nobody": "momentálne nikto",
     "noticeboard": "Oznámenie na hlavnej stránke",
     "noticeboardContent": "Text oznámení",
