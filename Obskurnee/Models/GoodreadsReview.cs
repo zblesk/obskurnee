@@ -24,5 +24,10 @@ namespace Obskurnee.Models
         [NotMapped] public string RenderedReviewText { get => ReviewText.RenderMarkdown(); }
 
         public GoodreadsReview(string ownerId) : base(ownerId) { }
+
+        public string GetStarRating()
+            => Rating < 5
+                ? new string('⭐', Rating)
+                : "🌟🌟🌟🌟🌟";
     }
 }

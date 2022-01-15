@@ -72,7 +72,7 @@ namespace Obskurnee.Services
                                 user.UserName,
                                 r.BookTitle,
                                 r.Author,
-                                new string('⭐', r.Rating),
+                                r.GetStarRating(),
                                 r.ReviewText.AddMarkdownQuote(),
                                 r.ReviewUrl));
                     }
@@ -83,7 +83,7 @@ namespace Obskurnee.Services
                                 user.UserName,
                                 r.BookTitle,
                                 r.Author,
-                                new string('⭐', r.Rating),
+                                r.GetStarRating(),
                                 r.ReviewUrl));
                     }
                 }
