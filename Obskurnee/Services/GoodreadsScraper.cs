@@ -3,7 +3,7 @@ using HtmlAgilityPack;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using System.IO;
-using System.Net;
+using Flurl.Http;
 using System.ServiceModel.Syndication;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -40,12 +40,9 @@ public class GoodreadsScraper
         var result = new GoodreadsBookInfo("none") { Url = goodreadsUrl };
         try
         {
-            using (WebClient client = new WebClient())
-            {
-                string bookPageHtml = await client.DownloadStringTaskAsync(goodreadsUrl);
-                string imgUrl = ExtractBookInfo(goodreadsUrl, result, bookPageHtml);
-                await ExtractBookImage(result, client, imgUrl);
-            }
+            string bookPageHtml = await goodreadsUrl.GetStringAsync();
+            string imgUrl = ExtractBookInfo(goodreadsUrl, result, bookPageHtml);
+            await ExtractBookImage(result, imgUrl);
             _db.BookInfos.Add(result);
             await _db.SaveChangesAsync();
             return result;
@@ -162,7 +159,6 @@ public class GoodreadsScraper
 
     private async Task ExtractBookImage(
         GoodreadsBookInfo result,
-        WebClient client,
         string imgUrl)
     {
         try
@@ -170,7 +166,7 @@ public class GoodreadsScraper
             if (!string.IsNullOrWhiteSpace(imgUrl))
             {
                 _logger.LogInformation("Downloading image for {bookname} at {url}", result.Title, imgUrl);
-                var pic = await client.DownloadDataTaskAsync(imgUrl);
+                var pic = await imgUrl.GetBytesAsync();
                 var sanitizedName = Regex.Replace(
                         result.Title.Replace(' ', '-'),
                         "[^a-zA-Z0-9-]", "");
