@@ -2,25 +2,21 @@
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.Services;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace Obskurnee.Controllers
+namespace Obskurnee.Controllers;
+
+[Route("api/books")]
+public class BookController : Controller
 {
-    [Route("api/books")]
-    public class BookController : Controller
+    private readonly ILogger<BookController> _logger;
+    private readonly BookService _books;
+
+    public BookController(ILogger<BookController> logger, BookService books)
     {
-        private readonly ILogger<BookController> _logger;
-        private readonly BookService _books;
-
-        public BookController(ILogger<BookController> logger, BookService books)
-        {
-            _logger = logger;
-            _books = books ?? throw new ArgumentNullException(nameof(books));
-        }
-
-        [HttpGet]
-        public Task<List<Book>> GetAllBooksOrdered() => _books.GetBooksNewestFirst();
+        _logger = logger;
+        _books = books ?? throw new ArgumentNullException(nameof(books));
     }
+
+    [HttpGet]
+    public Task<List<Book>> GetAllBooksOrdered() => _books.GetBooksNewestFirst();
 }

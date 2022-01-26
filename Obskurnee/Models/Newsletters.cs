@@ -1,8 +1,7 @@
-﻿namespace Obskurnee.Models
+﻿namespace Obskurnee.Models;
+
+public static class Newsletters
 {
-    public static class Newsletters
-    {
-        public const string BasicEvents = "basicevents";
-        public const string AllEvents = "allevents";
-    }
+    public const string BasicEvents = "basicevents";
+    public const string AllEvents = "allevents";
 }

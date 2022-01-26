@@ -1,9 +1,8 @@
 ﻿using Obskurnee.Models;
 
-namespace Obskurnee.ViewModels
+namespace Obskurnee.ViewModels;
+
+public class BookInfo
 {
-    public class BookInfo
-    {
-        public Book Book { get; set; }
-    }
+    public Book Book { get; set; }
 }

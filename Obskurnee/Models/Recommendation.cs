@@ -4,38 +4,37 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.RegularExpressions;
 
-namespace Obskurnee.Models
+namespace Obskurnee.Models;
+
+[Table("Recommendations")]
+[Index(nameof(OwnerId))]
+public class Recommendation : HeaderData
 {
-    [Table("Recommendations")]
-    [Index(nameof(OwnerId))]
-    public class Recommendation : HeaderData
+    [Key]
+    public int RecommendationId { get; set; }
+    public string Title { get; set; }
+    public string Author { get; set; }
+    public string Text { get; set; }
+    public int PageCount { get; set; }
+    public string Url { get; set; }
+    public string ImageUrl { get; set; }
+
+    [NotMapped]
+    public string RenderedText { get => Text.RenderMarkdown(); }
+
+    [NotMapped]
+    public string GetGoodreadsId
     {
-        [Key]
-        public int RecommendationId { get; set; }
-        public string Title { get; set; }
-        public string Author { get; set; }
-        public string Text { get; set; }
-        public int PageCount { get; set; }
-        public string Url { get; set; }
-        public string ImageUrl { get; set; }
-
-        [NotMapped]
-        public string RenderedText { get => Text.RenderMarkdown(); }
-
-        [NotMapped]
-        public string GetGoodreadsId
+        get
         {
-            get
+            if (string.IsNullOrWhiteSpace(Url))
             {
-                if (string.IsNullOrWhiteSpace(Url))
-                {
-                    return null;
-                }
-                var match = Regex.Match(Url, @"goodreads.com\/book\/show\/(\d+).*");
-                return match.Groups?[1]?.Value ?? null;
+                return null;
             }
+            var match = Regex.Match(Url, @"goodreads.com\/book\/show\/(\d+).*");
+            return match.Groups?[1]?.Value ?? null;
         }
-
-        public Recommendation(string ownerId) : base(ownerId) { }
     }
+
+    public Recommendation(string ownerId) : base(ownerId) { }
 }

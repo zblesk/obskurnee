@@ -2,33 +2,31 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Obskurnee.Services;
-using System.Threading.Tasks;
 
-namespace Obskurnee.Controllers
+namespace Obskurnee.Controllers;
+
+[Route("images")]
+[AllowAnonymous]
+public class ImageController : Controller
 {
-    [Route("images")]
-    [AllowAnonymous]
-    public class ImageController : Controller
+    private readonly ApplicationDbContext _db;
+
+    public ImageController(
+        ApplicationDbContext db)
     {
-        private readonly ApplicationDbContext _db;
+        _db = db;
+    }
 
-        public ImageController(
-            ApplicationDbContext db)
+    [HttpGet]
+    [Route("{imageName}")]
+    [ResponseCache(Duration = 31536000, Location = ResponseCacheLocation.Any)]
+    public async Task<IActionResult> Get(string imageName)
+    {
+        var image = await _db.Images.AsNoTracking().FirstOrDefaultAsync(i => i.FileName == imageName);
+        if (image != null)
         {
-            _db = db;
+            return File(image.FileContents, ExtensionToMime(image.Extension));
         }
-
-        [HttpGet]
-        [Route("{imageName}")]
-        [ResponseCache(Duration = 31536000, Location = ResponseCacheLocation.Any)]
-        public async Task<IActionResult> Get(string imageName)
-        {
-            var image = await _db.Images.AsNoTracking().FirstOrDefaultAsync(i => i.FileName == imageName);
-            if (image != null)
-            {
-                return File(image.FileContents, ExtensionToMime(image.Extension));
-            }
-            return await Task.FromResult((IActionResult)NotFound());
-        }
+        return await Task.FromResult((IActionResult)NotFound());
     }
 }

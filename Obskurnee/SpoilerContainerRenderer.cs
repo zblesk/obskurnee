@@ -3,90 +3,88 @@ using Markdig.Extensions.CustomContainers;
 using Markdig.Parsers.Inlines;
 using Markdig.Renderers;
 using Markdig.Renderers.Html;
-using System.Collections.Generic;
 
-namespace Obskurnee
+namespace Obskurnee;
+
+public class SpoilerContainerRenderer : HtmlObjectRenderer<CustomContainer>
 {
-    public class SpoilerContainerRenderer : HtmlObjectRenderer<CustomContainer>
+    protected override void Write(HtmlRenderer renderer, CustomContainer obj)
     {
-        protected override void Write(HtmlRenderer renderer, CustomContainer obj)
+        renderer.EnsureLine();
+        if (string.IsNullOrWhiteSpace(obj.Info))
         {
-            renderer.EnsureLine();
-            if (string.IsNullOrWhiteSpace(obj.Info))
+            var attr = obj.GetAttributes();
+            attr.AddClass("spoiler");
+            obj.SetAttributes(attr);
+        }
+        if (renderer.EnableHtmlForBlock)
+        {
+            renderer.Write("<div").WriteAttributes(obj).Write('>');
+        }
+        // We don't escape a CustomContainer
+        renderer.WriteChildren(obj);
+        if (renderer.EnableHtmlForBlock)
+        {
+            renderer.WriteLine("</div>");
+        }
+    }
+}
+
+public class SpoilerContainerInlineRenderer : HtmlObjectRenderer<CustomContainerInline>
+{
+    protected override void Write(HtmlRenderer renderer, CustomContainerInline obj)
+    {
+        var attr = obj.TryGetAttributes() ?? new();
+        if ((attr.Classes?.Count ?? 0) == 0)
+        {
+            attr.AddClass("spoiler");
+            obj.SetAttributes(attr);
+        }
+        renderer.Write("<span").WriteAttributes(obj).Write('>');
+        renderer.WriteChildren(obj);
+        renderer.Write("</span>");
+    }
+}
+
+public class SpoilerContainerExtension : IMarkdownExtension
+{
+    public void Setup(MarkdownPipelineBuilder pipeline)
+    {
+        if (!pipeline.BlockParsers.Contains<CustomContainerParser>())
+        {
+            // Insert the parser before any other parsers
+            pipeline.BlockParsers.Insert(0, new CustomContainerParser());
+        }
+
+        // Plug the inline parser for CustomContainerInline
+        var inlineParser = pipeline.InlineParsers.Find<EmphasisInlineParser>();
+        if (inlineParser != null && !inlineParser.HasEmphasisChar(':'))
+        {
+            inlineParser.EmphasisDescriptors.Add(new EmphasisDescriptor(':', 2, 2, true));
+            inlineParser.TryCreateEmphasisInlineList.Add((emphasisChar, delimiterCount) =>
             {
-                var attr = obj.GetAttributes();
-                attr.AddClass("spoiler");
-                obj.SetAttributes(attr);
-            }
-            if (renderer.EnableHtmlForBlock)
-            {
-                renderer.Write("<div").WriteAttributes(obj).Write('>');
-            }
-            // We don't escape a CustomContainer
-            renderer.WriteChildren(obj);
-            if (renderer.EnableHtmlForBlock)
-            {
-                renderer.WriteLine("</div>");
-            }
+                if (delimiterCount == 2 && emphasisChar == ':')
+                {
+                    return new CustomContainerInline();
+                }
+                return null;
+            });
         }
     }
 
-    public class SpoilerContainerInlineRenderer : HtmlObjectRenderer<CustomContainerInline>
+    public void Setup(MarkdownPipeline pipeline, IMarkdownRenderer renderer)
     {
-        protected override void Write(HtmlRenderer renderer, CustomContainerInline obj)
+        if (renderer is HtmlRenderer htmlRenderer)
         {
-            var attr = obj.TryGetAttributes() ?? new ();
-            if ((attr.Classes?.Count ?? 0) == 0)
+            if (!htmlRenderer.ObjectRenderers.Contains<SpoilerContainerRenderer>())
             {
-                attr.AddClass("spoiler");
-                obj.SetAttributes(attr);
+                // Must be inserted before CodeBlockRenderer
+                htmlRenderer.ObjectRenderers.Insert(0, new SpoilerContainerRenderer());
             }
-            renderer.Write("<span").WriteAttributes(obj).Write('>');
-            renderer.WriteChildren(obj);
-            renderer.Write("</span>");
-        }
-    }
-
-    public class SpoilerContainerExtension : IMarkdownExtension
-    {
-        public void Setup(MarkdownPipelineBuilder pipeline)
-        {
-            if (!pipeline.BlockParsers.Contains<CustomContainerParser>())
+            if (!htmlRenderer.ObjectRenderers.Contains<SpoilerContainerInlineRenderer>())
             {
-                // Insert the parser before any other parsers
-                pipeline.BlockParsers.Insert(0, new CustomContainerParser());
-            }
-
-            // Plug the inline parser for CustomContainerInline
-            var inlineParser = pipeline.InlineParsers.Find<EmphasisInlineParser>();
-            if (inlineParser != null && !inlineParser.HasEmphasisChar(':'))
-            {
-                inlineParser.EmphasisDescriptors.Add(new EmphasisDescriptor(':', 2, 2, true));
-                inlineParser.TryCreateEmphasisInlineList.Add((emphasisChar, delimiterCount) =>
-                {
-                    if (delimiterCount == 2 && emphasisChar == ':')
-                    {
-                        return new CustomContainerInline();
-                    }
-                    return null;
-                });
-            }
-        }
-
-        public void Setup(MarkdownPipeline pipeline, IMarkdownRenderer renderer)
-        {
-            if (renderer is HtmlRenderer htmlRenderer)
-            {
-                if (!htmlRenderer.ObjectRenderers.Contains<SpoilerContainerRenderer>())
-                {
-                    // Must be inserted before CodeBlockRenderer
-                    htmlRenderer.ObjectRenderers.Insert(0, new SpoilerContainerRenderer());
-                }
-                if (!htmlRenderer.ObjectRenderers.Contains<SpoilerContainerInlineRenderer>())
-                {
-                    // Must be inserted before EmphasisRenderer
-                    htmlRenderer.ObjectRenderers.Insert(0, new SpoilerContainerInlineRenderer());
-                }
+                // Must be inserted before EmphasisRenderer
+                htmlRenderer.ObjectRenderers.Insert(0, new SpoilerContainerInlineRenderer());
             }
         }
     }

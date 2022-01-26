@@ -1,29 +1,27 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Obskurnee.Models;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
-namespace Obskurnee
+namespace Obskurnee;
+
+public class EditAuthorizationHandler :
+    AuthorizationHandler<MatchingOwnerRequirement, HeaderData>
 {
-    public class EditAuthorizationHandler :
-        AuthorizationHandler<MatchingOwnerRequirement, HeaderData>
+    protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
+                                                   MatchingOwnerRequirement requirement,
+                                                   HeaderData data)
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
-                                                       MatchingOwnerRequirement requirement,
-                                                       HeaderData data)
+        if (context.User.Identity.Name == data.OwnerId
+            || context.User.HasClaim(c =>
+                                    c.Type == ClaimTypes.Role
+                                        && (c.Value == BookclubRoles.Moderator
+                                            || c.Value == BookclubRoles.Admin)))
         {
-            if (context.User.Identity.Name == data.OwnerId
-                || context.User.HasClaim(c => 
-                                        c.Type == ClaimTypes.Role
-                                            && (c.Value == BookclubRoles.Moderator 
-                                                || c.Value == BookclubRoles.Admin)))
-            {
-                context.Succeed(requirement);
-            }
-             
-            return Task.CompletedTask;
+            context.Succeed(requirement);
         }
-    }
 
-    public class MatchingOwnerRequirement : IAuthorizationRequirement { }
+        return Task.CompletedTask;
+    }
 }
+
+public class MatchingOwnerRequirement : IAuthorizationRequirement { }

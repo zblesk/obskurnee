@@ -1,7 +1,6 @@
-﻿namespace Obskurnee
+﻿namespace Obskurnee;
+
+// Localization placeholder
+public class Strings
 {
-    // Localization placeholder
-    public class Strings
-    {
-    }
 }

@@ -1,9 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿namespace Obskurnee.Services;
 
-namespace Obskurnee.Services
+public interface IMailerService
 {
-    public interface IMailerService
-    {
-        Task SendMail(string subject, string markdownBody, params string[] recipients);
-    }
+    Task SendMail(string subject, string markdownBody, params string[] recipients);
 }

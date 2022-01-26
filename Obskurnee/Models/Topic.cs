@@ -1,4 +1,3 @@
-﻿namespace Obskurnee.Models
-{
-    public enum Topic { Themes, Books, Recommendations };
-}
+﻿namespace Obskurnee.Models;
+
+public enum Topic { Themes, Books, Recommendations };
