@@ -17,10 +17,9 @@ public class AdminController : Controller
     private readonly SettingsService _settings;
     private readonly UserServiceBase _users;
     private readonly IMailerService _mailer;
-    private static readonly Random _random = new Random();
+    private static readonly Random _random = new();
     private readonly Config _config;
     private readonly BackupService _backup;
-    private readonly IStringLocalizer<Strings> _localizer;
     private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
 
     public AdminController(
@@ -29,7 +28,6 @@ public class AdminController : Controller
         UserServiceBase users,
         IMailerService mailer,
         BackupService backup,
-        IStringLocalizer<Strings> localizer,
         IStringLocalizer<NewsletterStrings> newsletterLocalizer,
         Config config)
     {
@@ -39,7 +37,6 @@ public class AdminController : Controller
         _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
         _config = config ?? throw new ArgumentNullException(nameof(config));
         _backup = backup ?? throw new ArgumentNullException(nameof(backup));
-        _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
         _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
     }
 

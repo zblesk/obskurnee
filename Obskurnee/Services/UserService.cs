@@ -46,7 +46,7 @@ public sealed class UserService : UserServiceBase
         LoginCredentials creds,
         string defaultName = null)
     {
-        Bookworm user = MakeNamedBookworm(creds, defaultName, isBot: false);
+        var user = MakeNamedBookworm(creds, defaultName, isBot: false);
         _logger.LogInformation("Registering user {email}", user.Email);
         var result = await _userManager.CreateAsync(user, creds.Password);
         if (result.Succeeded)
@@ -67,7 +67,7 @@ public sealed class UserService : UserServiceBase
         LoginCredentials creds,
         string defaultName = null)
     {
-        Bookworm user = MakeNamedBookworm(creds, defaultName, isBot: true);
+        var user = MakeNamedBookworm(creds, defaultName, isBot: true);
         _logger.LogInformation("Registering bot {email}", user.Email);
         var result = await _userManager.CreateAsync(user, creds.Password);
         if (result.Succeeded)
@@ -83,7 +83,7 @@ public sealed class UserService : UserServiceBase
     {
         if (string.IsNullOrWhiteSpace(defaultName))
         {
-            defaultName = creds.Email.Substring(0, creds.Email.IndexOf('@'));
+            defaultName = creds.Email[..creds.Email.IndexOf('@')];
         }
         var user = new Bookworm
         {

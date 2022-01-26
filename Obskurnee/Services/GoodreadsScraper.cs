@@ -40,8 +40,8 @@ public class GoodreadsScraper
         var result = new GoodreadsBookInfo("none") { Url = goodreadsUrl };
         try
         {
-            string bookPageHtml = await goodreadsUrl.GetStringAsync();
-            string imgUrl = ExtractBookInfo(goodreadsUrl, result, bookPageHtml);
+            var bookPageHtml = await goodreadsUrl.GetStringAsync();
+            var imgUrl = ExtractBookInfo(goodreadsUrl, result, bookPageHtml);
             await ExtractBookImage(result, imgUrl);
             _db.BookInfos.Add(result);
             await _db.SaveChangesAsync();
@@ -108,17 +108,14 @@ public class GoodreadsScraper
         return reviews;
     }
 
-    private string GetElementExtensionValueByOuterName(SyndicationItem item, string outerName)
+    private static string GetElementExtensionValueByOuterName(SyndicationItem item, string outerName)
     {
         if (item.ElementExtensions.All(x => x.OuterName != outerName)) return null;
         return item.ElementExtensions.Single(x => x.OuterName == outerName).GetObject<XElement>().Value;
     }
 
-    private ushort TryGetUshort(string number)
-    {
-        ushort.TryParse(number, out ushort result);
-        return result;
-    }
+    private static ushort TryGetUshort(string number)
+        => ushort.TryParse(number, out var result) ? result : default;
 
     private string ExtractBookInfo(
         string goodreadsUrl,
@@ -148,7 +145,7 @@ public class GoodreadsScraper
         if (!string.IsNullOrWhiteSpace(pages)
             && pages.IndexOf(' ') > -1)
         {
-            if (int.TryParse(pages.Substring(0, pages.IndexOf(' ')), out int pageNum))
+            if (int.TryParse(pages[..pages.IndexOf(' ')], out var pageNum))
             {
                 result.PageCount = pageNum;
             }
@@ -170,7 +167,7 @@ public class GoodreadsScraper
                 var sanitizedName = Regex.Replace(
                         result.Title.Replace(' ', '-'),
                         "[^a-zA-Z0-9-]", "");
-                var relativeFilename = sanitizedName.Substring(0, Math.Min(90, sanitizedName.Length))
+                var relativeFilename = sanitizedName[..Math.Min(90, sanitizedName.Length)]
                     + _rand.Next(10_000, 100_000).ToString()
                     + Path.GetExtension(imgUrl) ?? ".jpg";
                 var relativeUrl = Helpers.MakeImageRelativePath(relativeFilename);

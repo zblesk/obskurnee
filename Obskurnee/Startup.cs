@@ -225,7 +225,7 @@ public class Startup
         });
     }
 
-    private async Task EnsureRoles(RoleManager<IdentityRole> roleManager, UserManager<Bookworm> userManager)
+    private static async Task EnsureRoles(RoleManager<IdentityRole> roleManager, UserManager<Bookworm> userManager)
     {
         await roleManager.EnsureRoleExists(
                    BookclubRoles.Bookworm,

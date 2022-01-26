@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using Obskurnee.Models;
 using Obskurnee.Services;
@@ -12,14 +11,11 @@ namespace Obskurnee.Controllers;
 [Route("api/accounts")]
 public class AccountController : Controller
 {
-    private readonly ILogger _logger;
     private readonly UserServiceBase _users;
 
     public AccountController(
-       UserServiceBase users,
-       ILogger<AccountController> logger)
+       UserServiceBase users)
     {
-        _logger = logger;
         _users = users;
     }
 
