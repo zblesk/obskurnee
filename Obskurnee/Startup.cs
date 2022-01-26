@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -230,19 +230,17 @@ namespace Obskurnee
 
         private async Task EnsureRoles(RoleManager<IdentityRole> roleManager, UserManager<Bookworm> userManager)
         {
-            await EnsureRoleExists(roleManager,
+            await roleManager.EnsureRoleExists(
                        BookclubRoles.Bookworm,
                        new Claim(BookclubClaims.Operation, "global.read"),
                        new Claim(BookclubClaims.Operation, "global.write"));
-            await EnsureRoleExists(roleManager,
+            await roleManager.EnsureRoleExists(
                        BookclubRoles.Admin);
-            await EnsureRoleExists(roleManager,
+            await roleManager.EnsureRoleExists(
                        BookclubRoles.Moderator);
-
-            await EnsureRoleExists(roleManager,
+            await roleManager.EnsureRoleExists(
                        BookclubRoles.Bot,
                        new Claim(BookclubClaims.Operation, "global.read"));
-
 
             // temp - migration
            foreach (var u in userManager.Users)
@@ -263,22 +261,6 @@ namespace Obskurnee
                     await userManager.AddToRoleAsync(u, BookclubRoles.Admin);
                     await userManager.RemoveClaimsAsync(u, cl.Where(cl => cl.Type == "admin"));
                 }
-            }
-        }
-
-        private async Task EnsureRoleExists(
-            RoleManager<IdentityRole> roleManager,
-            string roleName,
-            params Claim[] claims)
-        {
-            var role = await roleManager.FindByNameAsync(roleName);
-            if (role == null)
-            {
-                role = new IdentityRole(roleName);
-                await roleManager.CreateAsync(role);
-                if (claims?.Length > 0)
-                    Task.WaitAll(
-                        claims.Select(claim => roleManager.AddClaimAsync(role, claim)).ToArray());
             }
         }
 

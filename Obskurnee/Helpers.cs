@@ -47,11 +47,6 @@ namespace Obskurnee
         
         public static string RenderMarkdown(this string md) => string.IsNullOrWhiteSpace(md) ? "" : Markdown.ToHtml(md, _mdPipeline);
 
-        public static string AddMarkdownQuote(this string text)
-            => string.IsNullOrWhiteSpace(text)
-                ? ""
-                : "> " + text.Replace("\n", "\n> ");
-
         public static string Format(this IStringLocalizer localizer, string name, params object[] args)
         {
             var origCulture = CultureInfo.CurrentCulture;
@@ -70,15 +65,6 @@ namespace Obskurnee
                 .RenderMarkdown();
             CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture = origCulture;
             return str;
-        }
-                
-        public static string RemoveDiacritics(this string text)
-        {
-            return string.Concat(
-                text.Normalize(NormalizationForm.FormD)
-                .Where(ch => CharUnicodeInfo.GetUnicodeCategory(ch) !=
-                                              UnicodeCategory.NonSpacingMark)
-              ).Normalize(NormalizationForm.FormC);
         }
 
         public static string MakeImageRelativePath(string imageFilename)

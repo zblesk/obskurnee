@@ -30,26 +30,5 @@ namespace Obskurnee.Controllers
             }
             return await Task.FromResult((IActionResult)NotFound());
         }
-
-        private string ExtensionToMime(string extension)
-        {
-            switch (extension)
-            {
-                case ".png":
-                    return "image/png";
-                case ".gif":
-                    return "image/gif";
-                case ".bmp":
-                    return "image/bmp";
-                case ".webp":
-                    return "image/webp";
-                case ".webm":
-                    return "video/webm";
-                case ".jpg":
-                case ".jpeg":
-                default:
-                    return "image/jpeg";
-            }
-        }
     }
 }
