@@ -28,7 +28,6 @@
 
   <div class="page-wrapper flex">
     <div class="main flex">
-
       <div v-if="!poll.isClosed && poll.results && poll.results.alreadyVoted" class="u-mb-sp2">
        <h2 class="subtitle">{{$t('poll.pollProgress')}}</h2>
         <p class="paragraph">{{$t('poll.alreadyVoted', [poll.results.alreadyVoted.length, activeUsers.length])}}</p>
@@ -55,7 +54,7 @@
 
       <div class="buttons buttons-poll">
         <button @click="vote" :disabled="!checkedOptions?.length" class="button-primary" v-if="!iVoted && !poll.isClosed">{{$t('poll.vote')}}</button>
-        <button v-if="isMod && !poll.isClosed" @click="doClosePoll" class="button-secondary poll-to-close">{{$t('poll.closeVote')}}</button>
+        <button v-if="isMod && !poll.isClosed && poll.results?.alreadyVoted?.length > 0" @click="doClosePoll" class="button-secondary poll-to-close">{{$t('poll.closeVote')}}</button>
       </div>
       
     </div>
