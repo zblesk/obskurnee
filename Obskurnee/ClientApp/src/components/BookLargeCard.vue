@@ -10,7 +10,7 @@
       <router-link :to="{ name: 'book', params: { bookId: book.bookId } }">
         {{ book.post.title }}
       </router-link>
-      <a :href="book.post.url" :alt="book.post.title">
+      <a v-if="book.post.url" :href="book.post.url" :alt="book.post.title">
         <span class="goodreads-wrapper">
           <img src="../assets/goodreads_icon_32x32.png" alt="link to goodreads" class="goodreads-icon">
         </span>
