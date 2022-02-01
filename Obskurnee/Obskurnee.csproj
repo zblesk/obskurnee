@@ -5,7 +5,6 @@
     <RootNamespace>Obskurnee</RootNamespace>
     <UserSecretsId>efac8292-c0d4-4e78-b2e5-6e78415a844b</UserSecretsId>
     <Configurations>Debug;Release;ReleaseNoNode;DemoDebug;DemoReleaseNoNode</Configurations>
-	<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -54,6 +53,7 @@
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.15.1" />
     <PackageReference Include="System.ServiceModel.Syndication" Version="6.0.0" />
     <PackageReference Include="VueCliMiddleware" Version="6.0.0" />
     <PackageReference Include="zblesk.helpers" Version="1.2.0" />
