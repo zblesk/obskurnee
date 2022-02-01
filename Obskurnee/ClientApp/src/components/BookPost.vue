@@ -10,12 +10,14 @@
           :to="{ name: 'singlepost', params: { discussionId: post.discussionId, postId: post.postId } }">
             🔗
         </router-link> 
-        <span v-if="editMode" class="book__edit" @click="saveChanges()">
-          💾
-        </span>
-        <span v-else class="book__edit" @click="startEditing()">
-          📝
-        </span>
+        <div v-if="isMe(post.ownerId) || isMod">
+          <span v-if="editMode" class="book__edit" @click="saveChanges()">
+            💾
+          </span>
+          <span v-else class="book__edit" @click="startEditing()">
+            📝
+          </span>
+        </div>
         <div v-if="editMode">
           <div class="form-field">
             <label for="name" v-if="topic == 'Books' || topic == 'Recommendations'">{{$t('newpost.bookTitle')}}*</label>
@@ -78,7 +80,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("global", ["isRepostingAllowed", "activeDiscussionId"])
+    ...mapGetters("global", ["isRepostingAllowed", "activeDiscussionId"]),
+    ...mapGetters("context", ["isMe", "isMod"]),
   },
   methods: {
     ...mapActions("discussions", ["updatePost"]),
