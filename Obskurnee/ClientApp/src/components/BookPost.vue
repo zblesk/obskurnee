@@ -98,7 +98,7 @@ export default {
       catch (ex)
       {
         console.log(ex);
-        this.$notifyError("update failed");
+        this.$notifyError(this.$t('messages.updateFailed'));
       }
     }
   }

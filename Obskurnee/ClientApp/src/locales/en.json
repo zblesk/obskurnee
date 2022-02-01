@@ -90,6 +90,7 @@
     "subscribed": "Subscribed",
     "unsubscribe": "Unsubscribe",
     "updated": "Updated",
+    "updateFailed": "Update failed",
     "userCreated": "User created",
     "botCreated": "Bot created"
   },

@@ -90,6 +90,7 @@
     "subscribed": "Prihlásené",
     "unsubscribe": "Odhlásiť",
     "updated": "Aktualizované",
+    "updateFailed": "Aktualizácia zlyhala",
     "userCreated": "Používateľ vytvorený",
     "botCreated": "Bot vytvorený"
   },
