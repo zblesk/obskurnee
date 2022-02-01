@@ -15,7 +15,7 @@ public class EditAuthorizationHandler :
             context.Fail();
             return Task.CompletedTask;
         }
-        if (context.User.Identity.Name == data.OwnerId
+        if (context.User.Claims.Any(c => c.Type == BookclubClaims.UserId && c.Value == data.OwnerId)
             || context.User.IsInRole(BookclubRoles.Admin)
             || context.User.IsInRole(BookclubRoles.Moderator))
         {

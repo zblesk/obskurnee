@@ -30,6 +30,7 @@
             <label for="pages">{{$t('newpost.pageCount')}}*</label>
             <input type="number" v-model="editedPost.pageCount" id="pages" required />
           </div>
+          <markdown-editor v-model="editedPost.text" :required="topic != 'Themes'"></markdown-editor>
         </div>
         <div v-else>
           <a :href="post.url" class="book__link">
@@ -50,15 +51,15 @@
             <button class="button-secondary button-repost">{{$t('bookpost.addToOngoing')}}</button>
         </router-link>
       </div>
-{{editedPost}}
 </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import UserLink from './UserLink.vue'
+import MarkdownEditor from './MarkdownEditor.vue';
 export default {
-  components: { UserLink },
+  components: { UserLink, MarkdownEditor },
   name: "BookPost",
   data() {
     return {
@@ -88,9 +89,17 @@ export default {
     },
     async saveChanges()
     {
-      await this.updatePost({ post: this.editedPost });
-      this.editMode = false;
-      this.editedPost = {};
+      try
+      {
+        await this.updatePost({ post: this.editedPost });
+        this.editMode = false;
+        this.editedPost = {};
+      }
+      catch (ex)
+      {
+        console.log(ex);
+        this.$notifyError("update failed");
+      }
     }
   }
 }

@@ -45,7 +45,6 @@
       <button @click="toggleVisibility" class="button-secondary hide-form" tabindex="8">{{$t('newpost.hideForm')}}</button>
     </div>
   </div>
-  {{newPost}}
 </div>
 </template>
 
@@ -143,7 +142,7 @@ export default {
     emits: ["new-post"],
     data() {
         return {
-            newPost: { text: '' },
+            newPost: { },
             fetchInProgress: false,
             saveInProgress: false,
             hide: true,
