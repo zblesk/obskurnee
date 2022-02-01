@@ -21,9 +21,9 @@ public class UserController : Controller
     readonly UserManager<Bookworm> _userManager;
 
     public UserController(
-       UserServiceBase users,
+       UserServiceBase users
 #if DEBUG
-       UserManager<Bookworm> userManager
+       , UserManager<Bookworm> userManager
 #endif
        )
     {
