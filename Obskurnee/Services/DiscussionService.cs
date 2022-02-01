@@ -60,7 +60,7 @@ public class DiscussionService
     public Task<Post> GetPost(int postId)
         => _db.Posts.AsNoTracking().FirstOrDefaultAsync(p => p.PostId == postId);
 
-    internal async Task<Post> UpdatePost(int discussionId, Post post)
+    public async Task<Post> UpdatePost(int discussionId, Post post)
     {
         var existingPost = await _db.Posts.SingleAsync(
             p => p.PostId == post.PostId

@@ -11,15 +11,15 @@ namespace Obskurnee.Controllers;
 [Route("api/recommendations")]
 public class RecommendationController : Controller
 {
-    private readonly ILogger<RecommendationController> _logger;
     private readonly RecommendationService _recommendations;
+    private readonly IAuthorizationService _authService;
 
     public RecommendationController(
-        ILogger<RecommendationController> logger,
-        RecommendationService recommendations)
+        RecommendationService recommendations,
+        IAuthorizationService authService)
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _recommendations = recommendations ?? throw new ArgumentNullException(nameof(recommendations));
+        _authService = authService;
     }
 
     [HttpGet]
@@ -33,4 +33,18 @@ public class RecommendationController : Controller
     [Authorize(Policy = "CanUpdate")]
     public async Task<Recommendation> AddRec([FromBody] Recommendation post)
         => await _recommendations.AddRec(post, User.GetUserId());
+
+    [HttpPatch]
+    [Authorize(Policy = "CanUpdate")]
+    public async Task<IActionResult> UpdateRec(Recommendation rec)
+    {
+        var existingRec = await _recommendations.GetRec(rec.RecommendationId);
+        if (existingRec == null)
+            return new NotFoundResult();
+
+        var auth = await _authService.AuthorizeAsync(User, existingRec, "EditAuthPolicy");
+        if (auth.Succeeded)
+            return Json(await _recommendations.UpdateRec(rec));
+        return new ForbidResult();
+    }
 }

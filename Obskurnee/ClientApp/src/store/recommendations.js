@@ -1,37 +1,53 @@
 import axios from "axios";
 
 export default {
-    namespaced: true,
-    state: {
-      recommendations: [],
+  namespaced: true,
+  state: {
+    recommendations: [],
+  },
+  getters: {
+  },
+  mutations: {
+    setRecommendations (state, recommendations) {
+      state.recommendations = recommendations;
     },
-    getters: {
+    addRec (state, rec) {
+      state.recommendations.unshift(rec);
     },
-    mutations: {
-      setRecommendations (state, recommendations) {
-        state.recommendations = recommendations;
-      },
-      addRec (state, rec) {
+    updateRec (state, { rec }) {
+      let existingRec = state.recommendations.findIndex(r => r.recommendationId == rec.recommendationId);
+      if (existingRec > -1)
+        state.recommendations[existingRec] = rec;
+      else
         state.recommendations.unshift(rec);
-      }
+    }
+  },
+  actions: {
+    async fetchRecommendationList ({ commit }) 
+    {
+      return axios
+        .get("/api/recommendations/")
+        .then(response => {
+          commit('setRecommendations', response.data);
+        });
     },
-    actions: {
-      async fetchRecommendationList ({ commit }) 
-      {
-        return axios
-          .get("/api/recommendations/")
-          .then(response => {
-            commit('setRecommendations', response.data);
-          });
-      },
-      async newRecommendation({ commit }, newRec) 
-      {
-        return axios.post(
-            "/api/recommendations/",
-            newRec)
-          .then((response) => {
-            commit('addRec', response.data);
-          });
+    async newRecommendation({ commit }, newRec) 
+    {
+      return axios.post(
+          "/api/recommendations/",
+          newRec)
+        .then((response) => {
+          commit('addRec', response.data);
+        });
+    },
+    async updateRecommendation({ commit }, { rec }) 
+    {
+      return axios.patch(
+          "/api/recommendations/",
+          rec)
+        .then((response) => {
+          commit('updateRec', { rec: response.data });
+        });
     },
     async fetchRecommendationsFor({ dispatch, state }, userId)
     {

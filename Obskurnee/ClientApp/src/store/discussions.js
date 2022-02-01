@@ -28,7 +28,7 @@ export default {
         }
       },
       updatePost (state, { post }) {
-        var discussionIndex = state.discussions.findIndex(d => d.discussionId == post.discussionId);
+        let discussionIndex = state.discussions.findIndex(d => d.discussionId == post.discussionId);
         if (discussionIndex > -1)
         {
           let postIndex = state.discussions[discussionIndex].posts.findIndex(p => p.postId == post.postId);

@@ -17,18 +17,16 @@ namespace Obskurnee.Controllers;
 [Route("api/users")]
 public class UserController : Controller
 {
-    private readonly ILogger _logger;
     private readonly UserServiceBase _users;
-    UserManager<Bookworm> _userManager;
+    readonly UserManager<Bookworm> _userManager;
 
     public UserController(
        UserServiceBase users,
 #if DEBUG
-           UserManager<Bookworm> userManager,
+       UserManager<Bookworm> userManager
 #endif
-           ILogger<UserController> logger)
+       )
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _users = users ?? throw new ArgumentNullException(nameof(users));
 #if DEBUG
         _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
@@ -71,18 +69,16 @@ public class UserController : Controller
     [Authorize(Policy = "CanUpdate")]
     public async Task<UserInfo> SetAvatar([FromForm] IFormFile avatar)
     {
-        using (var image = Image.Load(avatar.OpenReadStream(), out var format))
-        using (var ms = new MemoryStream())
-        {
-            image.Mutate(img =>
-                img.Resize(new ResizeOptions { Mode = ResizeMode.Crop, Size = new Size(100, 100) }));
-            image.Save(ms, format);
-            await _users.SetUserAvatar(
-                User.GetUserId(),
-                ms.ToArray(),
-                Path.GetExtension(avatar.FileName));
-            return await _users.GetUserById(User.GetUserId());
-        }
+        using var image = Image.Load(avatar.OpenReadStream(), out var format);
+        using var ms = new MemoryStream();
+        image.Mutate(img =>
+            img.Resize(new ResizeOptions { Mode = ResizeMode.Crop, Size = new Size(100, 100) }));
+        image.Save(ms, format);
+        await _users.SetUserAvatar(
+            User.GetUserId(),
+            ms.ToArray(),
+            Path.GetExtension(avatar.FileName));
+        return await _users.GetUserById(User.GetUserId());
     }
 
 #if DEBUG
