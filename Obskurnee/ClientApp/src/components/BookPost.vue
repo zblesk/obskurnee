@@ -6,17 +6,40 @@
             <img :src="post.imageUrl" :alt="post.title">
           </a>
         </div>
-        <a :href="post.url" class="book__link">
-          <h2 class="book__title">{{ post.title }}</h2>
-        </a> 
         <router-link class="book__permalink" 
           :to="{ name: 'singlepost', params: { discussionId: post.discussionId, postId: post.postId } }">
             🔗
         </router-link> 
-        <p v-if="post.author" class="book__author">{{ post.author }}</p>
-        <p class="book__pages" v-if="post.pageCount">{{$t('bookpost.numPages', [post.pageCount])}}</p>
-        <p class="book__owner">{{$t('bookpost.suggestedBy')}} <user-link :userId="post.ownerId" :userName="post.ownerName" /></p>
-        <div class="book__text" v-html="post.renderedText"> </div>
+        <span v-if="editMode" class="book__edit" @click="saveChanges()">
+          💾
+        </span>
+        <span v-else class="book__edit" @click="startEditing()">
+          📝
+        </span>
+        <div v-if="editMode">
+          <div class="form-field">
+            <label for="name" v-if="topic == 'Books' || topic == 'Recommendations'">{{$t('newpost.bookTitle')}}*</label>
+            <label for="name" v-if="topic == 'Themes'">{{$t('newpost.topicTitle')}}*</label>
+            <input v-model="editedPost.title" id="name" required />
+          </div>
+          <div class="form-field" v-if="topic != 'Themes'">
+            <label for="author">{{$t('newpost.authorName')}}*</label>
+            <input v-model="editedPost.author" id="autor" required  />
+          </div>
+          <div class="form-field" v-if="topic != 'Themes'">
+            <label for="pages">{{$t('newpost.pageCount')}}*</label>
+            <input type="number" v-model="editedPost.pageCount" id="pages" required />
+          </div>
+        </div>
+        <div v-else>
+          <a :href="post.url" class="book__link">
+            <h2 class="book__title">{{ post.title }}</h2>
+          </a> 
+          <p v-if="post.author" class="book__author">{{ post.author }}</p>
+          <p class="book__pages" v-if="post.pageCount">{{$t('bookpost.numPages', [post.pageCount])}}</p>
+          <p class="book__owner">{{$t('bookpost.suggestedBy')}} <user-link :userId="post.ownerId" :userName="post.ownerName" /></p>
+          <div class="book__text" v-html="post.renderedText"> </div>
+        </div>
       </div>
       <div class="book__repost" v-if="isRepostingAllowed 
         && activeDiscussionId != post.discussionId
@@ -31,23 +54,43 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import UserLink from './UserLink.vue'
-    export default {
-        components: { UserLink },
-        name: "BookPost",
-        props: {
-          post: {
-            type: Object,
-            required: true,
-          },
-          topic: {
-            type: String,
-            required: false,
-          }
-        },
-        computed: {
-          ...mapGetters("global", ["isRepostingAllowed", "activeDiscussionId"]),
-        }
+export default {
+  components: { UserLink },
+  name: "BookPost",
+  data() {
+    return {
+      editMode: false,
+      editedPost: {}
+    };
+  },
+  props: {
+    post: {
+      type: Object,
+      required: true,
+    },
+    topic: {
+      type: String,
+      required: false,
     }
+  },
+  computed: {
+    ...mapGetters("global", ["isRepostingAllowed", "activeDiscussionId"])
+  },
+  methods: {
+    ...mapActions("discussions", ["updatePost"]),
+    startEditing()
+    {
+      this.editMode = true;
+      this.editedPost = this.post;
+    },
+    async saveChanges()
+    {
+      await this.updatePost({ post: this.editedPost });
+      this.editMode = false;
+      this.editedPost = {};
+    }
+  }
+}
 </script>

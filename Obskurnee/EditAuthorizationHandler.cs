@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Obskurnee.Models;
-using System.Security.Claims;
 
 namespace Obskurnee;
 
@@ -11,15 +10,17 @@ public class EditAuthorizationHandler :
                                                    MatchingOwnerRequirement requirement,
                                                    HeaderData data)
     {
+        if (data == null)
+        {
+            context.Fail();
+            return Task.CompletedTask;
+        }
         if (context.User.Identity.Name == data.OwnerId
-            || context.User.HasClaim(c =>
-                                    c.Type == ClaimTypes.Role
-                                        && (c.Value == BookclubRoles.Moderator
-                                            || c.Value == BookclubRoles.Admin)))
+            || context.User.IsInRole(BookclubRoles.Admin)
+            || context.User.IsInRole(BookclubRoles.Moderator))
         {
             context.Succeed(requirement);
         }
-
         return Task.CompletedTask;
     }
 }

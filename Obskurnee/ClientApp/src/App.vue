@@ -413,6 +413,14 @@ body {
   color: var(--c-accent);
 }
 
+.book__edit {
+  position: absolute;
+  top: 24px;
+  right: 0px;
+  text-decoration: none;
+  color: var(--c-accent);
+}
+
 /* wrapper for wide book posts */
 /* Used in: SinglePost, SingleRecommendation, Book */
 .wrapper {

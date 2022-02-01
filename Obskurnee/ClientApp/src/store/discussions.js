@@ -10,10 +10,10 @@ export default {
           state.discussions = discussions;
         },
         updateDiscussion (state, discussion) {
-          var index = state.discussions.findIndex(d => d.discussionId == discussion.discussionId);
-          if (index > -1)
+          let discussionIndex = state.discussions.findIndex(d => d.discussionId == discussion.discussionId);
+          if (discussionIndex > -1)
           {
-            state.discussions[index] = discussion;
+            state.discussions[discussionIndex] = discussion;
           }
           else
           {
@@ -21,10 +21,25 @@ export default {
           }
       },
       addPost (state, { discussionId, post }) {
-        var index = state.discussions.findIndex(d => d.discussionId == discussionId);
-        if (index > -1)
+        let discussionIndex = state.discussions.findIndex(d => d.discussionId == discussionId);
+        if (discussionIndex > -1)
         {
-          state.discussions[index].posts.push(post);
+          state.discussions[discussionIndex].posts.push(post);
+        }
+      },
+      updatePost (state, { post }) {
+        var discussionIndex = state.discussions.findIndex(d => d.discussionId == post.discussionId);
+        if (discussionIndex > -1)
+        {
+          let postIndex = state.discussions[discussionIndex].posts.findIndex(p => p.postId == post.postId);
+          if (postIndex > -1)
+          {
+            state.discussions[discussionIndex].posts[postIndex] = post;
+          }
+          else
+          {
+            state.discussions[discussionIndex].posts.push(post);
+          }
         }
       }
     },
@@ -52,6 +67,15 @@ export default {
             newPost)
           .then((response) => {
             commit('addPost', { discussionId: discussionId, post: response.data });
+          });
+      },
+      async updatePost({ commit }, { post }) 
+      {
+        return axios.patch(
+            "/api/discussions/" + post.discussionId,
+            post)
+          .then((response) => {
+            commit('updatePost', { post: response.data });
           });
       },
       async getDiscussionPost({ state, dispatch }, { discussionId, postId })

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -218,11 +219,13 @@ public class Startup
 
            .AddDefaultTokenProviders();
 
+        services.AddSingleton<IAuthorizationHandler, EditAuthorizationHandler>();
         services.AddAuthorization(options =>
         {
             options.AddPolicy("ModOnly", policy => policy.RequireRole(BookclubRoles.Moderator));
             options.AddPolicy("AdminOnly", policy => policy.RequireRole(BookclubRoles.Admin));
             options.AddPolicy("CanUpdate", policy => policy.RequireClaim(BookclubClaims.Operation, "global.write"));
+            options.AddPolicy("EditAuthPolicy", policy => policy.Requirements.Add(new MatchingOwnerRequirement()));
         });
     }
 

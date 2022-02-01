@@ -7,7 +7,6 @@ namespace Obskurnee.Services;
 
 public class DiscussionService
 {
-    private readonly ILogger<DiscussionService> _logger;
     private readonly IStringLocalizer<Strings> _localizer;
     private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
     private readonly NewsletterService _newsletter;
@@ -15,14 +14,12 @@ public class DiscussionService
     private readonly ApplicationDbContext _db;
 
     public DiscussionService(
-        ILogger<DiscussionService> logger,
         ApplicationDbContext db,
         IStringLocalizer<Strings> localizer,
         IStringLocalizer<NewsletterStrings> newsletterLocalizer,
         NewsletterService newsletter,
         Config config)
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
         _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
         _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
@@ -53,6 +50,28 @@ public class DiscussionService
         await _db.SaveChangesAsync();
         await SendNewPostNotification(discussion, post);
         return post;
+    }
+
+    /// <summary>
+    /// Get the Post, WITHOUT tracking it in the context
+    /// </summary>
+    /// <param name="postId"></param>
+    /// <returns></returns>
+    public Task<Post> GetPost(int postId)
+        => _db.Posts.AsNoTracking().FirstOrDefaultAsync(p => p.PostId == postId);
+
+    internal async Task<Post> UpdatePost(int discussionId, Post post)
+    {
+        var existingPost = await _db.Posts.SingleAsync(
+            p => p.PostId == post.PostId
+                && p.DiscussionId == discussionId);
+        existingPost.PageCount = post.PageCount;
+        existingPost.Text = post.Text;
+        existingPost.Title = post.Title;
+        existingPost.Author = post.Author;
+        _db.Posts.Update(existingPost);
+        await _db.SaveChangesAsync();
+        return existingPost;
     }
 
     private async Task SendNewPostNotification(Discussion discussion, Post post)

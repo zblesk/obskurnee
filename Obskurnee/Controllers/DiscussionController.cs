@@ -11,15 +11,15 @@ namespace Obskurnee.Controllers;
 [Route("api/discussions")]
 public class DiscussionController : Controller
 {
-    private readonly ILogger<DiscussionController> _logger;
     private readonly DiscussionService _discussions;
+    private readonly IAuthorizationService _authService;
 
     public DiscussionController(
-        ILogger<DiscussionController> logger,
-        DiscussionService discussions)
+        DiscussionService discussions,
+        IAuthorizationService authService)
     {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _discussions = discussions ?? throw new ArgumentNullException(nameof(discussions));
+        _authService = authService ?? throw new ArgumentNullException(nameof(authService));
     }
 
     [HttpGet]
@@ -34,4 +34,19 @@ public class DiscussionController : Controller
     [Authorize(Policy = "CanUpdate")]
     public Task<Post> NewPost(int discussionId, Post post)
         => _discussions.NewPost(discussionId, post.SetOwner(User));
+
+    [HttpPatch]
+    [Route("{discussionId:int}")]
+    [Authorize(Policy = "CanUpdate")]
+    public async Task<IActionResult> UpdatePost(int discussionId, Post post)
+    {
+        var existingPost = await _discussions.GetPost(post.PostId);
+        if (existingPost == null)
+            return new NotFoundResult();
+
+        var auth = await _authService.AuthorizeAsync(User, existingPost, "EditAuthPolicy");
+        if (auth.Succeeded)
+            return Json(await _discussions.UpdatePost(discussionId, post.SetOwner(User)));
+        return new ForbidResult();
+    }
 }
