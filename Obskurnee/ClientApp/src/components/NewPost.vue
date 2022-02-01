@@ -36,20 +36,7 @@
           <label for="pages">{{$t('newpost.pageCount')}}*</label>
           <input type="number" v-model="newPost.pageCount" id="pages" required tabindex="4" />
         </div>
-        <div class="form-field u-mb-0">
-          <div class="label-md-wrapper">
-            <label for="text">{{$t('newpost.comment')}}<span v-if="mode != 'Themes'">*</span></label>
-            <div class="mo-md">
-              <div class="mo-md-pic">
-                <img src="../assets/Markdown-mark.svg" alt="null">
-              </div>
-              <div class="mo-md-link">
-                <markdown-help-link tabindex="7"></markdown-help-link>
-              </div>
-            </div>
-          </div>
-          <textarea v-model="newPost.text" id="text" :required="mode != 'Themes'" :placeholder="$t('global.markdownSamplePlaceholder')" tabindex="5"></textarea>
-        </div>
+        <markdown-editor v-model="newPost.text" :required="mode != 'Themes'"></markdown-editor>
         <p class="asterisk">{{$t('newpost.requiredFields')}}</p>
       </div>
     </div>
@@ -58,6 +45,7 @@
       <button @click="toggleVisibility" class="button-secondary hide-form" tabindex="8">{{$t('newpost.hideForm')}}</button>
     </div>
   </div>
+  {{newPost}}
 </div>
 </template>
 
@@ -142,80 +130,75 @@
 
 <script>
 import axios from "axios";
-import MarkdownHelpLink from "./MarkdownHelpLink.vue";
+import MarkdownEditor from "./MarkdownEditor.vue";
 export default {
-  name: "BookPost",
-  components: { MarkdownHelpLink },
-  props: {
-    mode: {
-      type: String,
-      required: true,
-      default: "",
+    name: "NewPost",
+    props: {
+        mode: {
+            type: String,
+            required: true,
+            default: "",
+        },
     },
-  },
-  emits: ['new-post'],
-  data() {
-    return {
-      newPost: {},
-      fetchInProgress: false,
-      saveInProgress: false,
-      hide: true,
-      parentData: null,
-    };
-  },
-  methods: {
-    addPost() {
-      if (!this.newPost.text
-        && this.mode != 'Themes')
-      {
-        this.$notifyError(this.$t('newpost.addDescriptionPlox'));
-        return;
-      }
-      this.saveInProgress = true;
-      this.$emit('new-post', 
-        this.parentData
-        ? { ... this.newPost, ... this.parentData}
-        : this.newPost);
+    emits: ["new-post"],
+    data() {
+        return {
+            newPost: { text: '' },
+            fetchInProgress: false,
+            saveInProgress: false,
+            hide: true,
+            parentData: null,
+        };
     },
-    linkChange() {
-      if (!this.newPost.url 
-        || !this.newPost.url.startsWith("https://www.goodreads.com"))
-      {
-        return;
-      }
-      this.fetchInProgress = true;
-      this.$notifyNormal(this.$t('newpost.loadingData'));
-        axios.get(
-          "/api/scrape/?goodreadsUrl=" + this.newPost.url)
-        .then((response) => {
-          this.newPost = response.data;
-          this.newPost.text = this.$t('newpost.prefilledDescriptionFormat', [ response.data.description ]);
-          this.fetchInProgress = false;
-          this.$notifyInfo(this.$t('newpost.loaded'));
-        })
-        .catch(function (error) {
-          this.$notifyError(error);
-          this.fetchInProgress = false;
+    methods: {
+        addPost() {
+            if (!this.newPost.text
+                && this.mode != "Themes") {
+                this.$notifyError(this.$t("newpost.addDescriptionPlox"));
+                return;
+            }
+            this.saveInProgress = true;
+            this.$emit("new-post", this.parentData
+                ? { ...this.newPost, ...this.parentData }
+                : this.newPost);
+        },
+        linkChange() {
+            if (!this.newPost.url
+                || !this.newPost.url.startsWith("https://www.goodreads.com")) {
+                return;
+            }
+            this.fetchInProgress = true;
+            this.$notifyNormal(this.$t("newpost.loadingData"));
+            axios.get("/api/scrape/?goodreadsUrl=" + this.newPost.url)
+                .then((response) => {
+                this.newPost = response.data;
+                this.newPost.text = this.$t("newpost.prefilledDescriptionFormat", [response.data.description]);
+                this.fetchInProgress = false;
+                this.$notifyInfo(this.$t("newpost.loaded"));
+            })
+                .catch(function (error) {
+                this.$notifyError(error);
+                this.fetchInProgress = false;
+            });
+        },
+        toggleVisibility() {
+            this.hide = !this.hide;
+        }
+    },
+    mounted() {
+        this.emitter.on("prefill-post", postData => {
+            this.newPost = postData.post;
+            this.parentData = postData.parentData;
+            this.hide = false;
+            this.saveInProgress = false;
+        });
+        this.emitter.on("clear-post", () => {
+            this.newPost = {};
+            this.parentData = null;
+            this.hide = true;
+            this.saveInProgress = false;
         });
     },
-    toggleVisibility()
-    {
-      this.hide = !this.hide;
-    }
-  },
-  mounted() { 
-    this.emitter.on("prefill-post", postData => {
-      this.newPost = postData.post;
-      this.parentData = postData.parentData;
-      this.hide = false;
-      this.saveInProgress = false;
-    });
-    this.emitter.on("clear-post", () => {
-      this.newPost = {};
-      this.parentData = null;
-      this.hide = true;
-      this.saveInProgress = false;
-    });
-  },
+    components: { MarkdownEditor }
 }
 </script>

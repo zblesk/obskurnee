@@ -50,7 +50,8 @@
             <button class="button-secondary button-repost">{{$t('bookpost.addToOngoing')}}</button>
         </router-link>
       </div>
-    </div>
+{{editedPost}}
+</div>
 </template>
 
 <script>
