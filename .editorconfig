@@ -43,8 +43,8 @@ dotnet_diagnostic.IDE0055.severity = warning
 # Sort using and Import directives with System.* appearing first
 dotnet_sort_system_directives_first = true
 dotnet_separate_import_directive_groups = false
-# Avoid "this." and "Me." if not necessary
-dotnet_style_qualification_for_field = false:refactoring
+# Avoid "this." if not necessary
+dotnet_style_qualification_for_field = false:error
 dotnet_style_qualification_for_property = false:refactoring
 dotnet_style_qualification_for_method = false:refactoring
 dotnet_style_qualification_for_event = false:refactoring
@@ -189,14 +189,14 @@ csharp_style_var_when_type_is_apparent = true:suggestion
 csharp_style_var_elsewhere = true:suggestion
 
 # Prefer method-like constructs to have a block body
-csharp_style_expression_bodied_methods = false:none
+csharp_style_expression_bodied_methods = true:refactoring
 csharp_style_expression_bodied_constructors = false:none
-csharp_style_expression_bodied_operators = false:none
+csharp_style_expression_bodied_operators = true:refactoring
 
 # Prefer property-like constructs to have an expression-body
-csharp_style_expression_bodied_properties = true:none
-csharp_style_expression_bodied_indexers = true:none
-csharp_style_expression_bodied_accessors = true:none
+csharp_style_expression_bodied_properties = true:refactoring
+csharp_style_expression_bodied_indexers = true:refactoring
+csharp_style_expression_bodied_accessors = true:refactoring
 
 # Suggest more modern language features when available
 csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion

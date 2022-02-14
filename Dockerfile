@@ -12,7 +12,7 @@ WORKDIR /source/Obskurnee
 RUN dotnet publish -c ReleaseNoNode -o /app --no-restore -r linux-musl-x64 --self-contained false
 
 # Build FE
-FROM node:14 AS nodebuild
+FROM node:16 AS nodebuild
 WORKDIR /frontend
 COPY Obskurnee/ClientApp/package*.json ./
 RUN npm install
