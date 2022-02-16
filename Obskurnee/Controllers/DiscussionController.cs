@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.Services;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json.Linq;
 
 namespace Obskurnee.Controllers;
 
@@ -49,4 +49,14 @@ public class DiscussionController : Controller
             return Json(await _discussions.UpdatePost(discussionId, post.SetOwner(User)));
         return new ForbidResult();
     }
+
+    /// <summary>
+    /// Renders input Text as Markdown and returns HTML.
+    /// </summary>
+    /// <param name="payload"></param>
+    /// <returns></returns>
+    [HttpPut]
+    [Route("preview")]
+    public IActionResult GenerateMarkdownPreview([FromBody] JObject payload)
+        => Json(new { html = (payload["text"]?.ToString() ?? "").RenderMarkdown() });
 }

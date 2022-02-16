@@ -40,7 +40,8 @@
     "markdownHelp": "Pomoc s Markdownom",
     "markdownSamplePlaceholder": "Môžeš použiť Markdown na jednoduché formátovanie textu. Ak by si sa stratila, klikni na link hore.\n\nMedzi základy patrí napríklad: \n# Najväčší nadpis\n## menší nadpis \n**tučný text** alebo _kurzíva_ \n- nečíslovaný zoznam\n1. číslovaný zoznam\n> takto sa píše citát\nMôžeš ľahko pridať aj [link](https://google.sk).",
     "mod": "mod",
-    "newsletters": "Newsletters"
+    "newsletters": "Newsletters",
+    "preview": "Náhľad"
   },
   "home": {
     "currentlyReadingBook": "Momentálne čítame knihu #{0}",
