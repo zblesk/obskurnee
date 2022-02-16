@@ -6,208 +6,621 @@
 	},
 	"item": [
 		{
-			"name": "register",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"email\":\"janka@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Discussions",
+			"item": [
+				{
+					"name": "Get Discussions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}api/discussions/",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"discussions",
+								""
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{base_url}}api/accounts/register",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"accounts",
-						"register"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "register bot",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"email\":\"botka@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Get a Discussion's Posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}api/discussions/2",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"discussions",
+								"2"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{base_url}}api/accounts/registerbot",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"accounts",
-						"registerbot"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "make mod",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Add new Post into Discussion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"discussionId\": 5,\r\n    \"title\": \"Volaka konina\",\r\n    \"author\": \"Volaky volr\",\r\n    \"text\": \"nejaka chujina\",\r\n    \"pageCount\": 69,\r\n    \"ownerId\": \"5aeb3e2b-e0d0-4120-a2b0-609c68aa0afd\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/discussions/5",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"discussions",
+								"5"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{base_url}}api/admin/makemod/dva@dfdf.xx",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"admin",
-						"makemod",
-						"dva@dfdf.xx"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"email\":\"zblesk@protonmail.com\",\"password\":\"sdfsdfsdf\"}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Get rendered MD (as preview)",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"_Land **ahoy** a tak._ \\n\\n# Cauko\\n\\njano\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/discussions/preview",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"discussions",
+								"preview"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{base_url}}api/accounts/login",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"accounts",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "login bot",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"email\":\"botka@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "Update Post",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"discussionId\": 1,\r\n    \"postId\": 1,\r\n    \"title\": \"Volaka konina\",\r\n    \"author\": \"Volaky volr\",\r\n    \"text\": \"nejaka vec\",\r\n    \"pageCount\": 3333\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/discussions/1",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"discussions",
+								"1"
+							]
 						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}api/accounts/login",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"accounts",
-						"login"
-					]
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "context",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Rounds",
+			"item": [
+				{
+					"name": "get rounds",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}api/rounds",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"rounds"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{base_url}}api/accounts/context",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"accounts",
-						"context"
-					]
+				{
+					"name": "New Round",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"topic\": \"Books\",\r\n    \"title\": \"tit le\",\r\n    \"description\": \"jaj sak mega popisok nie\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/rounds",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"rounds"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "get discussions",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/discussions/",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"discussions",
-						""
-					]
+			"name": "Admin + accts",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\":\"janka@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/accounts/register",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"accounts",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "make mod",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/admin/makemod/dva@dfdf.xx",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"admin",
+								"makemod",
+								"dva@dfdf.xx"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\":\"zblesk@protonmail.com\",\"password\":\"semarychlokotolubs\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/accounts/login",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"accounts",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login bot",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\":\"botka@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/accounts/login",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"accounts",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "context",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/accounts/context",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"accounts",
+								"context"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset pwd",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"password\":\"kokokokokokokokokokokoko\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/accounts/passwordreset/6011d40a19901d0335d46e1d/CfDJ8Id7Ea6mKDBNkxa8ptv8Et0uC%2f07rWJ0vscuPnCSMSCrzyvsN8p4PNp5voM9MJ72tz4WcM1O9nJ%2f7gRZ1JMqWRf7kkqI9iSjLcS6AFhooKzJlo5AyouCIZ6QnGJYUw7gf7WfLyicQNpiOvCvvjMRODbfw2CKtDRDVa4a%2fQlui0BmFTQDXinbMiTYwLbc0PMTT0NJTsYHQwxiy7Ub2p7V3ccv0udYuj3C81rlgPJHrFxy",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"accounts",
+								"passwordreset",
+								"6011d40a19901d0335d46e1d",
+								"CfDJ8Id7Ea6mKDBNkxa8ptv8Et0uC%2f07rWJ0vscuPnCSMSCrzyvsN8p4PNp5voM9MJ72tz4WcM1O9nJ%2f7gRZ1JMqWRf7kkqI9iSjLcS6AFhooKzJlo5AyouCIZ6QnGJYUw7gf7WfLyicQNpiOvCvvjMRODbfw2CKtDRDVa4a%2fQlui0BmFTQDXinbMiTYwLbc0PMTT0NJTsYHQwxiy7Ub2p7V3ccv0udYuj3C81rlgPJHrFxy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}api/users",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}api/users/",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjYwMTg0Zjc2MmRlNDBjMGQxNDVkMjY3YyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJmZXJrbyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImZlcmtvQGJvb2tjbHViLmdvdiIsIkFzcE5ldC5JZGVudGl0eS5TZWN1cml0eVN0YW1wIjoiQTJMMkNERUVSMkxCS01IRE9CQlNWWkdJWElUUFdDQVYiLCJtb2RlcmF0b3IiOiJ0cnVlIiwiZXhwIjoxNjI4NjIyMDU5LCJpc3MiOiJvYnNrdXJuZWUiLCJhdWQiOiJvYnNrdXJuZWUifQ.tRJ-BX-hgtfUcpWT-K3ilKAbTlFMH8g9wINPOGw8nVE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"email\": \"dva@sdasdasd.xx \"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/admin/registeruser",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"admin",
+								"registeruser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register bot",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\":\"matrix@bot.com\",\"name\":\"matrix botka\",\"password\":\"matrixmatrixmatrix\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/admin/registerbot",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"admin",
+								"registerbot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register bot Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}api/admin/bots",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"admin",
+								"bots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register first admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\":\"janka@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/accounts/registerfirstadmin",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"accounts",
+								"registerfirstadmin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Make backup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}api/admin/createbackup",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"admin",
+								"createbackup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get roles [debug only]",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}api/users/roles",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"users",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get claims [debug only]",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}api/users/claims",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"users",
+								"claims"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "get rounds",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/rounds",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"rounds"
-					]
+			"name": "Recs",
+			"item": [
+				{
+					"name": "Get ALL recs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}api/recommendations",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"recommendations"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "Recommendations",
+			"item": [
+				{
+					"name": "Get all recs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}api/recommendations",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"recommendations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update rec",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"recommendationId\": 2,\r\n    \"title\": \"Si e pësoi Kokot mendjemadhi\",\r\n    \"author\": \"Loredan Bubani\",\r\n    \"text\": \"Look at me go1\",\r\n    \"pageCount\": 240\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/recommendations",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"recommendations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "get books",
@@ -245,49 +658,6 @@
 			"response": []
 		},
 		{
-			"name": "get books",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/books",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"books"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "New Round",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"topic\": \"Books\",\r\n    \"title\": \"tit le\",\r\n    \"description\": \"jaj sak mega popisok nie\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}api/rounds",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"rounds"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Request pwd reset",
 			"request": {
 				"auth": {
@@ -304,38 +674,6 @@
 						"accounts",
 						"passwordreset",
 						"janka@bookclub.gov"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Reset pwd",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"password\":\"kokokokokokokokokokokoko\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}api/accounts/passwordreset/6011d40a19901d0335d46e1d/CfDJ8Id7Ea6mKDBNkxa8ptv8Et0uC%2f07rWJ0vscuPnCSMSCrzyvsN8p4PNp5voM9MJ72tz4WcM1O9nJ%2f7gRZ1JMqWRf7kkqI9iSjLcS6AFhooKzJlo5AyouCIZ6QnGJYUw7gf7WfLyicQNpiOvCvvjMRODbfw2CKtDRDVa4a%2fQlui0BmFTQDXinbMiTYwLbc0PMTT0NJTsYHQwxiy7Ub2p7V3ccv0udYuj3C81rlgPJHrFxy",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"accounts",
-						"passwordreset",
-						"6011d40a19901d0335d46e1d",
-						"CfDJ8Id7Ea6mKDBNkxa8ptv8Et0uC%2f07rWJ0vscuPnCSMSCrzyvsN8p4PNp5voM9MJ72tz4WcM1O9nJ%2f7gRZ1JMqWRf7kkqI9iSjLcS6AFhooKzJlo5AyouCIZ6QnGJYUw7gf7WfLyicQNpiOvCvvjMRODbfw2CKtDRDVa4a%2fQlui0BmFTQDXinbMiTYwLbc0PMTT0NJTsYHQwxiy7Ub2p7V3ccv0udYuj3C81rlgPJHrFxy"
 					]
 				}
 			},
@@ -373,78 +711,6 @@
 					],
 					"path": [
 						"home"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get users",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/users",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get user by email",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/users/",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"users",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create User",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjYwMTg0Zjc2MmRlNDBjMGQxNDVkMjY3YyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJmZXJrbyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImZlcmtvQGJvb2tjbHViLmdvdiIsIkFzcE5ldC5JZGVudGl0eS5TZWN1cml0eVN0YW1wIjoiQTJMMkNERUVSMkxCS01IRE9CQlNWWkdJWElUUFdDQVYiLCJtb2RlcmF0b3IiOiJ0cnVlIiwiZXhwIjoxNjI4NjIyMDU5LCJpc3MiOiJvYnNrdXJuZWUiLCJhdWQiOiJvYnNrdXJuZWUifQ.tRJ-BX-hgtfUcpWT-K3ilKAbTlFMH8g9wINPOGw8nVE",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{ \"email\": \"dva@sdasdasd.xx \"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}api/admin/createuser",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"admin",
-						"createuser"
 					]
 				}
 			},
@@ -523,104 +789,6 @@
 				}
 			},
 			"response": []
-		},
-		{
-			"name": "Get ALL recs",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/recommendations",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"recommendations"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "register first admin",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"email\":\"janka@bookclub.gov\",\"password\":\"qwertyqwertyqwerty\"}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{base_url}}api/accounts/registerfirstadmin",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"accounts",
-						"registerfirstadmin"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Make backup",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/admin/createbackup",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"admin",
-						"createbackup"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get claims [debug only]",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/users/claims",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"users",
-						"claims"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get roles [debug only]",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}api/users/roles",
-					"host": [
-						"{{base_url}}api"
-					],
-					"path": [
-						"users",
-						"roles"
-					]
-				}
-			},
-			"response": []
 		}
 	],
 	"auth": {
@@ -628,7 +796,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiJhYWE2MGRjMS0zY2ZlLTRmZjgtODlmMi1lMTAzMTI2N2VkZjciLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiemJsZXNrIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiemJsZXNrQHByb3Rvbm1haWwuY29tIiwiQXNwTmV0LklkZW50aXR5LlNlY3VyaXR5U3RhbXAiOiJXVlVBVURQUFpXR1k0TzUzVzJTR0xaVzVGTUZSTktaTiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJhZG1pbiIsIm1vZGVyYXRvciIsImJvb2t3b3JtIl0sIm9wZXJhdGlvbiI6WyJnbG9iYWwucmVhZCIsImdsb2JhbC53cml0ZSJdLCJleHAiOjE2NTg0ODQ2NjQsImlzcyI6Im9ic2t1cm5lZSIsImF1ZCI6Im9ic2t1cm5lZSJ9.WWMSj28PJsDgARFFj8mQaDRjbC6xU0VFTIIEp0mOfbM",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIzODJiMDRlNy00M2E0LTRhMTQtODI1Zi0wOWZjMDQwNTRjMmMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiemJsZXNrIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoiemJsZXNrQHByb3Rvbm1haWwuY29tIiwiQXNwTmV0LklkZW50aXR5LlNlY3VyaXR5U3RhbXAiOiIyQUJKWUtCV1RCWVZSQUpUNDJDUjJHSVlXU1JLTTdJSSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJhZG1pbiIsIm1vZGVyYXRvciIsImJvb2t3b3JtIl0sIm9wZXJhdGlvbiI6WyJnbG9iYWwucmVhZCIsImdsb2JhbC53cml0ZSJdLCJleHAiOjE2NjAxMjQ3MTgsImlzcyI6Im9ic2t1cm5lZSIsImF1ZCI6Im9ic2t1cm5lZSJ9.sXRME6Mznc8HXYtwv3OtsKBPfdqMDARWcDCbGPA547A",
 				"type": "string"
 			}
 		]
