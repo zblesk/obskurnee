@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System.Threading;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
@@ -48,5 +49,35 @@ public class ApplicationDbContext : IdentityDbContext<Bookworm>
     {
         optionsBuilder.UseLoggerFactory(_loggerFactory);
         base.OnConfiguring(optionsBuilder);
+    }
+
+    public override int SaveChanges()
+    {
+        var task = SaveChangesAsync();
+        task.Wait();
+        return task.Result;
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        ChangeTracker.DetectChanges();
+
+        var entries = ChangeTracker
+            .Entries()
+            .Where(e => e.Entity is HeaderData && (
+                    e.State == EntityState.Added
+                    || e.State == EntityState.Modified));
+
+        foreach (var entityEntry in entries)
+        {
+            ((HeaderData)entityEntry.Entity).ModifiedOn = DateTime.Now;
+
+            if (entityEntry.State == EntityState.Added)
+            {
+                ((HeaderData)entityEntry.Entity).CreatedOn = DateTime.Now;
+            }
+        }
+
+        return base.SaveChangesAsync(cancellationToken);
     }
 }
