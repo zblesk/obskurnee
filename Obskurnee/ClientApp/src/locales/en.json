@@ -38,7 +38,7 @@
     "allEvents": "All events: {0}",
     "basicEvents": "Basic events: {0}",
     "markdownHelp": "Markdown help",
-    "markdownSamplePlaceholder": "You can use Markdown for simple text formatting. Click the link above for further details.\n\nBasic markdown tools: \n# Big heading\n## small heading \n**text in bold** or _italics_ \n- unnumbered list\n1. numbered list\n> this is a quote\nAdd a link [link](https://google.sk).",
+    "markdownSamplePlaceholder": "You can use Markdown for simple text formatting. Click the link above for further details.\n\nBasic markdown tools: \n# Big heading\n## small heading \n**text in bold** or _italics_ \n- unnumbered list\n1. numbered list\n> this is a quote and ::this is a spoiler::.\nAdd a link [link](https://google.sk).",
     "mod": "mod",
     "newsletters": "Newsletters",
     "preview": "Preview"
