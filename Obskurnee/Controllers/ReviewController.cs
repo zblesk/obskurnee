@@ -48,4 +48,16 @@ public class ReviewController : Controller
     public Task<List<GoodreadsReview>> GetCurrentlyReadings()
         => _reviews.GetAllCurrentlyReading();
 
+    /// <summary>
+    /// Get the Goodreads reviews. If a parmeter is provided, only reviews added since that time are returned. Otherwise, all of them are.
+    /// </summary>
+    /// <param name="since">Timestamp.</param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("goodreadsreviews/{since?}")]
+    public Task<List<GoodreadsReview>> GoodreadsReviewsSince(string since = "")
+    {
+        DateTime.TryParse(since, out var dateStart);
+        return _reviews.GetAllGoodreadsReviewsSince(dateStart);
+    }
 }

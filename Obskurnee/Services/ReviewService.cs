@@ -127,6 +127,10 @@ public class ReviewService
         return review;
     }
 
+    public Task<List<GoodreadsReview>> GetAllGoodreadsReviewsSince(DateTime dateStart)
+        => _db.GoodreadsReviews.Where(grr => grr.CreatedOn >= dateStart).ToListAsync();
+
+
     private async Task SendNewReviewNotification(BookclubReview review)
     {
         var link = $"{_config.BaseUrl}/knihy/{review.BookId}";
