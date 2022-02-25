@@ -10,7 +10,7 @@
   "dependencies": {
     "@meforma/vue-toaster": "^1.2.2",
     "@microsoft/signalr": "^6.0.2",
-    "@types/node": "^16.11.7",
+    "@types/node": "^17.0.21",
     "axios": "^0.26.0",
     "core-js": "^3.9.0",
     "mitt": "^3.0.0",
