@@ -91,7 +91,7 @@ public class GoodreadsScraper
                        select new GoodreadsReview(userId)
                        {
                            ReviewId = $"{userId}-{bookId}",
-                           BookTitle = item.Title.Text.Trim(),
+                           Title = item.Title.Text.Trim(),
                            ImageUrl = GetElementExtensionValueByOuterName(item, "book_large_image_url"),
                            Author = GetElementExtensionValueByOuterName(item, "author_name"),
                            Rating = TryGetUshort(rating),

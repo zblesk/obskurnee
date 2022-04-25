@@ -101,7 +101,7 @@
           <h3 class="reading-title">{{$t('user.currentlyReading')}}</h3>
           <ul class="reading-list">
               <li v-for="review in usersCurrentlyReading(user.userId)" v-bind:key="review.ReviewId">
-                <a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.bookTitle }}</strong></a>
+                <a :href="review.reviewUrl">{{ review.author }}: <strong>{{ review.title }}</strong></a>
               </li>
           </ul>
         </div>

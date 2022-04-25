@@ -13,7 +13,7 @@ public class GoodreadsReview : HeaderData
 
     [Key]
     public string ReviewId { get; set; }
-    public string BookTitle { get; set; }
+    public string Title { get; set; }
     public string GoodreadsBookId { get; set; }
     public string ReviewUrl { get; set; }
     public string Author { get; set; }

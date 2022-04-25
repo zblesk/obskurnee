@@ -54,7 +54,7 @@ public class ReviewService
                 await _matrix.SendMessage(
                     _newsletterLocalizer.Format("newBookCurrentlyReadingNotification",
                         user.UserName,
-                        r.BookTitle,
+                        r.Title,
                         r.Author,
                         r.ReviewUrl));
             }
@@ -65,7 +65,7 @@ public class ReviewService
                     await _matrix.SendMessage(
                         _newsletterLocalizer.Format("newBookReadNotificationReview",
                             user.UserName,
-                            r.BookTitle,
+                            r.Title,
                             r.Author,
                             r.GetStarRating(),
                             r.ReviewText.AddMarkdownQuote(),
@@ -76,7 +76,7 @@ public class ReviewService
                     await _matrix.SendMessage(
                         _newsletterLocalizer.Format("newBookReadNotificationNoReview",
                             user.UserName,
-                            r.BookTitle,
+                            r.Title,
                             r.Author,
                             r.GetStarRating(),
                             r.ReviewUrl));
