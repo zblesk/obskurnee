@@ -82,7 +82,6 @@
 
         <div v-if="isMod" class="section">
             <div v-if="isAdmin"> 
-            <span style="display:none"> je admin {{ isAdmin }}</span><span style="display:none"> nonmod{{ nonMods}} </span><span style="display:none"> {{ mods}} </span>
                 <h2 class="section-title u-mt-sp2">{{ $t('admin.newBotCreation') }}</h2>
                 <div class="note u-mt-sp">
                     <div class="note-pic">
