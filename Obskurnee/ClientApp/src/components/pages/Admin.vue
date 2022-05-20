@@ -80,27 +80,30 @@
             </p>
         </div>
 
-        <div v-if="isAdmin" class="section">
-            <h2 class="section-title u-mt-sp2">{{ $t('admin.newBotCreation') }}</h2>
-            <div class="note u-mt-sp">
-                <div class="note-pic">
-                    <img src="../../assets/lamp.svg" alt="lamp icon" />
+        <div v-if="isMod" class="section">
+            <div v-if="isAdmin"> 
+            <span style="display:none"> je admin {{ isAdmin }}</span><span style="display:none"> nonmod{{ nonMods}} </span><span style="display:none"> {{ mods}} </span>
+                <h2 class="section-title u-mt-sp2">{{ $t('admin.newBotCreation') }}</h2>
+                <div class="note u-mt-sp">
+                    <div class="note-pic">
+                        <img src="../../assets/lamp.svg" alt="lamp icon" />
+                    </div>
+                    <p class="note-text">{{ $t('admin.botDescription') }}</p>
                 </div>
-                <p class="note-text">{{ $t('admin.botDescription') }}</p>
+                <div class="form-field">
+                    <label for="new-botmail">{{ $t('admin.newUserEmail') }}*</label>
+                    <input type="email" v-model="newBotEmail" id="new-botmail" />
+                </div>
+                <div class="form-field">
+                    <label for="new-botname">{{ $t('admin.newUserName') }}</label>
+                    <input type="text" v-model="newBotName" id="new-botname" />
+                </div>
+                <div class="form-field">
+                    <label for="new-botpassword">{{ $t('menus.password') }}</label>
+                    <input type="text" v-model="newBotPassword" id="new-botpassword" />
+                </div>
+                <button @click="addBot()" class="button-primary">{{ $t('admin.newBotCreation') }}</button>
             </div>
-            <div class="form-field">
-                <label for="new-botmail">{{ $t('admin.newUserEmail') }}*</label>
-                <input type="email" v-model="newBotEmail" id="new-botmail" />
-            </div>
-            <div class="form-field">
-                <label for="new-botname">{{ $t('admin.newUserName') }}</label>
-                <input type="text" v-model="newBotName" id="new-botname" />
-            </div>
-            <div class="form-field">
-                <label for="new-botpassword">{{ $t('menus.password') }}</label>
-                <input type="text" v-model="newBotPassword" id="new-botpassword" />
-            </div>
-            <button @click="addBot()" class="button-primary">{{ $t('admin.newBotCreation') }}</button>
             <div>
                 {{ $t('admin.bots') }} <span v-for="bot in bots" v-bind:key="bot">{{ bot }}, </span>
             </div>
