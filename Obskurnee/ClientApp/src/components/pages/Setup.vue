@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Setup",
   data() {
@@ -28,9 +28,20 @@ export default {
     };
   },
   computed: {
+    ...mapGetters('global', ['getLanguage'])
   },
+  mounted() {
+    this.loadHome()
+      .then(() => {
+        if (this.getLanguage)
+        {
+          this.$i18n.locale = this.getLanguage;
+        }
+      });
+  }, 
   methods: {
     ...mapActions("context", ["registerFirstAdmin"]),
+    ...mapActions('global', ['loadHome']),
     onSubmit() {
       this.registerFirstAdmin(this.form)
         .then(() => {
