@@ -147,6 +147,9 @@
     "text": "Text review",
     "wrongStarCount": "Prepáč, hodnotenie musí byť 0-5."
   },
+  "booklist": {
+    "noBooksYet": "Zatiaľ neboli vybrané žiadne knihy. Začni návrmi v sekcii Návrhy."
+  },
   "roundlist": {
     "bookPoll": "Hlasovanie o knihách",
     "bookSuggestions": "Návrhy kníh",

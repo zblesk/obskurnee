@@ -147,6 +147,9 @@
     "text": "Review text",
     "wrongStarCount": "Sorry, you can only give 0 to 5 stars."
   },
+  "booklist": {
+    "noBooksYet": "No books were chosen yet. Start in the Voting section."
+  },
   "roundlist": {
     "bookPoll": "Voting",
     "bookSuggestions": "Suggested books",
