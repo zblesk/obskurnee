@@ -82,7 +82,7 @@ public class AdminController : Controller
                 _logger.LogWarning(ex, "Error when attempting to fetch friendly password");
             }
 
-        var user = await _users.Register(
+        var (user, err) = await _users.Register(
             new LoginCredentials { Email = email, Password = password },
             name);
         if (user != null)
@@ -96,7 +96,7 @@ public class AdminController : Controller
                 email);
             return Json(user);
         }
-        return ValidationProblem("Registration failed");
+        return ValidationProblem("Registration failed: " + err);
     }
 
     [HttpPost("registerbot")]

@@ -43,18 +43,25 @@ public class AccountController : Controller
     [Authorize(Policy = "ModOnly")]
     public async Task<IActionResult> Register([FromBody] LoginCredentials creds)
     {
-        var user = await _users.Register(creds);
+        var (user, err) = await _users.Register(creds);
         if (user != null)
         {
             return Json(user);
         }
-        return ValidationProblem("Registration failed");
+        return ValidationProblem("Registration failed: " + err);
     }
 
     [HttpPost("registerfirstadmin")]
     [AllowAnonymous]
-    public async Task<JsonResult> RegisterFirstAdmin([FromBody] LoginCredentials creds)
-        => Json(await _users.RegisterFirstAdmin(creds));
+    public async Task<IActionResult> RegisterFirstAdmin([FromBody] LoginCredentials creds)
+    {
+        var (user, err) = await _users.RegisterFirstAdmin(creds);
+        if (user != null)
+        {
+            return Json(user);
+        }
+        return ValidationProblem("Registration failed: " + err);
+    }
 
     [HttpPost("passwordreset/token/{userId}")]
     [AllowAnonymous]

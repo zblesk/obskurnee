@@ -68,6 +68,7 @@ export default {
         .then(() =>
         {
           dispatch('login', credentials);
+          dispatch('global/loadHome', {}, { root: true});
         });
     },
     passwordResetInit(_, email)

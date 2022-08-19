@@ -37,13 +37,13 @@ public class DemoUserService : UserServiceBase
     public override Task<IdentityResult> MakeModerator(string email)
         => throw new ForbiddenException(_localizer["forbiddenInDemo"]);
 
-    public override Task<UserInfo> Register(LoginCredentials creds, string defaultName = null)
+    public override Task<(UserInfo user, string error)> Register(LoginCredentials creds, string defaultName = null)
         => throw new ForbiddenException(_localizer["forbiddenInDemo"]);
 
     public override Task<(UserInfo user, string error)> RegisterBot(LoginCredentials creds, string defaultName = null)
         => throw new ForbiddenException(_localizer["forbiddenInDemo"]);
 
-    public override Task<UserInfo> RegisterFirstAdmin(LoginCredentials creds)
+    public override Task<(UserInfo user, string error)> RegisterFirstAdmin(LoginCredentials creds)
         => throw new ForbiddenException(_localizer["forbiddenInDemo"]);
 
     public override Task<IdentityResult> ResetPassword(

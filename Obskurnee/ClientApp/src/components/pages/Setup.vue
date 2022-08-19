@@ -47,7 +47,11 @@ export default {
         .then(() => {
             this.$router.push({ name: "home" });
         }
-      );
+      )
+      .catch((err) => 
+      {
+          this.$notifyError(err?.response?.data?.detail);
+      });
     },
   },
 };

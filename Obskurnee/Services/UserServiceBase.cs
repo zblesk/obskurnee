@@ -65,7 +65,7 @@ public abstract class UserServiceBase
         return _dbContext.Users.Select(u => u.Id).ToList();
     }
 
-    public abstract Task<UserInfo> Register(LoginCredentials creds, string defaultName = null);
+    public abstract Task<(UserInfo user, string error)> Register(LoginCredentials creds, string defaultName = null);
 
     public abstract Task<(UserInfo user, string error)> RegisterBot(LoginCredentials creds, string defaultName = null);
 
@@ -73,7 +73,7 @@ public abstract class UserServiceBase
 
     public abstract Task<IdentityResult> MakeAdmin(string email);
 
-    public abstract Task<UserInfo> RegisterFirstAdmin(LoginCredentials creds);
+    public abstract Task<(UserInfo user, string error)> RegisterFirstAdmin(LoginCredentials creds);
 
     public abstract Task<bool> ValidateLogin(LoginCredentials creds);
 

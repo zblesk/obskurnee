@@ -42,7 +42,7 @@ public sealed class UserService : UserServiceBase
         _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
     }
 
-    public override async Task<UserInfo> Register(
+    public override async Task<(UserInfo user, string error)> Register(
         LoginCredentials creds,
         string defaultName = null)
     {
@@ -58,9 +58,9 @@ public sealed class UserService : UserServiceBase
             _ = SendDefaultLanguageNotification(user)
                 .ContinueWith(t => _logger.LogError(t.Exception, "Sending Matrix notification failed"),
                     TaskContinuationOptions.OnlyOnFaulted);
-            return UserInfo.From(user);
+            return (UserInfo.From(user), "");
         }
-        return null;
+        return (null, result.Errors?.Aggregate("", (a, c) => $"{a}{c.Description}  \n"));
     }
 
     public override async Task<(UserInfo user, string error)> RegisterBot(
@@ -123,27 +123,27 @@ public sealed class UserService : UserServiceBase
         return identityResult;
     }
 
-    public override async Task<UserInfo> RegisterFirstAdmin(LoginCredentials creds)
+    public override async Task<(UserInfo user, string error)> RegisterFirstAdmin(LoginCredentials creds)
     {
         if (GetAllUserIds().Count != 0)
         {
             throw new ForbiddenException(_localizer["usersAlreadyExist"]);
         }
         _logger.LogInformation("Creating first admin with {email}", creds.Email);
-        var newUser = await Register(creds);
+        var (newUser, err) = await Register(creds);
         if (newUser == null)
         {
-            _logger.LogError("First admin creation failed");
-            throw new Exception("First admin creation failed");
+            _logger.LogError("First admin creation failed: {error}", err);
+            return (null, err);
         }
         var isMod = await MakeModerator(newUser.Email);
         var isAdmin = await MakeAdmin(newUser.Email);
         if (isMod.Succeeded && isAdmin.Succeeded)
         {
-            return newUser;
+            return (newUser, "");
         }
         _logger.LogError("First admin creation failed. \nMod sucess: {@isMod} \n\nAdmin success: {@isAdmin}", isMod, isAdmin);
-        throw new Exception("Failed to make admin");
+        throw new Exception("Failed to make you admin");
     }
 
     public override async Task<bool> ValidateLogin(LoginCredentials creds)
