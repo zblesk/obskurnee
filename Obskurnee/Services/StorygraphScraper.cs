@@ -13,12 +13,13 @@ using static Obskurnee.Models.ExternalBookSystem;
 
 namespace Obskurnee.Services;
 
-public class StorygraphScraper
+public class StorygraphScraper : IExternalBookScraper
 {
     private static readonly Random _rand = new();
     private readonly ILogger<GoodreadsScraper> _logger;
     private readonly Config _config;
     private readonly ApplicationDbContext _db;
+    public ExternalBookSystem ExternalSystem => Storygraph;
 
     public StorygraphScraper(
         ILogger<GoodreadsScraper> logger,
@@ -69,24 +70,25 @@ public class StorygraphScraper
         return promise.Result;
     }
 
-    //public IEnumerable<GoodreadsReview> GetReadBooks(Bookworm user)
-    //{
-    //    if (string.IsNullOrWhiteSpace(user.GoodreadsUserId))
-    //    {
-    //        _logger.LogInformation("Triggered RSS feed fetch for user {userId}, but no Goodreads User ID is available. Exitting.", user.Id);
-    //        return Enumerable.Empty<GoodreadsReview>();
-    //    }
+    public IEnumerable<ExternalReview> GetReadBooks(Bookworm user)
+    {
+        if (string.IsNullOrWhiteSpace(user.ExternalProfileUserId))
+        {
+            _logger.LogInformation("Triggered RSS feed fetch for user {userId}, but no External Profile User ID is available. Exitting.", user.Id);
+            return Enumerable.Empty<ExternalReview>();
+        }
 
-    //    var rssUrl = $"{_config.GoodreadsRssBaseUrl}{user.GoodreadsUserId}?shelf=read";
-    //    return GetReviewsFromFeed(user.Id, rssUrl, Read);
-    //}
+        var profileUrl = $"https://app.thestorygraph.com/books-read/{user.ExternalProfileUserId}";
+        var promise = GetReviewsFromFeed(user.Id, profileUrl, Read);
+        promise.Wait();
+        return promise.Result;
+    }
 
     private async Task<List<ExternalReview>> GetReviewsFromFeed(
         string userId,
         string rssUrl,
         ExternalReview.ReviewKind kind)
     {
-
         var response = await rssUrl
             .GetStringAsync();
 
@@ -127,84 +129,4 @@ public class StorygraphScraper
             rssUrl);
         return reviews;
     }
-
-    //private static ushort TryGetUshort(string number)
-    //    => ushort.TryParse(number, out var result) ? result : default;
-
-    //private string ExtractBookInfo(
-    //    string goodreadsUrl,
-    //    GoodreadsBookInfo result,
-    //    string bookPageHtml)
-    //{
-    //    var converter = new ReverseMarkdown.Converter();
-    //    var html = new HtmlDocument();
-    //    html.LoadHtml(bookPageHtml);
-
-    //    var document = html.DocumentNode;
-
-
-    //    throw new NotImplementedException();
-
-    //    result.Title = document.QuerySelector("#bookTitle")?.InnerText?.Trim();
-    //    result.Author = document.QuerySelector(".authorName__container > a:nth-child(1) > span:nth-child(1)")?.InnerText?.Trim();
-    //    var description = document.QuerySelector("#description.readable.stacked span:nth-child(2)")?.InnerHtml;
-    //    if (description != null)
-    //    {
-    //        result.Description = converter.Convert(description);
-    //    }
-    //    else
-    //    {
-    //        _logger.LogWarning("Failed extracting Description from {url}", goodreadsUrl);
-    //    }
-    //    var pages = document.QuerySelectorAll("#details > div:nth-child(1) > span").FirstOrDefault(node => node.InnerText.Contains("pages"))?.InnerText;
-    //    var imgUrl = document.QuerySelector(".editionCover > img")?.Attributes["src"]?.Value;
-
-    //    if (!string.IsNullOrWhiteSpace(pages)
-    //        && pages.IndexOf(' ') > -1)
-    //    {
-    //        if (int.TryParse(pages[..pages.IndexOf(' ')], out var pageNum))
-    //        {
-    //            result.PageCount = pageNum;
-    //        }
-    //    }
-
-    //    return imgUrl;
-    //}
-
-    //private async Task ExtractBookImage(
-    //    GoodreadsBookInfo result,
-    //    string imgUrl)
-    //{
-    //    throw new NotImplementedException();
-
-    //    try
-    //    {
-    //        if (!string.IsNullOrWhiteSpace(imgUrl))
-    //        {
-    //            _logger.LogInformation("Downloading image for {bookname} at {url}", result.Title, imgUrl);
-    //            var pic = await imgUrl.GetBytesAsync();
-    //            var sanitizedName = Regex.Replace(
-    //                    result.Title.Replace(' ', '-'),
-    //                    "[^a-zA-Z0-9-]", "");
-    //            var relativeFilename = sanitizedName[..Math.Min(90, sanitizedName.Length)]
-    //                + _rand.Next(10_000, 100_000).ToString()
-    //                + Path.GetExtension(imgUrl) ?? ".jpg";
-    //            var relativeUrl = Helpers.MakeImageRelativePath(relativeFilename);
-    //            _logger.LogInformation("File downloaded, saving it as {filename}", relativeFilename);
-    //            await _db.Images.AddAsync(new StoredImage()
-    //            {
-    //                FileName = relativeFilename,
-    //                Extension = Path.GetExtension(relativeFilename),
-    //                FileContents = pic,
-    //                Kind = StoredImage.ImageKind.BookCover,
-    //            });
-    //            await _db.SaveChangesAsync();
-    //            result.ImageUrl = relativeUrl;
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        _logger.LogError(ex, "Image extraction failed for {url}", imgUrl);
-    //    }
-    //}
 }

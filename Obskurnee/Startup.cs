@@ -269,6 +269,7 @@ public class Startup
     {
         services.AddSingleton(Config.Current);
         services.AddTransient<GoodreadsScraper>();
+        services.AddTransient<StorygraphScraper>();
         services.AddTransient<PollService>();
         services.AddTransient<BookService>();
         services.AddTransient<RoundManagerService>();

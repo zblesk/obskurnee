@@ -13,12 +13,14 @@ using static Obskurnee.Models.ExternalBookSystem;
 
 namespace Obskurnee.Services;
 
-public class GoodreadsScraper
+public class GoodreadsScraper : IExternalBookScraper
 {
     private static readonly Random _rand = new();
     private readonly ILogger<GoodreadsScraper> _logger;
     private readonly Config _config;
     private readonly ApplicationDbContext _db;
+
+    public ExternalBookSystem ExternalSystem => Goodreads;
 
     public GoodreadsScraper(
         ILogger<GoodreadsScraper> logger,
@@ -59,7 +61,7 @@ public class GoodreadsScraper
     {
         if (string.IsNullOrWhiteSpace(user.ExternalProfileUserId))
         {
-            _logger.LogDebug("Triggered RSS feed fetch for user {userId}, but no Goodreads User ID is available. Exitting.", user.Id);
+            _logger.LogDebug("Triggered RSS feed fetch for user {userId}, but no External Profile User ID is available. Exitting.", user.Id);
             return Enumerable.Empty<ExternalReview>();
         }
 
@@ -71,7 +73,7 @@ public class GoodreadsScraper
     {
         if (string.IsNullOrWhiteSpace(user.ExternalProfileUserId))
         {
-            _logger.LogInformation("Triggered RSS feed fetch for user {userId}, but no Goodreads User ID is available. Exitting.", user.Id);
+            _logger.LogInformation("Triggered RSS feed fetch for user {userId}, but no External Profile User ID is available. Exitting.", user.Id);
             return Enumerable.Empty<ExternalReview>();
         }
 

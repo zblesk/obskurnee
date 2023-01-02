@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace Obskurnee.Models;
 
 [Table("GoodreadsReviews")]
-[DebuggerDisplay("{BookTitle} - {Author}")]
+[DebuggerDisplay("{Title} - {Author}")]
 public class ExternalReview : HeaderData
 {
     public enum ReviewKind { Read, CurrentlyReading };

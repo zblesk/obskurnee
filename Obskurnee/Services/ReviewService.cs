@@ -3,17 +3,19 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using static Obskurnee.Models.ExternalReview.ReviewKind;
+using static Obskurnee.Models.ExternalBookSystem;
 
 namespace Obskurnee.Services;
 
 public class ReviewService
 {
     private readonly ILogger<ReviewService> _logger;
-    private readonly GoodreadsScraper _scraper;
+    private readonly GoodreadsScraper _goodreadsScraper;
     private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
     private readonly NewsletterService _newsletter;
     private readonly ApplicationDbContext _db;
     private readonly Config _config;
+    private readonly StorygraphScraper _storygraphScraper;
     private readonly IStringLocalizer<Strings> _localizer;
     private static readonly ReviewIdComparer _comparer = new();
     private readonly MatrixService _matrix;
@@ -21,7 +23,8 @@ public class ReviewService
     public ReviewService(
         ILogger<ReviewService> logger,
         Config config,
-        GoodreadsScraper scraper,
+        GoodreadsScraper goodreadsScraper,
+        StorygraphScraper storygraphScraper,
         IStringLocalizer<NewsletterStrings> newsletterLocalizer,
         IStringLocalizer<Strings> localizer,
         NewsletterService newsletter,
@@ -29,11 +32,12 @@ public class ReviewService
         ApplicationDbContext db)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _scraper = scraper ?? throw new ArgumentNullException(nameof(scraper));
+        _goodreadsScraper = goodreadsScraper ?? throw new ArgumentNullException(nameof(goodreadsScraper));
         _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
         _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
         _db = db ?? throw new ArgumentNullException(nameof(db));
         _config = config ?? throw new ArgumentNullException(nameof(config));
+        _storygraphScraper = storygraphScraper;
         _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
         _matrix = matrix ?? throw new ArgumentNullException(nameof(matrix));
     }
@@ -159,7 +163,16 @@ public class ReviewService
                                     && r.Kind == CurrentlyReading
                                     && r.ExternalBookId != null)
                         .ToHashSet(_comparer);
-        var currentlyReading = _scraper
+
+        var scraper = GetUsersScraper(user);
+
+        if (scraper == null)
+        {
+            _logger.LogWarning("No scraper identified for {username}", user.UserName);
+            return Enumerable.Empty<ExternalReview>();
+        }
+
+        var currentlyReading = scraper
                         .GetCurrentlyReadingBooks(user)
                         .Where(r => !string.IsNullOrWhiteSpace(r.ExternalBookId))
                         .ToHashSet(_comparer);
@@ -181,7 +194,15 @@ public class ReviewService
     /// <returns>Returns a sequence of _newly added_ reviews that at least have a rating or a review.</returns>
     private async Task<IEnumerable<ExternalReview>> UpdateRead(Bookworm user)
     {
-        var readBooks = _scraper
+        var scraper = GetUsersScraper(user);
+
+        if (scraper == null)
+        {
+            _logger.LogWarning("No scraper identified for {username}", user.UserName);
+            return Enumerable.Empty<ExternalReview>();
+        }
+
+        var readBooks = scraper
                         .GetReadBooks(user)
                         .Where(r => !string.IsNullOrWhiteSpace(r.ExternalBookId))
                         .ToHashSet(_comparer);
@@ -201,4 +222,12 @@ public class ReviewService
         return readBooks
                 .Where(r => r.Rating > 0 || !string.IsNullOrWhiteSpace(r.ReviewText));
     }
+
+    private IExternalBookScraper GetUsersScraper(Bookworm user)
+        => user.ExternalProfileSystem switch
+        {
+            Goodreads => _goodreadsScraper,
+            Storygraph => _storygraphScraper,
+            _ => null
+        };
 }
