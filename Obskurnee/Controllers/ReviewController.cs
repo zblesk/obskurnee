@@ -45,7 +45,7 @@ public class ReviewController : Controller
 
     [HttpGet]
     [Route("currentlyreading")]
-    public Task<List<GoodreadsReview>> GetCurrentlyReadings()
+    public Task<List<ExternalReview>> GetCurrentlyReadings()
         => _reviews.GetAllCurrentlyReading();
 
     /// <summary>
@@ -55,7 +55,7 @@ public class ReviewController : Controller
     /// <returns></returns>
     [HttpGet]
     [Route("goodreadsreviews/{since?}")]
-    public Task<List<GoodreadsReview>> GoodreadsReviewsSince(string since = "")
+    public Task<List<ExternalReview>> GoodreadsReviewsSince(string since = "")
     {
         DateTime.TryParse(since, out var dateStart);
         return _reviews.GetAllGoodreadsReviewsSince(dateStart);

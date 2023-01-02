@@ -2,11 +2,11 @@
 
 namespace Obskurnee.Models;
 
-public class ReviewIdComparer : IEqualityComparer<GoodreadsReview>
+public class ReviewIdComparer : IEqualityComparer<ExternalReview>
 {
-    public bool Equals(GoodreadsReview x, GoodreadsReview y)
-        => x.GoodreadsBookId == y.GoodreadsBookId;
+    public bool Equals(ExternalReview x, ExternalReview y)
+        => x.ExternalBookId == y.ExternalBookId;
 
-    public int GetHashCode([DisallowNull] GoodreadsReview review)
-        => review.GoodreadsBookId.GetHashCode();
+    public int GetHashCode([DisallowNull] ExternalReview review)
+        => review.ExternalBookId.GetHashCode();
 }

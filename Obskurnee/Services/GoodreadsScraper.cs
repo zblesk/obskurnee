@@ -8,7 +8,8 @@ using System.ServiceModel.Syndication;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
-using static Obskurnee.Models.GoodreadsReview.ReviewKind;
+using static Obskurnee.Models.ExternalReview.ReviewKind;
+using static Obskurnee.Models.ExternalBookSystem;
 
 namespace Obskurnee.Services;
 
@@ -54,41 +55,41 @@ public class GoodreadsScraper
         }
     }
 
-    public IEnumerable<GoodreadsReview> GetCurrentlyReadingBooks(Bookworm user)
+    public IEnumerable<ExternalReview> GetCurrentlyReadingBooks(Bookworm user)
     {
-        if (string.IsNullOrWhiteSpace(user.GoodreadsUserId))
+        if (string.IsNullOrWhiteSpace(user.ExternalProfileUserId))
         {
             _logger.LogDebug("Triggered RSS feed fetch for user {userId}, but no Goodreads User ID is available. Exitting.", user.Id);
-            return Enumerable.Empty<GoodreadsReview>();
+            return Enumerable.Empty<ExternalReview>();
         }
 
-        var rssUrl = $"{_config.GoodreadsRssBaseUrl}{user.GoodreadsUserId}?shelf=currently-reading";
+        var rssUrl = $"{_config.GoodreadsRssBaseUrl}{user.ExternalProfileUserId}?shelf=currently-reading";
         return GetReviewsFromFeed(user.Id, rssUrl, CurrentlyReading);
     }
 
-    public IEnumerable<GoodreadsReview> GetReadBooks(Bookworm user)
+    public IEnumerable<ExternalReview> GetReadBooks(Bookworm user)
     {
-        if (string.IsNullOrWhiteSpace(user.GoodreadsUserId))
+        if (string.IsNullOrWhiteSpace(user.ExternalProfileUserId))
         {
             _logger.LogInformation("Triggered RSS feed fetch for user {userId}, but no Goodreads User ID is available. Exitting.", user.Id);
-            return Enumerable.Empty<GoodreadsReview>();
+            return Enumerable.Empty<ExternalReview>();
         }
 
-        var rssUrl = $"{_config.GoodreadsRssBaseUrl}{user.GoodreadsUserId}?shelf=read";
+        var rssUrl = $"{_config.GoodreadsRssBaseUrl}{user.ExternalProfileUserId}?shelf=read";
         return GetReviewsFromFeed(user.Id, rssUrl, Read);
     }
 
-    private List<GoodreadsReview> GetReviewsFromFeed(
+    private List<ExternalReview> GetReviewsFromFeed(
         string userId,
         string rssUrl,
-        GoodreadsReview.ReviewKind kind)
+        ExternalReview.ReviewKind kind)
     {
         var reader = XmlReader.Create(rssUrl);
         var feed = SyndicationFeed.Load(reader);
         var reviews = (from item in feed.Items
                        let rating = GetElementExtensionValueByOuterName(item, "user_rating")
                        let bookId = GetElementExtensionValueByOuterName(item, "book_id")
-                       select new GoodreadsReview(userId)
+                       select new ExternalReview(userId)
                        {
                            ReviewId = $"{userId}-{bookId}",
                            Title = item.Title.Text.Trim(),
@@ -96,9 +97,10 @@ public class GoodreadsScraper
                            Author = GetElementExtensionValueByOuterName(item, "author_name"),
                            Rating = TryGetUshort(rating),
                            ReviewText = GetElementExtensionValueByOuterName(item, "user_review"),
-                           GoodreadsBookId = bookId,
+                           ExternalBookId = bookId,
                            ReviewUrl = item.Id,
-                           Kind = kind
+                           Kind = kind,
+                           ExternalSystem = Goodreads,
                        })
                        .ToList();
         _logger.LogDebug("Loaded {count} items for user {userId} from RSS {rssUrl}",

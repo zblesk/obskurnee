@@ -116,7 +116,7 @@ public abstract class UserServiceBase
         var user = await _userManager.FindByEmailAsync(email);
         _logger.LogInformation("Updating user profile for {userId} ({email})", user.Id, user.Email);
         user.UserName = name;
-        user.GoodreadsProfileUrl = goodreadsUrl;
+        user.ExternalProfileUrl = goodreadsUrl;
         user.AboutMe = aboutMe;
         var identityResult = await _userManager.UpdateAsync(user);
         if (!identityResult.Succeeded)

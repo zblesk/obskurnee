@@ -19,7 +19,7 @@ public class ApplicationDbContext : IdentityDbContext<Bookworm>
     public DbSet<Setting> Settings { get; set; }
     public DbSet<GoodreadsBookInfo> BookInfos { get; set; }
     public DbSet<Recommendation> Recommendations { get; set; }
-    public DbSet<GoodreadsReview> GoodreadsReviews { get; set; }
+    public DbSet<ExternalReview> GoodreadsReviews { get; set; }
     public DbSet<Discussion> Discussions { get; set; }
     public DbSet<Post> Posts { get; set; }
     public DbSet<Book> Books { get; set; }

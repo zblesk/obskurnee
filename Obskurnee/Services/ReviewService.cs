@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
-using static Obskurnee.Models.GoodreadsReview.ReviewKind;
+using static Obskurnee.Models.ExternalReview.ReviewKind;
 
 namespace Obskurnee.Services;
 
@@ -38,7 +38,7 @@ public class ReviewService
         _matrix = matrix ?? throw new ArgumentNullException(nameof(matrix));
     }
 
-    public Task<List<GoodreadsReview>> GetAllCurrentlyReading()
+    public Task<List<ExternalReview>> GetAllCurrentlyReading()
         => _db.GoodreadsReviews.Where(r => r.Kind == CurrentlyReading).ToListAsync();
 
     public async Task FetchReviewUpdates(Bookworm user)
@@ -127,7 +127,7 @@ public class ReviewService
         return review;
     }
 
-    public Task<List<GoodreadsReview>> GetAllGoodreadsReviewsSince(DateTime dateStart)
+    public Task<List<ExternalReview>> GetAllGoodreadsReviewsSince(DateTime dateStart)
         => _db.GoodreadsReviews.Where(grr => grr.CreatedOn >= dateStart).ToListAsync();
 
 
@@ -150,21 +150,21 @@ public class ReviewService
     /// Updates the user's Currently Reading shelf
     /// </summary>
     /// <returns>Returns a sequence of _newly added_ reviews.</returns>
-    private async Task<IEnumerable<GoodreadsReview>> UpdateCurrentlyReading(Bookworm user)
+    private async Task<IEnumerable<ExternalReview>> UpdateCurrentlyReading(Bookworm user)
     {
         _logger.LogInformation("Updating GR review from shelf RSS for {userId}", user.Id);
 
         var existing = _db.GoodreadsReviews
                         .Where(r => r.OwnerId == user.Id
                                     && r.Kind == CurrentlyReading
-                                    && r.GoodreadsBookId != null)
+                                    && r.ExternalBookId != null)
                         .ToHashSet(_comparer);
         var currentlyReading = _scraper
                         .GetCurrentlyReadingBooks(user)
-                        .Where(r => !string.IsNullOrWhiteSpace(r.GoodreadsBookId))
+                        .Where(r => !string.IsNullOrWhiteSpace(r.ExternalBookId))
                         .ToHashSet(_comparer);
 
-        var existingCopy = new HashSet<GoodreadsReview>(existing, _comparer);
+        var existingCopy = new HashSet<ExternalReview>(existing, _comparer);
         existing.ExceptWith(currentlyReading);
         currentlyReading.ExceptWith(existingCopy);
 
@@ -179,19 +179,19 @@ public class ReviewService
     /// Updates the user's Currently Read
     /// </summary>
     /// <returns>Returns a sequence of _newly added_ reviews that at least have a rating or a review.</returns>
-    private async Task<IEnumerable<GoodreadsReview>> UpdateRead(Bookworm user)
+    private async Task<IEnumerable<ExternalReview>> UpdateRead(Bookworm user)
     {
         var readBooks = _scraper
                         .GetReadBooks(user)
-                        .Where(r => !string.IsNullOrWhiteSpace(r.GoodreadsBookId))
+                        .Where(r => !string.IsNullOrWhiteSpace(r.ExternalBookId))
                         .ToHashSet(_comparer);
-        var readIds = readBooks.Select(r => r.GoodreadsBookId);
+        var readIds = readBooks.Select(r => r.ExternalBookId);
 
         var existing = (from r in _db.GoodreadsReviews
                         where r.OwnerId == user.Id
                              && r.Kind == Read
-                             && r.GoodreadsBookId != null
-                             && readIds.Contains(r.GoodreadsBookId)
+                             && r.ExternalBookId != null
+                             && readIds.Contains(r.ExternalBookId)
                         select r)
                        .ToHashSet(_comparer);
         readBooks.ExceptWith(existing);
