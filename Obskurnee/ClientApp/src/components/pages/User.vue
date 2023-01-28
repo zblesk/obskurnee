@@ -83,7 +83,8 @@
           </div>
           <div class="mo">
             <div class="mo-pic">
-              <img src="../../assets/goodreads_icon_32x32.png" alt="null">
+              <img v-if="user.ExternalProfileSystem == 'Goodreads'" src="../../assets/goodreads_icon_32x32.png" alt="Goodreads link">
+              <img v-else src="../../assets/storygraph_icon_32x32.webp" alt="Storygraph link">
             </div>
             <div class="mo-text">
               <a v-if="user.goodreadsUrl" :href="user.goodreadsUrl">{{$t('user.goodreads')}}</a>

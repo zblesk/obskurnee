@@ -15,6 +15,7 @@ public class UserInfo
     public bool IsAdmin { get; set; } = false;
     public string Token { get; set; } = null;
     public string GoodreadsUrl { get; set; }
+    public ExternalBookSystem? ExternalProfileSystem { get; set; }
     public string Language { get; set; }
     public string AvatarUrl { get; set; }
     public bool LoginEnabled { get; set; }
@@ -31,8 +32,8 @@ public class UserInfo
                     Email = principal.FindFirstValue(ClaimTypes.Email),
                     IsModerator = principal.IsInRole(BookclubRoles.Moderator),
                     IsAdmin = principal.IsInRole(BookclubRoles.Admin),
-                        // This only gets called by the user it pertains to; so if the user is logged in, this is always true.
-                        LoginEnabled = true,
+                    // This only gets called by the user it pertains to; so if the user is logged in, this is always true.
+                    LoginEnabled = true,
                     IsBot = principal.IsInRole(BookclubRoles.Bot),
                     IsActiveParticipant = !principal.IsInRole(BookclubRoles.Bot),
                     Token = includeToken,
@@ -48,6 +49,7 @@ public class UserInfo
             AboutMe = user.AboutMe,
             AboutMeHtml = user.RenderedAboutMe,
             GoodreadsUrl = user.ExternalProfileUrl,
+            ExternalProfileSystem = user.ExternalProfileSystem,
             Language = user.Language,
             AvatarUrl = user.AvatarUrl,
             IsBot = user.IsBot,
@@ -68,6 +70,7 @@ public class UserInfo
             AboutMe = user.AboutMe,
             AboutMeHtml = user.RenderedAboutMe,
             GoodreadsUrl = user.ExternalProfileUrl,
+            ExternalProfileSystem = user.ExternalProfileSystem,
             Language = user.Language,
             AvatarUrl = user.AvatarUrl,
             IsBot = user.IsBot,
