@@ -87,7 +87,10 @@
               <img v-else src="../../assets/storygraph_icon_32x32.webp" alt="Storygraph link">
             </div>
             <div class="mo-text">
-              <a v-if="user.goodreadsUrl" :href="user.goodreadsUrl">{{$t('user.goodreads')}}</a>
+              <a v-if="user.goodreadsUrl" :href="user.goodreadsUrl">
+                <span v-if="user.ExternalProfileSystem == 'Goodreads'">{{$t('user.goodreads')}}</span>
+                <span v-else>{{$t('user.storygraph')}}</span>
+              </a>
               <p v-else>{{$t('user.noneAvailable')}}</p>
             </div>
           </div>

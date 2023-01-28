@@ -196,6 +196,7 @@
     "uploadAvatar": "Upload profile pic (100 x 100 px):",
     "wannaAddSome": "Why not add some?",
     "andMore": "... and more.",
-    "userIsMod": "This user is a moderator."
+    "userIsMod": "This user is a moderator.",
+    "storygraph": "Storygraph"
   }
 }
