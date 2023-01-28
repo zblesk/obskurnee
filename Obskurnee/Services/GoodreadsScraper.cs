@@ -43,7 +43,21 @@ public class GoodreadsScraper : IExternalBookScraper
         var result = new GoodreadsBookInfo("none") { Url = goodreadsUrl };
         try
         {
-            var bookPageHtml = await goodreadsUrl.GetStringAsync();
+            var bookPageHtml = await goodreadsUrl
+                .WithHeader("Cache-Control", "max-age=0")
+                .WithHeader("sec-ch-ua", "\"Microsoft Edge\";v=\"107\", \"Chromium\";v=\"107\", \"Not = A ? Brand\";v=\"24\"")
+                .WithHeader("sec-ch-ua-mobile", "?0")
+                .WithHeader("sec-ch-ua-platform", "\"Windows\"")
+                .WithHeader("Upgrade-Insecure-Requests", "1")
+                .WithHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.56")
+                .WithHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3; q = 0.9")
+                .WithHeader("Sec-Fetch-Site", "none")
+                .WithHeader("Sec-Fetch-Mode", "navigate")
+                .WithHeader("Sec-Fetch-User", "?1")
+                .WithHeader("Sec-Fetch-Dest", "document")
+                .WithHeader("Accept-Encoding", "gzip, deflate, br")
+                .WithHeader("Accept-Language", "en-US,en;q=0.9")
+                .GetStringAsync();
             var imgUrl = ExtractBookInfo(goodreadsUrl, result, bookPageHtml);
             await ExtractBookImage(result, imgUrl);
             _db.BookInfos.Add(result);
@@ -133,8 +147,25 @@ public class GoodreadsScraper : IExternalBookScraper
         var document = html.DocumentNode;
 
         result.Title = document.QuerySelector("#bookTitle")?.InnerText?.Trim();
+        if (result.Title == null)
+        {
+            //second attempt, different layout
+            result.Title = document.QuerySelector(".Text__title1")?.InnerText.Trim();
+        }
+
         result.Author = document.QuerySelector(".authorName__container > a:nth-child(1) > span:nth-child(1)")?.InnerText?.Trim();
+        if (result.Author == null)
+        {
+            //second attempt, different layout
+            result.Author = document.QuerySelector(".ContributorLinksList > span:nth-child(1) > a:nth-child(1) > span:nth-child(1)")?.InnerText?.Trim();
+        }
+
         var description = document.QuerySelector("#description.readable.stacked span:nth-child(2)")?.InnerHtml;
+        if (description == null)
+        {
+            //second attempt, different layout
+            description = document.QuerySelector(".TruncatedContent__text--large > div:nth-child(1) > div:nth-child(1) > span:nth-child(1)")?.InnerHtml;
+        }
         if (description != null)
         {
             result.Description = converter.Convert(description);
@@ -143,9 +174,13 @@ public class GoodreadsScraper : IExternalBookScraper
         {
             _logger.LogWarning("Failed extracting Description from {url}", goodreadsUrl);
         }
-        var pages = document.QuerySelectorAll("#details > div:nth-child(1) > span").FirstOrDefault(node => node.InnerText.Contains("pages"))?.InnerText;
-        var imgUrl = document.QuerySelector(".editionCover > img")?.Attributes["src"]?.Value;
 
+        var pages = document.QuerySelectorAll("#details > div:nth-child(1) > span").FirstOrDefault(node => node.InnerText.Contains("pages"))?.InnerText;
+         if (pages == null)
+        {
+            //second attempt, different layout
+            pages = document.QuerySelectorAll(".FeaturedDetails > p:nth-child(1)").FirstOrDefault(node => node.InnerText.Contains("pages"))?.InnerText;
+        }
         if (!string.IsNullOrWhiteSpace(pages)
             && pages.IndexOf(' ') > -1)
         {
@@ -155,6 +190,11 @@ public class GoodreadsScraper : IExternalBookScraper
             }
         }
 
+        var imgUrl = document.QuerySelector(".editionCover > img")?.Attributes["src"]?.Value;
+        if (imgUrl == null)
+        {
+            imgUrl = document.QuerySelector(".ResponsiveImage")?.Attributes["src"]?.Value;
+        }
         return imgUrl;
     }
 
