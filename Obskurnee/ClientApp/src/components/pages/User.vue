@@ -6,7 +6,7 @@
     <div v-if="mode == 'edit'">
       <div class="main">
         <div class="form-field">
-          <label for="username">{{ $t('user.name')}} </label>
+          <label for="username">{{$t('user.name')}} </label>
           <input type="text" id="username" required v-model="editingUser.name" tabindex="1" />
         </div>
         <div class="form-field">
@@ -48,14 +48,14 @@
           <img  :src="user.avatarUrl" :title="user.name" :alt="user.name" />
           <p class="mod-text" v-if="user.isModerator">
             {{$t('global.mod')}}
-            <span class="mod-tooltip">{{ $t('user.userIsMod') }}</span>
+            <span class="mod-tooltip">{{$t('user.userIsMod')}}</span>
           </p>
         </div>
         <div v-else class="user-pic-placeholder">
           <img src="../../assets/reader.svg"  :title="user.name" :alt="user.name" />
           <p class="mod-text" v-if="user.isModerator">
             {{$t('global.mod')}}
-            <span class="mod-tooltip">{{ $t('user.userIsMod') }}</span>
+            <span class="mod-tooltip">{{$t('user.userIsMod')}}</span>
           </p>
         </div>
 
@@ -83,12 +83,12 @@
           </div>
           <div class="mo">
             <div class="mo-pic">
-              <img v-if="user.ExternalProfileSystem == 'Goodreads'" src="../../assets/goodreads_icon_32x32.png" alt="Goodreads link">
+              <img v-if="user.externalProfileSystem == 'Goodreads'" src="../../assets/goodreads_icon_32x32.png" alt="Goodreads link">
               <img v-else src="../../assets/storygraph_icon_32x32.webp" alt="Storygraph link">
             </div>
             <div class="mo-text">
               <a v-if="user.goodreadsUrl" :href="user.goodreadsUrl">
-                <span v-if="user.ExternalProfileSystem == 'Goodreads'">{{$t('user.goodreads')}}</span>
+                <span v-if="user.externalProfileSystem == 'Goodreads'">{{$t('user.goodreads')}}</span>
                 <span v-else>{{$t('user.storygraph')}}</span>
               </a>
               <p v-else>{{$t('user.noneAvailable')}}</p>
