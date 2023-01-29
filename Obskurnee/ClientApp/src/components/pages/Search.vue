@@ -1,12 +1,15 @@
 <template>
     <section>
         <h1 class="page-title">{{$t('menus.search')}}</h1>
-        
-        <book-post
-            v-for="post in posts"
-            v-bind:key="post.postId"
-            v-bind:post="post">
-        </book-post>
+        <input v-model="searchTerm" />
+        <div v-if="searchTerm">
+            <book-post
+                v-for="post in matches"
+                v-bind:key="post.postId"
+                v-bind:post="post">
+            </book-post>
+        </div>
+        <span v-else>{{ $t('search.placeholder') }}</span>
     </section>
 </template>
 
@@ -28,23 +31,36 @@
 import { mapActions, mapState } from "vuex";
 import BookPost from "../BookPost.vue";
 export default {
-    name: "Search",
-  components: { BookPost },
-    computed: {
-        ...mapState("discussions", ["discussions"]),
-        // Topic posts and reposts are not eligible.
-        posts: function () 
-        { 
-            return [].concat(...this.discussions.filter(d => d.topic == "Books").map(d => ({...d}).posts))
-                .filter(p => !p.parentPostId);
-        }
-    },
-    methods: {
-    ...mapActions("discussions", ["fetchDiscussionList", "getDiscussionData"]),
-    },
-    async mounted() {
-        await this.fetchDiscussionList();
-        await Promise.all(this.discussions.map(d => this.getDiscussionData(d.discussionId)));
+  name: "Search",
+  data() {
+    return {
+      searchTerm: ""
     }
+  },
+  components: { BookPost },
+  computed: {
+    ...mapState("discussions", ["discussions"]),
+    actualSearch: function() { return this.searchTerm.toLowerCase(); },
+    // Topic posts and reposts are not eligible.
+    posts: function () 
+    { 
+      return [].concat(...this.discussions.filter(d => d.topic == "Books").map(d => ({...d}).posts))
+          .filter(p => !p.parentPostId);
+    },
+    matches: function ()
+    {
+        return this.posts.filter(p => 
+            p.title.toLowerCase().includes(this.actualSearch)
+            || p.author.toLowerCase().includes(this.actualSearch)
+            || p.text.toLowerCase().includes(this.actualSearch))
+    }
+  },
+  methods: {
+    ...mapActions("discussions", ["fetchDiscussionList", "getDiscussionData"]),
+  },
+  async mounted() {
+    await this.fetchDiscussionList();
+    await Promise.all(this.discussions.filter(d => d.topic == "Books").map(d => this.getDiscussionData(d.discussionId)));
+  }
 }
 </script>
