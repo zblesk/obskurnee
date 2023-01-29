@@ -78,7 +78,8 @@
     "register": "Register",
     "reset": "Reset",
     "save": "Save",
-    "us": "About us"
+    "us": "About us",
+    "search": "Search"
   },
   "messages": {
     "closed": "Closed",

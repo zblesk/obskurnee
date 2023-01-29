@@ -26,6 +26,9 @@
                     <router-link :to="{ name: 'roundlist' }">
                         <div class="navigation-item" v-if="isAuthenticated">{{ $t('menus.proposals') }}</div>
                     </router-link>
+                    <router-link :to="{ name: 'search' }">
+                        <div class="navigation-item" v-if="isAuthenticated">{{ $t('menus.search') }}</div>
+                    </router-link>
                     <router-link :to="{ name: 'recommendationlist' }">
                         <div class="navigation-item" v-if="isAuthenticated">{{ $t('menus.recs') }}</div>
                     </router-link>
