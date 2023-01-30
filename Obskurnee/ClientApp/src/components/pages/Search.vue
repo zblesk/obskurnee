@@ -2,13 +2,18 @@
     <section>
         <h1 class="page-title">{{$t('menus.search')}}</h1>
         <input v-model="searchTerm" />
-        <div v-if="searchTerm">
+
+        <div v-if="searchTerm" class="grid">
             <book-post
                 v-for="post in matches"
                 v-bind:key="post.postId"
                 v-bind:post="post">
             </book-post>
-        </div>
+          <recommendation-card 
+              v-for="rec in matches" 
+              v-bind:key="rec.recommendationId" 
+              v-bind:recommendation="rec" />
+          </div>
         <span v-else>{{ $t('search.placeholder') }}</span>
     </section>
 </template>
@@ -30,6 +35,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import BookPost from "../BookPost.vue";
+import RecommendationCard from '../RecommendationCard.vue'
 export default {
   name: "Search",
   data() {
@@ -37,15 +43,17 @@ export default {
       searchTerm: ""
     }
   },
-  components: { BookPost },
+  components: { BookPost, RecommendationCard },
   computed: {
     ...mapState("discussions", ["discussions"]),
+    ...mapState("recommendations", ["recommendations"]),
     actualSearch: function() { return this.searchTerm.toLowerCase(); },
     // Topic posts and reposts are not eligible.
     posts: function () 
     { 
-      return [].concat(...this.discussions.filter(d => d.topic == "Books").map(d => ({...d}).posts))
-          .filter(p => !p.parentPostId);
+      return ([].concat(...this.discussions.filter(d => d.topic == "Books").map(d => ({...d}).posts))
+          .filter(p => !p.parentPostId))
+          .concat(this.recommendations);
     },
     matches: function ()
     {
@@ -57,10 +65,12 @@ export default {
   },
   methods: {
     ...mapActions("discussions", ["fetchDiscussionList", "getDiscussionData"]),
+    ...mapActions("recommendations", ["fetchRecommendationList", "newRecommendation"]),
   },
   async mounted() {
+    this.fetchRecommendationList();
     await this.fetchDiscussionList();
-    await Promise.all(this.discussions.filter(d => d.topic == "Books").map(d => this.getDiscussionData(d.discussionId)));
+    Promise.all(this.discussions.filter(d => d.topic == "Books").map(d => this.getDiscussionData(d.discussionId)));
   }
 }
 </script>
