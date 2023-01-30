@@ -173,6 +173,7 @@ public class GoodreadsScraper : IExternalBookScraper
         else
         {
             _logger.LogWarning("Failed extracting Description from {url}", goodreadsUrl);
+            _logger.LogDebug("No Description extracted for payload: \n{html_payload_goodreads}", bookPageHtml);
         }
 
         var pages = document.QuerySelectorAll("#details > div:nth-child(1) > span").FirstOrDefault(node => node.InnerText.Contains("pages"))?.InnerText;
