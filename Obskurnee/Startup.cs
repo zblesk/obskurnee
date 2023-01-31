@@ -280,6 +280,7 @@ public class Startup
         services.AddTransient<MatrixService>();
         services.AddTransient<ReviewService>();
         services.AddTransient<BackupService>();
+        services.AddTransient<SearchService>();
         services.AddHostedService<FeedFetcherService>();
 
 #if DEMOMODE
