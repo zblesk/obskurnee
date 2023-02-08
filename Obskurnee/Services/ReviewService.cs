@@ -198,7 +198,7 @@ public class ReviewService
 
         if (scraper == null)
         {
-            _logger.LogWarning("No scraper identified for {username}", user.UserName);
+            _logger.LogDebug("No scraper identified for {username}", user.UserName);
             return Enumerable.Empty<ExternalReview>();
         }
 
