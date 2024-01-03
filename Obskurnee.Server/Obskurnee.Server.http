@@ -1,0 +1,6 @@
+@Obskurnee.Server_HostAddress = http://localhost:5210
+
+GET {{Obskurnee.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
