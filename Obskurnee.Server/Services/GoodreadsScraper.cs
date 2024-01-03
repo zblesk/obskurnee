@@ -193,7 +193,7 @@ public class GoodreadsScraper : IExternalBookScraper
         }
 
         var imgUrl = document.QuerySelector(".editionCover > img")?.Attributes["src"]?.Value;
-        
+
         imgUrl ??= document.QuerySelector(".ResponsiveImage")?.Attributes["src"]?.Value;
 
         if (!string.IsNullOrWhiteSpace(result.Title))
