@@ -1,4 +1,4 @@
-using Obskurnee;
+﻿using Obskurnee;
 using Serilog.Events;
 using Serilog;
 using Microsoft.OpenApi.Models;
@@ -181,7 +181,6 @@ void ConfigureDI(IServiceCollection services, MECConfigurationManager configurat
 static void ConfigureLocalization(IServiceCollection services)
 {
     services.AddLocalization(options => options.ResourcesPath = "Resources");
-    return; //todo
     services.Configure<RequestLocalizationOptions>(
         options =>
         {
