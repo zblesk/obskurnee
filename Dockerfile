@@ -1,22 +1,31 @@
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
-ARG TARGETARCH
-WORKDIR /source
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt-get install nodejs -y
+
+WORKDIR /source
 COPY . .
+
+RUN dotnet restore -r linux-musl-x64 ./Obskurnee.Server/Obskurnee.Server.csproj
+RUN dotnet restore -r linux-musl-x64 ./obskurnee.client/obskurnee.client.esproj
+
 RUN  ls -alr 
-RUN rm -rf obskurnee.client
-RUN  ls -alr 
+
+WORKDIR /source/obskurnee.client
+RUN npm ci
+
 WORKDIR /source/Obskurnee.Server
-RUN dotnet publish -a $TARGETARCH -o /app
+
+RUN dotnet publish --no-restore -a musl-x64 -o /app
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine
 EXPOSE 8080
 WORKDIR /app
 COPY --from=build /app .
-RUN mkdir /app/wwwroot
-RUN echo "Hello <b>world</b>. Built: <br>" > /app/wwwroot/index.html
-RUN date >> /app/wwwroot/index.html
+RUN echo "Built: <br><b>" > /app/wwwroot/build.html
+RUN date >> /app/wwwroot/build.html
+RUN echo "</b>" >> /app/wwwroot/build.html
 
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 RUN apk add --no-cache icu-libs
