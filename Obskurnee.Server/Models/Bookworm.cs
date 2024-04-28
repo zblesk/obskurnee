@@ -8,23 +8,25 @@ namespace Obskurnee.Models;
 
 public class Bookworm : IdentityUser
 {
-    private string _externalProfileUrl = null;
+    private string? _externalProfileUrl = null;
 
     [Column("GoodreadsProfileUrl")]
-    public string ExternalProfileUrl
+    public string? ExternalProfileUrl
     {
         get => _externalProfileUrl;
         set
         {
             _externalProfileUrl = value;
+            ExternalProfileSystem = null;
+            if (_externalProfileUrl == null)
+                return;
             if (_externalProfileUrl.StartsWith("https://www.goodreads.com"))
                 ExternalProfileSystem = Goodreads;
             else if (_externalProfileUrl.StartsWith("https://app.thestorygraph.com/"))
                 ExternalProfileSystem = Storygraph;
-            else ExternalProfileSystem = null;
         }
     }
-    public string ExternalProfileUserId
+    public string? ExternalProfileUserId
     {
         get
         {
