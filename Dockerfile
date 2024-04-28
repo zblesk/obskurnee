@@ -9,8 +9,6 @@ COPY . .
 RUN dotnet restore -r linux-musl-x64 ./Obskurnee.Server/Obskurnee.Server.csproj
 RUN dotnet restore -r linux-musl-x64 ./obskurnee.client/obskurnee.client.esproj
 
-RUN  ls -alr 
-
 WORKDIR /source/obskurnee.client
 RUN npm ci
 
