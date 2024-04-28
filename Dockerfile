@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
     RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
     RUN apt-get install nodejs git-all -y
@@ -22,7 +22,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine
     EXPOSE 8080
     WORKDIR /app
     COPY --from=build /app .
-    
+
     RUN echo "Built: <br><b>" > /app/wwwroot/build.html
     RUN date >> /app/wwwroot/build.html
     RUN echo "</b><br /><br />Git commit: <br />" >> /app/wwwroot/build.html
