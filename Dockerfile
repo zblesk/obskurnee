@@ -12,7 +12,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
     RUN npm ci
 
     WORKDIR /source/Obskurnee.Server
-    RUN dotnet publish --no-restore -a linux-x64 -o /app
+    RUN dotnet publish --no-restore -a x64 -o /app
 
     RUN git log -n 1 > /app/gitstatus
 
