@@ -17,7 +17,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
     RUN git log -n 1 > /app/gitstatus
 
 # final image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 
     EXPOSE 8080
     WORKDIR /app
