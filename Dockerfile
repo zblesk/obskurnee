@@ -5,14 +5,14 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
     WORKDIR /source
     COPY . .
-    RUN dotnet restore -r linux-musl-x64 ./Obskurnee.Server/Obskurnee.Server.csproj
-    RUN dotnet restore -r linux-musl-x64 ./obskurnee.client/obskurnee.client.esproj
+    RUN dotnet restore -r linux-x64 ./Obskurnee.Server/Obskurnee.Server.csproj
+    RUN dotnet restore -r linux-x64 ./obskurnee.client/obskurnee.client.esproj
 
     WORKDIR /source/obskurnee.client
     RUN npm ci
 
     WORKDIR /source/Obskurnee.Server
-    RUN dotnet publish --no-restore -a musl-x64 -o /app
+    RUN dotnet publish --no-restore -a linux-x64 -o /app
 
     RUN git log -n 1 > /app/gitstatus
 
