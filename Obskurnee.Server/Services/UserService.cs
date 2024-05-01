@@ -169,8 +169,10 @@ public sealed class UserService : UserServiceBase
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
         {
+            _logger.LogInformation("No user found for {email}", email);
             return false;
         }
+        _logger.LogDebug("Generating reset token for {email}", email);
         var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
         var callbackUrl = string.Format("{0}/passwordreset/{1}/{2}",
                                         _config.BaseUrl,
