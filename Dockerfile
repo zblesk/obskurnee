@@ -20,14 +20,14 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine
 
     EXPOSE 8080
-    WORKDIR /app
+    WORKDIR /obskurnee
     COPY --from=build /app .
 
-    RUN echo "Built: <br><b>" > /app/wwwroot/build.html
-    RUN date >> /app/wwwroot/build.html
-    RUN echo "</b><br /><br />Git commit: <br />" >> /app/wwwroot/build.html
-    RUN cat /app/gitstatus >> /app/wwwroot/build.html
-    RUN rm /app/gitstatus
+    RUN echo "Built: <br><b>" > /obskurnee/wwwroot/build.html
+    RUN date >> /obskurnee/wwwroot/build.html
+    RUN echo "</b><br /><br />Git commit: <br />" >> /obskurnee/wwwroot/build.html
+    RUN cat /obskurnee/gitstatus >> /obskurnee/wwwroot/build.html
+    RUN rm /obskurnee/gitstatus
 
     ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
     RUN apk add --no-cache icu-libs
