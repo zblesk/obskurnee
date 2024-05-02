@@ -36,7 +36,7 @@ public class Post : HeaderData
     [JsonIgnore]
     public ICollection<Poll> AllPolls { get; set; }
 
-    public string GetGoodreadsId()
+    public string? GetGoodreadsId()
     {
         if (string.IsNullOrWhiteSpace(Url))
         {

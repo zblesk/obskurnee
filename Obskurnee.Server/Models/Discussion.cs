@@ -10,9 +10,9 @@ public class Discussion : HeaderData
     public int DiscussionId { get; set; }
     public int PollId { get; set; }
     public int RoundId { get; set; }
-    public Round Round { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
+    public Round? Round { get; set; }
+    public string? Title { get; set; }
+    public string? Description { get; set; }
     public bool IsClosed { get; set; }
     virtual public Topic Topic { get; set; }
     [NotMapped]

@@ -12,19 +12,19 @@ public class Recommendation : HeaderData
 {
     [Key]
     public int RecommendationId { get; set; }
-    public string Title { get; set; }
-    public string Author { get; set; }
-    public string Text { get; set; }
+    public string? Title { get; set; }
+    public string? Author { get; set; }
+    public string? Text { get; set; }
     public int? PageCount { get; set; }
     public string? Url { get; set; }
 
     public string? ImageUrl { get; set; }
 
     [NotMapped]
-    public string RenderedText { get => Text.RenderMarkdown(); }
+    public string RenderedText { get => (Text ?? "").RenderMarkdown(); }
 
     [NotMapped]
-    public string GetGoodreadsId
+    public string? GetGoodreadsId
     {
         get
         {

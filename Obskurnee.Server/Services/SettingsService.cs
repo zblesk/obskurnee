@@ -38,9 +38,9 @@ public class SettingsService
         _db.SaveChanges();
     }
 
-    public string GetSetting(string key) => _db.Settings.FirstOrDefault(s => s.Key == key)?.Value;
+    public string? GetSetting(string key) => _db.Settings.FirstOrDefault(s => s.Key == key)?.Value;
 
-    public T GetSettingValue<T>(string key)
+    public T? GetSettingValue<T>(string key)
     {
         var setting = _db.Settings.FirstOrDefault(s => s.Key == key);
         if (setting == null)

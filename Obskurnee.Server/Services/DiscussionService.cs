@@ -104,11 +104,11 @@ public class DiscussionService
             body);
     }
 
-    public async Task<Discussion> GetWithPosts(int discussionId)
+    public async Task<Discussion?> GetWithPosts(int discussionId)
         => await _db.Discussions.AsNoTracking()
         .Include(d => d.Posts).FirstOrDefaultAsync(d => d.DiscussionId == discussionId);
 
-    public async Task<Discussion> GetLatestOpen()
+    public async Task<Discussion?> GetLatestOpen()
         => await _db.Discussions.AsNoTracking()
         .Where(d => !d.IsClosed).OrderByDescending(d => d.DiscussionId).FirstOrDefaultAsync();
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.Server;
 using Obskurnee.ViewModels;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -66,15 +67,15 @@ public abstract class UserServiceBase
         return _dbContext.Users.Select(u => u.Id).ToList();
     }
 
-    public abstract Task<(UserInfo user, string error)> Register(LoginCredentials creds, string defaultName = null);
+    public abstract Task<(UserInfo? user, string? error)> Register(LoginCredentials creds, string? defaultName = null);
 
-    public abstract Task<(UserInfo user, string error)> RegisterBot(LoginCredentials creds, string defaultName = null);
+    public abstract Task<(UserInfo? user, string? error)> RegisterBot(LoginCredentials creds, string? defaultName = null);
 
     public abstract Task<IdentityResult> MakeModerator(string email);
 
     public abstract Task<IdentityResult> MakeAdmin(string email);
 
-    public abstract Task<(UserInfo user, string error)> RegisterFirstAdmin(LoginCredentials creds);
+    public abstract Task<(UserInfo? user, string error)> RegisterFirstAdmin(LoginCredentials creds);
 
     public abstract Task<bool> ValidateLogin(LoginCredentials creds);
 
@@ -104,6 +105,7 @@ public abstract class UserServiceBase
     public async Task<UserInfo> GetUserById(string userId)
     {
         var user = await _userManager.FindByIdAsync(userId);
+        Trace.Assert(user != null);
         return UserInfo.From(user, await _userManager.GetRolesAsync(user));
     }
 
@@ -115,6 +117,7 @@ public abstract class UserServiceBase
         string aboutMe)
     {
         var user = await _userManager.FindByEmailAsync(email);
+        Trace.Assert(user != null);
         _logger.LogInformation("Updating user profile for {userId} ({email})", user.Id, user.Email);
         user.UserName = name;
         user.ExternalProfileUrl = goodreadsUrl;
@@ -138,7 +141,7 @@ public abstract class UserServiceBase
         return await GetUserByEmail(email);
     }
 
-    public Task<string> GetUserLanguage(string userId)
+    public Task<string?> GetUserLanguage(string userId)
         => (from u in _dbContext.Users.AsNoTracking()
             where u.Id == userId
             select u.Language)
@@ -165,6 +168,7 @@ public abstract class UserServiceBase
             await _dbContext.Database.BeginTransactionAsync();
             var user = await _dbContext.Users.Where(user => user.Id == userId)
                              .FirstAsync();
+            Trace.Assert(user.UserName != null);
             var fname = $"{user.UserName.Replace(" ", "")}.{DateTime.Now.ToString("yyyyMMdd-hhmmss")}{extension}";
             _dbContext.Images.Add(new StoredImage
             {

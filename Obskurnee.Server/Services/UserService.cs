@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.Server;
 using Obskurnee.ViewModels;
+using System.Diagnostics;
 using System.Globalization;
 using System.Security.Claims;
 using System.Web;
@@ -43,9 +44,9 @@ public sealed class UserService : UserServiceBase
         _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
     }
 
-    public override async Task<(UserInfo user, string error)> Register(
+    public override async Task<(UserInfo? user, string? error)> Register(
         LoginCredentials creds,
-        string defaultName = null)
+        string? defaultName = null)
     {
         var user = MakeNamedBookworm(creds, defaultName, isBot: false);
         _logger.LogInformation("Registering user {email}", user.Email);
@@ -64,9 +65,9 @@ public sealed class UserService : UserServiceBase
         return (null, result.Errors?.Aggregate("", (a, c) => $"{a}{c.Description}  \n"));
     }
 
-    public override async Task<(UserInfo user, string error)> RegisterBot(
+    public override async Task<(UserInfo? user, string? error)> RegisterBot(
         LoginCredentials creds,
-        string defaultName = null)
+        string? defaultName = null)
     {
         var user = MakeNamedBookworm(creds, defaultName, isBot: true);
         _logger.LogInformation("Registering bot {email}", user.Email);
@@ -80,7 +81,7 @@ public sealed class UserService : UserServiceBase
         return (null, result.Errors.FirstOrDefault()?.Description);
     }
 
-    private Bookworm MakeNamedBookworm(LoginCredentials creds, string defaultName, bool isBot)
+    private Bookworm MakeNamedBookworm(LoginCredentials creds, string? defaultName, bool isBot)
     {
         if (string.IsNullOrWhiteSpace(defaultName))
         {
@@ -101,6 +102,7 @@ public sealed class UserService : UserServiceBase
     {
         var origCulture = CultureInfo.CurrentCulture;
         CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture = _config.DefaultCultureInfo;
+        Trace.Assert(user.UserName != null);
         await _matrix.SendMessage(
             _newsletterLocalizer.Format("newUserAdded",
             user.UserName,
@@ -112,6 +114,7 @@ public sealed class UserService : UserServiceBase
     {
         _logger.LogInformation("Making moderator of {email}", email);
         var user = await _signInManager.UserManager.FindByEmailAsync(email);
+        Trace.Assert(user != null);
         var identityResult = await _userManager.AddToRoleAsync(user, BookclubRoles.Moderator);
         return identityResult;
     }
@@ -120,11 +123,12 @@ public sealed class UserService : UserServiceBase
     {
         _logger.LogInformation("Making admin of {email}", email);
         var user = await _signInManager.UserManager.FindByEmailAsync(email);
+        Trace.Assert(user != null);
         var identityResult = await _userManager.AddToRoleAsync(user, BookclubRoles.Admin);
         return identityResult;
     }
 
-    public override async Task<(UserInfo user, string error)> RegisterFirstAdmin(LoginCredentials creds)
+    public override async Task<(UserInfo? user, string error)> RegisterFirstAdmin(LoginCredentials creds)
     {
         if (GetAllUserIds().Count != 0)
         {
@@ -160,6 +164,7 @@ public sealed class UserService : UserServiceBase
     public override async Task<ClaimsPrincipal> GetPrincipal(LoginCredentials creds)
     {
         var user = await _signInManager.UserManager.FindByEmailAsync(creds.Email);
+        Trace.Assert(user != null);
         return await _signInManager.CreateUserPrincipalAsync(user);
     }
 
@@ -188,6 +193,8 @@ public sealed class UserService : UserServiceBase
     {
         _logger.LogInformation("Resetting password for user {userId}", userId);
         var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+            throw new Exception("User not found");
         return await _userManager.ResetPasswordAsync(user, resetToken, newPassword);
     }
 }

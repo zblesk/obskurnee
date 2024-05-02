@@ -5,24 +5,24 @@ namespace Obskurnee.ViewModels;
 
 public class UserInfo
 {
-    public string UserId { get; set; }
-    public string Name { get; set; }
-    public string Phone { get; set; }
-    public string Email { get; set; }
-    public string AboutMe { get; set; }
-    public string AboutMeHtml { get; set; }
+    public string? UserId { get; set; }
+    public string? Name { get; set; }
+    public string? Phone { get; set; }
+    public string? Email { get; set; }
+    public string? AboutMe { get; set; }
+    public string? AboutMeHtml { get; set; }
     public bool IsModerator { get; set; } = false;
     public bool IsAdmin { get; set; } = false;
-    public string Token { get; set; } = null;
-    public string GoodreadsUrl { get; set; }
+    public string? Token { get; set; } = null;
+    public string? GoodreadsUrl { get; set; }
     public ExternalBookSystem? ExternalProfileSystem { get; set; }
-    public string Language { get; set; }
-    public string AvatarUrl { get; set; }
+    public string? Language { get; set; }
+    public string? AvatarUrl { get; set; }
     public bool LoginEnabled { get; set; }
     public bool IsBot { get; set; }
     public bool IsActiveParticipant { get; set; }
 
-    public static UserInfo From(ClaimsPrincipal principal, string includeToken = null)
+    public static UserInfo From(ClaimsPrincipal? principal, string? includeToken = null)
             => (principal?.Identity == null || !principal.Identity.IsAuthenticated)
                 ? new UserInfo()
                 : new UserInfo()
@@ -39,22 +39,22 @@ public class UserInfo
                     Token = includeToken,
                 };
 
-    public static UserInfo From(Bookworm user, ClaimsPrincipal principal = null)
+    public static UserInfo From(Bookworm? user, ClaimsPrincipal? principal = null)
         => new()
         {
-            UserId = user.Id,
-            Name = user.UserName,
-            Email = user.Email,
-            Phone = user.PhoneNumber,
-            AboutMe = user.AboutMe,
-            AboutMeHtml = user.RenderedAboutMe,
-            GoodreadsUrl = user.ExternalProfileUrl,
-            ExternalProfileSystem = user.ExternalProfileSystem,
-            Language = user.Language,
-            AvatarUrl = user.AvatarUrl,
-            IsBot = user.IsBot,
-            LoginEnabled = user.LoginEnabled,
-            IsActiveParticipant = user.IsActiveParticipant,
+            UserId = user?.Id,
+            Name = user?.UserName,
+            Email = user?.Email,
+            Phone = user?.PhoneNumber,
+            AboutMe = user?.AboutMe,
+            AboutMeHtml = user?.RenderedAboutMe,
+            GoodreadsUrl = user?.ExternalProfileUrl,
+            ExternalProfileSystem = user?.ExternalProfileSystem,
+            Language = user?.Language,
+            AvatarUrl = user?.AvatarUrl,
+            IsBot = user?.IsBot ?? false,
+            LoginEnabled = user?.LoginEnabled ?? true,
+            IsActiveParticipant = user?.IsActiveParticipant ?? true,
             IsModerator = principal?.IsInRole(BookclubRoles.Moderator) ?? false,
             IsAdmin = principal?.IsInRole(BookclubRoles.Admin) ?? false,
         };

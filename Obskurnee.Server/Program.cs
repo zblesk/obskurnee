@@ -272,6 +272,8 @@ void Configure(WebApplication app)
 
     Trace.Assert(dbContext != null);
     Trace.Assert(userService != null);
+    Trace.Assert(roleManager != null);
+    Trace.Assert(userManager != null);
 
     Log.Information("Updating database");
     dbContext.Database.Migrate();

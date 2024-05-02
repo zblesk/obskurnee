@@ -33,7 +33,7 @@ public class GoodreadsScraper : IExternalBookScraper
         _db = db ?? throw new ArgumentNullException(nameof(db));
     }
 
-    public async Task<GoodreadsBookInfo> ScrapeBookInfo(string goodreadsUrl)
+    public async Task<GoodreadsBookInfo?> ScrapeBookInfo(string goodreadsUrl)
     {
         if (string.IsNullOrWhiteSpace(goodreadsUrl)
             || !goodreadsUrl.StartsWith("https://www.goodreads.com"))
@@ -127,7 +127,7 @@ public class GoodreadsScraper : IExternalBookScraper
         return reviews;
     }
 
-    private static string GetElementExtensionValueByOuterName(SyndicationItem item, string outerName)
+    private static string? GetElementExtensionValueByOuterName(SyndicationItem item, string outerName)
     {
         if (item.ElementExtensions.All(x => x.OuterName != outerName)) return null;
         return item.ElementExtensions.Single(x => x.OuterName == outerName).GetObject<XElement>().Value;

@@ -16,8 +16,9 @@ public class MatrixService
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _config = config
-            .GetSection(MatrixConfig.ConfigName)
-            .Get<MatrixConfig>();
+                ?.GetSection(MatrixConfig.ConfigName)
+                .Get<MatrixConfig>()
+            ?? throw new ArgumentNullException(nameof(config));
     }
 
     public async Task SendMessage(string message)
@@ -45,7 +46,7 @@ public class MatrixService
         }
     }
 
-    public string GetEnabledMatrixRoomLink()
+    public string? GetEnabledMatrixRoomLink()
     {
         if (!_config.Enabled)
         {

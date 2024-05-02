@@ -8,6 +8,7 @@ using Obskurnee.Services;
 using Obskurnee.ViewModels;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
+using System.Diagnostics;
 using System.IO;
 
 namespace Obskurnee.Controllers;
@@ -90,8 +91,9 @@ public class UserController : Controller
     [Route("roles")]
     public async Task<IActionResult> GetMyRoles()
     {
-        var u = await _userManager.GetUserAsync(User);
-        return Json(await _userManager.GetRolesAsync(u));
+        var user = await _userManager.GetUserAsync(User);
+        Trace.Assert(user != null);
+        return Json(await _userManager.GetRolesAsync(user));
     }
 
 #endif
