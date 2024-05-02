@@ -143,15 +143,17 @@ server {
 
 # Development 
 
-You will need .NET 6.0 and Node (we run on 16.13.x LTS).
+You will need .NET 8.0 and Node 18.
 
 1. Clone repo
-2. `cd .\Obskurnee\ClientApp\`
+2. `cd .\Obskurnee\obskurnee.client\`
 3. `npm install`
-4. `cd ..`
+4. `cd ..\Obskurnee.Server\`
 5. `dotnet run`
 
-That should let you access your local copy at http://localhost:5000. 
+That should let you access your local copy at localhost.
+
+Or just open the `.sln` file in Visual Studio  2022 and let it handle the rest.
 
 # License
 
