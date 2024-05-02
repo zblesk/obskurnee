@@ -23,6 +23,7 @@ using Obskurnee.Hubs;
 using System.Security.Claims;
 using zblesk.Helpers.Web;
 using Microsoft.AspNetCore.Mvc.Routing;
+using System.Net;
 
 ConfigureLogging();
 Log.Information("Starting up");
@@ -269,6 +270,8 @@ void Configure(WebApplication app)
     var roleManager = configScope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
     var userManager = configScope.ServiceProvider.GetService<UserManager<Bookworm>>();
 
+    Trace.Assert(dbContext != null);
+    Trace.Assert(userService != null);
 
     Log.Information("Updating database");
     dbContext.Database.Migrate();
@@ -303,11 +306,8 @@ void Configure(WebApplication app)
     {
         opts.EnrichDiagnosticContext = PushSerilogProperties;
     });
-    app.UseEndpoints(endpoints =>
-    {
-        endpoints.MapControllers();
-        endpoints.MapHub<EventHub>("/hubs/events");
-    });
+    app.MapControllers();
+    app.MapHub<EventHub>("/hubs/events");
 
     userService.LoadUsernameCache();
     lifetime.ApplicationStarted.Register(OnAppStarted);
