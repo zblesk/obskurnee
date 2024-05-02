@@ -7,15 +7,10 @@ namespace Obskurnee.Controllers;
 
 [Route("images")]
 [AllowAnonymous]
-public class ImageController : Controller
+public class ImageController(
+    ApplicationDbContext db) : Controller
 {
-    private readonly ApplicationDbContext _db;
-
-    public ImageController(
-        ApplicationDbContext db)
-    {
-        _db = db;
-    }
+    private readonly ApplicationDbContext _db = db;
 
     [HttpGet]
     [Route("{imageName}")]

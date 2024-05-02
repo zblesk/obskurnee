@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Obskurnee.Models;
 
 [Table("GoodreadsBookInfos")]
-public class GoodreadsBookInfo : HeaderData
+public class GoodreadsBookInfo(string ownerId) : HeaderData(ownerId)
 {
     [Key]
     public int GoodreadsBookInfoId { get; set; }
@@ -14,6 +14,4 @@ public class GoodreadsBookInfo : HeaderData
     public int? PageCount { get; set; }
     public string? Description { get; set; }
     public string? ImageUrl { get; set; }
-
-    public GoodreadsBookInfo(string ownerId) : base(ownerId) { }
 }

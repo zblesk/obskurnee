@@ -6,18 +6,12 @@ using System.Threading;
 
 namespace Obskurnee.Services;
 
-public class BackupService
+public class BackupService(
+    ILogger<BackupService> logger,
+    ApplicationDbContext db)
 {
-    private readonly ApplicationDbContext _db;
-    private readonly ILogger<BackupService> _logger;
-
-    public BackupService(
-        ILogger<BackupService> logger,
-        ApplicationDbContext db)
-    {
-        _db = db ?? throw new ArgumentNullException(nameof(db));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+    private readonly ApplicationDbContext _db = db ?? throw new ArgumentNullException(nameof(db));
+    private readonly ILogger<BackupService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     public async Task CreateBackup(string filename = null)
     {

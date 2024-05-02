@@ -8,21 +8,14 @@ using System.Diagnostics;
 
 namespace Obskurnee.Services;
 
-public class PollService
+public class PollService(
+    ILogger<PollService> logger,
+    ApplicationDbContext database,
+    IStringLocalizer<Strings> localizer)
 {
-    private readonly ILogger<PollService> _logger;
-    private readonly ApplicationDbContext _db;
-    private readonly IStringLocalizer<Strings> _localizer;
-
-    public PollService(
-        ILogger<PollService> logger,
-        ApplicationDbContext database,
-        IStringLocalizer<Strings> localizer)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _db = database ?? throw new ArgumentNullException(nameof(database));
-        _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
-    }
+    private readonly ILogger<PollService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly ApplicationDbContext _db = database ?? throw new ArgumentNullException(nameof(database));
+    private readonly IStringLocalizer<Strings> _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
 
     public Task<List<Poll>> GetAll()
         => (from poll in _db.PollsWithData

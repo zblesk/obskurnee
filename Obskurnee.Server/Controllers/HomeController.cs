@@ -10,33 +10,22 @@ namespace Obskurnee.Controllers;
 [AllowAnonymous]
 [ApiController]
 [Route("api/home")]
-public class HomeController : Controller
+public class HomeController(
+    ILogger<HomeController> logger,
+    SettingsService settingsService,
+    BookService bookService,
+    UserServiceBase userService,
+    DiscussionService discussionService,
+    PollService pollService,
+    MatrixService matrixService) : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-    private readonly SettingsService _settingsService;
-    private readonly BookService _bookService;
-    private readonly UserServiceBase _userService;
-    private readonly DiscussionService _discussionService;
-    private readonly PollService _pollService;
-    private readonly MatrixService _matrixService;
-
-    public HomeController(
-        ILogger<HomeController> logger,
-        SettingsService settingsService,
-        BookService bookService,
-        UserServiceBase userService,
-        DiscussionService discussionService,
-        PollService pollService,
-        MatrixService matrixService)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
-        _bookService = bookService ?? throw new ArgumentNullException(nameof(bookService));
-        _userService = userService ?? throw new ArgumentNullException(nameof(userService));
-        _discussionService = discussionService ?? throw new ArgumentNullException(nameof(discussionService));
-        _pollService = pollService ?? throw new ArgumentNullException(nameof(pollService));
-        _matrixService = matrixService;
-    }
+    private readonly ILogger<HomeController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly SettingsService _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
+    private readonly BookService _bookService = bookService ?? throw new ArgumentNullException(nameof(bookService));
+    private readonly UserServiceBase _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+    private readonly DiscussionService _discussionService = discussionService ?? throw new ArgumentNullException(nameof(discussionService));
+    private readonly PollService _pollService = pollService ?? throw new ArgumentNullException(nameof(pollService));
+    private readonly MatrixService _matrixService = matrixService;
 
     [HttpGet]
     public async Task<JsonResult> LandingPage()

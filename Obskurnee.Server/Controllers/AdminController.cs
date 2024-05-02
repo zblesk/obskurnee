@@ -12,34 +12,23 @@ namespace Obskurnee.Controllers;
 
 [Authorize(Policy = "ModOnly")]
 [Route("api/admin")]
-public class AdminController : Controller
+public class AdminController(
+    ILogger<AdminController> logger,
+    SettingsService settings,
+    UserServiceBase users,
+    IMailerService mailer,
+    BackupService backup,
+    IStringLocalizer<NewsletterStrings> newsletterLocalizer,
+    Config config) : Controller
 {
-    private readonly ILogger _logger;
-    private readonly SettingsService _settings;
-    private readonly UserServiceBase _users;
-    private readonly IMailerService _mailer;
+    private readonly ILogger _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly SettingsService _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+    private readonly UserServiceBase _users = users ?? throw new ArgumentNullException(nameof(users));
+    private readonly IMailerService _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
     private static readonly Random _random = new();
-    private readonly Config _config;
-    private readonly BackupService _backup;
-    private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
-
-    public AdminController(
-        ILogger<AdminController> logger,
-        SettingsService settings,
-        UserServiceBase users,
-        IMailerService mailer,
-        BackupService backup,
-        IStringLocalizer<NewsletterStrings> newsletterLocalizer,
-        Config config)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _settings = settings ?? throw new ArgumentNullException(nameof(settings));
-        _users = users ?? throw new ArgumentNullException(nameof(users));
-        _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
-        _config = config ?? throw new ArgumentNullException(nameof(config));
-        _backup = backup ?? throw new ArgumentNullException(nameof(backup));
-        _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
-    }
+    private readonly Config _config = config ?? throw new ArgumentNullException(nameof(config));
+    private readonly BackupService _backup = backup ?? throw new ArgumentNullException(nameof(backup));
+    private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
 
     [HttpGet]
     public JsonResult GetAdminInfo() => Json(

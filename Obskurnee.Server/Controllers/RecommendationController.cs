@@ -8,18 +8,12 @@ namespace Obskurnee.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/recommendations")]
-public class RecommendationController : Controller
+public class RecommendationController(
+    RecommendationService recommendations,
+    IAuthorizationService authService) : Controller
 {
-    private readonly RecommendationService _recommendations;
-    private readonly IAuthorizationService _authService;
-
-    public RecommendationController(
-        RecommendationService recommendations,
-        IAuthorizationService authService)
-    {
-        _recommendations = recommendations ?? throw new ArgumentNullException(nameof(recommendations));
-        _authService = authService;
-    }
+    private readonly RecommendationService _recommendations = recommendations ?? throw new ArgumentNullException(nameof(recommendations));
+    private readonly IAuthorizationService _authService = authService;
 
     [HttpGet]
     public IList<Recommendation> GetAllRecs() => _recommendations.GetAllRecs();

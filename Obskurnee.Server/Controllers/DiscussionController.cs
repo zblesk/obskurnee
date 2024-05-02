@@ -9,18 +9,12 @@ namespace Obskurnee.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/discussions")]
-public partial class DiscussionController : Controller
+public partial class DiscussionController(
+    DiscussionService discussions,
+    IAuthorizationService authService) : Controller
 {
-    private readonly DiscussionService _discussions;
-    private readonly IAuthorizationService _authService;
-
-    public DiscussionController(
-        DiscussionService discussions,
-        IAuthorizationService authService)
-    {
-        _discussions = discussions ?? throw new ArgumentNullException(nameof(discussions));
-        _authService = authService ?? throw new ArgumentNullException(nameof(authService));
-    }
+    private readonly DiscussionService _discussions = discussions ?? throw new ArgumentNullException(nameof(discussions));
+    private readonly IAuthorizationService _authService = authService ?? throw new ArgumentNullException(nameof(authService));
 
     [HttpGet]
     public Task<List<Discussion>> GetDiscussions() => _discussions.GetAll();

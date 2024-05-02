@@ -8,40 +8,27 @@ using Obskurnee.Server;
 
 namespace Obskurnee.Services;
 
-public class ReviewService
+public class ReviewService(
+    ILogger<ReviewService> logger,
+    Config config,
+    GoodreadsScraper goodreadsScraper,
+    StorygraphScraper storygraphScraper,
+    IStringLocalizer<NewsletterStrings> newsletterLocalizer,
+    IStringLocalizer<Strings> localizer,
+    NewsletterService newsletter,
+    MatrixService matrix,
+    ApplicationDbContext db)
 {
-    private readonly ILogger<ReviewService> _logger;
-    private readonly GoodreadsScraper _goodreadsScraper;
-    private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
-    private readonly NewsletterService _newsletter;
-    private readonly ApplicationDbContext _db;
-    private readonly Config _config;
-    private readonly StorygraphScraper _storygraphScraper;
-    private readonly IStringLocalizer<Strings> _localizer;
+    private readonly ILogger<ReviewService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly GoodreadsScraper _goodreadsScraper = goodreadsScraper ?? throw new ArgumentNullException(nameof(goodreadsScraper));
+    private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
+    private readonly NewsletterService _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
+    private readonly ApplicationDbContext _db = db ?? throw new ArgumentNullException(nameof(db));
+    private readonly Config _config = config ?? throw new ArgumentNullException(nameof(config));
+    private readonly StorygraphScraper _storygraphScraper = storygraphScraper;
+    private readonly IStringLocalizer<Strings> _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
     private static readonly ReviewIdComparer _comparer = new();
-    private readonly MatrixService _matrix;
-
-    public ReviewService(
-        ILogger<ReviewService> logger,
-        Config config,
-        GoodreadsScraper goodreadsScraper,
-        StorygraphScraper storygraphScraper,
-        IStringLocalizer<NewsletterStrings> newsletterLocalizer,
-        IStringLocalizer<Strings> localizer,
-        NewsletterService newsletter,
-        MatrixService matrix,
-        ApplicationDbContext db)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _goodreadsScraper = goodreadsScraper ?? throw new ArgumentNullException(nameof(goodreadsScraper));
-        _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
-        _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
-        _db = db ?? throw new ArgumentNullException(nameof(db));
-        _config = config ?? throw new ArgumentNullException(nameof(config));
-        _storygraphScraper = storygraphScraper;
-        _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
-        _matrix = matrix ?? throw new ArgumentNullException(nameof(matrix));
-    }
+    private readonly MatrixService _matrix = matrix ?? throw new ArgumentNullException(nameof(matrix));
 
     public Task<List<ExternalReview>> GetAllCurrentlyReading()
         => _db.GoodreadsReviews.Where(r => r.Kind == CurrentlyReading).ToListAsync();

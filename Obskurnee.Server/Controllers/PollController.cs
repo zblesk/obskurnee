@@ -11,24 +11,16 @@ namespace Obskurnee.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/polls")]
-public class PollController : Controller
+public class PollController(
+    ILogger<PollController> logger,
+    PollService polls,
+    RoundManagerService roundManager,
+    UserServiceBase users) : Controller
 {
-    private readonly ILogger<PollController> _logger;
-    private readonly PollService _polls;
-    private readonly RoundManagerService _roundManager;
-    private readonly UserServiceBase _users;
-
-    public PollController(
-        ILogger<PollController> logger,
-        PollService polls,
-        RoundManagerService roundManager,
-        UserServiceBase users)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _polls = polls ?? throw new ArgumentNullException(nameof(polls));
-        _roundManager = roundManager ?? throw new ArgumentNullException(nameof(roundManager));
-        _users = users ?? throw new ArgumentNullException(nameof(users));
-    }
+    private readonly ILogger<PollController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly PollService _polls = polls ?? throw new ArgumentNullException(nameof(polls));
+    private readonly RoundManagerService _roundManager = roundManager ?? throw new ArgumentNullException(nameof(roundManager));
+    private readonly UserServiceBase _users = users ?? throw new ArgumentNullException(nameof(users));
 
     [HttpGet]
     public async Task<IEnumerable<Poll>> GetPolls() => await _polls.GetAll();

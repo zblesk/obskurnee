@@ -8,22 +8,16 @@ using System.Security.Claims;
 
 namespace Obskurnee.Services;
 
-public class DemoUserService : UserServiceBase
+public class DemoUserService(
+    ILogger<UserServiceBase> logger,
+    UserManager<Bookworm> userManager,
+    SignInManager<Bookworm> signInManager,
+    IStringLocalizer<Strings> localizer,
+    ApplicationDbContext dbContext,
+    Config config) : UserServiceBase(userManager, logger, dbContext, localizer, config)
 {
-    private readonly IStringLocalizer<Strings> _localizer;
-    private readonly SignInManager<Bookworm> _signInManager;
-
-    public DemoUserService(
-        ILogger<UserServiceBase> logger,
-        UserManager<Bookworm> userManager,
-        SignInManager<Bookworm> signInManager,
-        IStringLocalizer<Strings> localizer,
-        ApplicationDbContext dbContext,
-        Config config) : base(userManager, logger, dbContext, localizer, config)
-    {
-        _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
-        _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
-    }
+    private readonly IStringLocalizer<Strings> _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
+    private readonly SignInManager<Bookworm> _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
 
     public override async Task<ClaimsPrincipal> GetPrincipal(LoginCredentials creds)
         => await _signInManager.CreateUserPrincipalAsync(

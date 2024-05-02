@@ -2,15 +2,10 @@
 
 namespace Obskurnee.Services;
 
-public class FakeMailerService : IMailerService
+public class FakeMailerService(
+    ILogger<FakeMailerService> logger) : IMailerService
 {
-    private readonly ILogger<FakeMailerService> _logger;
-
-    public FakeMailerService(
-        ILogger<FakeMailerService> logger)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+    private readonly ILogger<FakeMailerService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     public Task SendMail(string subject, string markdownBody, params string[] recipients)
     {

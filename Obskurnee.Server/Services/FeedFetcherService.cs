@@ -7,22 +7,16 @@ using System.Threading;
 
 namespace Obskurnee.Services;
 
-public class FeedFetcherService : IHostedService, IDisposable
+public class FeedFetcherService(
+    ILogger<FeedFetcherService> logger,
+    IServiceScopeFactory scopeFactory) : IHostedService, IDisposable
 {
-    private readonly ILogger<FeedFetcherService> _logger;
+    private readonly ILogger<FeedFetcherService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     private Timer _timer;
     private bool isRunning = false;
     private readonly object @lock = new object();
     private Stopwatch timer = null;
-    private readonly IServiceScopeFactory _scopeFactory;
-
-    public FeedFetcherService(
-        ILogger<FeedFetcherService> logger,
-        IServiceScopeFactory scopeFactory)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _scopeFactory = scopeFactory;
-    }
+    private readonly IServiceScopeFactory _scopeFactory = scopeFactory;
 
     public Task StartAsync(CancellationToken stoppingToken)
     {

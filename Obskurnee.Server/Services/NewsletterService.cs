@@ -5,27 +5,18 @@ using Obskurnee.ViewModels;
 
 namespace Obskurnee.Services;
 
-public class NewsletterService
+public class NewsletterService(
+    ILogger<NewsletterService> logger,
+    IMailerService mailer,
+    MatrixService matrix,
+    UserServiceBase userService,
+    ApplicationDbContext db)
 {
-    private readonly ILogger<NewsletterService> _logger;
-    private readonly IMailerService _mailer;
-    private readonly ApplicationDbContext _db;
-    private readonly UserServiceBase _userService;
-    private readonly MatrixService _matrix;
-
-    public NewsletterService(
-        ILogger<NewsletterService> logger,
-        IMailerService mailer,
-        MatrixService matrix,
-        UserServiceBase userService,
-        ApplicationDbContext db)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
-        _userService = userService ?? throw new ArgumentNullException(nameof(userService));
-        _db = db ?? throw new ArgumentNullException(nameof(db));
-        _matrix = matrix ?? throw new ArgumentNullException(nameof(matrix));
-    }
+    private readonly ILogger<NewsletterService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly IMailerService _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
+    private readonly ApplicationDbContext _db = db ?? throw new ArgumentNullException(nameof(db));
+    private readonly UserServiceBase _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+    private readonly MatrixService _matrix = matrix ?? throw new ArgumentNullException(nameof(matrix));
 
     public async Task<List<string>> Subscribe(string userId, string newsletterName)
     {

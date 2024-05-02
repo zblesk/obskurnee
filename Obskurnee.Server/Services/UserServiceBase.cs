@@ -11,30 +11,21 @@ using System.Security.Claims;
 
 namespace Obskurnee.Services;
 
-public abstract class UserServiceBase
+public abstract class UserServiceBase(
+   UserManager<Bookworm> userManager,
+   ILogger<UserServiceBase> logger,
+   ApplicationDbContext dbContext,
+   IStringLocalizer<Strings> localizer,
+   Config config)
 {
-    private readonly ILogger<UserServiceBase> _logger;
+    private readonly ILogger<UserServiceBase> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-    protected readonly UserManager<Bookworm> _userManager;
+    protected readonly UserManager<Bookworm> _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
     private readonly JwtSecurityTokenHandler _tokenHandler = new JwtSecurityTokenHandler();
-    protected readonly Config _config;
-    protected readonly ApplicationDbContext _dbContext;
+    protected readonly Config _config = config ?? throw new ArgumentNullException(nameof(config));
+    protected readonly ApplicationDbContext _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     private static IReadOnlyDictionary<string, string> _userNames = new Dictionary<string, string>();
-    private readonly IStringLocalizer<Strings> _localizer;
-
-    public UserServiceBase(
-       UserManager<Bookworm> userManager,
-       ILogger<UserServiceBase> logger,
-       ApplicationDbContext dbContext,
-       IStringLocalizer<Strings> localizer,
-       Config config)
-    {
-        _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _config = config ?? throw new ArgumentNullException(nameof(config));
-        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
-    }
+    private readonly IStringLocalizer<Strings> _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
 
     public async Task<List<UserInfo>> GetAllUsers()
     {

@@ -10,36 +10,24 @@ using System.Diagnostics;
 
 namespace Obskurnee.Services;
 
-public class RoundManagerService
+public class RoundManagerService(
+    ILogger<RoundManagerService> logger,
+    ApplicationDbContext database,
+    BookService bookService,
+    NewsletterService newsletter,
+    IStringLocalizer<Strings> localizer,
+    IStringLocalizer<NewsletterStrings> newsletterLocalizer,
+    IHubContext<EventHub, IEventHub> eventHub,
+    Config config)
 {
-    private readonly ILogger<RoundManagerService> _logger;
-    private readonly ApplicationDbContext _db;
-    private readonly BookService _bookService;
-    private readonly NewsletterService _newsletter;
-    private readonly IStringLocalizer<Strings> _localizer;
-    private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
-    private readonly Config _config;
-    private readonly IHubContext<EventHub, IEventHub> _eventHub;
-
-    public RoundManagerService(
-        ILogger<RoundManagerService> logger,
-        ApplicationDbContext database,
-        BookService bookService,
-        NewsletterService newsletter,
-        IStringLocalizer<Strings> localizer,
-        IStringLocalizer<NewsletterStrings> newsletterLocalizer,
-        IHubContext<EventHub, IEventHub> eventHub,
-        Config config)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _db = database ?? throw new ArgumentNullException(nameof(database));
-        _bookService = bookService ?? throw new ArgumentNullException(nameof(bookService));
-        _newsletter = newsletter;
-        _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
-        _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
-        _config = config ?? throw new ArgumentNullException(nameof(config));
-        _eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
-    }
+    private readonly ILogger<RoundManagerService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly ApplicationDbContext _db = database ?? throw new ArgumentNullException(nameof(database));
+    private readonly BookService _bookService = bookService ?? throw new ArgumentNullException(nameof(bookService));
+    private readonly NewsletterService _newsletter = newsletter;
+    private readonly IStringLocalizer<Strings> _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
+    private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
+    private readonly Config _config = config ?? throw new ArgumentNullException(nameof(config));
+    private readonly IHubContext<EventHub, IEventHub> _eventHub = eventHub ?? throw new ArgumentNullException(nameof(eventHub));
 
     public async Task<IList<Round>> AllRounds()
         => await _db.Rounds

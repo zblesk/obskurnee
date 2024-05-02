@@ -5,18 +5,12 @@ using System.Diagnostics;
 
 namespace Obskurnee.Services;
 
-public class BookService
+public class BookService(
+    ILogger<BookService> logger,
+    ApplicationDbContext database)
 {
-    private readonly ILogger<BookService> _logger;
-    private readonly ApplicationDbContext _db;
-
-    public BookService(
-        ILogger<BookService> logger,
-        ApplicationDbContext database)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _db = database ?? throw new ArgumentNullException(nameof(database));
-    }
+    private readonly ILogger<BookService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly ApplicationDbContext _db = database ?? throw new ArgumentNullException(nameof(database));
 
     public Task<List<Book>> GetBooksNewestFirst()
         => _db.BooksWithData.OrderByDescending(b => b.Order).ToListAsync();

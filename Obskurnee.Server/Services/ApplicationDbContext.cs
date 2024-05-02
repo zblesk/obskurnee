@@ -7,14 +7,9 @@ using Obskurnee.Models;
 
 namespace Obskurnee.Services;
 
-public class ApplicationDbContext : IdentityDbContext<Bookworm>
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts, ILoggerFactory loggerFactory) : IdentityDbContext<Bookworm>(opts)
 {
-    private readonly ILoggerFactory _loggerFactory;
-
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> opts, ILoggerFactory loggerFactory) : base(opts)
-    {
-        _loggerFactory = loggerFactory;
-    }
+    private readonly ILoggerFactory _loggerFactory = loggerFactory;
 
     public DbSet<Setting> Settings { get; set; }
     public DbSet<GoodreadsBookInfo> BookInfos { get; set; }

@@ -7,15 +7,16 @@ namespace Obskurnee.Models;
 
 [Table("GoodreadsReviews")]
 [DebuggerDisplay("{Title} - {Author}")]
-public class ExternalReview : HeaderData
+public class ExternalReview(string ownerId) : HeaderData(ownerId)
 {
     public enum ReviewKind { Read, CurrentlyReading };
 
     [Key]
-    public string ReviewId { get; set; }
-    public string Title { get; set; }
+    public string? ReviewId { get; set; }
+    public string? Title { get; set; }
+
     [Column("GoodreadsBookId")]
-    public string ExternalBookId { get; set; }
+    public string? ExternalBookId { get; set; }
     public string? ReviewUrl { get; set; }
     public string? Author { get; set; }
     public string? Series { get; set; }
@@ -26,8 +27,6 @@ public class ExternalReview : HeaderData
     public ExternalBookSystem ExternalSystem { get; set; } = ExternalBookSystem.Goodreads;
 
     [NotMapped] public string? RenderedReviewText { get => ReviewText?.RenderMarkdown(); }
-
-    public ExternalReview(string ownerId) : base(ownerId) { }
 
     public string GetStarRating()
         => Rating < 5

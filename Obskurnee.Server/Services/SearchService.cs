@@ -6,21 +6,14 @@ using Obskurnee.ViewModels;
 
 namespace Obskurnee.Services;
 
-public class SearchService
+public class SearchService(
+    BookService books,
+    PollService polls,
+    ApplicationDbContext database)
 {
-    private readonly BookService _books;
-    private readonly PollService _polls;
-    private readonly ApplicationDbContext _db;
-
-    public SearchService(
-        BookService books,
-        PollService polls,
-        ApplicationDbContext database)
-    {
-        _books = books ?? throw new ArgumentNullException(nameof(books));
-        _polls = polls ?? throw new ArgumentNullException(nameof(polls));
-        _db = database ?? throw new ArgumentNullException(nameof(database));
-    }
+    private readonly BookService _books = books ?? throw new ArgumentNullException(nameof(books));
+    private readonly PollService _polls = polls ?? throw new ArgumentNullException(nameof(polls));
+    private readonly ApplicationDbContext _db = database ?? throw new ArgumentNullException(nameof(database));
 
     public async Task<IEnumerable<BookPostStats>> GetAllBookStats()
     {

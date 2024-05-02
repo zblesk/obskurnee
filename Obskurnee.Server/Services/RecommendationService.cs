@@ -5,24 +5,16 @@ using Obskurnee.Server;
 
 namespace Obskurnee.Services;
 
-public class RecommendationService
+public class RecommendationService(
+    IStringLocalizer<NewsletterStrings> newsletterLocalizer,
+    NewsletterService newsletter,
+    Config config,
+    ApplicationDbContext db)
 {
-    private readonly ApplicationDbContext _db;
-    private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
-    private readonly NewsletterService _newsletter;
-    private readonly Config _config;
-
-    public RecommendationService(
-        IStringLocalizer<NewsletterStrings> newsletterLocalizer,
-        NewsletterService newsletter,
-        Config config,
-        ApplicationDbContext db)
-    {
-        _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
-        _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
-        _config = config ?? throw new ArgumentNullException(nameof(config));
-        _db = db ?? throw new ArgumentNullException(nameof(db));
-    }
+    private readonly ApplicationDbContext _db = db ?? throw new ArgumentNullException(nameof(db));
+    private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
+    private readonly NewsletterService _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
+    private readonly Config _config = config ?? throw new ArgumentNullException(nameof(config));
 
     public IList<Recommendation> GetAllRecs()
         => _db.Recommendations

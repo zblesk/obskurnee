@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 namespace Obskurnee.Models;
 
 [Table("Polls")]
-public class Poll : HeaderData
+public class Poll(string ownerId) : HeaderData(ownerId)
 {
     public enum LinkKind { Discussion, Book, Poll }
     public record FollowupReference(LinkKind kind, int entityId);
@@ -60,8 +60,6 @@ public class Poll : HeaderData
 
     [JsonIgnore]
     public string? ResultsSerialized { get; set; }
-
-    public Poll(string ownerId) : base(ownerId) { }
 
     public int FindAnyWinningPost() => Results?.Votes.OrderByDescending(vote => vote.Votes).First().PostId ?? 0;
 

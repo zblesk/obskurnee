@@ -6,18 +6,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace Obskurnee.Services;
 
-public class MailgunMailerService : IMailerService
+public class MailgunMailerService(
+    ILogger<MailgunMailerService> logger,
+    IConfiguration config) : IMailerService
 {
-    private readonly ILogger<MailgunMailerService> _logger;
-    private readonly IConfiguration _config;
-
-    public MailgunMailerService(
-        ILogger<MailgunMailerService> logger,
-        IConfiguration config)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _config = config ?? throw new ArgumentNullException(nameof(config));
-    }
+    private readonly ILogger<MailgunMailerService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly IConfiguration _config = config ?? throw new ArgumentNullException(nameof(config));
 
     public async Task SendMail(string subject, string markdownBody, params string[] recipients)
     {

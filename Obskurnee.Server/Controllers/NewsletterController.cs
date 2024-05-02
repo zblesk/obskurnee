@@ -8,18 +8,12 @@ namespace Obskurnee.Controllers;
 
 [Authorize(Policy = "CanUpdate")]
 [Route("api/newsletters")]
-public class NewsletterController : Controller
+public class NewsletterController(
+   ILogger<NewsletterController> logger,
+   NewsletterService newsletter) : Controller
 {
-    private readonly ILogger _logger;
-    private readonly NewsletterService _newsletter;
-
-    public NewsletterController(
-       ILogger<NewsletterController> logger,
-       NewsletterService newsletter)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
-    }
+    private readonly ILogger _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly NewsletterService _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
 
     [HttpGet]
     [Authorize(Policy = "ModOnly")]

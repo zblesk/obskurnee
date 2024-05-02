@@ -8,7 +8,7 @@ namespace Obskurnee.Models;
 
 [Table("Recommendations")]
 [Index(nameof(OwnerId))]
-public class Recommendation : HeaderData
+public class Recommendation(string ownerId) : HeaderData(ownerId)
 {
     [Key]
     public int RecommendationId { get; set; }
@@ -36,6 +36,4 @@ public class Recommendation : HeaderData
             return match.Groups?[1]?.Value ?? null;
         }
     }
-
-    public Recommendation(string ownerId) : base(ownerId) { }
 }

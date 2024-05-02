@@ -9,9 +9,9 @@ public class Config
     public const string DataFolder = "data";
     public const string BackupFolder = "backup";
     public static readonly string[] SupportedLanguages = new[] { "sk", "en", "cs" };
-    private string _key;
-    private string _baseUrl;
-    public static Config Current;
+    private string? _key;
+    private string? _baseUrl;
+    public static Config? Current;
 
     public string SymmetricSecurityKey
     {
@@ -26,9 +26,9 @@ public class Config
     }
 
     public string? Urls { get; set; }
-    public SymmetricSecurityKey SecurityKey { get; private set; }
+    public SymmetricSecurityKey? SecurityKey { get; private set; }
     public string BaseUrl { get => (_baseUrl ?? "").Trim().TrimEnd('/'); set => _baseUrl = value; }
-    public string MailerType { get; set; }
+    public string MailerType { get; set; } = "log-only";
     public int DefaultPasswordMinLength { get; set; }
     public string? PasswordGenerationChars { get; set; }
     public string? GoodreadsRssBaseUrl { get; set; }

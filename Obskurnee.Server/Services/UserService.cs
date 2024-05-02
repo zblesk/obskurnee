@@ -11,38 +11,27 @@ using System.Web;
 
 namespace Obskurnee.Services;
 
-public sealed class UserService : UserServiceBase
+public sealed class UserService(
+   ILogger<UserService> logger,
+   SignInManager<Bookworm> signInManager,
+   IStringLocalizer<Strings> localizer,
+   IStringLocalizer<NewsletterStrings> newsletterLocalizer,
+   IMailerService mailer,
+   IServiceProvider serviceProvider,
+   UserManager<Bookworm> userManager,
+   MatrixService matrix,
+   ApplicationDbContext dbContext,
+   Config config) : UserServiceBase(userManager, logger, dbContext, localizer, config)
 {
-    private readonly ILogger<UserService> _logger;
-    private readonly SignInManager<Bookworm> _signInManager;
-    private readonly IStringLocalizer<Strings> _localizer;
-    private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly IMailerService _mailer;
-    private readonly MatrixService _matrix;
+    private readonly ILogger<UserService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly SignInManager<Bookworm> _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
+    private readonly IStringLocalizer<Strings> _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
+    private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
+    private readonly IServiceProvider _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+    private readonly IMailerService _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
+    private readonly MatrixService _matrix = matrix;
 
     private NewsletterService Newsletter { get => (NewsletterService)_serviceProvider.GetService(typeof(NewsletterService)); }
-
-    public UserService(
-       ILogger<UserService> logger,
-       SignInManager<Bookworm> signInManager,
-       IStringLocalizer<Strings> localizer,
-       IStringLocalizer<NewsletterStrings> newsletterLocalizer,
-       IMailerService mailer,
-       IServiceProvider serviceProvider,
-       UserManager<Bookworm> userManager,
-       MatrixService matrix,
-       ApplicationDbContext dbContext,
-       Config config) : base(userManager, logger, dbContext, localizer, config)
-    {
-        _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
-        _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-        _mailer = mailer ?? throw new ArgumentNullException(nameof(mailer));
-        _matrix = matrix;
-        _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
-    }
 
     public override async Task<(UserInfo? user, string? error)> Register(
         LoginCredentials creds,

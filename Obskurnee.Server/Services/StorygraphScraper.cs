@@ -13,23 +13,16 @@ using static Obskurnee.Models.ExternalBookSystem;
 
 namespace Obskurnee.Services;
 
-public class StorygraphScraper : IExternalBookScraper
+public class StorygraphScraper(
+    ILogger<GoodreadsScraper> logger,
+    Config config,
+    ApplicationDbContext db) : IExternalBookScraper
 {
     private static readonly Random _rand = new();
-    private readonly ILogger<GoodreadsScraper> _logger;
-    private readonly Config _config;
-    private readonly ApplicationDbContext _db;
+    private readonly ILogger<GoodreadsScraper> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly Config _config = config ?? throw new ArgumentNullException(nameof(config));
+    private readonly ApplicationDbContext _db = db ?? throw new ArgumentNullException(nameof(db));
     public ExternalBookSystem ExternalSystem => Storygraph;
-
-    public StorygraphScraper(
-        ILogger<GoodreadsScraper> logger,
-        Config config,
-        ApplicationDbContext db)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _config = config ?? throw new ArgumentNullException(nameof(config));
-        _db = db ?? throw new ArgumentNullException(nameof(db));
-    }
 
     //public async Task<GoodreadsBookInfo> ScrapeBookInfo(string storygraphUrl)
     //{

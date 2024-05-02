@@ -9,18 +9,12 @@ namespace Obskurnee.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/reviews")]
-public class ReviewController : Controller
+public class ReviewController(
+    ILogger<ReviewController> logger,
+    ReviewService reviews) : Controller
 {
-    private readonly ILogger<ReviewController> _logger;
-    private readonly ReviewService _reviews;
-
-    public ReviewController(
-        ILogger<ReviewController> logger,
-        ReviewService reviews)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _reviews = reviews ?? throw new ArgumentNullException(nameof(reviews));
-    }
+    private readonly ILogger<ReviewController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly ReviewService _reviews = reviews ?? throw new ArgumentNullException(nameof(reviews));
 
     [HttpGet]
     [Route("book/{bookId:int}")]

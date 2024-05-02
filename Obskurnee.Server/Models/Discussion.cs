@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Obskurnee.Models;
 
 [Table("Discussions")]
-public class Discussion : HeaderData
+public class Discussion(string ownerId) : HeaderData(ownerId)
 {
     [Key]
     public int DiscussionId { get; set; }
@@ -19,6 +19,4 @@ public class Discussion : HeaderData
 
     public string RenderedDescription { get => Description.RenderMarkdown(); }
     public List<Post> Posts { get; set; } = new List<Post>();
-
-    public Discussion(string ownerId) : base(ownerId) { }
 }

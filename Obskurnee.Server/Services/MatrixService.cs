@@ -5,21 +5,15 @@ using Obskurnee.Models;
 
 namespace Obskurnee.Services;
 
-public class MatrixService
+public class MatrixService(
+    ILogger<MatrixService> logger,
+    IConfiguration config)
 {
-    private readonly ILogger<MatrixService> _logger;
-    private readonly MatrixConfig _config;
-
-    public MatrixService(
-        ILogger<MatrixService> logger,
-        IConfiguration config)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _config = config
+    private readonly ILogger<MatrixService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly MatrixConfig _config = config
                 ?.GetSection(MatrixConfig.ConfigName)
                 .Get<MatrixConfig>()
             ?? throw new ArgumentNullException(nameof(config));
-    }
 
     public async Task SendMessage(string message)
     {

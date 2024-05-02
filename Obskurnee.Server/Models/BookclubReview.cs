@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Obskurnee.Models;
 
 [Table("BookclubReviews")]
-public class BookclubReview : HeaderData
+public class BookclubReview(string ownerId) : HeaderData(ownerId)
 {
     [Key] public string ReviewId { get; set; }
     public int BookId { get; set; }
@@ -15,6 +15,4 @@ public class BookclubReview : HeaderData
     public ushort? Rating { get; set; }
     public string? ReviewText { get; set; }
     [NotMapped] public string? RenderedReviewText { get => ReviewText?.RenderMarkdown(); }
-
-    public BookclubReview(string ownerId) : base(ownerId) { }
 }

@@ -8,7 +8,7 @@ namespace Obskurnee.Models;
 
 [Table("Posts")]
 [Index(nameof(DiscussionId))]
-public class Post : HeaderData
+public class Post(string ownerId) : HeaderData(ownerId)
 {
     [Key]
     public int PostId { get; set; }
@@ -44,9 +44,5 @@ public class Post : HeaderData
         }
         var match = Regex.Match(Url, @"goodreads.com\/book\/show\/(\d+).*");
         return match.Groups?[1]?.Value ?? null;
-    }
-
-    public Post(string ownerId) : base(ownerId)
-    {
     }
 }

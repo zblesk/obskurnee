@@ -5,28 +5,18 @@ using Obskurnee.Server;
 
 namespace Obskurnee.Services;
 
-public class DiscussionService
+public class DiscussionService(
+    ApplicationDbContext db,
+    IStringLocalizer<Strings> localizer,
+    IStringLocalizer<NewsletterStrings> newsletterLocalizer,
+    NewsletterService newsletter,
+    Config config)
 {
-    private readonly IStringLocalizer<Strings> _localizer;
-    private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer;
-    private readonly NewsletterService _newsletter;
-    private readonly Config _config;
-    private readonly ApplicationDbContext _db;
-
-    public DiscussionService(
-        ApplicationDbContext db,
-        IStringLocalizer<Strings> localizer,
-        IStringLocalizer<NewsletterStrings> newsletterLocalizer,
-        NewsletterService newsletter,
-        Config config)
-    {
-        _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
-        _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
-        _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
-        _config = config ?? throw new ArgumentNullException(nameof(config));
-        _db = db ?? throw new ArgumentNullException(nameof(db));
-    }
-
+    private readonly IStringLocalizer<Strings> _localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
+    private readonly IStringLocalizer<NewsletterStrings> _newsletterLocalizer = newsletterLocalizer ?? throw new ArgumentNullException(nameof(newsletterLocalizer));
+    private readonly NewsletterService _newsletter = newsletter ?? throw new ArgumentNullException(nameof(newsletter));
+    private readonly Config _config = config ?? throw new ArgumentNullException(nameof(config));
+    private readonly ApplicationDbContext _db = db ?? throw new ArgumentNullException(nameof(db));
 
     public Task<List<Discussion>> GetAll()
         => (from discussion in _db.Discussions.AsNoTracking()

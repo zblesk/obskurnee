@@ -9,7 +9,7 @@ namespace Obskurnee.Models;
 [Table("Votes")]
 [Index(nameof(PollId))]
 [Index(nameof(OwnerId))]
-public class Vote : HeaderData
+public class Vote(string ownerId) : HeaderData(ownerId)
 {
     [Key]
     public string VoteId { get => $"{PollId}-{OwnerId}"; set { } }
@@ -32,6 +32,4 @@ public class Vote : HeaderData
     }
 
     public string PostIdsSerialized { get; set; }
-
-    public Vote(string ownerId) : base(ownerId) { }
 }

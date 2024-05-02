@@ -11,18 +11,12 @@ namespace Obskurnee.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/rounds")]
-public class RoundController : Controller
+public class RoundController(
+    ILogger<RoundController> logger,
+    RoundManagerService roundManager) : Controller
 {
-    private readonly ILogger<RoundController> _logger;
-    private readonly RoundManagerService _roundManager;
-
-    public RoundController(
-        ILogger<RoundController> logger,
-        RoundManagerService roundManager)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _roundManager = roundManager ?? throw new ArgumentNullException(nameof(roundManager));
-    }
+    private readonly ILogger<RoundController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly RoundManagerService _roundManager = roundManager ?? throw new ArgumentNullException(nameof(roundManager));
 
     [HttpGet]
     public async Task<IList<Round>> GetRounds() => await _roundManager.AllRounds();

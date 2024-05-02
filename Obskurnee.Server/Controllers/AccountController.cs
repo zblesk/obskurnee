@@ -9,15 +9,10 @@ using System.Web;
 namespace Obskurnee.Controllers;
 
 [Route("api/accounts")]
-public class AccountController : Controller
+public class AccountController(
+   UserServiceBase users) : Controller
 {
-    private readonly UserServiceBase _users;
-
-    public AccountController(
-       UserServiceBase users)
-    {
-        _users = users;
-    }
+    private readonly UserServiceBase _users = users;
 
     [HttpPost("login")]
     [AllowAnonymous]

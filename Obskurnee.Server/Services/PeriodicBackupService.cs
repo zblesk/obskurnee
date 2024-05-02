@@ -6,19 +6,13 @@ using System.Threading;
 
 namespace Obskurnee.Services;
 
-public class PeriodicBackupService : IHostedService, IDisposable
+public class PeriodicBackupService(
+    ILogger<PeriodicBackupService> logger,
+    IServiceScopeFactory scopeFactory) : IHostedService, IDisposable
 {
-    private readonly ILogger<PeriodicBackupService> _logger;
+    private readonly ILogger<PeriodicBackupService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     private Timer _timer;
-    private readonly IServiceScopeFactory _scopeFactory;
-
-    public PeriodicBackupService(
-        ILogger<PeriodicBackupService> logger,
-        IServiceScopeFactory scopeFactory)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _scopeFactory = scopeFactory;
-    }
+    private readonly IServiceScopeFactory _scopeFactory = scopeFactory;
 
     public Task StartAsync(CancellationToken stoppingToken)
     {

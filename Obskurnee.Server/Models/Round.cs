@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Obskurnee.Models;
 
 [Table("Rounds")]
-public class Round : HeaderData
+public class Round(string ownerId) : HeaderData(ownerId)
 {
     [Key]
     public int RoundId { get; set; }
@@ -64,8 +64,4 @@ public class Round : HeaderData
     [InverseProperty("Round")]
     [JsonIgnore]
     public List<Poll> AllRelatedPolls { get; set; }
-
-    public Round(string ownerId) : base(ownerId)
-    {
-    }
 }

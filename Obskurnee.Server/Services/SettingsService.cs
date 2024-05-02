@@ -3,18 +3,12 @@ using Obskurnee.Models;
 
 namespace Obskurnee.Services;
 
-public class SettingsService
+public class SettingsService(
+    ILogger<SettingsService> logger,
+    ApplicationDbContext database)
 {
-    private readonly ILogger<SettingsService> _logger;
-    private readonly ApplicationDbContext _db;
-
-    public SettingsService(
-        ILogger<SettingsService> logger,
-        ApplicationDbContext database)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _db = database ?? throw new ArgumentNullException(nameof(database));
-    }
+    private readonly ILogger<SettingsService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly ApplicationDbContext _db = database ?? throw new ArgumentNullException(nameof(database));
 
     public void UpsertSetting(string key, string value)
     {
