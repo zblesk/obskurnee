@@ -13,7 +13,7 @@ import Book from "@/components/pages/Book.vue";
 import PasswordReset from "@/components/pages/PasswordReset.vue";
 import SinglePost from "@/components/pages/SinglePost.vue";
 import SingleRecommendation from "@/components/pages/SingleRecommendation.vue";
-import Search from "@/components/pages/Search.vue"
+import Search from "@/components/pages/SearchPage.vue"
 
 const routes = [
     {
