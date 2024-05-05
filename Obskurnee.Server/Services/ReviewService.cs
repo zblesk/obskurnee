@@ -41,6 +41,7 @@ public class ReviewService(
             var newReviews = await UpdateRead(user);
             await _db.SaveChangesAsync();
 
+#pragma warning disable CS8604 // Possible null reference argument.
             foreach (var r in newCurrent)
             {
                 await _matrix.SendMessage(
@@ -74,6 +75,7 @@ public class ReviewService(
                             r.ReviewUrl));
                 }
             }
+#pragma warning restore CS8604 // Possible null reference argument.
         }
         catch (Exception ex)
         {
@@ -125,17 +127,19 @@ public class ReviewService(
 
     private async Task SendNewReviewNotification(BookclubReview review)
     {
+#pragma warning disable CS8604 // Possible null reference argument.
         var link = $"{_config.BaseUrl}/knihy/{review.BookId}";
         await _newsletter.SendNewsletter(
             Newsletters.AllEvents,
             _newsletterLocalizer.Format("newReviewSubject",
-                review.Book.Post.Title,
+                review.Book.Post?.Title,
                 review.OwnerName),
             _newsletterLocalizer.Format("newReviewBodyMarkdown",
                 link,
                 Enumerable.Range(0, review.Rating ?? 0).Aggregate("", (acc, _) => $"{acc}⭐"),
                 review.ReviewText?.AddMarkdownQuote(),
                 review.OwnerName));
+#pragma warning restore CS8604 // Possible null reference argument.
     }
 
     /// <summary>
