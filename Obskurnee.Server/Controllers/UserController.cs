@@ -7,6 +7,7 @@ using Obskurnee.Models;
 using Obskurnee.Services;
 using Obskurnee.ViewModels;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Advanced;
 using SixLabors.ImageSharp.Processing;
 using System.Diagnostics;
 using System.IO;
@@ -69,11 +70,12 @@ public class UserController : Controller
     [Authorize(Policy = "CanUpdate")]
     public async Task<UserInfo> SetAvatar([FromForm] IFormFile avatar)
     {
-        using var image = Image.Load(avatar.OpenReadStream(), out var format);
+        using var image = Image.Load(avatar.OpenReadStream());
+        var encoder = image.DetectEncoder(avatar.FileName);
         using var ms = new MemoryStream();
         image.Mutate(img =>
             img.Resize(new ResizeOptions { Mode = ResizeMode.Crop, Size = new Size(100, 100) }));
-        image.Save(ms, format);
+        image.Save(ms, encoder);
         await _users.SetUserAvatar(
             User.GetUserId(),
             ms.ToArray(),
