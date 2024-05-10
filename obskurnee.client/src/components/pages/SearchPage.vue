@@ -33,8 +33,8 @@
 </style>
 
 <script>
-import { mapActions, mapState } from "vuex";
 import BookPost from "../BookPost.vue";
+import axios from "axios";
 import RecommendationCard from '../RecommendationCard.vue'
 export default {
   name: "Search",
@@ -45,44 +45,13 @@ export default {
   },
   components: { BookPost, RecommendationCard },
   computed: {
-    ...mapState("discussions", ["discussions"]),
-    ...mapState("recommendations", ["recommendations"]),
-    ...mapState("books", ["books"]),
-    actualSearch: function() { return this.searchTerm.toLowerCase(); },
-    // Topic posts and reposts are not eligible.
-    posts: function () 
-    { 
-      return ([].concat(...this.discussions.filter(d => d.topic == "Books").map(d => ({...d}).posts))
-          .filter(p => !p.parentPostId))
-          .concat(this.recommendations);
-    },
-    matches: function ()
-    {
-        return this.posts.filter(p => 
-            p.title.toLowerCase().includes(this.actualSearch)
-            || p.author.toLowerCase().includes(this.actualSearch)
-            || p.text.toLowerCase().includes(this.actualSearch))
-    }
   },
   methods: {
-    ...mapActions("discussions", ["fetchDiscussionList", "getDiscussionData", "getDiscussionPost"]),
-    ...mapActions("recommendations", ["fetchRecommendationList", "newRecommendation"]),
-    ...mapActions("books", ["fetchBookList"]),
+
   },
   async mounted() {
-    
-    await this.fetchDiscussionList();
-    await Promise.all(
-      [
-        ...(this.discussions.filter(d => d.topic == "Books").map(d => this.getDiscussionData(d.discussionId))),
-        this.fetchRecommendationList(),
-        this.fetchBookList()
-      ]);
-    this.books.forEach(async b => {
-      let book = {...b}; 
-      var post = await this.getDiscussionPost({ discussionId: book.post.discussionId, postId: book.post.postId });
-      post.isWinner = book.bookId;
-    });
+      let c = await axios
+          .get('/api/search/st');
   }
 }
 </script>
