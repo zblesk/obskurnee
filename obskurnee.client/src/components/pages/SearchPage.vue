@@ -1,57 +1,76 @@
 <template>
     <section>
         <h1 class="page-title">{{$t('menus.search')}}</h1>
-        <input v-model="searchTerm" />
-
-        <div v-if="searchTerm" class="grid">
-            <book-post
-                v-for="post in matches"
-                v-bind:key="post.postId"
-                v-bind:post="post">
-            </book-post>
-          <recommendation-card 
-              v-for="rec in matches" 
-              v-bind:key="rec.recommendationId" 
-              v-bind:recommendation="rec" />
-          </div>
-        <span v-else>{{ $t('search.placeholder') }}</span>
+        <input v-model="searchTerm" v-on:keydown="doSearch" />
+        <span v-if="resultCount == 0">{{ $t('search.startSearching') }}</span>
+        <span v-else>{{ $t('search.resultCount', [ resultCount ]) }}</span>
+        <p v-if="resultCount == 0">
+            Todo: info o tom ako hladat
+        </p>
+        <p v-else>
+            <div class="grid">
+                <template v-for="result in searchResults"
+                          v-bind:key="result.postId"
+                          v-bind:result="result">
+                    <book-post v-if="result.kind == 'Post'"
+                               :post="result"
+                               topic="Books">
+                    </book-post>
+                    <recommendation-card v-if="result.kind == 'Rec'"
+                                         :recommendation="result"/>
+                </template>
+            </div>
+        </p>
     </section>
 </template>
 
 <style scoped>
-.books-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: var(--spacer);
-    padding: var(--spacer);
-}
+    .books-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: var(--spacer);
+        padding: var(--spacer);
+    }
 
-.placeholder {
-    text-align: center;
-    font-style: italic;
-}
+    .placeholder {
+        text-align: center;
+        font-style: italic;
+    }
 </style>
 
 <script>
-import BookPost from "../BookPost.vue";
-import axios from "axios";
-import RecommendationCard from '../RecommendationCard.vue'
-export default {
-  name: "Search",
-  data() {
-    return {
-      searchTerm: ""
-    }
-  },
-  components: { BookPost, RecommendationCard },
-  computed: {
-  },
-  methods: {
+    import BookPost from "../BookPost.vue";
+    import axios from "axios";
+    import RecommendationCard from '../RecommendationCard.vue'
+    export default {
+        name: "Search",
+        data() {
+            return {
+                searchTerm: "",
+                searchResults: [],
+            }
+        },
+        components: { BookPost, RecommendationCard },
+        computed: {
+            resultCount() { return (this.searchResults?.length) ?? 0 }
+        },
+        methods: {
+            async doSearch(e) {
+                if (e.key.length != 1)
+                    return;
+                let newterm = this.searchTerm + e.key;
+                if (newterm.length < 3) {
+                    this.notice = this.$t('search.startSearching')
+                    this.searchResults = []
+                    return
+                }
+                this.searchResults = (await axios
+                    .get('/api/search?query=' + newterm))
+                    .data
 
-  },
-  async mounted() {
-      let c = await axios
-          .get('/api/search/st');
-  }
-}
+            }
+        },
+        async mounted() {
+        }
+    }
 </script>

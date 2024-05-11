@@ -1,22 +1,23 @@
 ﻿namespace Obskurnee.Server.ViewModels;
 
-public class BookSearchResult()
+public record BookSearchResult(
+    int? PostId,
+    int? RecommendationId,
+    int? DiscussionId,
+    string? Title,
+    string? Author,
+    string? Text,
+    int? PageCount,
+    string? Url,
+    string? ImageUrl,
+    int? ParentPostId,
+    int? ParentRecommendationId,
+    string OwnerId,
+    DateTime CreatedOn,
+    DateTime ModifiedOn,
+    string Kind,
+    decimal Rank,
+    bool HasParent = false)
 {
-    public int PostId { get; set; }
-    public string? Title { get; set; }
-    public string? Author { get; set; }
-    public string? Text { get; set; }
-    public int? PageCount { get; set; }
-    public string? Url { get; set; }
-    public string? ImageUrl { get; set; }
-    public int? ParentPostId { get; set; }
-    public int? ParentRecommendationId { get; set; }
-    public string OwnerId { get; set; }
-    public DateTime CreatedOn { get; set; }
-    public DateTime ModifiedOn { get; set; }
-    public bool HasParent { get; set; } = false;
-    public string Kind { get; set; }
-    public decimal Rank { get; set; }
-
 }
 

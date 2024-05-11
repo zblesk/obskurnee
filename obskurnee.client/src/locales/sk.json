@@ -199,5 +199,9 @@
     "andMore": "... a ďalšie.",
     "userIsMod": "Tento používateľ je moderátor.",
     "storygraph": "Storygraph"
+  },
+  "search": {
+    "startSearching": "Napíš aspoň 3 znaky.",
+    "resultCount": "Výsledkov: {0}"
   }
 }

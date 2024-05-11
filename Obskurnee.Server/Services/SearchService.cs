@@ -1,25 +1,18 @@
-﻿using System.Threading.Tasks.Dataflow;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Obskurnee.Controllers;
+﻿using Microsoft.EntityFrameworkCore;
 using Obskurnee.Models;
 using Obskurnee.Server.ViewModels;
 using Obskurnee.ViewModels;
-using Serilog.Sinks.RollingFile;
-using SQLitePCL;
 
 namespace Obskurnee.Services;
 
 public class SearchService(
     BookService books,
-    PollService polls,
     ApplicationDbContext database,
-    Logger<SearchService> logger)
+    ILogger<SearchService> logger)
 {
     private readonly BookService _books = books ?? throw new ArgumentNullException(nameof(books));
-    private readonly PollService _polls = polls ?? throw new ArgumentNullException(nameof(polls));
     private readonly ApplicationDbContext _db = database ?? throw new ArgumentNullException(nameof(database));
-    private readonly Logger<SearchService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly ILogger<SearchService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     const string sqliteSearchQuery = @"
 with results as 
 (
@@ -41,6 +34,8 @@ resultPosts as
 (
 	select 
 		r.PostId, 
+        null RecommendationId,
+        p.DiscussionId,
 		r.Title,
 		r.Author, 
 		r.Text, 
@@ -61,7 +56,9 @@ resultPosts as
 resultRecs as 
 (
 	select 
-		r.PostId, 
+		null PostId,
+        r.PostId RecommendationId, 
+        null DiscussionId,
 		r.Title, 
 		r.Author, 
 		r.Text, 
@@ -79,10 +76,10 @@ resultRecs as
 	from results r
 	join Recommendations p on p.RecommendationId = r.PostId and r.Kind = 'Rec'
 )
-select * 
+select *
 from resultPosts
 UNION
-select * 
+select *
 from resultRecs
 order by rank";
 
@@ -101,7 +98,7 @@ order by rank";
     }
 
 
-    public async Task<IEnumerable<BookSearchResult>> Search(string query)
+    public IEnumerable<BookSearchResult> Search(string query)
     {
         _logger.LogDebug("Searching for {query}", query);
         var res = _db.Database.SqlQueryRaw<BookSearchResult>(

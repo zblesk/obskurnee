@@ -199,5 +199,9 @@
     "andMore": "... and more.",
     "userIsMod": "This user is a moderator.",
     "storygraph": "Storygraph"
+  },
+  "search": {
+    "startSearching": "Start by entering at least 3 letters.",
+    "resultCount": "Results: {0}"
   }
 }

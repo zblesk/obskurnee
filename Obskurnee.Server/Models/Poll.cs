@@ -47,10 +47,10 @@ public class Poll(string ownerId) : HeaderData(ownerId)
     public bool IsTiebreaker { get; set; } = false;
 
     [NotMapped]
-    public PollResults? Results
+    public PollResults Results
     {
         get => !string.IsNullOrWhiteSpace(ResultsSerialized)
-                    ? JsonConvert.DeserializeObject<PollResults>(ResultsSerialized)
+                    ? JsonConvert.DeserializeObject<PollResults>(ResultsSerialized)!
                     : new PollResults();
         set
         {

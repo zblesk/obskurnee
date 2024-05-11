@@ -21,6 +21,6 @@ public class SearchController(ILogger<SearchController> logger, SearchService se
         => _search.GetAllBookStats();
 
     [HttpGet]
-    public Task<IEnumerable<BookSearchResult>> Search(string query)
+    public IEnumerable<BookSearchResult> Search(string query)
         => _search.Search(query);
 }

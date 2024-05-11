@@ -15,7 +15,7 @@ public class FeedFetcherService(
     private Timer _timer;
     private bool isRunning = false;
     private readonly object @lock = new object();
-    private Stopwatch timer = null;
+    private Stopwatch? timer = null;
     private readonly IServiceScopeFactory _scopeFactory = scopeFactory;
 
     public Task StartAsync(CancellationToken stoppingToken)
