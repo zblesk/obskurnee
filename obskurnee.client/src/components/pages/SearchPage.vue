@@ -1,15 +1,17 @@
 <template>
-    <section class="book">
-        <h1 class="page-title">{{$t('menus.search')}}</h1>
-        <div class="form-field">
-            <input v-model="searchTerm" v-on:keydown="doSearch" id="searchTerm" required :placeholder="$t('search.startSearching')" />
+    <section>
+        <div class="main">
+            <h1 class="page-title">{{$t('menus.search')}}</h1>
+            <div class="form-field">
+                <input v-model="searchTerm" v-on:keydown="doSearch" id="searchTerm" required :placeholder="$t('search.startSearching')" />
+            </div>
+            <span v-if="resultCount == 0"></span>
+            <span v-else>{{ $t('search.resultCount', [ resultCount ]) }}</span>
+            <p v-if="resultCount == 0">
+                {{ $t('search.howTo') }}
+            </p>
         </div>
-        <span v-if="resultCount == 0"></span>
-        <span v-else>{{ $t('search.resultCount', [ resultCount ]) }}</span>
-        <p v-if="resultCount == 0">
-            {{ $t('search.howTo') }}
-        </p>
-        <p v-else>
+        <p>
             <div class="grid">
                 <template v-for="result in searchResults"
                           v-bind:key="result.postId"
@@ -48,7 +50,10 @@
         },
         components: { SearchResultCard },
         computed: {
-            resultCount() { return (this.searchResults?.length) ?? 0 }
+            resultCount() { return (this.searchResults?.length) ?? 0 },
+            filteredResults() {
+                return "";
+            }
         },
         methods: {
             async doSearch(e) {
@@ -70,3 +75,6 @@
         }
     }
 </script>
+
+<style scoped>
+</style>
