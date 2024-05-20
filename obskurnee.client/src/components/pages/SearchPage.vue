@@ -12,12 +12,7 @@
                 <template v-for="result in searchResults"
                           v-bind:key="result.postId"
                           v-bind:result="result">
-                    <search-result-card v-if="result.kind == 'Post'"
-                               :post="result"
-                               topic="Books">
-                    </search-result-card>
-                    <recommendation-card v-if="result.kind == 'Rec'"
-                                         :recommendation="result"/>
+                    <search-result-card :result="result"/>
                 </template>
             </div>
         </p>
@@ -40,7 +35,6 @@
 
 <script>
     import axios from "axios";
-    import RecommendationCard from '../RecommendationCard.vue'
     import SearchResultCard from "../SearchResultCard.vue";
     export default {
         name: "Search",
@@ -50,7 +44,7 @@
                 searchResults: [],
             }
         },
-        components: { SearchResultCard, RecommendationCard },
+        components: { SearchResultCard },
         computed: {
             resultCount() { return (this.searchResults?.length) ?? 0 }
         },
