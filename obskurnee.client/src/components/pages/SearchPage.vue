@@ -5,15 +5,22 @@
             <div class="form-field">
                 <input v-model="searchTerm" v-on:keydown="doSearch" id="searchTerm" required :placeholder="$t('search.startSearching')" />
             </div>
-            <span v-if="resultCount == 0"></span>
-            <span v-else>{{ $t('search.resultCount', [ resultCount ]) }}</span>
-            <p v-if="resultCount == 0">
-                {{ $t('search.howTo') }}
+            <div class="linefields">
+                <input v-model="searchPosts" type="checkbox" id="searchPosts" required />
+                <label for="searchPosts">{{ $t('search.searchPosts') }}</label>
+                <input v-model="searchRecs" type="checkbox" id="searchRecs" required />
+                <label for="searchRecs">{{ $t('search.searchRecs') }}</label>
+            </div>
+            <p>
+                <span v-if="resultCount == 0">
+                    {{ $t('search.howTo') }}
+                </span>
+                <span v-else>{{ $t('search.resultCount', [ resultCount ]) }}</span>
             </p>
         </div>
         <p>
             <div class="grid">
-                <template v-for="result in searchResults"
+                <template v-for="result in filteredResults"
                           v-bind:key="result.postId"
                           v-bind:result="result">
                     <search-result-card :result="result" />
@@ -22,20 +29,6 @@
         </p>
     </section>
 </template>
-
-<style scoped>
-    .books-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: var(--spacer);
-        padding: var(--spacer);
-    }
-
-    .placeholder {
-        text-align: center;
-        font-style: italic;
-    }
-</style>
 
 <script>
     import axios from "axios";
@@ -46,13 +39,20 @@
             return {
                 searchTerm: "",
                 searchResults: [],
+                searchPosts: true,
+                searchRecs: true
             }
         },
         components: { SearchResultCard },
         computed: {
             resultCount() { return (this.searchResults?.length) ?? 0 },
             filteredResults() {
-                return "";
+                let wanted = [];
+                if (this.searchPosts)
+                    wanted.push('Post');
+                if (this.searchRecs)
+                    wanted.push('Rec');
+                return this.searchResults.filter(r => wanted.includes(r.kind));
             }
         },
         methods: {
@@ -77,4 +77,19 @@
 </script>
 
 <style scoped>
+    .linefields {
+        margin-bottom: var(--spacer);
+        align-content: center;
+        margin-left: 1em;
+    }
+
+    .linefields label {
+        font-size: 1rem;
+        margin-bottom: calc(var(--spacer) / 3);
+        padding-left: 1ex;
+        padding-right: 1em;
+    }
+
+    .linefields input {
+    }
 </style>

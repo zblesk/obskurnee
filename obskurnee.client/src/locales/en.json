@@ -203,6 +203,8 @@
   "search": {
     "startSearching": "Start by entering at least 3 letters.",
     "resultCount": "Results: {0}",
-    "howTo": "Start typing to search. You can also use the '*' placeholder."
+    "howTo": "Start typing to search. You can also use the '*' wildcard.",
+    "searchPosts": "Books",
+    "searchRecs": "Recommendations"
   }
 }
