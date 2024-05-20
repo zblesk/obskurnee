@@ -1,8 +1,10 @@
 <template>
-    <section>
+    <section class="book">
         <h1 class="page-title">{{$t('menus.search')}}</h1>
-        <input v-model="searchTerm" v-on:keydown="doSearch" />
-        <span v-if="resultCount == 0">{{ $t('search.startSearching') }}</span>
+        <div class="form-field">
+            <input v-model="searchTerm" v-on:keydown="doSearch" id="searchTerm" required :placeholder="$t('search.startSearching')" />
+        </div>
+        <span v-if="resultCount == 0"></span>
         <span v-else>{{ $t('search.resultCount', [ resultCount ]) }}</span>
         <p v-if="resultCount == 0">
             {{ $t('search.howTo') }}
@@ -12,7 +14,7 @@
                 <template v-for="result in searchResults"
                           v-bind:key="result.postId"
                           v-bind:result="result">
-                    <search-result-card :result="result"/>
+                    <search-result-card :result="result" />
                 </template>
             </div>
         </p>

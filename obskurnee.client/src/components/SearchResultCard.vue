@@ -1,5 +1,5 @@
 ﻿<template>
-    <search-result-book v-if="result.kind == 'Post'" :recommendation="result"></search-result-book>
+    <search-result-book v-if="result.kind == 'Post'" :post="result"></search-result-book>
     <search-result-recommendation v-if="result.kind == 'Rec'" :recommendation="result"></search-result-recommendation>
 </template>
 
