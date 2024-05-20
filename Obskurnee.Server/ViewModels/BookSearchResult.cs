@@ -1,4 +1,6 @@
-﻿namespace Obskurnee.Server.ViewModels;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Obskurnee.Server.ViewModels;
 
 public record BookSearchResult(
     int? PostId,
@@ -13,11 +15,13 @@ public record BookSearchResult(
     int? ParentPostId,
     int? ParentRecommendationId,
     string OwnerId,
+    string OwnerName,
     DateTime CreatedOn,
     DateTime ModifiedOn,
     string Kind,
     decimal Rank,
     bool HasParent = false)
 {
+    public string? RenderedText { get => Text?.RenderMarkdown(); }
 }
 

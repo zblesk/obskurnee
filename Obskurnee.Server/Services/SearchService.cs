@@ -19,9 +19,9 @@ with results as
 	select 
 		rowid, 
 		PostId, 
-		highlight(FtsPosts, 1, '==', '==') Title, 
-		highlight(FtsPosts, 2, '==', '==') Author, 
-		highlight(FtsPosts, 4, '==', '==') Text, 
+		highlight(FtsPosts, 1, '<mark class=""searchresult"">', '</mark>') Title, 
+		highlight(FtsPosts, 2, '<mark class=""searchresult"">', '</mark>') Author, 
+		highlight(FtsPosts, 4, '<mark class=""searchresult"">', '</mark>') Text, 
 		OwnerId, 
 		HasParent, 
 		Kind, 
@@ -45,6 +45,7 @@ resultPosts as
 		p.ParentPostId, 
 		p.ParentRecommendationId, 
 		p.OwnerId, 
+        usr.UserName OwnerName,
 		p.CreatedOn, 
 		p.ModifiedOn, 
 		r.HasParent, 
@@ -52,6 +53,7 @@ resultPosts as
 		r.rank
 	from results r
 	join Posts p on p.PostId = r.PostId and r.Kind = 'Post'
+    join AspNetUsers usr on usr.Id = p.OwnerId
 ),
 resultRecs as 
 (
@@ -68,6 +70,7 @@ resultRecs as
 		null ParentPostId, 
 		null ParentRecommendationId, 
 		p.OwnerId, 
+        usr.UserName OwnerName,
 		p.CreatedOn, 
 		p.ModifiedOn, 
 		r.HasParent, 
@@ -75,6 +78,7 @@ resultRecs as
 		r.rank
 	from results r
 	join Recommendations p on p.RecommendationId = r.PostId and r.Kind = 'Rec'
+    join AspNetUsers usr on usr.Id = p.OwnerId
 )
 select *
 from resultPosts

@@ -5,17 +5,17 @@
         <span v-if="resultCount == 0">{{ $t('search.startSearching') }}</span>
         <span v-else>{{ $t('search.resultCount', [ resultCount ]) }}</span>
         <p v-if="resultCount == 0">
-            Todo: info o tom ako hladat
+            {{ $t('search.howTo') }}
         </p>
         <p v-else>
             <div class="grid">
                 <template v-for="result in searchResults"
                           v-bind:key="result.postId"
                           v-bind:result="result">
-                    <book-post v-if="result.kind == 'Post'"
+                    <search-result-card v-if="result.kind == 'Post'"
                                :post="result"
                                topic="Books">
-                    </book-post>
+                    </search-result-card>
                     <recommendation-card v-if="result.kind == 'Rec'"
                                          :recommendation="result"/>
                 </template>
@@ -39,9 +39,9 @@
 </style>
 
 <script>
-    import BookPost from "../BookPost.vue";
     import axios from "axios";
     import RecommendationCard from '../RecommendationCard.vue'
+    import SearchResultCard from "../SearchResultCard.vue";
     export default {
         name: "Search",
         data() {
@@ -50,7 +50,7 @@
                 searchResults: [],
             }
         },
-        components: { BookPost, RecommendationCard },
+        components: { SearchResultCard, RecommendationCard },
         computed: {
             resultCount() { return (this.searchResults?.length) ?? 0 }
         },

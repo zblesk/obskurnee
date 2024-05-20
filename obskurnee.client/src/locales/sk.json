@@ -202,6 +202,7 @@
   },
   "search": {
     "startSearching": "Napíš aspoň 3 znaky.",
-    "resultCount": "Výsledkov: {0}"
+    "resultCount": "Výsledkov: {0}",
+    "howTo": "Začni písať. Môžeš použiť aj placeholder '*'."
   }
 }
