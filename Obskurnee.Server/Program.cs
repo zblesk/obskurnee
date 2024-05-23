@@ -47,9 +47,11 @@ builder.Services.AddSignalR()
 
 ConfigureServices(builder.Services, builder.Configuration);
 
+#if !DEBUG
 Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(builder.Configuration, sectionName: "Logging")
             .CreateLogger();
+#endif
 
 var app = builder.Build();
 
@@ -83,6 +85,9 @@ void ConfigureLogging()
     // Will be overridden by Config values later.
     Log.Logger = new LoggerConfiguration()
         .Enrich.FromLogContext()
+#if DEBUG
+        .MinimumLevel.Debug()
+#endif
         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
         .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
         .WriteTo.RollingFile(Path.Join("logs", "events.log"))
