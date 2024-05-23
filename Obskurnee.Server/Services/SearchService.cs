@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Obskurnee.Models;
 using Obskurnee.Server.ViewModels;
 using Obskurnee.ViewModels;
@@ -85,7 +86,8 @@ from resultPosts
 UNION
 select *
 from resultRecs
-order by rank";
+order by rank
+limit 301";
 
     public async Task<IEnumerable<BookPostStats>> GetAllBookStats()
     {
@@ -105,11 +107,30 @@ order by rank";
     public IEnumerable<BookSearchResult> Search(string query)
     {
         _logger.LogDebug("Searching for {query}", query);
+        var sanitized = SanitizeSearchQuery(query);
+        _logger.LogDebug("Sanitized query: {query}", sanitized);
         var res = _db.Database.SqlQueryRaw<BookSearchResult>(
             sqliteSearchQuery,
-            query)
+            sanitized)
             .ToList();
         _logger.LogDebug("Found {count} matches", res.Count);
         return res;
+    }
+
+    public string SanitizeSearchQuery(string query)
+    {
+        var sanitized = new StringBuilder();
+        var quoteAllowed = query.Count(c => c == '"') % 2 == 0;
+
+        foreach (var ch in query)
+            if (char.IsLetterOrDigit(ch)
+                || ch == ' '
+                || ch == '*'
+                || (quoteAllowed && ch == '"'))
+                sanitized.Append(ch);
+
+        if (char.IsLetterOrDigit(sanitized[^1]))
+            sanitized.Append('*');
+        return sanitized.ToString();
     }
 }
