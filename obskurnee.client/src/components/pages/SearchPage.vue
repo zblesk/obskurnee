@@ -3,7 +3,7 @@
         <div class="main">
             <h1 class="page-title">{{$t('menus.search')}}</h1>
             <div class="form-field">
-                <input v-model="searchTerm" v-on:keydown="doSearch" id="searchTerm" required :placeholder="$t('search.startSearching')" />
+                <input v-model="searchTerm" v-on:input="doSearch" id="searchTerm" required :placeholder="$t('search.startSearching')" />
             </div>
             <div class="linefields">
                 <input v-model="searchPosts" type="checkbox" id="searchPosts" required />
@@ -40,7 +40,8 @@
                 searchTerm: "",
                 searchResults: [],
                 searchPosts: true,
-                searchRecs: true
+                searchRecs: true,
+                searchRunning: false
             }
         },
         components: { SearchResultCard },
@@ -56,19 +57,27 @@
             }
         },
         methods: {
-            async doSearch(e) {
-                if (e.key.length != 1)
+            async doSearch() {
+                if (this.searchRunning)
                     return;
-                let newterm = this.searchTerm + e.key;
+                let newterm = this.searchTerm.trim();
                 if (newterm.length < 3) {
                     this.notice = this.$t('search.startSearching')
                     this.searchResults = []
                     return
                 }
-                this.searchResults = (await axios
-                    .get('/api/search?query=' + newterm))
-                    .data
-
+                this.searchRunning = true;
+                try {
+                    this.searchResults = (await axios
+                        .get('/api/search?query=' + newterm))
+                        .data
+                }
+                catch {
+                    this.$notifyError(this.$t('search.searchError'));
+                }
+                finally {
+                    this.searchRunning = false;
+                }
             }
         },
         async mounted() {

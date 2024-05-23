@@ -203,8 +203,9 @@
   "search": {
     "startSearching": "Napíš aspoň 3 znaky.",
     "resultCount": "Výsledkov: {0}",
-    "howTo": "Začni písať. Môžeš použiť aj wildcard '*'.",
+    "howTo": "Začni písať. Môžeš použiť aj wildcard '*' alebo \"presnú frázu\".",
     "searchPosts": "Knihy",
-    "searchRecs": "Odporúčania"
+    "searchRecs": "Odporúčania",
+    "searchError": "Zlý dopyt alebo chyba vyhľadávača"
   }
 }

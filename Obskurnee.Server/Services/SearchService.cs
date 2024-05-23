@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using Obskurnee.Models;
 using Obskurnee.Server.ViewModels;
@@ -6,7 +7,7 @@ using Obskurnee.ViewModels;
 
 namespace Obskurnee.Services;
 
-public class SearchService(
+public partial class SearchService(
     BookService books,
     ApplicationDbContext database,
     ILogger<SearchService> logger)
@@ -109,6 +110,11 @@ limit 301";
         _logger.LogDebug("Searching for {query}", query);
         var sanitized = SanitizeSearchQuery(query);
         _logger.LogDebug("Sanitized query: {query}", sanitized);
+        if (sanitized.Trim('*').Length < 3)
+        {
+            _logger.LogDebug("Sanitized search query too short; returning empty list");
+            return [];
+        }
         var res = _db.Database.SqlQueryRaw<BookSearchResult>(
             sqliteSearchQuery,
             sanitized)
@@ -120,7 +126,9 @@ limit 301";
     public string SanitizeSearchQuery(string query)
     {
         var sanitized = new StringBuilder();
-        var quoteAllowed = query.Count(c => c == '"') % 2 == 0;
+        query = query.Trim().TrimStart('*');  // FTS5 doesn't like that
+        query = MatchAsterisks().Replace(query, "*"); // FTS5 also doesn't like this
+        var quoteAllowed = query.Count(c => c == '"') % 2 == 0;  // and also those, etc
 
         foreach (var ch in query)
             if (char.IsLetterOrDigit(ch)
@@ -133,4 +141,7 @@ limit 301";
             sanitized.Append('*');
         return sanitized.ToString();
     }
+
+    [GeneratedRegex("\\*+")]
+    private static partial Regex MatchAsterisks();
 }

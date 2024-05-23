@@ -203,8 +203,9 @@
   "search": {
     "startSearching": "Start by entering at least 3 letters.",
     "resultCount": "Results: {0}",
-    "howTo": "Start typing to search. You can also use the '*' wildcard.",
+    "howTo": "Start typing to search. You can also use the '*' wildcard or \"exact matching\".",
     "searchPosts": "Books",
-    "searchRecs": "Recommendations"
+    "searchRecs": "Recommendations",
+    "searchError": "Wrong query or search error"
   }
 }
