@@ -33,7 +33,7 @@ public class Config
     public string? PasswordGenerationChars { get; set; }
     public string? GoodreadsRssBaseUrl { get; set; }
     public string? GoodreadsProfielUrlPrevix { get; set; }
-    public string? DefaultCulture { get; set; }
+    public string? DefaultCulture { get; set; } = "en";
     public int GoodreadsFetchIntervalMinutes { get; set; }
     public bool UseExternalFriendlyPasswordGenerator { get; set; }
     public string? SiteName { get; set; }

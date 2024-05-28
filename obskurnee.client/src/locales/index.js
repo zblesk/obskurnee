@@ -8,7 +8,7 @@ const messages = {
 };
 
 export default createI18n({
-  locale: 'sk', 
-  fallbackLocale: 'sk', 
+  locale: 'en', 
+  fallbackLocale: 'en', 
   messages, 
 });
