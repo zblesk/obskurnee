@@ -9,8 +9,7 @@ using System.Web;
 namespace Obskurnee.Controllers;
 
 [Route("api/accounts")]
-public class AccountController(
-   UserServiceBase users) : Controller
+public class AccountController(UserServiceBase users) : Controller
 {
     private readonly UserServiceBase _users = users;
 

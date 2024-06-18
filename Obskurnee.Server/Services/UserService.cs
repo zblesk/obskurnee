@@ -72,10 +72,10 @@ public sealed class UserService(
 
     private Bookworm MakeNamedBookworm(LoginCredentials creds, string? defaultName, bool isBot)
     {
+        if (!creds.Email.Contains("@"))
+            throw new Exception("Invalid e-mail");
         if (string.IsNullOrWhiteSpace(defaultName))
-        {
             defaultName = creds.Email[..creds.Email.IndexOf('@')];
-        }
         var user = new Bookworm
         {
             UserName = defaultName,
