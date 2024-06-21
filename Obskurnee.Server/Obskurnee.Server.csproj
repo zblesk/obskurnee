@@ -9,6 +9,13 @@
     <SpaRoot>..\obskurnee.client</SpaRoot>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>http://localhost:5284</SpaProxyServerUrl>
+    <Configurations>Debug;Release;DemoRelease</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DemoRelease|AnyCPU'">
+    <DefineConstants>$(DefineConstants);DEMOMODE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
