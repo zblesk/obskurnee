@@ -167,7 +167,7 @@ export default {
     {
       this.login(this.form)
         .then(() => {
-          this.$notifySuccess("Vitaj späť");
+            this.$notifySuccess(this.$t('messages.loginSuccess'));
           if (this.$route.params.nextUrl != null) {
             this.$router.push(this.$route.params.nextUrl)
           }

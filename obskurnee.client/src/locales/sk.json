@@ -84,6 +84,7 @@
   "messages": {
     "closed": "Uzavreté",
     "langChangeSuccess": "Jazyk zmenený",
+    "loginSuccess": "Vitaj späť",
     "loginFailed": "Prihlásenie zlyhalo :(",
     "notSubscribed": "Neprihlásené",
     "or": "alebo",
