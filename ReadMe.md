@@ -54,6 +54,8 @@ Only **moderators can add new users** (though this is disabled in the demo). Onc
 
 # Setup and tech info
 
+⚠ **Obskurnee is meant to run behind a proxy.** It does not offer built-in HTTPS support. Do not expose your instance directly to the internets.
+
 ## Quickstart
 
 To try it out, run `docker run -p 8080:8080 -e DefaultCulture=en zblesk/obskurnee`.
@@ -89,7 +91,7 @@ services:
       - Mailgun__ApiKey=key-super1337secret
 ```
 
-
+Change the environment variables to your real values; most importantly, mind that you set the path in `volumes` (i.e. `./data` in the example) to a location where you want all the application's data stored.
 
 Save it as `docker-compose.yml` and start with `docker-compose up`. 
 
