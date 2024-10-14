@@ -172,7 +172,7 @@ Vote [here]({0:link}).</value>
 
 _{3} strán | [link na GR]({4:url})_
 
-[Odporúčania]({5:link})</value>
+[Recommendations]({5:link})</value>
   </data>
   <data name="newRecSubject" xml:space="preserve">
     <value>{0:name} suggested a book</value>
