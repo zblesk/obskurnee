@@ -28,11 +28,11 @@
 
   <div class="page-wrapper flex">
     <div class="main flex">
-      <div v-if="!poll.isClosed && poll.results && poll.results.alreadyVoted" class="u-mb-sp2">
-       <h2 class="subtitle">{{$t('poll.pollProgress')}}</h2>
-        <p class="paragraph">{{$t('poll.alreadyVoted', [poll.results.alreadyVoted.length, activeUsers.length])}}</p>
-        <p class="paragraph">{{$t('poll.notYetVoted')}} <span v-for="person in yetToVote" v-bind:key="person">{{ person.name }}, </span></p>
-      </div>
+        <div v-if="!poll.isClosed && poll.results && poll.results.alreadyVoted" class="u-mb-sp2">
+            <h2 class="subtitle">{{$t('poll.pollProgress')}}</h2>
+            <p class="paragraph"> {{$t('poll.alreadyVoted', [ poll.results.alreadyVoted.length, activeUsers.length, alreadyVoted.map((person) => person.name).join(', ') ])}}</p>
+            <p class="paragraph">{{$t('poll.notYetVoted', [ yetToVote.map((person) => person.name).join(', ') ])}}</p>
+        </div>
 
       <div v-if="iVoted || (poll.isClosed && poll.results && poll.results.votes)">
         <h2 class="subtitle">{{$t('poll.results')}}</h2>
@@ -96,7 +96,8 @@ export default {
     ...mapGetters("context", ["isMod"]),
     ...mapState("polls", ["polls", "votes"]),
     ...mapGetters("users", ["totalUsers", "activeUsers"]),
-    yetToVote: function() { return this.activeUsers.filter(user => !this.poll.results.alreadyVoted.some(u => u == user.userId)); }
+    yetToVote: function () { return this.activeUsers.filter(user => !this.poll.results.alreadyVoted.some(u => u == user.userId)); },
+    alreadyVoted: function () { return this.activeUsers.filter(user => this.poll.results.alreadyVoted.some(u => u == user.userId)); }
   },
   methods: {
     ...mapActions("polls", ["getPollData", "sendVote", "closePoll"]),

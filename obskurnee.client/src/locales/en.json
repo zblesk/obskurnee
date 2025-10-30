@@ -123,10 +123,10 @@
     "confirmClose": "Do you really want to close this poll?"
   },
   "poll": {
-    "alreadyVoted": "{0} out of {1} readers have voted.",
+    "alreadyVoted": "{0} out of {1} readers have voted - {2}.",
     "closeVote": "Close voting now",
     "goToTiebreaker": "Go to tiebreaker",
-    "notYetVoted": "Yet to vote:",
+    "notYetVoted": "Yet to vote: {0}.",
     "options": "Options",
     "pollProgress": "Voting progress",
     "previewInfo": "Click on one of the titles for a detailed description.",

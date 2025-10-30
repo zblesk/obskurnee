@@ -122,10 +122,10 @@
     "title": "Zmena hesla"
   },
   "poll": {
-    "alreadyVoted": "Už hlasovalo {0} z {1} čitateľov.",
+    "alreadyVoted": "Už hlasovalo {0} z {1} čitateľov - {2}.",
     "closeVote": "Zavrieť hlasovanie ihneď",
     "goToTiebreaker": "Prejsť na rozstrelové hlasovanie",
-    "notYetVoted": "Ešte nehlasovali:",
+    "notYetVoted": "Ešte nehlasovali: {0}.",
     "options": "Možnosti",
     "pollProgress": "Stav hlasovania",
     "previewInfo": "Klikni na názov niektorej z možností v hlasovaní a tu se objaví podrobnejší popis.",
