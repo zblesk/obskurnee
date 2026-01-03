@@ -111,7 +111,7 @@
     "prefilledDescriptionFormat": "### Goodreads description: \n\n{0}",
     "requiredFields": "Fields marked with * are mandatory.",
     "topicTitle": "Topic",
-    "waitForLoadPlox": "Wait bro, I'M LOADING"
+    "waitForLoadPlox": "Dude, I'M LOADING"
   },
   "passwordreset": {
     "changeSuccess": "Changed",
@@ -135,7 +135,8 @@
     "tiebreaker": "Tiebreaker",
     "tiebreakerDescription": "We have several winners with the same number of votes:",
     "vote": "Vote",
-    "winner": "Winner"
+    "winner": "Winner",
+    "confirmClose": "Do you really want to close the poll?"
   },
   "recommendations": {
     "addNew": "Add a new recommendation",
