@@ -34,8 +34,8 @@ public class PollController(
     [Authorize(Policy = "CanUpdate")]
     public async Task<RoundUpdateResults> CastVote(int pollId, VotePayload votePayload)
     {
-        var vote = new Vote(User.GetUserId()) 
-            {
+        var vote = new Vote(User.GetUserId())
+        {
             PostIds = votePayload.PostIds,
             PollId = pollId
         };
