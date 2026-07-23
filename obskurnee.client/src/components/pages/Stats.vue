@@ -36,6 +36,7 @@ export default {
                 datasets: [{
                     label: this.$t('stats.booksRated'),
                     data: sorted.map(u => u.booksRatedCount),
+                    emails: sorted.map(u => u.email),
                     backgroundColor: this.accentColor,
                 }],
             };
@@ -48,6 +49,7 @@ export default {
                 datasets: [{
                     label: this.$t('stats.recommendations'),
                     data: sorted.map(u => u.recommendationCount),
+                    emails: sorted.map(u => u.email),
                     backgroundColor: this.accentColor,
                 }],
             };
@@ -63,6 +65,7 @@ export default {
                 datasets: [{
                     label: this.$t('stats.winningBooks'),
                     data: filtered.map(u => u.winningBooksCount),
+                    emails: filtered.map(u => u.email),
                     backgroundColor: this.accentColor,
                 }],
             };
@@ -74,6 +77,15 @@ export default {
             return {
                 indexAxis: 'y',
                 responsive: true,
+                onClick: (event, elements, chart) => {
+                    if (!elements.length) return;
+                    const { datasetIndex, index } = elements[0];
+                    const emails = chart.data.datasets[datasetIndex].emails;
+                    this.goToUser(emails && emails[index]);
+                },
+                onHover: (event, elements) => {
+                    event.native.target.style.cursor = elements.length ? 'pointer' : 'default';
+                },
                 plugins: {
                     legend: { display: false },
                 },
@@ -85,6 +97,11 @@ export default {
     },
     methods: {
         ...mapActions("stats", ["fetchUserStats"]),
+        goToUser(email) {
+            if (email) {
+                this.$router.push({ name: 'user', params: { email } });
+            }
+        }
     },
     mounted() {
         this.fetchUserStats();
