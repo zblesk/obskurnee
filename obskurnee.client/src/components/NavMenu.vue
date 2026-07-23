@@ -32,6 +32,9 @@
                     <router-link :to="{ name: 'recommendationlist' }">
                         <div class="navigation-item" v-if="isAuthenticated">{{ $t('menus.recs') }}</div>
                     </router-link>
+                    <router-link :to="{ name: 'stats' }">
+                        <div class="navigation-item" v-if="isAuthenticated">{{ $t('menus.stats') }}</div>
+                    </router-link>
                     <router-link :to="{ name: 'userlist' }">
                         <div class="navigation-item" v-if="isAuthenticated">{{ $t('menus.us') }}</div>
                     </router-link>

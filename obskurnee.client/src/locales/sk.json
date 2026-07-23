@@ -1,4 +1,10 @@
 {
+  "stats": {
+    "user": "Človek",
+    "booksRated": "Počet prečítaných kníh",
+    "winningBooks": "Počet víťazných návrhov",
+    "recommendations": "Počet odporučení"
+  },
   "admin": {
     "addMod": "Pridaj užívateľa k moderátorom:",
     "allEvents": "Všetky udalosti:",
@@ -78,6 +84,7 @@
     "register": "Zaregistrovať",
     "reset": "Reset",
     "save": "Uložiť",
+    "stats": "Stats",
     "us": "My",
     "search": "Hľadanie"
   },

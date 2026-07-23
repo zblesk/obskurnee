@@ -79,6 +79,7 @@ export default {
         commit('setSiteName', name);
       }
       commit('setMatrixRoomLink', window.localStorage.getItem('matrixRoomLink'));
+      commit('setLanguage', window.localStorage.getItem('language'));
     }
   }
 }

@@ -8,7 +8,7 @@ const messages = {
 };
 
 export default createI18n({
-  locale: 'en', 
+  locale: window.localStorage.getItem('language') || 'en',
   fallbackLocale: 'en', 
   messages, 
 });

@@ -10,11 +10,8 @@
           :to="{ name: 'singlepost', params: { discussionId: post.discussionId, postId: post.postId } }">
             🔗
         </router-link> 
-        <div v-if="isMe(post.ownerId) || isMod">
-          <span v-if="editMode" class="book__edit" @click="saveChanges()">
-            💾
-          </span>
-          <span v-else class="book__edit" @click="startEditing()">
+        <div v-if="(isMe(post.ownerId) || isMod) && !editMode">
+          <span class="book__edit" @click="startEditing()">
             📝
           </span>
         </div>
@@ -33,6 +30,10 @@
             <input type="number" v-model="editedPost.pageCount" id="pages" required />
           </div>
           <markdown-editor v-model="editedPost.text" :required="topic != 'Themes'"></markdown-editor>
+          <div class="buttons u-mt-sp">
+            <button @click="saveChanges()" class="button-primary">{{$t('menus.save')}}</button>
+            <button @click="cancelEditing()" class="button-secondary edit-cancel">{{$t('menus.cancel')}}</button>
+          </div>
         </div>
         <div v-else>
           <a :href="post.url" class="book__link">
@@ -88,7 +89,12 @@ export default {
     startEditing()
     {
       this.editMode = true;
-      this.editedPost = this.post;
+      this.editedPost = { ...this.post };
+    },
+    cancelEditing()
+    {
+      this.editMode = false;
+      this.editedPost = {};
     },
     async saveChanges()
     {
@@ -107,3 +113,16 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+    .edit-cancel {
+        margin-top: var(--spacer);
+    }
+
+    @media screen and (min-width: 576px) {
+        .edit-cancel {
+            margin-top: 0;
+            margin-left: var(--spacer);
+        }
+    }
+</style>

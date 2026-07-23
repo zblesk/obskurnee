@@ -1,4 +1,17 @@
-<template>
+import { createI18n } from 'vue-i18n';
+import sk from "./sk.json";
+import en from "./en.json";
+
+const messages = {
+  sk: sk,
+  en: en
+};
+
+export default createI18n({
+  locale: window.localStorage.getItem('language') || 'en',
+  fallbackLocale: 'en', 
+  messages, 
+});<template>
   <section>
     <div class="homepage">
       <div v-if="isAuthenticated" class="welcome">
