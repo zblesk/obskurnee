@@ -118,7 +118,7 @@
     "prefilledDescriptionFormat": "### Goodreads description: \n\n{0}",
     "requiredFields": "Fields marked with * are mandatory.",
     "topicTitle": "Topic",
-    "waitForLoadPlox": "Wait bro, I'M LOADING"
+    "waitForLoadPlox": "Dude, I'M LOADING"
   },
   "passwordreset": {
     "changeSuccess": "Changed",
@@ -130,10 +130,10 @@
     "confirmClose": "Do you really want to close this poll?"
   },
   "poll": {
-    "alreadyVoted": "{0} out of {1} readers have voted.",
+    "alreadyVoted": "{0} out of {1} readers have voted - {2}.",
     "closeVote": "Close voting now",
     "goToTiebreaker": "Go to tiebreaker",
-    "notYetVoted": "Yet to vote:",
+    "notYetVoted": "Yet to vote: {0}.",
     "options": "Options",
     "pollProgress": "Voting progress",
     "previewInfo": "Click on one of the titles for a detailed description.",
@@ -142,7 +142,8 @@
     "tiebreaker": "Tiebreaker",
     "tiebreakerDescription": "We have several winners with the same number of votes:",
     "vote": "Vote",
-    "winner": "Winner"
+    "winner": "Winner",
+    "confirmClose": "Do you really want to close the poll?"
   },
   "recommendations": {
     "addNew": "Add a new recommendation",
