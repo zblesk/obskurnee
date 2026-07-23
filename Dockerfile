@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 
     RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
     RUN apt-get install nodejs git-all -y
@@ -17,7 +17,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
     RUN git log -n 1 > /app/gitstatus
 
 # final image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-alpine
 
     EXPOSE 8080
     WORKDIR /obskurnee

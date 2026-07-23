@@ -1,7 +1,6 @@
 ﻿using Obskurnee;
 using Serilog.Events;
 using Serilog;
-using Microsoft.OpenApi.Models;
 using System.Diagnostics;
 using Obskurnee.Models;
 using System.Configuration;
@@ -24,6 +23,7 @@ using System.Security.Claims;
 using zblesk.Helpers.Web;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System.Net;
+using Microsoft.OpenApi;
 
 ConfigureLogging();
 Log.Information("Starting up");
