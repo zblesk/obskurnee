@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 
-    RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+    RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
     RUN apt-get install nodejs git-all -y
 
     WORKDIR /source
