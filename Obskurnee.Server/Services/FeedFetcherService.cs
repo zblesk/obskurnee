@@ -1,9 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Obskurnee.Models;
+﻿using Obskurnee.Models;
 using System.Diagnostics;
-using System.Threading;
 
 namespace Obskurnee.Services;
 

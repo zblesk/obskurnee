@@ -1,6 +1,4 @@
 ﻿using Flurl.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 
 namespace Obskurnee.Services;

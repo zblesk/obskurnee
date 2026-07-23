@@ -5,8 +5,6 @@ using System.Diagnostics;
 using Obskurnee.Models;
 using System.Configuration;
 using Newtonsoft.Json.Converters;
-using Microsoft.AspNetCore.Http;
-using SixLabors.ImageSharp.Processing;
 using Obskurnee.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
@@ -21,8 +19,6 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Obskurnee.Hubs;
 using System.Security.Claims;
 using zblesk.Helpers.Web;
-using Microsoft.AspNetCore.Mvc.Routing;
-using System.Net;
 using Microsoft.OpenApi;
 
 ConfigureLogging();

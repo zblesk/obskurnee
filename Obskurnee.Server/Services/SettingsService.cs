@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Obskurnee.Models;
+﻿using Obskurnee.Models;
 
 namespace Obskurnee.Services;
 

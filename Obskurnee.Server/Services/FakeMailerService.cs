@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace Obskurnee.Services;
+﻿namespace Obskurnee.Services;
 
 public class FakeMailerService(
     ILogger<FakeMailerService> logger) : IMailerService

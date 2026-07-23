@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.Server;
 using Obskurnee.ViewModels;

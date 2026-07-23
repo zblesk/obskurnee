@@ -1,13 +1,7 @@
 ﻿using Fizzler.Systems.HtmlAgilityPack;
 using HtmlAgilityPack;
-using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
-using System.IO;
 using Flurl.Http;
-using System.ServiceModel.Syndication;
-using System.Text.RegularExpressions;
-using System.Xml;
-using System.Xml.Linq;
 using static Obskurnee.Models.ExternalReview.ReviewKind;
 using static Obskurnee.Models.ExternalBookSystem;
 

@@ -1,8 +1,6 @@
-﻿using System.Threading;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 
 namespace Obskurnee.Services;

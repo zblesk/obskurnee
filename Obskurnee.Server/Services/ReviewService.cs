@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using static Obskurnee.Models.ExternalReview.ReviewKind;
 using static Obskurnee.Models.ExternalBookSystem;

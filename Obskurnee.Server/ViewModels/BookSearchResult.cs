@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Obskurnee.Server.ViewModels;
+﻿namespace Obskurnee.Server.ViewModels;
 
 public record BookSearchResult(
     int? PostId,

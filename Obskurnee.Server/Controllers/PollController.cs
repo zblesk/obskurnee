@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
 using Obskurnee.Services;
 using Obskurnee.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore.Design;
 
 namespace Obskurnee.Controllers;
 

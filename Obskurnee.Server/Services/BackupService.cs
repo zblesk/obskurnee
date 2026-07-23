@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Obskurnee.Models;
-using System.IO;
-using System.Threading;
 
 namespace Obskurnee.Services;
 
