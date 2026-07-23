@@ -6,7 +6,7 @@ using Obskurnee.ViewModels;
 namespace Obskurnee.Server.Controllers;
 
 [Route("api/stats")]
-[ResponseCache(Duration = 1800)] // 30 min
+[ResponseCache(Duration = 175)]
 public class StatController : Controller
 {
     private readonly ApplicationDbContext _db;
@@ -44,6 +44,7 @@ public class StatController : Controller
             {
                 UserId = user.Id,
                 UserName = user.UserName,
+                Email = user.Email,
                 BooksRatedCount = booksRatedCount,
                 WinningBooksCount = winningBooksCount,
                 RecommendationCount = recommendationCount
