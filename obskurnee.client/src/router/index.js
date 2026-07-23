@@ -14,6 +14,7 @@ import PasswordReset from "@/components/pages/PasswordReset.vue";
 import SinglePost from "@/components/pages/SinglePost.vue";
 import SingleRecommendation from "@/components/pages/SingleRecommendation.vue";
 import Search from "@/components/pages/SearchPage.vue"
+import Stats from "@/components/pages/Stats.vue";
 
 const routes = [
     {
@@ -66,6 +67,12 @@ const routes = [
         path: "/odporucania/:recommendationId",
         name: "singlerecommendation",
         component: SingleRecommendation,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: "/statistiky",
+        name: "stats",
+        component: Stats,
         meta: { requiresAuth: true }
     },
     {

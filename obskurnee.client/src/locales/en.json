@@ -1,4 +1,10 @@
 {
+  "stats": {
+    "user": "User",
+    "booksRated": "Number of books read",
+    "winningBooks": "Number of winning suggestions",
+    "recommendations": "Number of recommendations"
+  },
   "admin": {
     "addMod": "Promote user to mod:",
     "allEvents": "All events:",
@@ -78,6 +84,7 @@
     "register": "Register",
     "reset": "Reset",
     "save": "Save",
+    "stats": "Stats",
     "us": "About us",
     "search": "Search"
   },

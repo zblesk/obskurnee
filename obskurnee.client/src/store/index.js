@@ -8,6 +8,7 @@ import books from './books'
 import recommendations from './recommendations'
 import reviews from './reviews'
 import global from './global'
+import stats from './stats'
 
 export default createStore({
   modules: {
@@ -20,5 +21,6 @@ export default createStore({
     recommendations,
     global,
     reviews,
+    stats,
   }
 })
