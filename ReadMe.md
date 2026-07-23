@@ -69,8 +69,6 @@ The above doesn't persist your data, so while good for giving Obskurnee a try, d
 A minimal setup with persistence and mailing via Mailgun looks like this:
 
 ```yaml
-version: "3"
-
 services:
   obskurnee:
     image: zblesk/obskurnee:latest
@@ -145,7 +143,7 @@ server {
 
 # Development 
 
-You will need .NET 8.0 and Node 18.
+You will need .NET 10.0 and Node 22.
 
 1. Clone repo
 2. `cd .\Obskurnee\obskurnee.client\`
@@ -155,11 +153,11 @@ You will need .NET 8.0 and Node 18.
 
 That should let you access your local copy at localhost.
 
-Or just open the `.sln` file in Visual Studio  2022 and let it handle the rest.
+Or just open the `.sln` file in Visual Studio 2026 and let it handle the rest.
 
 # License
 
-Copyright (c) 2021 Ladislav Benc
+Copyright (c) Ladislav Benc
 
 Personal Use License
 
