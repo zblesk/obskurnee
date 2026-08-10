@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Obskurnee.Services;
 using Obskurnee.ViewModels;
 
 namespace Obskurnee.Server.Controllers;
 
+[Authorize]
 [Route("api/stats")]
 #if !DEBUG
 [ResponseCache(Duration = 175)]
