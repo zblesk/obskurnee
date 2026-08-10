@@ -17,7 +17,7 @@ export default {
   actions: {
     async fetchUserStats({ commit }) {
       return axios
-        .get("/api/stats/users")
+        .get("/api/stats/bookclub")
         .then(response => {
           commit("setUserStats", response.data.userStats);
           commit("setBookStats", response.data.bookStats);

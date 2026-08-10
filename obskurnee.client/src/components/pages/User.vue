@@ -1,8 +1,20 @@
 <template>
 <section>
   <div v-if="user">
-    <h1 class="page-title">{{ user.name }}</h1>
+    <div class="page-tabs">
+      <h1 class="page-title tab"
+          :class="{ active: activeTab === 'profile' }"
+          @click="activeTab = 'profile'">
+        {{ user.name }}
+      </h1>
+      <h1 class="page-title tab"
+          :class="{ active: activeTab === 'books' }"
+          @click="activeTab = 'books'">
+        {{ $t('user.myBooks', [user.name]) }}
+      </h1>
+    </div>
 
+    <template v-if="activeTab === 'profile'">
     <div v-if="mode == 'edit'">
       <div class="main">
         <div class="form-field">
@@ -198,6 +210,9 @@
         <router-link :to="{ name: 'booklist' }">{{ $t('user.wannaAddSome') }}</router-link>
       </span>
     </p>
+    </template>
+    <template v-else>
+    </template>
   </div>
 </section>
 </template>
@@ -222,7 +237,8 @@ export default {
         myRecs: [],
         saveInProgress: false,
         showRecs: true,
-        showReviews: true
+        showReviews: true,
+        activeTab: "profile"
       }
   },
   computed: {

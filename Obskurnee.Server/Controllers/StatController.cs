@@ -17,8 +17,24 @@ public class StatController : Controller
     }
 
     [HttpGet]
-    [Route("users")]
-    public async Task<StatsOverview> GetUserStats()
+    [Route("bookclub")]
+    public async Task<StatsOverview> GetBookclubStats()
+    {
+        return new StatsOverview
+        {
+            UserStats = await GetUserBookStats(),
+            BookStats = await GetBookStats(),
+        };
+    }
+
+    [HttpGet]
+    [Route("user/{email}")]
+    public async Task<StatsOverview> GetUserStats(string email)
+    {
+        return null;
+    }
+
+    private async Task<List<UserStats>> GetUserBookStats()
     {
         var users = await _db.ActiveUsers.ToListAsync();
         var userStats = new List<UserStats>();
@@ -51,13 +67,7 @@ public class StatController : Controller
             });
         }
 
-        var bookStats = await GetBookStats();
-
-        return new StatsOverview
-        {
-            UserStats = userStats,
-            BookStats = bookStats,
-        };
+        return userStats;
     }
 
     private async Task<List<BookRatingStats>> GetBookStats()
