@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Obskurnee.Models;
 using Obskurnee.Services;
 using Obskurnee.ViewModels;
 
@@ -60,7 +61,7 @@ public class StatController : Controller
         };
     }
 
-    private async Task<List<UserStatsPostItem>> GetUnreadBooks(string userId)
+    private async Task<List<Book>> GetUnreadBooks(string userId)
     {
         // Books the user has already rated/reviewed count as read.
         var ratedBookIds = await _db.BookReviews
@@ -69,20 +70,10 @@ public class StatController : Controller
             .Distinct()
             .ToListAsync();
 
-        var unreadBooks = await _db.Books
-            .Include(b => b.Post)
+        return await _db.BooksWithData
             .Where(b => !ratedBookIds.Contains(b.BookId))
+            .OrderByDescending(b => b.Order)
             .ToListAsync();
-
-        return unreadBooks
-            .Select(b => new UserStatsPostItem
-            {
-                PostId = b.PostId ?? 0,
-                Title = b.Post?.Title ?? $"#{b.BookId}",
-                Author = b.Post?.Author ?? string.Empty,
-                Url = b.Post?.Url ?? string.Empty,
-            })
-            .ToList();
     }
 
     private async Task<List<UserStatsPostItem>> GetVotedButLostSuggestions(string userId)

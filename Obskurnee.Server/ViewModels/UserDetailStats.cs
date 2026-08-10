@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Obskurnee.Models;
 
 namespace Obskurnee.ViewModels;
 
@@ -11,7 +12,7 @@ public class UserReadingStats
     /// <summary>
     /// Books the club selected that the user has not rated/reviewed yet.
     /// </summary>
-    public List<UserStatsPostItem> UnreadBooks { get; set; } = new();
+    public List<Book> UnreadBooks { get; set; } = new();
 
     /// <summary>
     /// Deduplicated list of suggestions the user voted for, but which did not win their poll.
