@@ -2,7 +2,7 @@
 
 namespace Obskurnee.ViewModels;
 
-public class UserDetailStats
+public class UserReadingStats
 {
     public string UserId { get; set; }
     public string UserName { get; set; }

@@ -31,7 +31,7 @@ public class StatController : Controller
 
     [HttpGet]
     [Route("user/{email}")]
-    public async Task<ActionResult<UserDetailStats>> GetUserStats(string email)
+    public async Task<ActionResult<UserReadingStats>> GetUserStats(string email)
     {
         var stats = await GetUserStatsInner(email);
         if (stats == null)
@@ -40,7 +40,7 @@ public class StatController : Controller
         return stats;
     }
 
-    private async Task<UserDetailStats> GetUserStatsInner(string email)
+    private async Task<UserReadingStats> GetUserStatsInner(string email)
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
         if (user == null)
@@ -48,7 +48,7 @@ public class StatController : Controller
             return null;
         }
 
-        return new UserDetailStats
+        return new UserReadingStats
         {
             UserId = user.Id,
             UserName = user.UserName,
