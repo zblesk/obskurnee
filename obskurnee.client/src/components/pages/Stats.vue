@@ -1,6 +1,6 @@
 <template>
     <section>
-        <div class="stats-tabs">
+        <div class="page-tabs">
             <h1 class="page-title tab"
                 :class="{ active: activeTab === 'users' }"
                 @click="activeTab = 'users'">
@@ -221,30 +221,6 @@ export default {
 </script>
 
 <style scoped>
-    .stats-tabs {
-        display: flex;
-        justify-content: center;
-        gap: calc(var(--spacer) * 3);
-        margin-bottom: calc(var(--spacer));
-    }
-
-    .stats-tabs .tab {
-        cursor: pointer;
-        padding-bottom: calc(var(--spacer) / 2);
-        border-bottom: 3px solid transparent;
-        opacity: 0.5;
-        transition: opacity 0.5s ease, border-color 0.5s ease;
-    }
-
-    .stats-tabs .tab:hover {
-        opacity: 0.8;
-    }
-
-    .stats-tabs .tab.active {
-        opacity: 1;
-        border-bottom-color: var(--c-accent);
-    }
-
     .chart-title {
         margin-top: 0;
         margin-bottom: calc(var(--spacer));

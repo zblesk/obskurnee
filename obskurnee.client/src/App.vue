@@ -578,5 +578,30 @@ div.spoiler:not(:last-child) {
 
 .searchresult {
     background-color: orange;
-} 
+}
+
+.page-tabs {
+    display: flex;
+    justify-content: center;
+    gap: calc(var(--spacer) * 3);
+    margin-bottom: calc(var(--spacer));
+}
+
+.page-tabs .tab {
+    cursor: pointer;
+    padding-bottom: calc(var(--spacer) / 2);
+    border-bottom: 3px solid transparent;
+    opacity: 0.5;
+    transition: opacity 0.5s ease, border-color 0.5s ease;
+}
+
+.page-tabs .tab:hover {
+    opacity: 0.8;
+}
+
+.page-tabs .tab.active {
+    opacity: 1;
+    border-bottom-color: var(--c-accent);
+}
+
 </style>
