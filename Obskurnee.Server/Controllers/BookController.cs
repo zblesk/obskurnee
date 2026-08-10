@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Obskurnee.Models;
 using Obskurnee.Services;
 
 namespace Obskurnee.Controllers;
 
+[Authorize]
 [Route("api/books")]
 public class BookController(ILogger<BookController> logger, BookService books) : Controller
 {
