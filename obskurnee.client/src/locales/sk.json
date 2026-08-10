@@ -1,6 +1,8 @@
 {
   "stats": {
     "user": "Človek",
+    "userStats": "Štatistiky nás",
+    "bookStats": "Štatistiky kníh",
     "booksRated": "Počet prečítaných kníh",
     "winningBooks": "Počet víťazných návrhov",
     "recommendations": "Počet odporučení",

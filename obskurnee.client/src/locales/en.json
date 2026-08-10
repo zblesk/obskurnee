@@ -1,6 +1,8 @@
 {
   "stats": {
     "user": "User",
+    "userStats": "Our stats",
+    "bookStats": "Book stats",
     "booksRated": "Number of books read",
     "winningBooks": "Number of winning suggestions",
     "recommendations": "Number of recommendations",
