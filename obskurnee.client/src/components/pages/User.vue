@@ -211,7 +211,36 @@
       </span>
     </p>
     </template>
+
     <template v-else>
+      <div class="main">
+        <div v-if="statsLoading" class="reading">
+          <h3 class="reading-title">{{ $t('user.statsLoading') }}</h3>
+        </div>
+        <template v-else-if="userStats">
+          <div class="reading">
+            <h3 class="reading-title">{{ $t('user.unreadBooks') }}</h3>
+            <ul v-if="userStats.unreadBooks && userStats.unreadBooks.length > 0" class="reading-list">
+              <li v-for="book in userStats.unreadBooks" v-bind:key="'unread-' + book.postId">
+                <a v-if="book.url" :href="book.url">{{ book.author }}: <strong>{{ book.title }}</strong></a>
+                <span v-else>{{ book.author }}: <strong>{{ book.title }}</strong></span>
+              </li>
+            </ul>
+            <p v-else class="recs-message">{{ $t('user.noUnreadBooks') }}</p>
+          </div>
+
+          <div class="reading">
+            <h3 class="reading-title">{{ $t('user.votedButLost') }}</h3>
+            <ul v-if="userStats.votedButLostSuggestions && userStats.votedButLostSuggestions.length > 0" class="reading-list">
+              <li v-for="sug in userStats.votedButLostSuggestions" v-bind:key="'lost-' + sug.postId">
+                <a v-if="sug.url" :href="sug.url">{{ sug.author }}: <strong>{{ sug.title }}</strong></a>
+                <span v-else>{{ sug.author }}: <strong>{{ sug.title }}</strong></span>
+              </li>
+            </ul>
+            <p v-else class="recs-message">{{ $t('user.noVotedButLost') }}</p>
+          </div>
+        </template>
+      </div>
     </template>
   </div>
 </section>
@@ -238,15 +267,18 @@ export default {
         saveInProgress: false,
         showRecs: true,
         showReviews: true,
-        activeTab: "profile"
+        activeTab: "profile",
+        statsLoading: false
       }
   },
   computed: {
     ...mapGetters("context", ["myUserId", "isMod", "isMe"]),
+    ...mapGetters("stats", ["userDetailStatsById"]),
     ...mapGetters("reviews", ["userReviews", "usersCurrentlyReading", "userHasCurrentlyReading"]),
     ...mapState("global", ["matrixRoomLink"]),
     subscribedBasic: function () { return this.subscriptions.includes('basicevents'); },
     subscribedAll: function () { return this.subscriptions.includes('allevents'); },
+    userStats: function () { return this.user ? this.userDetailStatsById(this.user.userId) : null; },
   },
   watch: {
     '$route' (to) {
@@ -254,12 +286,35 @@ export default {
       {
         this.onLoad();
       }
+    },
+    activeTab (tab) {
+      if (tab == 'books')
+      {
+        this.loadUserStats();
+      }
     }
   },
   methods: {
     ...mapActions("users", ["getUser", "updateUser", "updateAvatar"]),
     ...mapActions("recommendations", ["fetchRecommendationsFor"]),
     ...mapActions("reviews", ["fetchUserReviews", "fetchCurrentlyReading"]),
+    ...mapActions("stats", ["fetchUserDetailStats"]),
+    loadUserStats()
+    {
+      if (this.statsLoading || !this.user || !this.user.userId)
+      {
+        return;
+      }
+      // Already cached for this user - nothing to do.
+      if (this.userDetailStatsById(this.user.userId))
+      {
+        return;
+      }
+      this.statsLoading = true;
+      this.fetchUserDetailStats(this.user.userId)
+        .catch(this.$handleApiError)
+        .finally(() => this.statsLoading = false);
+    },
     async updateProfile() 
     {
       this.saveInProgress = true;
@@ -322,6 +377,8 @@ export default {
     },
     onLoad()
     {
+      this.activeTab = "profile";
+      this.statsLoading = false;
       this.fetchProfile()
         .then(() =>
         {

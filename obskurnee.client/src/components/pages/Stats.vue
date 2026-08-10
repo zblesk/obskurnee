@@ -14,33 +14,33 @@
         </div>
         <template v-if="activeTab === 'users'">
             <div class="main">
-                <h2 class="chart-title">{{ $t('stats.booksRated') }}</h2>
+                <h2 class="subsection-title">{{ $t('stats.booksRated') }}</h2>
                 <Bar v-if="mostRead" :data="mostRead" :options="chartOptions" />
             </div>
             <div class="main">
-                <h2 class="chart-title">{{ $t('stats.recommendations') }}</h2>
+                <h2 class="subsection-title">{{ $t('stats.recommendations') }}</h2>
                 <Bar v-if="mostRecommended" :data="mostRecommended" :options="chartOptions" />
             </div>
             <div class="main" v-if="mostWins">
-                <h2 class="chart-title">{{ $t('stats.winningBooks') }}</h2>
+                <h2 class="subsection-title">{{ $t('stats.winningBooks') }}</h2>
                 <Bar :data="mostWins" :options="chartOptions" />
             </div>
         </template>
         <template v-else>
             <div class="main" v-if="mostReadBooks">
-                <h2 class="chart-title">{{ $t('stats.mostReadBooks') }}</h2>
+                <h2 class="subsection-title">{{ $t('stats.mostReadBooks') }}</h2>
                 <Bar :data="mostReadBooks" :options="bookChartOptions" />
             </div>
             <div class="main" v-if="leastReadBooks">
-                <h2 class="chart-title">{{ $t('stats.leastReadBooks') }}</h2>
+                <h2 class="subsection-title">{{ $t('stats.leastReadBooks') }}</h2>
                 <Bar :data="leastReadBooks" :options="bookChartOptions" />
             </div>
             <div class="main" v-if="bestRatedBooks">
-                <h2 class="chart-title">{{ $t('stats.bestRatedBooks') }}</h2>
+                <h2 class="subsection-title">{{ $t('stats.bestRatedBooks') }}</h2>
                 <Bar :data="bestRatedBooks" :options="bookChartOptions" />
             </div>
             <div class="main" v-if="worstRatedBooks">
-                <h2 class="chart-title">{{ $t('stats.worstRatedBooks') }}</h2>
+                <h2 class="subsection-title">{{ $t('stats.worstRatedBooks') }}</h2>
                 <Bar :data="worstRatedBooks" :options="bookChartOptions" />
             </div>
         </template>
@@ -221,9 +221,4 @@ export default {
 </script>
 
 <style scoped>
-    .chart-title {
-        margin-top: 0;
-        margin-bottom: calc(var(--spacer));
-        text-align: center;
-    }
 </style>

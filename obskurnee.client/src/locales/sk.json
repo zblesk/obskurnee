@@ -215,7 +215,12 @@
     "wannaAddSome": "Prečo nejaké nepridať?",
     "andMore": "... a ďalšie.",
     "userIsMod": "Tento používateľ je moderátor.",
-    "storygraph": "Storygraph"
+    "storygraph": "Storygraph",
+    "statsLoading": "Načítavam štatistiky...",
+    "unreadBooks": "Ešte neprečítané knihy",
+    "noUnreadBooks": "Všetky klubové knihy sú prečítané. Výborne!",
+    "votedButLost": "Návrhy, za ktoré si hlasovala, no nevyhrali",
+    "noVotedButLost": "Zatiaľ žiadne."
   },
   "search": {
     "startSearching": "Napíš aspoň 3 znaky.",

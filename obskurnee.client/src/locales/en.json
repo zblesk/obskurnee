@@ -216,7 +216,12 @@
     "wannaAddSome": "Why not add some?",
     "andMore": "... and more.",
     "userIsMod": "This user is a moderator.",
-    "storygraph": "Storygraph"
+    "storygraph": "Storygraph",
+    "statsLoading": "Loading stats...",
+    "unreadBooks": "Books not yet read",
+    "noUnreadBooks": "All the club's books have been read. Well done!",
+    "votedButLost": "Suggestions voted for that didn't win",
+    "noVotedButLost": "None so far."
   },
   "search": {
     "startSearching": "Start by entering at least 3 letters.",

@@ -604,4 +604,9 @@ div.spoiler:not(:last-child) {
     border-bottom-color: var(--c-accent);
 }
 
+.subsection-title {
+    margin-top: 0;
+    margin-bottom: calc(var(--spacer));
+    text-align: center;
+}
 </style>
