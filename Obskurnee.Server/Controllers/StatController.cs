@@ -18,7 +18,7 @@ public class StatController : Controller
 
     [HttpGet]
     [Route("users")]
-    public async Task<List<UserStats>> GetUserStats()
+    public async Task<StatsOverview> GetUserStats()
     {
         var users = await _db.ActiveUsers.ToListAsync();
         var userStats = new List<UserStats>();
@@ -51,6 +51,55 @@ public class StatController : Controller
             });
         }
 
-        return userStats;
+        var bookStats = await GetBookStats();
+
+        return new StatsOverview
+        {
+            UserStats = userStats,
+            BookStats = bookStats,
+        };
+    }
+
+    private async Task<List<BookRatingStats>> GetBookStats()
+    {
+        // Group the ratings per book: how many users rated it and its average rating.
+        var ratingsByBook = await _db.BookReviews
+            .Where(r => r.Rating.HasValue)
+            .GroupBy(r => r.BookId)
+            .Select(g => new
+            {
+                BookId = g.Key,
+                RatingsCount = g.Count(),
+                AverageRating = g.Average(r => (double)r.Rating.Value),
+            })
+            .ToListAsync();
+
+        if (ratingsByBook.Count == 0)
+        {
+            return new List<BookRatingStats>();
+        }
+
+        var bookIds = ratingsByBook.Select(r => r.BookId).ToList();
+
+        // Titles/authors live on the originating Post.
+        var books = await _db.Books
+            .Include(b => b.Post)
+            .Where(b => bookIds.Contains(b.BookId))
+            .ToDictionaryAsync(b => b.BookId);
+
+        return ratingsByBook
+            .Select(r =>
+            {
+                books.TryGetValue(r.BookId, out var book);
+                return new BookRatingStats
+                {
+                    BookId = r.BookId,
+                    Title = book?.Post?.Title ?? $"#{r.BookId}",
+                    Author = book?.Post?.Author ?? string.Empty,
+                    RatingsCount = r.RatingsCount,
+                    AverageRating = r.AverageRating,
+                };
+            })
+            .ToList();
     }
 }

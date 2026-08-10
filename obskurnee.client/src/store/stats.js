@@ -4,10 +4,14 @@ export default {
   namespaced: true,
   state: {
     userStats: [],
+    bookStats: [],
   },
   mutations: {
     setUserStats(state, userStats) {
       state.userStats = userStats;
+    },
+    setBookStats(state, bookStats) {
+      state.bookStats = bookStats;
     },
   },
   actions: {
@@ -15,7 +19,8 @@ export default {
       return axios
         .get("/api/stats/users")
         .then(response => {
-          commit("setUserStats", response.data);
+          commit("setUserStats", response.data.userStats);
+          commit("setBookStats", response.data.bookStats);
         });
     },
   },

@@ -13,6 +13,22 @@
             <h2 class="chart-title">{{ $t('stats.winningBooks') }}</h2>
             <Bar :data="mostWins" :options="chartOptions" />
         </div>
+        <div class="main" v-if="mostReadBooks">
+            <h2 class="chart-title">{{ $t('stats.mostReadBooks') }}</h2>
+            <Bar :data="mostReadBooks" :options="bookChartOptions" />
+        </div>
+        <div class="main" v-if="leastReadBooks">
+            <h2 class="chart-title">{{ $t('stats.leastReadBooks') }}</h2>
+            <Bar :data="leastReadBooks" :options="bookChartOptions" />
+        </div>
+        <div class="main" v-if="bestRatedBooks">
+            <h2 class="chart-title">{{ $t('stats.bestRatedBooks') }}</h2>
+            <Bar :data="bestRatedBooks" :options="bookChartOptions" />
+        </div>
+        <div class="main" v-if="worstRatedBooks">
+            <h2 class="chart-title">{{ $t('stats.worstRatedBooks') }}</h2>
+            <Bar :data="worstRatedBooks" :options="bookChartOptions" />
+        </div>
     </section>
 </template>
 
@@ -27,7 +43,7 @@ export default {
     name: "Stats",
     components: { Bar },
     computed: {
-        ...mapState("stats", ["userStats"]),
+        ...mapState("stats", ["userStats", "bookStats"]),
         mostRead() {
             if (!this.userStats || !this.userStats.length) return null;
             const sorted = [...this.userStats].sort((a, b) => b.booksRatedCount - a.booksRatedCount);
@@ -70,6 +86,34 @@ export default {
                 }],
             };
         },
+        mostReadBooks() {
+            return this.buildBookChart(
+                b => b.ratingsCount,
+                (a, b) => b.ratingsCount - a.ratingsCount,
+                this.$t('stats.ratingsCount'),
+                b => b.ratingsCount > 0);
+        },
+        leastReadBooks() {
+            return this.buildBookChart(
+                b => b.ratingsCount,
+                (a, b) => a.ratingsCount - b.ratingsCount,
+                this.$t('stats.ratingsCount'),
+                b => b.ratingsCount > 0);
+        },
+        bestRatedBooks() {
+            return this.buildBookChart(
+                b => Math.round(b.averageRating * 100) / 100,
+                (a, b) => b.averageRating - a.averageRating,
+                this.$t('stats.averageRating'),
+                b => b.ratingsCount > 0);
+        },
+        worstRatedBooks() {
+            return this.buildBookChart(
+                b => Math.round(b.averageRating * 100) / 100,
+                (a, b) => a.averageRating - b.averageRating,
+                this.$t('stats.averageRating'),
+                b => b.ratingsCount > 0);
+        },
         accentColor() {
             return getComputedStyle(document.documentElement).getPropertyValue('--c-accent').trim();
         },
@@ -94,12 +138,56 @@ export default {
                 },
             };
         },
+        bookChartOptions() {
+            return {
+                indexAxis: 'y',
+                responsive: true,
+                onClick: (event, elements, chart) => {
+                    if (!elements.length) return;
+                    const { datasetIndex, index } = elements[0];
+                    const bookIds = chart.data.datasets[datasetIndex].bookIds;
+                    this.goToBook(bookIds && bookIds[index]);
+                },
+                onHover: (event, elements) => {
+                    event.native.target.style.cursor = elements.length ? 'pointer' : 'default';
+                },
+                plugins: {
+                    legend: { display: false },
+                },
+                scales: {
+                    x: { beginAtZero: true },
+                },
+            };
+        },
     },
     methods: {
         ...mapActions("stats", ["fetchUserStats"]),
+        buildBookChart(valueSelector, comparer, label, filter) {
+            if (!this.bookStats || !this.bookStats.length) return null;
+            let books = [...this.bookStats];
+            if (filter) {
+                books = books.filter(filter);
+            }
+            books = books.sort(comparer).slice(0, 15);
+            if (!books.length) return null;
+            return {
+                labels: books.map(b => b.title),
+                datasets: [{
+                    label,
+                    data: books.map(valueSelector),
+                    bookIds: books.map(b => b.bookId),
+                    backgroundColor: this.accentColor,
+                }],
+            };
+        },
         goToUser(email) {
             if (email) {
                 this.$router.push({ name: 'user', params: { email } });
+            }
+        },
+        goToBook(bookId) {
+            if (bookId) {
+                this.$router.push({ name: 'book', params: { bookId } });
             }
         }
     },

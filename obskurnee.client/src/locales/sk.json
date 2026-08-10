@@ -3,7 +3,13 @@
     "user": "Človek",
     "booksRated": "Počet prečítaných kníh",
     "winningBooks": "Počet víťazných návrhov",
-    "recommendations": "Počet odporučení"
+    "recommendations": "Počet odporučení",
+    "mostReadBooks": "Najčítanejšie knihy",
+    "leastReadBooks": "Najmenej čítané knihy",
+    "bestRatedBooks": "Najlepšie hodnotené knihy",
+    "worstRatedBooks": "Najhoršie hodnotené knihy",
+    "ratingsCount": "Počet hodnotení",
+    "averageRating": "Priemerné hodnotenie"
   },
   "admin": {
     "addMod": "Pridaj užívateľa k moderátorom:",

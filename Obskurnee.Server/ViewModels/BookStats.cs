@@ -11,3 +11,12 @@ public class BookPostStats
     public float AverageRating { get; set; }
 
 }
+
+public class BookRatingStats
+{
+    public int BookId { get; set; }
+    public string Title { get; set; }
+    public string Author { get; set; }
+    public int RatingsCount { get; set; }
+    public double AverageRating { get; set; }
+}

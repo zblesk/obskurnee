@@ -3,7 +3,13 @@
     "user": "User",
     "booksRated": "Number of books read",
     "winningBooks": "Number of winning suggestions",
-    "recommendations": "Number of recommendations"
+    "recommendations": "Number of recommendations",
+    "mostReadBooks": "Most read books",
+    "leastReadBooks": "Least read books",
+    "bestRatedBooks": "Best rated books",
+    "worstRatedBooks": "Worst rated books",
+    "ratingsCount": "Number of ratings",
+    "averageRating": "Average rating"
   },
   "admin": {
     "addMod": "Promote user to mod:",
