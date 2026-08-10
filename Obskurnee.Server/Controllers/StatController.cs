@@ -6,7 +6,9 @@ using Obskurnee.ViewModels;
 namespace Obskurnee.Server.Controllers;
 
 [Route("api/stats")]
+#if !DEBUG
 [ResponseCache(Duration = 175)]
+#endif
 public class StatController : Controller
 {
     private readonly ApplicationDbContext _db;
@@ -29,9 +31,100 @@ public class StatController : Controller
 
     [HttpGet]
     [Route("user/{email}")]
-    public async Task<StatsOverview> GetUserStats(string email)
+    public async Task<ActionResult<UserDetailStats>> GetUserStats(string email)
     {
-        return null;
+        var stats = await GetUserStatsInner(email);
+        if (stats == null)
+            return NotFound();
+
+        return stats;
+    }
+
+    private async Task<UserDetailStats> GetUserStatsInner(string email)
+    {
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
+        if (user == null)
+        {
+            return null;
+        }
+
+        return new UserDetailStats
+        {
+            UserId = user.Id,
+            UserName = user.UserName,
+            Email = user.Email,
+            UnreadBooks = await GetUnreadBooks(user.Id),
+            VotedButLostSuggestions = await GetVotedButLostSuggestions(user.Id),
+        };
+    }
+
+    private async Task<List<UserStatsPostItem>> GetUnreadBooks(string userId)
+    {
+        // Books the user has already rated/reviewed count as read.
+        var ratedBookIds = await _db.BookReviews
+            .Where(r => r.OwnerId == userId && r.Rating.HasValue)
+            .Select(r => r.BookId)
+            .Distinct()
+            .ToListAsync();
+
+        var unreadBooks = await _db.Books
+            .Include(b => b.Post)
+            .Where(b => !ratedBookIds.Contains(b.BookId))
+            .ToListAsync();
+
+        return unreadBooks
+            .Select(b => new UserStatsPostItem
+            {
+                PostId = b.PostId ?? 0,
+                Title = b.Post?.Title ?? $"#{b.BookId}",
+                Author = b.Post?.Author ?? string.Empty,
+                Url = b.Post?.Url ?? string.Empty,
+            })
+            .ToList();
+    }
+
+    private async Task<List<UserStatsPostItem>> GetVotedButLostSuggestions(string userId)
+    {
+        var userVotes = await _db.Votes
+            .Include(v => v.Poll)
+            .Where(v => v.OwnerId == userId)
+            .ToListAsync();
+
+        // Collect the posts the user voted for that were not among the winners of that poll.
+        var lostPostIds = new HashSet<int>();
+        foreach (var vote in userVotes)
+        {
+            var winningPostIds = vote.Poll?.IsClosed == true && vote.Poll.Results.Votes.Count > 0
+                ? vote.Poll.FindWinningPosts()
+                : new List<int>();
+
+            foreach (var postId in vote.PostIds)
+            {
+                if (!winningPostIds.Contains(postId))
+                {
+                    lostPostIds.Add(postId);
+                }
+            }
+        }
+
+        if (lostPostIds.Count == 0)
+        {
+            return new List<UserStatsPostItem>();
+        }
+
+        var posts = await _db.Posts
+            .Where(p => lostPostIds.Contains(p.PostId))
+            .ToListAsync();
+
+        return posts
+            .Select(p => new UserStatsPostItem
+            {
+                PostId = p.PostId,
+                Title = p.Title ?? $"#{p.PostId}",
+                Author = p.Author ?? string.Empty,
+                Url = p.Url ?? string.Empty,
+            })
+            .ToList();
     }
 
     private async Task<List<UserStats>> GetUserBookStats()
