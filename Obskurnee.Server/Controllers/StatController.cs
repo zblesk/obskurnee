@@ -78,9 +78,13 @@ public class StatController : Controller
 
     private async Task<List<UserStatsPostItem>> GetVotedButLostSuggestions(string userId)
     {
-        var userVotes = await _db.Votes
-            .Include(v => v.Poll)
-            .Where(v => v.OwnerId == userId)
+        var userVotes = await (
+            from v in _db.Votes.Include(v => v.Poll)
+            join d in _db.Discussions on v.Poll.DiscussionId equals d.DiscussionId
+            where
+                v.OwnerId == userId
+                && d.Topic == Topic.Books
+            select v)
             .ToListAsync();
 
         // Collect the posts the user voted for that were not among the winners of that poll.
