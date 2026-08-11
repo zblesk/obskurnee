@@ -5,7 +5,7 @@
     </div>
     <template v-else-if="userStats">
       <div class="main">
-        <div class="reading">
+        <div>
             <span v-if="userStats.averageRating > 0">
                 {{ $t('user.averageRating') }}: <strong>{{ userStats.averageRating.toFixed(2) }}</strong> <br />
 
@@ -18,28 +18,38 @@
         </div>
       </div>
 
-      <div class="main">
-        <div class="reading">
-          <h3 class="subsection-title">{{ $t('user.unreadBooks') }}</h3>
-          <div v-if="userStats.unreadBooks && userStats.unreadBooks.length > 0" class="books-grid">
+      <h2 class="page-subtitle page-subtitle--flex u-mt-sp">
+        <span>{{ $t('user.unreadBooks') }}</span>
+        <img src="../assets/download.svg" alt="toggle unread books"
+          v-if="userStats.unreadBooks && userStats.unreadBooks.length > 0" @click="showUnread = !showUnread"
+          class="toggler" :class="{ 'toggler--hidden': !showUnread }">
+      </h2>
+      <div v-if="userStats.unreadBooks && userStats.unreadBooks.length > 0">
+        <div v-if="showUnread">
+          <div class="books-grid">
             <book-preview v-bind:book="book" v-for="book in userStats.unreadBooks" v-bind:key="book.bookId">#{{ book.order }} </book-preview>
           </div>
-          <p v-else class="recs-message">{{ $t('user.noUnreadBooks') }}</p>
         </div>
       </div>
+      <p v-else class="recs-message">{{ $t('user.noUnreadBooks') }}</p>
 
-      <div class="main">
-        <div class="reading">
-          <h3 class="subsection-title">{{ $t('user.votedButLost') }}</h3>
-          <ul v-if="userStats.votedButLostSuggestions && userStats.votedButLostSuggestions.length > 0" class="reading-list">
+      <h2 class="page-subtitle page-subtitle--flex u-mt-sp">
+        <span>{{ $t('user.votedButLost') }}</span>
+        <img src="../assets/download.svg" alt="toggle voted but lost"
+          v-if="userStats.votedButLostSuggestions && userStats.votedButLostSuggestions.length > 0" @click="showVoted = !showVoted"
+          class="toggler" :class="{ 'toggler--hidden': !showVoted }">
+      </h2>
+      <div v-if="userStats.votedButLostSuggestions && userStats.votedButLostSuggestions.length > 0">
+        <div v-if="showVoted">
+          <ul class="reading-list">
             <li v-for="sug in userStats.votedButLostSuggestions" v-bind:key="'lost-' + sug.postId">
               <a v-if="sug.url" :href="sug.url">{{ sug.author }}: <strong>{{ sug.title }}</strong></a>
               <span v-else>{{ sug.author }}: <strong>{{ sug.title }}</strong></span>
             </li>
           </ul>
-          <p v-else class="recs-message">{{ $t('user.noVotedButLost') }}</p>
         </div>
       </div>
+      <p v-else class="recs-message">{{ $t('user.noVotedButLost') }}</p>
     </template>
   </div>
 </template>
@@ -58,7 +68,9 @@ export default {
   },
   data() {
     return {
-      statsLoading: false
+      statsLoading: false,
+      showUnread: true,
+      showVoted: true
     }
   },
   computed: {
@@ -97,17 +109,36 @@ export default {
 
 <style scoped>
   .books-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: var(--spacer);
     padding: var(--spacer);
+  }
+
+  .books-grid > * {
+    width: 200px;
   }
 
   .stats-summary {
     padding: var(--spacer);
   }
 
-  .reading {
+  .page-subtitle--flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
 
+  .toggler {
+    width: 0.9em;
+    margin-left: calc(var(--spacer) / 2);
+    transition-property: transform;
+    transition-duration: 0.2s;
+  }
+
+  .toggler--hidden {
+    transform: rotate(-90deg);
   }
 </style>
