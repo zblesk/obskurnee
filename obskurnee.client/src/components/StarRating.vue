@@ -1,5 +1,5 @@
 <template>
-  <div v-if="rating > 4"
+  <div v-if="rating >= 5"
       title="5 / 5" role="img"
        aria-label="`5 out of 5 stars`"
        class="stars">
