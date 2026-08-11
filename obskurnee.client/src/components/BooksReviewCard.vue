@@ -2,8 +2,8 @@
   <div class="book">
     <div class="book__top">
       <div class="book__title-wrapper">
-          <h2 class="book__title"><user-link :userName="review.ownerName" :userId="review.ownerId" class="book__link" /></h2>
-        <div class="book__stars" v-if="review.rating">{{ "⭐".repeat(review.rating) }}</div>
+        <h2 class="book__title"><user-link :userName="review.ownerName" :userId="review.ownerId" class="book__link" /></h2>
+        <star-rating class="book__stars" v-if="review.rating" :rating="review.rating" />
       </div>
       <p class="book__text" v-html="review.renderedReviewText"></p>
     </div>
@@ -13,8 +13,9 @@
 <script>
 import { mapGetters } from "vuex";
 import UserLink from './UserLink.vue';
+import StarRating from './StarRating.vue';
 export default {
-  components: { UserLink },
+  components: { UserLink, StarRating },
     name: "BooksReviewCard",
     props: ['review'],
     computed: 
