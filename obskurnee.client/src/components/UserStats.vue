@@ -7,7 +7,8 @@
       <div class="main">
         <div>
             <span v-if="userStats.averageRating > 0">
-                {{ $t('user.averageRating') }}: <strong>{{ userStats.averageRating.toFixed(2) }}</strong> <br />
+                {{ $t('user.averageRating') }}: 
+                    <star-rating :rating="userStats.averageRating" /> <br />
 
                 {{ $t('user.booksRead') }}: <strong>{{ userStats.booksReadCount }}</strong>
             </span>
@@ -57,9 +58,10 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import BookPreview from './BookPreview.vue';
+import StarRating from './StarRating.vue';
 export default {
   name: 'UserStats',
-  components: { BookPreview },
+  components: { BookPreview, StarRating },
   props: {
     email: {
       type: String,
