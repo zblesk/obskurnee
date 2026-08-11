@@ -5,7 +5,7 @@
        class="stars">
       🌟🌟🌟🌟🌟
   </div>
-  <div v-else class="stars" :title="`${rating.toFixed(1)} / 5`" role="img"
+  <div v-else class="stars larger" :title="`${rating.toFixed(1)} / 5`" role="img"
        :aria-label="`${rating.toFixed(1)} out of 5 stars`">
     <div class="stars__empty">{{ '★'.repeat(5) }}</div>
     <div class="stars__filled" :style="{ width: fillPercent + '%' }">{{ '★'.repeat(5) }}</div>
@@ -30,9 +30,12 @@ export default {
 .stars {
   position: relative;
   display: inline-block;
-  font-size: 1.25rem;
   line-height: 1;
   white-space: nowrap;
+}
+
+.larger {
+  font-size: 1.5rem;
 }
 
 .stars__empty {

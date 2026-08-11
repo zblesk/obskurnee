@@ -4,6 +4,9 @@
       <router-link :to="{ name: 'book', params: { bookId: book.bookId } }">
         <img :src="book.post.imageUrl" :alt="book.post.title" v-if="book.post.imageUrl">
       </router-link>
+      <div v-if="book.rating && book.rating > 1" class="cover__rating">
+        <star-rating :rating="book.rating" />
+      </div>
     </div>
 
     <h1 class="title">
@@ -52,6 +55,12 @@
     display: block;
   }
 
+  .cover__rating {
+    display: block;
+    text-align: center;
+    margin-top: calc(var(--spacer) / 2);
+  }
+
   .title {
     font-size: 1.5rem;
     font-weight: bold;
@@ -98,10 +107,11 @@
 
 </style>
 
-
 <script>
+    import StarRating from './StarRating.vue';
     export default {
         name: "BookLargeCard",
+        components: { StarRating },
         props: ['book'],
     }
 </script>
