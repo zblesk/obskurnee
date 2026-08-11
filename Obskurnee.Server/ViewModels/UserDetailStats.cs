@@ -37,13 +37,5 @@ public class UserReadingStats
     /// <summary>
     /// Deduplicated list of suggestions the user voted for, but which did not win their poll.
     /// </summary>
-    public List<UserStatsPostItem> VotedButLostSuggestions { get; set; } = new();
-}
-
-public class UserStatsPostItem
-{
-    public int PostId { get; set; }
-    public string Title { get; set; }
-    public string Author { get; set; }
-    public string Url { get; set; }
+    public List<Post> VotedButLostSuggestions { get; set; } = new();
 }

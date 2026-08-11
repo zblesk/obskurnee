@@ -1,12 +1,29 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Obskurnee.Models;
 using Obskurnee.Server;
 using Obskurnee.ViewModels;
 
 namespace Obskurnee.Services;
 
-public class StatService(ApplicationDbContext db)
+public class StatService(
+    ApplicationDbContext db,
+    IMemoryCache cache)
 {
+    /// <summary>
+    /// Gets the IDs of all posts that correspond to books that won a vote.
+    /// </summary>
+    /// <returns></returns>
+    public HashSet<int> GetWinningPostIds() =>
+        cache.GetOrCreate(
+            "WinningPostIds",
+            fac =>
+            {
+                fac.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(2);
+                return new HashSet<int>(
+                    from b in db.Books select b.PostId ?? -1);
+            });
+
     public async Task<StatsOverview> GetBookclubStats()
     {
         return new StatsOverview
@@ -65,52 +82,28 @@ public class StatService(ApplicationDbContext db)
             .ToListAsync();
     }
 
-    private async Task<List<UserStatsPostItem>> GetVotedButLostSuggestions(string userId)
+    private async Task<List<Post>> GetVotedButLostSuggestions(string userId)
     {
-        var userVotes = await (
-            from v in db.Votes.Include(v => v.Poll)
-            join d in db.Discussions on v.Poll.DiscussionId equals d.DiscussionId
-            where
-                v.OwnerId == userId
-                && d.Topic == Topic.Books
-            select v)
+        var userVotedPosts = new HashSet<int>(
+            (await (
+                from v in db.Votes
+                join p in db.Polls on v.PollId equals p.PollId
+                join d in db.Discussions on p.DiscussionId equals d.DiscussionId
+                where
+                    v.OwnerId == userId
+                    && d.Topic == Topic.Books
+                    && p.IsClosed
+                select v.PostIds)
+                .ToListAsync())
+            .SelectMany(i => i));
+
+        var winningIds = GetWinningPostIds();
+
+        userVotedPosts.ExceptWith(winningIds);
+
+        return await db.Posts
+            .Where(p => userVotedPosts.Contains(p.PostId))
             .ToListAsync();
-
-        // Collect the posts the user voted for that were not among the winners of that poll.
-        var lostPostIds = new HashSet<int>();
-        foreach (var vote in userVotes)
-        {
-            var winningPostIds = vote.Poll?.IsClosed == true && vote.Poll.Results.Votes.Count > 0
-                ? vote.Poll.FindWinningPosts()
-                : new List<int>();
-
-            foreach (var postId in vote.PostIds)
-            {
-                if (!winningPostIds.Contains(postId))
-                {
-                    lostPostIds.Add(postId);
-                }
-            }
-        }
-
-        if (lostPostIds.Count == 0)
-        {
-            return new List<UserStatsPostItem>();
-        }
-
-        var posts = await db.Posts
-            .Where(p => lostPostIds.Contains(p.PostId))
-            .ToListAsync();
-
-        return posts
-            .Select(p => new UserStatsPostItem
-            {
-                PostId = p.PostId,
-                Title = p.Title ?? $"#{p.PostId}",
-                Author = p.Author ?? string.Empty,
-                Url = p.Url ?? string.Empty,
-            })
-            .ToList();
     }
 
     private async Task<List<UserStats>> GetUserBookStats()
