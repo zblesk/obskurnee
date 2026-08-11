@@ -10,6 +10,26 @@ public class UserReadingStats
     public string Email { get; set; }
 
     /// <summary>
+    /// The user's average rating across all books they have rated. 0 if they haven't rated anything.
+    /// </summary>
+    public double AverageRating { get; set; }
+
+    /// <summary>
+    /// Number of books the user has read (i.e. rated/reviewed).
+    /// </summary>
+    public int BooksReadCount { get; set; }
+
+    /// <summary>
+    /// Number of recommendations the user has made.
+    /// </summary>
+    public int BooksRecommendedCount { get; set; }
+
+    /// <summary>
+    /// Number of club-selected books the user has not rated/reviewed yet.
+    /// </summary>
+    public int UnreadBooksCount { get; set; }
+
+    /// <summary>
     /// Books the club selected that the user has not rated/reviewed yet.
     /// </summary>
     public List<Book> UnreadBooks { get; set; } = new();

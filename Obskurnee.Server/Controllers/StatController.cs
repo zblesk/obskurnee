@@ -43,7 +43,7 @@ public class StatController : Controller
         return stats;
     }
 
-    private async Task<UserReadingStats> GetUserStatsInner(string email)
+    private async Task<UserReadingStats?> GetUserStatsInner(string email)
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
         if (user == null)
@@ -51,12 +51,28 @@ public class StatController : Controller
             return null;
         }
 
+        // Ratings the user has given (used for average rating and books-read count).
+        var userRatings = await _db.BookReviews
+            .Where(r => r.OwnerId == user.Id && r.Rating.HasValue)
+            .Select(r => (double)r.Rating.Value)
+            .ToListAsync();
+
+        var recommendationCount = await _db.Recommendations
+            .Where(r => r.OwnerId == user.Id)
+            .CountAsync();
+
+        var unreadBooks = await GetUnreadBooks(user.Id);
+
         return new UserReadingStats
         {
             UserId = user.Id,
-            UserName = user.UserName,
-            Email = user.Email,
-            UnreadBooks = await GetUnreadBooks(user.Id),
+            UserName = user.UserName!,
+            Email = user.Email!,
+            AverageRating = userRatings.Count > 0 ? userRatings.Average() : 0,
+            BooksReadCount = userRatings.Count,
+            BooksRecommendedCount = recommendationCount,
+            UnreadBooksCount = unreadBooks.Count,
+            UnreadBooks = unreadBooks,
             VotedButLostSuggestions = await GetVotedButLostSuggestions(user.Id),
         };
     }

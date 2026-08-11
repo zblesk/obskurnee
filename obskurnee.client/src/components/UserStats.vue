@@ -6,6 +6,20 @@
     <template v-else-if="userStats">
       <div class="main">
         <div class="reading">
+            <span v-if="userStats.averageRating > 0">
+                {{ $t('user.averageRating') }}: <strong>{{ userStats.averageRating.toFixed(2) }}</strong> <br />
+
+                {{ $t('user.booksRead') }}: <strong>{{ userStats.booksReadCount }}</strong>
+            </span>
+          <span v-else class="recs-message">{{ $t('user.noRatingsYet') }}</span> <br />
+
+            {{ $t('user.booksRecommended') }}: <strong>{{ userStats.booksRecommendedCount }}</strong> <br />
+            {{ $t('user.booksUnread') }}: <strong>{{ userStats.unreadBooksCount }}</strong> <br />
+        </div>
+      </div>
+
+      <div class="main">
+        <div class="reading">
           <h3 class="subsection-title">{{ $t('user.unreadBooks') }}</h3>
           <div v-if="userStats.unreadBooks && userStats.unreadBooks.length > 0" class="books-grid">
             <book-preview v-bind:book="book" v-for="book in userStats.unreadBooks" v-bind:key="book.bookId">#{{ book.order }} </book-preview>
@@ -87,5 +101,13 @@ export default {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: var(--spacer);
     padding: var(--spacer);
+  }
+
+  .stats-summary {
+    padding: var(--spacer);
+  }
+
+  .reading {
+
   }
 </style>
