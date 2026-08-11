@@ -17,4 +17,5 @@ public class Book(string ownerId) : HeaderData(ownerId)
     public int Order { get; set; }
     public int? BookDiscussionId { get; set; }
     public int? BookPollId { get; set; }
+    public float? Rating { get; set; } = null;
 }
