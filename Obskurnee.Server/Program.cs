@@ -146,6 +146,7 @@ void ConfigureDI(IServiceCollection services, MECConfigurationManager configurat
     services.AddTransient<ReviewService>();
     services.AddTransient<BackupService>();
     services.AddTransient<SearchService>();
+    services.AddTransient<StatService>();
     services.AddHostedService<FeedFetcherService>();
 
 #if DEMOMODE
