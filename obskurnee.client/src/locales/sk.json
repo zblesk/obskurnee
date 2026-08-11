@@ -191,7 +191,7 @@
     "aboutMePlaceholder": "Napíš sem niečo o sebe! Aké obľubuješ žánre? Čo sú Tvoje obľúbené knihy? Čo naopak radšej vynecháš? Niečo iné, čo nám chceš povedať?\n\n@:global.markdownSamplePlaceholder",
     "addFirstRec": "Čo tak {0}",
     "addFirstRecLinkText": "nejaké pridať?",
-    "addRecommendation": "doporučiť další",
+    "addRecommendation": "odporučiť další",
     "booksRatedBy": "Knihy, které {0} hodnotila",
     "myBooks": "{0}-knihy",
     "currentlyReading": "Práve číta:",
