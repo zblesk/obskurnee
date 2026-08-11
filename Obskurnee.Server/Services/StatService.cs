@@ -14,8 +14,8 @@ public class StatService(
     /// Gets the IDs of all posts that correspond to books that won a vote.
     /// </summary>
     /// <returns></returns>
-    public HashSet<int> GetWinningPostIds() =>
-        cache.GetOrCreate(
+    public HashSet<int> GetWinningPostIds() 
+        => cache.GetOrCreate(
             "WinningPostIds",
             fac =>
             {
@@ -84,18 +84,7 @@ public class StatService(
 
     private async Task<List<Post>> GetVotedButLostSuggestions(string userId)
     {
-        var userVotedPosts = new HashSet<int>(
-            (await (
-                from v in db.Votes
-                join p in db.Polls on v.PollId equals p.PollId
-                join d in db.Discussions on p.DiscussionId equals d.DiscussionId
-                where
-                    v.OwnerId == userId
-                    && d.Topic == Topic.Books
-                    && p.IsClosed
-                select v.PostIds)
-                .ToListAsync())
-            .SelectMany(i => i));
+        var userVotedPosts = await GetUsersLosingVotes(userId);
 
         var winningIds = GetWinningPostIds();
 
@@ -105,6 +94,27 @@ public class StatService(
             .Where(p => userVotedPosts.Contains(p.PostId))
             .ToListAsync();
     }
+
+    private async Task<HashSet<int>> GetUsersLosingVotes(string userId)
+        => await cache.GetOrCreateAsync(
+            $"LosingVoteIds-{userId}",
+            async fac =>
+            {
+                fac.AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(2);
+                return new HashSet<int>(
+                (await (
+                    from v in db.Votes
+                    join p in db.Polls on v.PollId equals p.PollId
+                    join d in db.Discussions on p.DiscussionId equals d.DiscussionId
+                    where
+                        v.OwnerId == userId
+                        && d.Topic == Topic.Books
+                        && p.IsClosed
+                    orderby d.DiscussionId
+                    select v.PostIds)
+                    .ToListAsync())
+                .SelectMany(i => i));
+            });
 
     private async Task<List<UserStats>> GetUserBookStats()
     {

@@ -32,7 +32,11 @@
                 </div>
             </div>
         </div>
-        <p v-else class="recs-message">{{ $t('user.noUnreadBooks') }}</p>
+        <p v-else class="recs-message">
+            <div class="books-grid">
+                {{ $t('user.noUnreadBooks') }}
+            </div>
+        </p>
 
         <h2 class="page-subtitle page-subtitle--flex u-mt-sp">
             <span>{{ $t('user.votedButLost') }}</span>
@@ -40,18 +44,17 @@
                  v-if="userStats.votedButLostSuggestions && userStats.votedButLostSuggestions.length > 0" @click="showVoted = !showVoted"
                  class="toggler" :class="{ 'toggler--hidden': !showVoted }">
         </h2>
-        <div class="books-grid">
-            <template v-for="bookPost in userStats.votedButLostSuggestions"
-                      v-bind:key="bookPost.postId"
-                      v-bind:result="bookPost">
-                <book-post-preview :post="bookPost" />
-            </template>
-        </div>
-        <div v-if="userStats.votedButLostSuggestions && userStats.votedButLostSuggestions.length > 0">
-            <div v-if="showVoted">
+        <div v-if="showVoted">
+            <div class="books-grid">
+                <template v-if="userStats.votedButLostSuggestions && userStats.votedButLostSuggestions.length > 0"
+                          v-for="bookPost in userStats.votedButLostSuggestions"
+                          v-bind:key="bookPost.postId"
+                          v-bind:result="bookPost">
+                    <book-post-preview :post="bookPost" />
+                </template>
+                <p v-else class="recs-message">{{ $t('user.noVotedButLost') }}</p>
             </div>
         </div>
-        <p v-else class="recs-message">{{ $t('user.noVotedButLost') }}</p>
     </template>
   </div>
 </template>
