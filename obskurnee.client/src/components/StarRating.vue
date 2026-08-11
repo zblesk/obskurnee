@@ -1,8 +1,14 @@
 <template>
-  <div class="stars" :title="`${rating.toFixed(1)} / ${max}`" role="img"
-       :aria-label="`${rating.toFixed(1)} out of ${max} stars`">
-    <div class="stars__empty">{{ '★'.repeat(max) }}</div>
-    <div class="stars__filled" :style="{ width: fillPercent + '%' }">{{ '★'.repeat(max) }}</div>
+  <div v-if="rating > 4"
+      title="5 / 5" role="img"
+       aria-label="`5 out of 5 stars`"
+       class="stars">
+      🌟🌟🌟🌟🌟
+  </div>
+  <div v-else class="stars" :title="`${rating.toFixed(1)} / 5`" role="img"
+       :aria-label="`${rating.toFixed(1)} out of 5 stars`">
+    <div class="stars__empty">{{ '★'.repeat(5) }}</div>
+    <div class="stars__filled" :style="{ width: fillPercent + '%' }">{{ '★'.repeat(5) }}</div>
   </div>
 </template>
 
@@ -11,11 +17,10 @@ export default {
   name: 'StarRating',
   props: {
     rating: { type: Number, required: true },
-    max: { type: Number, default: 5 }
   },
   computed: {
     fillPercent() {
-      return Math.max(0, Math.min(100, (this.rating / this.max) * 100));
+      return Math.max(0, Math.min(100, (this.rating / 5.0) * 100));
     }
   }
 }
