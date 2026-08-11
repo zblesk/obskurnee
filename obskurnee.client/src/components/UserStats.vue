@@ -40,11 +40,11 @@
                  v-if="userStats.votedButLostSuggestions && userStats.votedButLostSuggestions.length > 0" @click="showVoted = !showVoted"
                  class="toggler" :class="{ 'toggler--hidden': !showVoted }">
         </h2>
-        <div class="grid">
-            <template v-for="result in userStats.votedButLostSuggestions"
-                      v-bind:key="result.postId"
-                      v-bind:result="result">
-                <search-result-book :post="result" />
+        <div class="books-grid">
+            <template v-for="bookPost in userStats.votedButLostSuggestions"
+                      v-bind:key="bookPost.postId"
+                      v-bind:result="bookPost">
+                <book-post-preview :post="bookPost" />
             </template>
         </div>
         <div v-if="userStats.votedButLostSuggestions && userStats.votedButLostSuggestions.length > 0">
@@ -60,10 +60,10 @@
 import { mapActions, mapGetters } from "vuex";
 import BookPreview from './BookPreview.vue';
 import StarRating from './StarRating.vue';
-import SearchResultBook from "./SearchResultBook.vue";
+import BookPostPreview from "./BookPostPreview.vue";
 export default {
   name: 'UserStats',
-  components: { BookPreview, StarRating, SearchResultBook},
+  components: { BookPreview, StarRating, BookPostPreview },
   props: {
     email: {
       type: String,
