@@ -155,6 +155,8 @@ That should let you access your local copy at localhost.
 
 Or just open the `.sln` file in Visual Studio 2026 and let it handle the rest.
 
+For the request examples, open the `bruno-requests` folder in [Bruno](https://www.usebruno.com/).
+
 # License
 
 Copyright (c) Ladislav Benc
