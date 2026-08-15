@@ -1,0 +1,17 @@
+info:
+  name: Reset pwd
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{base_url}}api/accounts/passwordreset/6011d40a19901d0335d46e1d/CfDJ8Id7Ea6mKDBNkxa8ptv8Et0uC%2f07rWJ0vscuPnCSMSCrzyvsN8p4PNp5voM9MJ72tz4WcM1O9nJ%2f7gRZ1JMqWRf7kkqI9iSjLcS6AFhooKzJlo5AyouCIZ6QnGJYUw7gf7WfLyicQNpiOvCvvjMRODbfw2CKtDRDVa4a%2fQlui0BmFTQDXinbMiTYwLbc0PMTT0NJTsYHQwxiy7Ub2p7V3ccv0udYuj3C81rlgPJHrFxy"
+  body:
+    type: json
+    data: '{"password":"kokokokokokokokokokokoko"}'
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,18 @@
+info:
+  name: login bot
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{base_url}}api/accounts/login"
+  body:
+    type: json
+    data: '{"email":"botka@bookclub.gov","password":"qwertyqwertyqwerty"}'
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

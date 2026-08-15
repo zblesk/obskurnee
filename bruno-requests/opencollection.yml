@@ -1,0 +1,29 @@
+opencollection: 1.0.0
+
+info:
+  name: Obskurnee
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+request:
+  auth:
+    type: bearer
+    token: "{{auth_token}}"
+  variables:
+    - name: base_url
+      value: http://localhost:5000/
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git

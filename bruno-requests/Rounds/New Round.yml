@@ -1,0 +1,26 @@
+info:
+  name: New Round
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{base_url}}api/rounds"
+  body:
+    type: json
+    data: "{\r
+
+      \    \"topic\": \"Books\",\r
+
+      \    \"title\": \"tit le\",\r
+
+      \    \"description\": \"jaj sak mega popisok nie\"\r
+
+      }"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

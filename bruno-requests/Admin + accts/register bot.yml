@@ -1,0 +1,18 @@
+info:
+  name: register bot
+  type: http
+  seq: 10
+
+http:
+  method: POST
+  url: "{{base_url}}api/admin/registerbot"
+  body:
+    type: json
+    data: '{"email":"matrix@bot.com","name":"matrix botka","password":"matrixmatrixmatrix"}'
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

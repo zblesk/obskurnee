@@ -1,0 +1,15 @@
+info:
+  name: Make backup
+  type: http
+  seq: 13
+
+http:
+  method: POST
+  url: "{{base_url}}api/admin/createbackup"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

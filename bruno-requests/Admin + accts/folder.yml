@@ -1,0 +1,7 @@
+info:
+  name: Admin + accts
+  type: folder
+  seq: 3
+
+request:
+  auth: inherit

@@ -1,0 +1,22 @@
+info:
+  name: Get rendered MD (as preview)
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{base_url}}api/discussions/preview"
+  body:
+    type: json
+    data: "{\r
+
+      \    \"text\": \"_Land **ahoy** a tak._ \\n\\n# Cauko\\n\\njano\"\r
+
+      }"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

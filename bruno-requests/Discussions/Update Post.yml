@@ -1,0 +1,32 @@
+info:
+  name: Update Post
+  type: http
+  seq: 5
+
+http:
+  method: PATCH
+  url: "{{base_url}}api/discussions/1"
+  body:
+    type: json
+    data: "{\r
+
+      \    \"discussionId\": 1,\r
+
+      \    \"postId\": 1,\r
+
+      \    \"title\": \"Volaka konina\",\r
+
+      \    \"author\": \"Volaky volr\",\r
+
+      \    \"text\": \"nejaka vec\",\r
+
+      \    \"pageCount\": 3333\r
+
+      }"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

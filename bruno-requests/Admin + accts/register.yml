@@ -1,0 +1,18 @@
+info:
+  name: register
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{base_url}}api/accounts/register"
+  body:
+    type: json
+    data: '{"email":"janka@bookclub.gov","password":"qwertyqwertyqwerty"}'
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

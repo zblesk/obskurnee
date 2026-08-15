@@ -1,0 +1,18 @@
+info:
+  name: login
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{base_url}}api/accounts/login"
+  body:
+    type: json
+    data: '{"email":"zblesk@protonmail.com","password":"semarychlokotolubs"}'
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,14 @@
+info:
+  name: Request pwd reset
+  type: http
+  seq: 8
+
+http:
+  method: GET
+  url: "{{base_url}}api/accounts/passwordreset/janka@bookclub.gov"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

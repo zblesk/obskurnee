@@ -1,0 +1,32 @@
+info:
+  name: Add new Post into Discussion
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{base_url}}api/discussions/5"
+  body:
+    type: json
+    data: "{\r
+
+      \    \"discussionId\": 5,\r
+
+      \    \"title\": \"Volaka konina\",\r
+
+      \    \"author\": \"Volaky volr\",\r
+
+      \    \"text\": \"nejaka chujina\",\r
+
+      \    \"pageCount\": 69,\r
+
+      \    \"ownerId\": \"5aeb3e2b-e0d0-4120-a2b0-609c68aa0afd\"\r
+
+      }"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

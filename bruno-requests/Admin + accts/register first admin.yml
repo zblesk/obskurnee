@@ -1,0 +1,18 @@
+info:
+  name: register first admin
+  type: http
+  seq: 12
+
+http:
+  method: POST
+  url: "{{base_url}}api/accounts/registerfirstadmin"
+  body:
+    type: json
+    data: '{"email":"janka@bookclub.gov","password":"qwertyqwertyqwerty"}'
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

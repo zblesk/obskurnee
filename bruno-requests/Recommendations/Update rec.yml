@@ -1,0 +1,30 @@
+info:
+  name: Update rec
+  type: http
+  seq: 2
+
+http:
+  method: PATCH
+  url: "{{base_url}}api/recommendations"
+  body:
+    type: json
+    data: "{\r
+
+      \    \"recommendationId\": 2,\r
+
+      \    \"title\": \"Si e pësoi Kokot mendjemadhi\",\r
+
+      \    \"author\": \"Loredan Bubani\",\r
+
+      \    \"text\": \"Look at me go1\",\r
+
+      \    \"pageCount\": 240\r
+
+      }"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

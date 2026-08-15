@@ -1,0 +1,20 @@
+info:
+  name: Create User
+  type: http
+  seq: 9
+
+http:
+  method: POST
+  url: "{{base_url}}api/admin/registeruser"
+  body:
+    type: json
+    data: '{ "email": "dva@sdasdasd.xx "}'
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjYwMTg0Zjc2MmRlNDBjMGQxNDVkMjY3YyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJmZXJrbyIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImZlcmtvQGJvb2tjbHViLmdvdiIsIkFzcE5ldC5JZGVudGl0eS5TZWN1cml0eVN0YW1wIjoiQTJMMkNERUVSMkxCS01IRE9CQlNWWkdJWElUUFdDQVYiLCJtb2RlcmF0b3IiOiJ0cnVlIiwiZXhwIjoxNjI4NjIyMDU5LCJpc3MiOiJvYnNrdXJuZWUiLCJhdWQiOiJvYnNrdXJuZWUifQ.tRJ-BX-hgtfUcpWT-K3ilKAbTlFMH8g9wINPOGw8nVE
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
