@@ -108,14 +108,23 @@ public class ReviewService(
             Rating = rating,
             ReviewUrl = reviewUrl,
         };
-        var existing = await _db.BookReviews.FirstOrDefaultAsync(br => br.ReviewId == review.ReviewId);
-        if (existing != null)
+        await using (var transaction = await _db.Database.BeginTransactionAsync())
         {
-            _db.BookReviews.Remove(existing);
+            var existing = await _db.BookReviews.FirstOrDefaultAsync(br => br.ReviewId == review.ReviewId);
+            if (existing != null)
+            {
+                _db.BookReviews.Remove(existing);
+                await _db.SaveChangesAsync();
+            }
+            await _db.BookReviews.AddAsync(review);
             await _db.SaveChangesAsync();
+
+            book.Rating = await _db.BookReviews
+                .Where(r => r.BookId == bookId)
+                .AverageAsync(r => (float?)r.Rating);
+            await _db.SaveChangesAsync();
+            await transaction.CommitAsync();
         }
-        await _db.BookReviews.AddAsync(review);
-        await _db.SaveChangesAsync();
         await SendNewReviewNotification(review);
         return review;
     }
