@@ -62,6 +62,17 @@ export default {
             activeTab: "users",
         };
     },
+    watch: {
+        '$route.query.tab'() {
+            this.syncTabFromRoute();
+        },
+        activeTab(tab) {
+            const current = this.$route.query.tab || 'users';
+            if (current !== tab) {
+                this.$router.push({ query: { ...this.$route.query, tab } });
+            }
+        },
+    },
     computed: {
         ...mapState("stats", ["userStats", "bookStats"]),
         mostRead() {
@@ -209,12 +220,17 @@ export default {
             if (bookId) {
                 this.$router.push({ name: 'book', params: { bookId } });
             }
+        },
+        syncTabFromRoute() {
+            this.activeTab = this.$route.query.tab === 'books' ? 'books' : 'users';
         }
     },
     mounted() {
+        this.syncTabFromRoute();
         this.fetchUserStats();
     },
     activated() {
+        this.syncTabFromRoute();
         this.fetchUserStats();
     },
 }

@@ -252,10 +252,21 @@ export default {
     subscribedAll: function () { return this.subscriptions.includes('allevents'); },
   },
   watch: {
-    '$route' (to) {
+    '$route' (to, from) {
       if (to.name == 'user')
       {
-        this.onLoad();
+        if (to.params.email !== from.params.email)
+        {
+          this.onLoad();
+        }
+        this.syncTabFromRoute();
+      }
+    },
+    activeTab (tab) {
+      const current = this.$route.query.tab || 'profile';
+      if (current !== tab)
+      {
+        this.$router.push({ query: { ...this.$route.query, tab } });
       }
     }
   },
@@ -323,9 +334,16 @@ export default {
       this.newAvatar = new FormData();
       this.newAvatar.append("avatar", pic, pic.name);
     },
+    syncTabFromRoute()
+    {
+      const tab = this.$route.query.tab === 'books' ? 'books' : 'profile';
+      if (this.activeTab !== tab)
+      {
+        this.activeTab = tab;
+      }
+    },
     onLoad()
     {
-      this.activeTab = "profile";
       this.fetchProfile()
         .then(() =>
         {
@@ -347,6 +365,7 @@ export default {
     },
   },
   mounted() {
+    this.syncTabFromRoute();
     this.onLoad();
   }
 }
